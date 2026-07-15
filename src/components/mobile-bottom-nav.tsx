@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
-import { Compass, Plus, Search, UserRound, UsersRound } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { Compass, LibraryBig, Search, UserRound, UsersRound } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { getLocalProfile } from "@/lib/local-session";
@@ -11,15 +11,14 @@ import { canUseLocalCommunityFallback } from "@/lib/community-runtime";
 
 const baseMobileItems = [
   { href: "/explore", label: "Explore", icon: Compass },
-  { href: "/search", label: "Search", icon: Search },
-  { href: "/search?intent=add", label: "Add", icon: Plus },
+  { href: "/genres", label: "Genres", icon: LibraryBig },
   { href: "/feed", label: "Feed", icon: UsersRound },
+  { href: "/search", label: "Search", icon: Search },
   { href: "/profile/booksphere-team", label: "Profile", icon: UserRound }
 ];
 
 export function MobileBottomNav() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const [profileHref, setProfileHref] = useState("/profile/booksphere-team");
 
   useEffect(() => {
@@ -55,8 +54,8 @@ export function MobileBottomNav() {
       <div className="mx-auto grid max-w-md grid-cols-5 gap-1">
         {mobileItems.map((item) => {
           const Icon = item.icon;
-          const active = item.label === "Add"
-            ? pathname === "/search" && searchParams.get("intent") === "add"
+          const active = item.label === "Genres"
+            ? pathname === "/genres" || pathname.startsWith("/genre/")
             : item.label === "Profile"
               ? pathname.startsWith("/profile/")
               : pathname === item.href;
