@@ -44,7 +44,12 @@ export default async function ExplorePage() {
             <p className="body-copy mt-5 max-w-2xl">
               No time to finish every book? Learn the core ideas through summaries, applications, disagreements, and real reader perspectives.
             </p>
-            <div className="mt-6 grid max-w-3xl gap-2.5 sm:grid-cols-3">
+            <div className="mt-5 grid grid-cols-3 divide-x divide-[color:var(--color-hairline)] border-y border-[color:var(--color-hairline)] py-3 sm:hidden">
+              <MobileValueCue icon={<Clock3 size={15} />} text="Ideas fast" />
+              <MobileValueCue icon={<Users size={15} />} text="Reader views" />
+              <MobileValueCue icon={<CheckCircle2 size={15} />} text="Worth reading?" />
+            </div>
+            <div className="mt-6 hidden max-w-3xl gap-2.5 sm:grid sm:grid-cols-3">
               <FirstFiveSecondCard icon={<Clock3 size={17} />} label="Start fast" text="Get the useful idea before committing hours." />
               <FirstFiveSecondCard icon={<Users size={17} />} label="Learn socially" text="See how readers applied, challenged, and explained it." />
               <FirstFiveSecondCard icon={<CheckCircle2 size={17} />} label="Decide clearly" text="Know when the full book is worth reading." />
@@ -140,6 +145,15 @@ function FirstFiveSecondCard({ icon, label, text }: { icon: ReactNode; label: st
         <p className="caption text-[10px]">{label}</p>
       </div>
       <p className="text-sm font-medium leading-5 text-[color:var(--color-text-primary)]">{text}</p>
+    </div>
+  );
+}
+
+function MobileValueCue({ icon, text }: { icon: ReactNode; text: string }) {
+  return (
+    <div className="flex min-w-0 items-center justify-center gap-1.5 px-2 text-center text-[11px] font-medium text-[color:var(--color-text-secondary)]">
+      <span className="shrink-0 text-[color:var(--color-accent)]">{icon}</span>
+      <span className="leading-tight">{text}</span>
     </div>
   );
 }

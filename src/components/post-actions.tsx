@@ -50,8 +50,7 @@ export function PostActions({
   const [persistedAwards, setPersistedAwards] = useState<AwardType[]>([]);
   const [selectedUsefulness, setSelectedUsefulness] = useState<UsefulnessReactionType[]>([]);
   const [persistedUsefulness, setPersistedUsefulness] = useState<UsefulnessReactionType[]>([]);
-  const [awardOpen, setAwardOpen] = useState(false);
-  const [usefulnessOpen, setUsefulnessOpen] = useState(false);
+  const [openPicker, setOpenPicker] = useState<"usefulness" | "award" | null>(null);
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
   const [isOwner, setIsOwner] = useState(false);
@@ -480,17 +479,19 @@ export function PostActions({
         </button>
         <button
           type="button"
-          onClick={() => requireAction(() => setUsefulnessOpen((value) => !value))}
+          onClick={() => requireAction(() => setOpenPicker((value) => value === "usefulness" ? null : "usefulness"))}
           aria-label="Mark why this post was useful"
-          className="flex min-h-11 items-center gap-2 rounded-full bg-black/[0.035] px-3 py-2 transition hover:bg-black/[0.06]"
+          aria-expanded={openPicker === "usefulness"}
+          className={`flex min-h-11 items-center gap-2 rounded-full px-3 py-2 transition ${openPicker === "usefulness" ? "bg-[color:var(--color-text-primary)] !text-white" : "bg-black/[0.035] hover:bg-black/[0.06]"}`}
         >
           <Award size={16} /> Useful
         </button>
         <button
           type="button"
-          onClick={() => requireAction(() => setAwardOpen((value) => !value))}
+          onClick={() => requireAction(() => setOpenPicker((value) => value === "award" ? null : "award"))}
           aria-label="Award this insight"
-          className="flex min-h-11 items-center gap-2 rounded-full bg-black/[0.035] px-3 py-2 transition hover:bg-black/[0.06]"
+          aria-expanded={openPicker === "award"}
+          className={`flex min-h-11 items-center gap-2 rounded-full px-3 py-2 transition ${openPicker === "award" ? "bg-[color:var(--color-text-primary)] !text-white" : "bg-black/[0.035] hover:bg-black/[0.06]"}`}
         >
           <Award size={16} /> Award
         </button>
@@ -600,7 +601,7 @@ export function PostActions({
         </div>
       )}
 
-      {usefulnessOpen && (
+      {openPicker === "usefulness" && (
         <div className="mt-3 flex flex-wrap gap-2 rounded-[20px] bg-black/[0.025] p-3">
           {usefulnessOptions.map((type) => (
             <button
@@ -615,7 +616,7 @@ export function PostActions({
         </div>
       )}
 
-      {awardOpen && (
+      {openPicker === "award" && (
         <div className="mt-3 flex flex-wrap gap-2 rounded-[20px] bg-black/[0.025] p-3">
           {awardOptions.map((type) => (
             <button

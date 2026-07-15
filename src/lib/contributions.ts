@@ -427,10 +427,13 @@ export async function toggleSupabaseFollowDiscussion(profileId: string, targetId
 export type ContributionComment = {
   id: string;
   userId: string;
+  parentId?: string;
   name: string;
   body: string;
   likes: number;
   createdAt: string;
+  updatedAt?: string;
+  canEdit?: boolean;
   canDelete?: boolean;
   viewerLiked?: boolean;
 };
@@ -439,7 +442,7 @@ export async function getSupabaseComments(postId: string, viewerProfileId?: stri
   if (!supabase) return [] as ContributionComment[];
   const { data, error } = await supabase
     .from("discussion_comments")
-    .select("id,user_id,body,created_at,profiles(name)")
+    .select("id,user_id,parent_comment_id,body,created_at,updated_at,profiles(name)")
     .eq("discussion_post_id", postId)
     .order("created_at", { ascending: false })
     .limit(50);
@@ -454,22 +457,25 @@ export async function getSupabaseComments(postId: string, viewerProfileId?: stri
     return {
       id: row.id as string,
       userId: row.user_id as string,
+      parentId: row.parent_comment_id as string || undefined,
       name: profile?.name || "Reader",
       body: row.body as string,
       likes: likeCounts[row.id as string] || 0,
       createdAt: row.created_at as string,
+      updatedAt: row.updated_at as string || undefined,
+      canEdit: viewerProfileId === row.user_id,
       canDelete: viewerProfileId === row.user_id,
       viewerLiked: Boolean(viewerProfileId && (likeRows || []).some((like) => like.target_id === row.id && like.user_id === viewerProfileId))
     };
   });
 }
 
-export async function createSupabaseComment(profileId: string, postId: string, body: string) {
+export async function createSupabaseComment(profileId: string, postId: string, body: string, parentId?: string) {
   if (!supabase) return { comment: null, error: "Supabase is not configured." };
   const { data, error } = await supabase
     .from("discussion_comments")
-    .insert({ user_id: profileId, discussion_post_id: postId, body })
-    .select("id,user_id,body,created_at,profiles(name)")
+    .insert({ user_id: profileId, discussion_post_id: postId, parent_comment_id: parentId || null, body })
+    .select("id,user_id,parent_comment_id,body,created_at,updated_at,profiles(name)")
     .single();
   if (error || !data) return { comment: null, error: "We could not post your comment. Your text is still here." };
   const profile = Array.isArray(data.profiles) ? data.profiles[0] : data.profiles;
@@ -477,13 +483,32 @@ export async function createSupabaseComment(profileId: string, postId: string, b
     comment: {
       id: data.id as string,
       userId: data.user_id as string,
+      parentId: data.parent_comment_id as string || undefined,
       name: profile?.name || "You",
       body: data.body as string,
       likes: 0,
       createdAt: data.created_at as string,
+      updatedAt: data.updated_at as string || undefined,
+      canEdit: true,
       canDelete: true
     } satisfies ContributionComment,
     error: null
+  };
+}
+
+export async function updateSupabaseComment(profileId: string, commentId: string, body: string) {
+  if (!supabase) return { comment: null, error: "Supabase is not configured." };
+  const updatedAt = new Date().toISOString();
+  const { data, error } = await supabase
+    .from("discussion_comments")
+    .update({ body, updated_at: updatedAt })
+    .eq("id", commentId)
+    .eq("user_id", profileId)
+    .select("id,body,updated_at")
+    .single();
+  return {
+    comment: data ? { id: data.id as string, body: data.body as string, updatedAt: data.updated_at as string } : null,
+    error: error || !data ? "We could not save your edit. Please try again." : null
   };
 }
 

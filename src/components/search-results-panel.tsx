@@ -1,6 +1,7 @@
 "use client";
 
 import type { BookSearchResult } from "@/lib/search";
+import { BookCover } from "@/components/book-cover";
 
 type SearchResultsPanelProps = {
   query: string;
@@ -45,17 +46,7 @@ export function SearchResultsPanel({
                 index === selectedIndex ? "bg-black/[0.055]" : "hover:bg-black/[0.035]"
               }`}
             >
-              <span className="relative block aspect-[2/3] w-full overflow-hidden rounded-[12px] bg-black/[0.04] shadow-[0_10px_24px_rgba(0,0,0,0.10)]">
-                {book.coverUrl ? (
-                  // A plain image keeps search hydration lightweight and avoids a heavier client dependency.
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={book.coverUrl} alt={`${book.title} cover`} className="h-full w-full object-cover" loading="lazy" />
-                ) : (
-                  <span className="grid h-full w-full place-items-center text-xs font-medium text-[color:var(--color-text-muted)]">
-                    {book.title.split(" ").slice(0, 2).map((word) => word[0]).join("")}
-                  </span>
-                )}
-              </span>
+              <BookCover book={book} className="!rounded-[12px]" />
               <span className="min-w-0 py-0.5">
                 <span className="caption block text-[10px]">{label}</span>
                 <span className="mt-1 block line-clamp-1 text-[15px] font-medium leading-tight tracking-[-0.02em] text-[color:var(--color-text-primary)]">

@@ -63,9 +63,11 @@ create table if not exists discussion_posts (
 create table if not exists discussion_comments (
   id uuid primary key default gen_random_uuid(),
   discussion_post_id uuid not null references discussion_posts(id) on delete cascade,
+  parent_comment_id uuid references discussion_comments(id) on delete set null,
   user_id uuid not null references profiles(id) on delete cascade,
   body text not null check (char_length(trim(body)) >= 3),
-  created_at timestamptz not null default now()
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
 
 create table if not exists knowledge_posts (
@@ -151,6 +153,7 @@ create index if not exists books_hidden_gems_idx on books(is_hidden_gem, hidden_
 create index if not exists books_trending_seed_idx on books(is_trending_seed, trending_seed_order);
 create index if not exists discussion_posts_book_idx on discussion_posts(book_id, created_at desc);
 create index if not exists discussion_comments_post_idx on discussion_comments(discussion_post_id, created_at desc);
+create index if not exists discussion_comments_parent_idx on discussion_comments(parent_comment_id, created_at asc);
 create index if not exists knowledge_posts_user_idx on knowledge_posts(user_id, created_at desc);
 create index if not exists likes_target_idx on likes(target_type, target_id);
 create index if not exists saved_books_book_idx on saved_books(book_id, created_at desc);
