@@ -22,10 +22,17 @@ export function KnowledgeFeed({ seedPosts, variant = "grid" }: { seedPosts: Know
   const [posts, setPosts] = useState(seedPosts);
 
   useEffect(() => {
-    if (!canUseLocalCommunityFallback()) return;
-    queueMicrotask(() => {
-      setPosts([...readLocalKnowledgePosts(), ...seedPosts]);
-    });
+    const addPost = (event: Event) => {
+      const post = (event as CustomEvent<KnowledgePost>).detail;
+      setPosts((current) => [post, ...current.filter((item) => item.id !== post.id)]);
+    };
+    if (canUseLocalCommunityFallback()) {
+      queueMicrotask(() => {
+        setPosts([...readLocalKnowledgePosts(), ...seedPosts].filter((post, index, all) => all.findIndex((item) => item.id === post.id) === index));
+      });
+    }
+    window.addEventListener("booksphere:knowledge-post-created", addPost);
+    return () => window.removeEventListener("booksphere:knowledge-post-created", addPost);
   }, [seedPosts]);
 
   if (variant === "stream") {

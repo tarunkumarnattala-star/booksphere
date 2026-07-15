@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { ArrowRight, BookOpen, CheckCircle2, Clock3, Sparkles, Users } from "lucide-react";
+import { ArrowRight, CheckCircle2, Clock3, Users } from "lucide-react";
 import { EditorialPickCard } from "@/components/editorial-pick-card";
 import { GenreDirectory } from "@/components/genre-directory";
 import { HeroInlineSearch } from "@/components/hero-inline-search";
@@ -32,8 +32,6 @@ export default async function ExplorePage() {
   const persistedPosts = await getSupabaseFeedContributions(10);
   const trendingPosts = isSupabaseConfigured ? persistedPosts : getTrendingDiscussionPosts(10);
   const editorialPicks = getEditorialDiscussionPicks(5);
-  const verifiedPreviews = books.filter((book) => book.editorialStatus === "verified").length;
-
   return (
     <div className="mx-auto max-w-[1560px]">
       <section className="container-page pb-3 pt-7 md:pb-4 md:pt-9 lg:pb-3 lg:pt-10">
@@ -62,11 +60,6 @@ export default async function ExplorePage() {
               <Link href="/genres" className="inline-flex min-h-11 items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-medium text-[color:var(--color-text-primary)] shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] transition hover:bg-black/[0.035]">
                 Browse genres
               </Link>
-            </div>
-            <div className="mt-6 grid max-w-2xl grid-cols-3 gap-2.5 border-t border-[color:var(--color-hairline)] pt-5 sm:gap-3">
-              <MetricPill icon={<CheckCircle2 size={18} />} value={verifiedPreviews.toString()} label="Source-reviewed previews" />
-              <MetricPill icon={<Sparkles size={18} />} value={readingPaths.length.toString()} label="Curated reading paths" />
-              <MetricPill icon={<BookOpen size={18} />} value={books.length.toString()} label="Catalog books" />
             </div>
           </div>
 
@@ -121,18 +114,6 @@ export default async function ExplorePage() {
       <SectionShelf title="Worth Returning To" subtitle="Evergreen books selected for long-term knowledge value." books={getMostSaved()} badge="Evergreen" signal="editorial" />
 
       <GenreDirectory genres={genres} booksByGenre={(genreName) => books.filter((book) => book.genres.includes(genreName))} heading="Browse by Genre" subtitle="Focused reading rooms organized around ideas, not shelves in a database." />
-    </div>
-  );
-}
-
-function MetricPill({ icon, value, label }: { icon: ReactNode; value: string; label: string }) {
-  return (
-    <div className="rounded-[20px] bg-white/72 p-3 shadow-[0_8px_24px_rgba(0,0,0,0.035)] ring-1 ring-black/[0.025] sm:p-3.5">
-      <div className="flex items-center gap-2 text-[color:var(--color-accent)]">
-        {icon}
-        <span className="text-[22px] font-medium leading-none tracking-[-0.035em] text-[color:var(--color-text-primary)] sm:text-[24px]">{value}</span>
-      </div>
-      <p className="caption mt-2 text-[9px] leading-tight text-[color:var(--color-text-muted)] sm:text-[10px]">{label}</p>
     </div>
   );
 }

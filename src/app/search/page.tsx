@@ -9,12 +9,12 @@ export default async function SearchPage({ searchParams }: { searchParams?: Prom
 
   return (
     <div className="editorial-page max-w-[1440px]">
-      <p className="caption mb-4">Search</p>
-      <h1 className="large-title max-w-[1080px]">{adding ? "Choose the book behind your insight." : "Start with the problem, not the shelf."}</h1>
-      <p className="body-copy mt-6 max-w-[760px] text-[19px] leading-8">
+      <p className="caption mb-3">Search</p>
+      <h1 className="large-title max-w-[1080px]">{adding ? "Choose the book behind your insight." : "Find better ideas."}</h1>
+      <p className="body-copy mt-4 max-w-[760px] text-[17px] leading-7 md:text-[18px]">
         {adding
           ? "BookSphere works best when every insight has context. Find the book first, then add the idea, application, question, or disagreement that helps another reader."
-          : "Search for a book, decision, question, or goal. BookSphere connects it to useful ideas, real reader applications, disagreements, and the books behind them."}
+          : "Search a book, question, decision, or goal. Get the strongest books and real reader perspectives behind it."}
       </p>
       {adding && (
         <div className="mt-6 rounded-[24px] bg-white p-4 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">

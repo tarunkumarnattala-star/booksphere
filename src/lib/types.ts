@@ -196,10 +196,13 @@ export type BookChapter = {
 export type KnowledgePost = {
   id: string;
   userId: string;
+  authorName?: string;
+  authorUsername?: string;
   title: string;
   body: string;
   topic: string;
   bookId?: string;
+  referenceTitle?: string;
   createdAt: string;
   likes: number;
   comments: number;

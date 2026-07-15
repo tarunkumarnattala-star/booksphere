@@ -10,19 +10,34 @@ import { LOCAL_KNOWLEDGE_POSTS_KEY } from "./knowledge-feed";
 import { PostActions } from "./post-actions";
 import { KnowledgePost } from "@/lib/types";
 import { getBook, getProfileById, knowledgePosts } from "@/lib/data";
+import { getSupabaseKnowledgePost } from "@/lib/knowledge-posts";
 
 export function LocalKnowledgePostPage({ id }: { id: string }) {
   const [post, setPost] = useState<KnowledgePost | null | undefined>(undefined);
 
   useEffect(() => {
-    queueMicrotask(() => {
+    let cancelled = false;
+
+    async function loadPost() {
       try {
         const posts = JSON.parse(window.localStorage.getItem(LOCAL_KNOWLEDGE_POSTS_KEY) || "[]") as KnowledgePost[];
-        setPost(posts.find((item) => item.id === id) || null);
+        const localPost = posts.find((item) => item.id === id);
+        if (localPost) {
+          if (!cancelled) setPost(localPost);
+          return;
+        }
       } catch {
-        setPost(null);
+        // A damaged local preview should not prevent a production lookup.
       }
-    });
+
+      const remotePost = await getSupabaseKnowledgePost(id);
+      if (!cancelled) setPost(remotePost);
+    }
+
+    void loadPost();
+    return () => {
+      cancelled = true;
+    };
   }, [id]);
 
   if (post === undefined) {
@@ -43,13 +58,18 @@ export function LocalKnowledgePostPage({ id }: { id: string }) {
         <div className="rounded-[30px] bg-white p-8 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">
           <p className="caption">Note unavailable</p>
           <h1 className="title-1 mt-2">We could not find this knowledge note.</h1>
-          <p className="body-copy mt-4">It may have been removed from this beta device, or the link may be incomplete.</p>
+          <p className="body-copy mt-4">It may have been removed, or the link may be incomplete.</p>
         </div>
       </div>
     );
   }
 
-  const profile = getProfileById(post.userId);
+  const fallbackProfile = getProfileById(post.userId);
+  const profile = {
+    ...fallbackProfile,
+    name: post.authorName || fallbackProfile.name,
+    username: post.authorUsername || fallbackProfile.username
+  };
   const recommendedNotes = knowledgePosts.slice(0, 3);
   const referenceBook = post.bookId ? getBook(post.bookId) : null;
 
@@ -84,6 +104,13 @@ export function LocalKnowledgePostPage({ id }: { id: string }) {
               </Link>
             )}
 
+            {!referenceBook && post.referenceTitle && (
+              <div className="mt-8 rounded-[20px] bg-black/[0.025] px-4 py-3">
+                <p className="caption text-[10px]">Optional reference</p>
+                <p className="mt-1 text-sm font-medium text-[color:var(--color-text-primary)]">{post.referenceTitle}</p>
+              </div>
+            )}
+
             <PostActions targetId={post.id} likes={post.likes} comments={post.comments} />
           </article>
 
@@ -92,8 +119,8 @@ export function LocalKnowledgePostPage({ id }: { id: string }) {
 
         <aside className="space-y-5 xl:sticky xl:top-28 xl:self-start">
           <div className="rounded-[28px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">
-            <p className="caption">Beta note</p>
-            <p className="body-copy mt-3 text-[15px] leading-7">This note was created in local beta preview on this device.</p>
+            <p className="caption">Reader note</p>
+            <p className="body-copy mt-3 text-[15px] leading-7">A practical thought shared from someone&apos;s reading, work, or lived experience.</p>
           </div>
           <div className="rounded-[28px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">
             <p className="caption">More useful notes</p>

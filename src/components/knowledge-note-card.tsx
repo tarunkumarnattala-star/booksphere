@@ -17,14 +17,24 @@ function initialsFor(name: string) {
 }
 
 export function KnowledgeNoteCard({ post, featured = false }: { post: KnowledgePost; featured?: boolean }) {
-  const profile = getProfileById(post.userId);
+  const fallbackProfile = getProfileById(post.userId);
+  const profile = {
+    ...fallbackProfile,
+    name: post.authorName || fallbackProfile.name,
+    username: post.authorUsername || fallbackProfile.username
+  };
   const referenceBook = post.bookId ? getBook(post.bookId) : null;
   const createdDate = new Date(post.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  const bodyWithoutRepeatedTitle = post.body.trim().startsWith(post.title.trim())
+    ? post.body.trim().slice(post.title.trim().length).replace(/^[\s.?!:;-]+/, "").trim()
+    : post.body.trim();
+  const body = bodyWithoutRepeatedTitle || post.body;
+  const isLong = body.length > 260;
 
   return (
     <article className="interactive-lift flex flex-col rounded-[30px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-7">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="flex min-w-0 items-center gap-3">
+      <div className="flex items-start gap-3">
+        <div className="flex min-w-0 flex-1 items-center gap-3">
           <Link href={`/profile/${profile.username}`} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[color:var(--color-text-primary)] text-sm font-semibold text-white transition hover:opacity-85">
             {initialsFor(profile.name)}
           </Link>
@@ -33,26 +43,26 @@ export function KnowledgeNoteCard({ post, featured = false }: { post: KnowledgeP
               <Link href={`/profile/${profile.username}`} className="text-sm font-semibold text-[color:var(--color-text-primary)] transition hover:opacity-70">
                 {profile.name}
               </Link>
-              <FollowButton profileUsername={profile.username} compact />
             </div>
             <p className="mt-1 text-xs font-medium text-[color:var(--color-text-secondary)]">
               {createdDate} · {profile.badges[0] || "Thoughtful Reader"}
             </p>
           </div>
         </div>
-        <p className="caption rounded-full bg-black/[0.035] px-3 py-2 text-[10px]">{post.topic}</p>
+        <div className="ml-auto shrink-0">
+          <FollowButton profileUsername={profile.username} compact />
+        </div>
       </div>
 
-      <Link href={`/post/${post.id}`} className="group mt-5 block">
+      <Link href={`/post/${post.id}`} className="group mt-4 block">
+        <p className="caption mb-3 text-[10px]">{post.topic}</p>
         <h2 className={`${featured ? "title-2" : "title-3"} line-clamp-3 max-w-3xl text-balance group-hover:opacity-75`}>
           {post.title}
         </h2>
-        <p className="body-copy mt-4 line-clamp-5 text-[15px] leading-7 md:text-base">
-          {post.body}
+        <p className="body-copy mt-3 line-clamp-4 text-[15px] leading-6 md:text-base md:leading-7">
+          {body}
         </p>
-        <span className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-[color:var(--color-text-primary)]">
-          Read full note <ArrowUpRight size={16} />
-        </span>
+        {isLong && <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-[color:var(--color-text-primary)]">Read more <ArrowUpRight size={16} /></span>}
       </Link>
 
       {referenceBook && (
@@ -66,7 +76,13 @@ export function KnowledgeNoteCard({ post, featured = false }: { post: KnowledgeP
         </Link>
       )}
 
-      <p className="footnote mt-6 border-t border-[color:var(--color-hairline)] pt-5">Editorial knowledge note</p>
+      {!referenceBook && post.referenceTitle && (
+        <p className="mt-5 inline-flex w-fit items-center rounded-full bg-black/[0.035] px-3 py-2 text-xs font-medium text-[color:var(--color-text-secondary)]">
+          Book or source: {post.referenceTitle}
+        </p>
+      )}
+
+      <p className="footnote mt-5 border-t border-[color:var(--color-hairline)] pt-4">Reader reflection</p>
     </article>
   );
 }

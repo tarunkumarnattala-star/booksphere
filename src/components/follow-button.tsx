@@ -95,7 +95,7 @@ export function FollowButton({ initial = false, profileUsername, compact = false
         disabled={syncing}
         aria-label={following ? "Unfollow this contributor" : "Follow this contributor"}
         className={`inline-flex items-center justify-center gap-2 rounded-full bg-[color:var(--color-text-primary)] font-medium !text-white transition duration-200 hover:opacity-85 disabled:opacity-55 ${
-          compact ? "min-h-11 px-3 py-1.5 text-xs" : "min-h-11 px-4 py-2 text-sm"
+          compact ? "min-h-9 px-3 py-1.5 text-xs" : "min-h-11 px-4 py-2 text-sm"
         }`}
       >
         {following ? <UserCheck size={compact ? 14 : 17} /> : <UserPlus size={compact ? 14 : 17} />}

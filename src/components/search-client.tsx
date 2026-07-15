@@ -4,12 +4,12 @@ import { useMemo, useRef, useState } from "react";
 import type { FormEvent, KeyboardEvent, ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowUpRight, BookOpen, MessageCircle, Search, Sparkles } from "lucide-react";
+import { ArrowUpRight, BookOpen, MessageCircle, Search } from "lucide-react";
 import { BookCover } from "@/components/book-cover";
 import { books, discussions, genres, knowledgePosts, readingPaths } from "@/lib/data";
 import { searchKnowledge } from "@/lib/search";
 import { KnowledgeBookResult, KnowledgeDiscussionResult, KnowledgeReadingPathResult, KnowledgeSearchResult } from "@/lib/search";
-import { Book, DiscussionPost, ReadingPath } from "@/lib/types";
+import { DiscussionPost } from "@/lib/types";
 import { isSupabaseConfigured } from "@/lib/supabase";
 
 const intentCards = [
@@ -18,53 +18,14 @@ const intentCards = [
   "Become a Better Communicator",
   "Learn Negotiation",
   "Understand Investing",
-  "Become a Better Leader",
-  "Start a Company",
-  "Improve Decision-Making",
-  "Build Discipline",
-  "Improve Focus"
+  "Improve Decision-Making"
 ];
 
 const trendingQuestions = [
   "Which book changed how you think about money?",
   "What is the best startup book you have ever read?",
-  "Which psychology book actually changed your behavior?",
-  "What book should every new manager read?",
-  "Which negotiation book actually helped you in real life?"
+  "Which psychology book actually changed your behavior?"
 ];
-
-const pathMeta: Record<string, { readingTime: string; curation: string; status: string; audience: string }> = {
-  "startups-101": {
-    readingTime: "5-book path",
-    curation: "Editorial sequence",
-    status: "5 verified steps",
-    audience: "For first-time founders learning customers, products, and traction."
-  },
-  "personal-finance-starter-pack": {
-    readingTime: "4-book path",
-    curation: "Editorial sequence",
-    status: "4 verified steps",
-    audience: "For readers who want money behavior before complicated tactics."
-  },
-  "build-better-habits": {
-    readingTime: "5-book path",
-    curation: "Editorial sequence",
-    status: "5 verified steps",
-    audience: "For turning motivation into repeatable systems and attention."
-  },
-  "understand-human-psychology": {
-    readingTime: "5-book path",
-    curation: "Editorial sequence",
-    status: "5 verified steps",
-    audience: "For understanding bias, behavior, identity, and better judgment."
-  },
-  "become-a-better-communicator": {
-    readingTime: "5-book path",
-    curation: "Editorial sequence",
-    status: "5 verified steps",
-    audience: "For conversations, negotiation, conflict, listening, and persuasion."
-  }
-};
 
 export function SearchClient({ initialQuery = "", persistedDiscussions = [] }: { initialQuery?: string; persistedDiscussions?: DiscussionPost[] }) {
   const [query, setQuery] = useState(initialQuery);
@@ -117,9 +78,9 @@ export function SearchClient({ initialQuery = "", persistedDiscussions = [] }: {
   }
 
   return (
-    <div className="mt-10">
+    <div className="mt-7 md:mt-8">
       <form onSubmit={handleSubmit} className="max-w-[920px]">
-        <label className="group flex items-center gap-5 rounded-[30px] bg-white px-5 py-4 shadow-[0_14px_36px_rgba(0,0,0,0.055)] ring-1 ring-black/[0.055] transition focus-within:ring-[rgba(168,120,24,0.34)] md:px-7 md:py-6">
+        <label className="group flex items-center gap-4 rounded-[26px] bg-white px-4 py-3 shadow-[0_14px_36px_rgba(0,0,0,0.055)] ring-1 ring-black/[0.055] transition focus-within:ring-[rgba(168,120,24,0.34)] md:px-6 md:py-4">
           <span className="grid size-12 shrink-0 place-items-center rounded-full bg-[color:var(--color-soft-fill)] text-[color:var(--color-text-primary)] md:size-14">
             <Search size={24} strokeWidth={1.8} />
           </span>
@@ -130,7 +91,7 @@ export function SearchClient({ initialQuery = "", persistedDiscussions = [] }: {
             onChange={(event) => updateQuery(event.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Search books, authors, ideas, or questions..."
-            className="min-w-0 flex-1 border-0 bg-transparent text-[21px] font-[400] tracking-[-0.02em] text-[color:var(--color-text-primary)] outline-none placeholder:text-[color:var(--color-text-muted)] md:text-[30px]"
+            className="min-w-0 flex-1 border-0 bg-transparent text-[18px] font-[400] tracking-[-0.02em] text-[color:var(--color-text-primary)] outline-none placeholder:text-[color:var(--color-text-muted)] md:text-[22px]"
           />
         </label>
       </form>
@@ -150,28 +111,26 @@ export function SearchClient({ initialQuery = "", persistedDiscussions = [] }: {
 
 function DefaultSearchState({ onSelect }: { onSelect: (query: string) => void }) {
   return (
-    <div className="mt-16 space-y-20">
-      <section>
-        <SectionIntro eyebrow="Start with a goal" title="What are you trying to learn?" subtitle="Choose an intent and BookSphere will connect it to books, discussions, ideas, and reading paths." />
-        <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-          {intentCards.map((intent) => <IntentCard key={intent} title={intent} onClick={() => onSelect(intent)} />)}
+    <section className="mt-8 max-w-[1080px] border-t border-[color:var(--color-hairline)] pt-6 md:mt-10 md:pt-7">
+      <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-end">
+        <div>
+          <p className="caption mb-2">Start with a goal</p>
+          <h2 className="title-3">What do you want to understand?</h2>
         </div>
-      </section>
-
-      <section>
-        <SectionIntro eyebrow="Trending questions" title="Questions thoughtful readers are asking" subtitle="Search should start from curiosity, not just a title you already know." />
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-          {trendingQuestions.map((question) => <TrendingQuestionCard key={question} question={question} onClick={() => onSelect(question)} />)}
-        </div>
-      </section>
-
-      <section>
-        <SectionIntro eyebrow="Reading paths" title="Move from problem to sequence" subtitle="Curated routes that help readers know what to read first, next, and why." />
-        <div className="mt-8 grid gap-5 lg:grid-cols-2 xl:grid-cols-3">
-          {readingPaths.slice(0, 6).map((path) => <ReadingPathPreviewCard key={path.id} path={path} />)}
-        </div>
-      </section>
-    </div>
+        <p className="text-sm font-medium text-[color:var(--color-text-secondary)]">Books, ideas, and reader experience in one search.</p>
+      </div>
+      <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-3">
+        {intentCards.map((intent) => <IntentCard key={intent} title={intent} onClick={() => onSelect(intent)} />)}
+      </div>
+      <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-[color:var(--color-hairline)] pt-4">
+        <span className="caption text-[10px]">Popular</span>
+        {trendingQuestions.map((question) => (
+          <button key={question} type="button" onClick={() => onSelect(question)} className="text-left text-sm font-medium text-[color:var(--color-text-secondary)] transition hover:text-[color:var(--color-text-primary)]">
+            {question}
+          </button>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -243,54 +202,10 @@ function IntentCard({ title, onClick }: { title: string; onClick: () => void }) 
     <button
       type="button"
       onClick={onClick}
-      className="interactive-lift group rounded-[28px] bg-white p-5 text-left shadow-[var(--shadow-soft)] ring-1 ring-black/[0.04] transition hover:-translate-y-0.5"
+      className="group min-h-14 rounded-[18px] bg-white px-4 py-3 text-left text-sm font-medium leading-5 text-[color:var(--color-text-primary)] shadow-[0_6px_20px_rgba(0,0,0,0.035)] ring-1 ring-black/[0.04] transition hover:bg-black/[0.025] sm:text-[15px]"
     >
-      <div className="mb-5 grid size-10 place-items-center rounded-full bg-[#f7f1e5] text-[color:var(--color-accent)]">
-        <Sparkles size={18} strokeWidth={1.8} />
-      </div>
-      <h3 className="headline tracking-[-0.02em]">{title}</h3>
-      <p className="footnote mt-2">Search books, ideas, and threads</p>
+      {title}
     </button>
-  );
-}
-
-function TrendingQuestionCard({ question, onClick }: { question: string; onClick: () => void }) {
-  return (
-    <button type="button" onClick={onClick} className="interactive-lift rounded-[28px] bg-white p-5 text-left shadow-[var(--shadow-soft)] ring-1 ring-black/[0.04]">
-      <p className="caption mb-4">Question</p>
-      <h3 className="headline tracking-[-0.02em]">{question}</h3>
-      <p className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-[color:var(--color-text-primary)]">Explore answers <ArrowUpRight size={16} /></p>
-    </button>
-  );
-}
-
-function ReadingPathPreviewCard({ path }: { path: ReadingPath }) {
-  const pathBooks = path.bookIds.map((bookId) => books.find((book) => book.id === bookId)).filter((book): book is Book => Boolean(book)).slice(0, 5);
-  const meta = pathMeta[path.slug] || {
-    readingTime: `${pathBooks.length}-book path`,
-    curation: "Editorial sequence",
-    status: "Review in progress",
-    audience: path.description
-  };
-
-  return (
-    <Link href={`/path/${path.slug}`} className="interactive-lift group rounded-[32px] bg-white p-5 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.04]">
-      <div className="flex h-36 items-end gap-3 overflow-hidden rounded-[24px] bg-[#f4f1eb] px-5 pt-5">
-        {pathBooks.slice(0, 4).map((book, index) => (
-          <BookCover key={book.id} book={book} className={`${index === 0 ? "w-[82px]" : "w-[64px]"} ${index % 2 ? "mb-5" : ""}`} />
-        ))}
-      </div>
-      <div className="mt-5">
-        <p className="caption">Official Path</p>
-        <h3 className="title-3 mt-2">{path.title}</h3>
-        <p className="body-copy mt-2 line-clamp-2 text-[15px] leading-6">{meta.audience}</p>
-        <div className="mt-5 flex flex-wrap gap-2 text-xs font-medium text-[color:var(--color-text-secondary)]">
-          <span className="rounded-full bg-[color:var(--color-soft-fill)] px-3 py-1.5">{meta.readingTime}</span>
-          <span className="rounded-full bg-[color:var(--color-soft-fill)] px-3 py-1.5">{meta.curation}</span>
-          <span className="rounded-full bg-[color:var(--color-soft-fill)] px-3 py-1.5">{meta.status}</span>
-        </div>
-      </div>
-    </Link>
   );
 }
 
