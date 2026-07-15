@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="BookSphere">
+  <rect width="512" height="512" rx="112" fill="#1d1d1f"/>
+  <path d="M112 142c48-16 93-7 144 27v221c-51-34-96-43-144-27V142Zm288 0c-48-16-93-7-144 27v221c51-34 96-43 144-27V142Z" fill="none" stroke="#fff" stroke-width="28" stroke-linejoin="round"/>
+  <path d="M256 169v221" stroke="#fff" stroke-width="28" stroke-linecap="round"/>
+</svg>
