@@ -87,7 +87,7 @@ export function FeedComposer() {
     setShowContext(false);
     setPublished(true);
     setPublishing(false);
-    window.setTimeout(() => setPublished(false), 2200);
+    window.setTimeout(() => setPublished(false), 1800);
   }
 
   return (
@@ -113,7 +113,6 @@ export function FeedComposer() {
           )}
           {error && <p role="alert" className="mt-3 text-sm font-medium text-[color:var(--color-rose)]">{error}</p>}
           {notice && <LoginRequiredNotice message={notice} onDismiss={() => setNotice("")} />}
-          {published && <p className="mt-3 flex items-center gap-2 text-sm font-medium text-[color:var(--color-green)]"><CheckCircle2 size={16} />Shared to the feed.</p>}
           <div className="mt-3 flex items-center gap-2 border-t border-[color:var(--color-hairline)] pt-3">
             <button type="button" onClick={() => setShowContext((value) => !value)} className="inline-flex min-h-10 items-center gap-2 rounded-full px-3 text-sm font-medium text-[color:var(--color-text-secondary)] transition hover:bg-black/[0.035] hover:text-[color:var(--color-text-primary)]">
               {showContext ? <BookOpen size={16} /> : <Plus size={16} />}
@@ -126,6 +125,16 @@ export function FeedComposer() {
           </div>
         </div>
       </div>
+      {published && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed inset-x-4 bottom-24 z-[100] mx-auto flex w-fit max-w-[calc(100vw-2rem)] items-center gap-2 rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-semibold text-white shadow-[0_18px_50px_rgba(0,0,0,0.24)] md:bottom-8"
+        >
+          <CheckCircle2 size={18} aria-hidden="true" />
+          Your post is live.
+        </div>
+      )}
     </form>
   );
 }

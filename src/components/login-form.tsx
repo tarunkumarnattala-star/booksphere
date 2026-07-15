@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { KeyRound, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 import { createLocalProfile } from "@/lib/local-session";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
@@ -69,18 +69,31 @@ export function LoginForm() {
         disabled={loading}
         className="mt-6 flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-[color:var(--color-text-primary)] px-4 py-3 text-sm font-medium !text-white transition hover:opacity-85"
       >
-        <KeyRound size={17} /> Continue with Google
+        Continue with Google
       </button>
-      <form onSubmit={signInWithEmail} className="mt-4 grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]">
+      <div className="my-5 flex items-center gap-3 text-xs font-semibold uppercase text-[color:var(--color-text-muted)]">
+        <span className="h-px flex-1 bg-[color:var(--color-hairline)]" />
+        or use email
+        <span className="h-px flex-1 bg-[color:var(--color-hairline)]" />
+      </div>
+      <form onSubmit={signInWithEmail} className="grid gap-3">
+        <label htmlFor="login-email" className="text-sm font-medium text-[color:var(--color-text-primary)]">
+          Email address
+        </label>
         <input
+          id="login-email"
           type="email"
+          inputMode="email"
+          autoComplete="email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           placeholder="you@example.com"
-          aria-label="Email address"
-          className="min-h-11 min-w-0 flex-1 rounded-full bg-black/[0.035] px-4 py-3 text-base font-medium outline-none ring-1 ring-transparent focus:ring-black/20"
+          className="min-h-12 w-full rounded-[16px] bg-black/[0.035] px-4 text-base font-medium outline-none ring-1 ring-transparent transition focus:bg-white focus:ring-black/20"
         />
-        <button disabled={loading} aria-label="Send magic link" className="min-h-11 rounded-full bg-black/[0.035] px-4 py-3 font-medium disabled:opacity-60"><Mail size={17} /></button>
+        <button disabled={loading} className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-black/10 bg-white px-5 text-sm font-semibold text-[color:var(--color-text-primary)] transition hover:bg-black/[0.035] disabled:opacity-60">
+          <Mail size={17} />
+          {loading ? "Sending link..." : "Send login link"}
+        </button>
       </form>
       <p className="subheadline mt-4" role="status" aria-live="polite">
         {message || (isSupabaseConfigured ? "We will send a secure sign-in link to your email." : canUseLocalCommunityFallback() ? "Beta preview mode: email creates a local test account on this device." : COMMUNITY_UNAVAILABLE_MESSAGE)}
