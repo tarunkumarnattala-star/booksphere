@@ -2,23 +2,31 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
-import { BookCover } from "./book-cover";
+import { BookOpen } from "lucide-react";
+import { BackToFeedButton } from "./back-to-feed-button";
 import { CommentThread } from "./comment-thread";
 import { FollowButton } from "./follow-button";
 import { LOCAL_KNOWLEDGE_POSTS_KEY } from "./knowledge-feed";
 import { KnowledgePostActions } from "./knowledge-post-actions";
 import { KnowledgePost } from "@/lib/types";
-import { getBook, getProfileById, knowledgePosts } from "@/lib/data";
+import { getBook, getProfileById } from "@/lib/data";
 import { getSupabaseKnowledgePost } from "@/lib/knowledge-posts";
 
-export function LocalKnowledgePostPage({ id }: { id: string }) {
-  const [post, setPost] = useState<KnowledgePost | null | undefined>(undefined);
+function initialsFor(name: string) {
+  return name.split(" ").map((part) => part[0]).join("").slice(0, 2).toUpperCase();
+}
+
+export function LocalKnowledgePostPage({ id, initialPost }: { id: string; initialPost?: KnowledgePost }) {
+  const [post, setPost] = useState<KnowledgePost | null | undefined>(initialPost);
 
   useEffect(() => {
     let cancelled = false;
 
     async function loadPost() {
+      if (initialPost) {
+        if (!cancelled) setPost(initialPost);
+        return;
+      }
       try {
         const posts = JSON.parse(window.localStorage.getItem(LOCAL_KNOWLEDGE_POSTS_KEY) || "[]") as KnowledgePost[];
         const localPost = posts.find((item) => item.id === id);
@@ -38,7 +46,7 @@ export function LocalKnowledgePostPage({ id }: { id: string }) {
     return () => {
       cancelled = true;
     };
-  }, [id]);
+  }, [id, initialPost]);
 
   if (post === undefined) {
     return (
@@ -51,10 +59,7 @@ export function LocalKnowledgePostPage({ id }: { id: string }) {
   if (!post) {
     return (
       <div className="editorial-page max-w-3xl">
-        <Link href="/feed" className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-[color:var(--color-text-secondary)]">
-          <ArrowLeft size={16} />
-          Back to feed
-        </Link>
+        <BackToFeedButton />
         <div className="rounded-[30px] bg-white p-8 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">
           <p className="caption">Note unavailable</p>
           <h1 className="title-1 mt-2">We could not find this knowledge note.</h1>
@@ -70,75 +75,55 @@ export function LocalKnowledgePostPage({ id }: { id: string }) {
     name: post.authorName || fallbackProfile.name,
     username: post.authorUsername || fallbackProfile.username
   };
-  const recommendedNotes = knowledgePosts.slice(0, 3);
   const referenceBook = post.bookId ? getBook(post.bookId) : null;
+  const createdDate = new Date(post.createdAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
 
   return (
-    <div className="editorial-page max-w-[1160px]">
-      <Link href="/feed" className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-[color:var(--color-text-secondary)] transition hover:text-[color:var(--color-text-primary)]">
-        <ArrowLeft size={16} />
-        Back to feed
-      </Link>
+    <div className="editorial-page max-w-[780px]">
+      <BackToFeedButton />
 
-      <section className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_360px]">
-        <div className="space-y-8">
-          <article className="rounded-[34px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-9">
-            <p className="caption">{post.topic}</p>
-            <h1 className="large-title mt-4 max-w-4xl text-balance">{post.title}</h1>
-            <div className="mt-6 flex flex-wrap items-center gap-3 text-sm font-medium text-[color:var(--color-text-secondary)]">
-              <span>By {profile.name}</span>
-              <FollowButton profileUsername={profile.username} compact />
+      <div className="space-y-5">
+        <article className="rounded-[26px] bg-white p-5 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] sm:p-7">
+          <div className="flex items-start gap-3">
+            <Link href={`/profile/${profile.username}`} className="grid size-11 shrink-0 place-items-center rounded-full bg-[color:var(--color-text-primary)] text-sm font-semibold text-white">
+              {initialsFor(profile.name)}
+            </Link>
+            <div className="min-w-0 flex-1">
+              <Link href={`/profile/${profile.username}`} className="text-sm font-semibold transition hover:opacity-70">{profile.name}</Link>
+              <p className="mt-0.5 text-xs text-[color:var(--color-text-secondary)]">{createdDate}</p>
             </div>
-            <p className="mt-10 max-w-3xl text-[22px] font-normal leading-[1.55] tracking-[-0.03em] text-[color:var(--color-text-secondary)]">
-              {post.body}
+            <FollowButton profileUsername={profile.username} compact />
+          </div>
+
+          <p className="caption mt-6">{post.topic}</p>
+          <h1 className="mt-2 max-w-3xl text-balance text-[28px] font-medium leading-[1.12] sm:text-[36px]">{post.title}</h1>
+          <p className="mt-5 max-w-3xl whitespace-pre-wrap text-[17px] leading-7 text-[color:var(--color-text-secondary)] sm:text-[18px] sm:leading-8">
+            {post.body}
+          </p>
+
+          {referenceBook && (
+            <Link href={`/book/${referenceBook.id}`} className="mt-6 inline-flex max-w-full items-center gap-2 rounded-full bg-black/[0.035] px-3 py-2 text-xs font-medium text-[color:var(--color-text-secondary)] transition hover:bg-black/[0.06]">
+              <BookOpen size={14} className="shrink-0" />
+              <span className="truncate">Book context · {referenceBook.title}</span>
+            </Link>
+          )}
+
+          {!referenceBook && post.referenceTitle && (
+            <p className="mt-6 inline-flex max-w-full items-center gap-2 rounded-full bg-black/[0.035] px-3 py-2 text-xs font-medium text-[color:var(--color-text-secondary)]">
+              <BookOpen size={14} className="shrink-0" />
+              <span className="truncate">Context · {post.referenceTitle}</span>
             </p>
+          )}
 
-            {referenceBook && (
-              <Link href={`/book/${referenceBook.id}`} className="mt-10 grid gap-3 rounded-[24px] bg-black/[0.025] p-3 transition hover:bg-black/[0.045] sm:grid-cols-[70px_1fr] sm:items-center">
-                <BookCover book={referenceBook} className="w-[70px] rounded-[12px]" />
-                <span>
-                  <span className="caption block">Referenced book</span>
-                  <span className="title-3 mt-1 block">{referenceBook.title}</span>
-                  <span className="subheadline mt-1 block">{referenceBook.author}</span>
-                </span>
-              </Link>
-            )}
+          <KnowledgePostActions post={post} onUpdated={setPost} onDeleted={() => setPost(null)} />
+        </article>
 
-            {!referenceBook && post.referenceTitle && (
-              <div className="mt-8 rounded-[20px] bg-black/[0.025] px-4 py-3">
-                <p className="caption text-[10px]">Optional reference</p>
-                <p className="mt-1 text-sm font-medium text-[color:var(--color-text-primary)]">{post.referenceTitle}</p>
-              </div>
-            )}
-
-            <KnowledgePostActions post={post} onUpdated={setPost} onDeleted={() => setPost(null)} />
-          </article>
-
-          <CommentThread
-            postId={post.id}
-            targetType="knowledge_post"
-            onCountChange={(change) => setPost((current) => current ? { ...current, comments: Math.max(0, current.comments + change) } : current)}
-          />
-        </div>
-
-        <aside className="space-y-5 xl:sticky xl:top-28 xl:self-start">
-          <div className="rounded-[28px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">
-            <p className="caption">Reader note</p>
-            <p className="body-copy mt-3 text-[15px] leading-7">A practical thought shared from someone&apos;s reading, work, or lived experience.</p>
-          </div>
-          <div className="rounded-[28px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">
-            <p className="caption">More useful notes</p>
-            <div className="mt-4 space-y-4">
-              {recommendedNotes.map((note) => (
-                <Link key={note.id} href={`/post/${note.id}`} className="block rounded-[20px] bg-black/[0.025] p-4 transition hover:bg-black/[0.045]">
-                  <p className="caption text-[10px]">{note.topic}</p>
-                  <h2 className="mt-1 line-clamp-2 text-base font-medium leading-snug text-[color:var(--color-text-primary)]">{note.title}</h2>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </aside>
-      </section>
+        <CommentThread
+          postId={post.id}
+          targetType="knowledge_post"
+          onCountChange={(change) => setPost((current) => current ? { ...current, comments: Math.max(0, current.comments + change) } : current)}
+        />
+      </div>
     </div>
   );
 }

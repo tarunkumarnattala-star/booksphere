@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { KnowledgePost } from "@/lib/types";
 import { canUseLocalCommunityFallback } from "@/lib/community-runtime";
+import { clearFeedPosition, readFeedPosition } from "@/lib/feed-return";
 import { KnowledgeNoteCard } from "./knowledge-note-card";
 
 const LOCAL_KNOWLEDGE_POSTS_KEY = "booksphere.localKnowledgePosts";
@@ -20,6 +21,7 @@ function readLocalKnowledgePosts() {
 
 export function KnowledgeFeed({ seedPosts, variant = "grid" }: { seedPosts: KnowledgePost[]; variant?: KnowledgeFeedVariant }) {
   const [posts, setPosts] = useState(seedPosts);
+  const restoredPosition = useRef(false);
 
   useEffect(() => {
     const addPost = (event: Event) => {
@@ -48,6 +50,34 @@ export function KnowledgeFeed({ seedPosts, variant = "grid" }: { seedPosts: Know
       window.removeEventListener("booksphere:knowledge-post-deleted", deletePost);
     };
   }, [seedPosts]);
+
+  useEffect(() => {
+    if (restoredPosition.current) return;
+    const saved = readFeedPosition();
+    if (!saved) return;
+    restoredPosition.current = true;
+
+    let cancelled = false;
+    let attempts = 0;
+    let timer = 0;
+    const restore = () => {
+      if (cancelled) return;
+      window.scrollTo({ top: saved.scrollY, behavior: "auto" });
+      attempts += 1;
+      const target = document.querySelector(`[data-feed-post-id="${saved.postId}"]`);
+      const closeEnough = Math.abs(window.scrollY - saved.scrollY) < 4;
+      if ((target && closeEnough) || attempts >= 12) {
+        clearFeedPosition();
+        return;
+      }
+      timer = window.setTimeout(restore, 80);
+    };
+    timer = window.setTimeout(restore, 0);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [posts.length]);
 
   if (variant === "stream") {
     return (

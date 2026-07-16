@@ -627,7 +627,7 @@ export const perspectiveClusters: PerspectiveCluster[] = [
 
 export const knowledgePosts: KnowledgePost[] = [
   {
-    id: "knowledge-mental-models",
+    id: "f45b584a-7794-4a9d-be44-64cb9f58e7fc",
     userId: "team",
     title: "A good mental model should make one decision easier today",
     body: "The best notes are not impressive. They are reusable. Before saving a lesson, ask where it will help you notice, choose, or act differently. A strong knowledge note should make tomorrow's decision easier, not just make today's highlight collection bigger.",
@@ -638,7 +638,7 @@ export const knowledgePosts: KnowledgePost[] = [
     comments: 0
   },
   {
-    id: "knowledge-reading-groups",
+    id: "a8e5ad6c-59d7-4bc0-9958-2b20043a6bc9",
     userId: "starter",
     title: "Reading groups work better when disagreement is welcomed early",
     body: "If everyone waits until the end to challenge an idea, the discussion becomes polite summary. Bring the useful tension forward. The highest-quality reading groups ask where the book breaks, where it works, and what someone would actually do differently.",
@@ -649,9 +649,9 @@ export const knowledgePosts: KnowledgePost[] = [
     comments: 0
   },
   {
-    id: "knowledge-application",
+    id: "f0ea8a54-e182-4497-ad52-43e0961c48ab",
     userId: "reader-ops",
-    title: "The smallest useful book note is a sentence that starts with 'Next time...'",
+    title: "The smallest useful book note starts with next time",
     body: "A highlight captures the author. An application captures your future behavior. That shift is where a reading habit starts becoming a thinking system. If a note cannot change a meeting, habit, purchase, conversation, or decision, it probably needs one more pass.",
     topic: "Productivity",
     bookId: "atomic-habits",

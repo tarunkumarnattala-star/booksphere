@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUpRight, Heart, MessageCircle } from "lucide-react";
+import { ArrowUpRight, BookOpen, Heart, MessageCircle } from "lucide-react";
 import { KnowledgePost } from "@/lib/types";
 import { getBook, getProfileById } from "@/lib/data";
-import { BookCover } from "./book-cover";
+import { rememberFeedPosition } from "@/lib/feed-return";
 import { FollowButton } from "./follow-button";
 
 function initialsFor(name: string) {
@@ -30,9 +30,10 @@ export function KnowledgeNoteCard({ post, featured = false }: { post: KnowledgeP
     : post.body.trim();
   const body = bodyWithoutRepeatedTitle || post.body;
   const isLong = body.length > 260;
+  const rememberPosition = () => rememberFeedPosition(post.id);
 
   return (
-    <article className="interactive-lift flex flex-col rounded-[30px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-7">
+    <article data-feed-post-id={post.id} className="interactive-lift flex flex-col rounded-[24px] bg-white p-5 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-6">
       <div className="flex items-start gap-3">
         <div className="flex min-w-0 flex-1 items-center gap-3">
           <Link href={`/profile/${profile.username}`} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[color:var(--color-text-primary)] text-sm font-semibold text-white transition hover:opacity-85">
@@ -54,38 +55,35 @@ export function KnowledgeNoteCard({ post, featured = false }: { post: KnowledgeP
         </div>
       </div>
 
-      <Link href={`/post/${post.id}`} className="group mt-4 block">
-        <p className="caption mb-3 text-[10px]">{post.topic}</p>
-        <h2 className={`${featured ? "title-2" : "title-3"} line-clamp-3 max-w-3xl text-balance group-hover:opacity-75`}>
+      <Link href={`/post/${post.id}`} onClick={rememberPosition} className="group mt-4 block">
+        <p className="caption mb-2 text-[10px]">{post.topic}</p>
+        <h2 className={`${featured ? "title-2" : "text-[22px] font-medium leading-[1.18]"} line-clamp-3 max-w-3xl text-balance group-hover:opacity-75`}>
           {post.title}
         </h2>
-        <p className="body-copy mt-3 line-clamp-4 text-[15px] leading-6 md:text-base md:leading-7">
+        <p className="mt-3 line-clamp-4 text-[15px] leading-6 text-[color:var(--color-text-secondary)] md:text-base md:leading-7">
           {body}
         </p>
         {isLong && <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-[color:var(--color-text-primary)]">Read more <ArrowUpRight size={16} /></span>}
       </Link>
 
       {referenceBook && (
-        <Link href={`/book/${referenceBook.id}`} className="mt-6 grid grid-cols-[64px_1fr] items-center gap-4 rounded-[22px] bg-black/[0.025] p-3 pr-4 transition hover:bg-black/[0.045]">
-          <BookCover book={referenceBook} className="w-full rounded-[12px]" />
-          <div className="min-w-0">
-            <p className="caption text-[10px]">Optional reference</p>
-            <p className="line-clamp-1 text-base font-medium tracking-[-0.02em] text-[color:var(--color-text-primary)]">{referenceBook.title}</p>
-            <p className="line-clamp-1 text-sm font-medium text-[color:var(--color-text-secondary)]">{referenceBook.author}</p>
-          </div>
+        <Link href={`/book/${referenceBook.id}`} className="mt-5 inline-flex w-fit max-w-full items-center gap-2 rounded-full bg-black/[0.035] px-3 py-2 text-xs font-medium text-[color:var(--color-text-secondary)] transition hover:bg-black/[0.06]">
+          <BookOpen size={14} />
+          <span className="truncate">Book context · {referenceBook.title}</span>
         </Link>
       )}
 
       {!referenceBook && post.referenceTitle && (
-        <p className="mt-5 inline-flex w-fit items-center rounded-full bg-black/[0.035] px-3 py-2 text-xs font-medium text-[color:var(--color-text-secondary)]">
-          Book or source: {post.referenceTitle}
+        <p className="mt-5 inline-flex w-fit max-w-full items-center gap-2 rounded-full bg-black/[0.035] px-3 py-2 text-xs font-medium text-[color:var(--color-text-secondary)]">
+          <BookOpen size={14} className="shrink-0" />
+          <span className="truncate">Context · {post.referenceTitle}</span>
         </p>
       )}
 
       <div className="mt-5 flex items-center gap-5 border-t border-[color:var(--color-hairline)] pt-4 text-sm font-medium text-[color:var(--color-text-secondary)]">
-        <Link href={`/post/${post.id}`} className="inline-flex items-center gap-1.5 transition hover:text-[color:var(--color-text-primary)]" aria-label={`${post.likes} likes`}><Heart size={15} /> {post.likes}</Link>
-        <Link href={`/post/${post.id}#comments`} className="inline-flex items-center gap-1.5 transition hover:text-[color:var(--color-text-primary)]" aria-label={`${post.comments} comments`}><MessageCircle size={15} /> {post.comments}</Link>
-        <Link href={`/post/${post.id}`} className="ml-auto text-xs transition hover:text-[color:var(--color-text-primary)]">Open post</Link>
+        <Link href={`/post/${post.id}`} onClick={rememberPosition} className="inline-flex min-h-10 items-center gap-1.5 rounded-full px-2 transition hover:bg-black/[0.035] hover:text-[color:var(--color-text-primary)]" aria-label={`${post.likes} likes`}><Heart size={15} /> {post.likes}</Link>
+        <Link href={`/post/${post.id}#comments`} onClick={rememberPosition} className="inline-flex min-h-10 items-center gap-1.5 rounded-full px-2 transition hover:bg-black/[0.035] hover:text-[color:var(--color-text-primary)]" aria-label={`${post.comments} comments`}><MessageCircle size={15} /> {post.comments}</Link>
+        <Link href={`/post/${post.id}`} onClick={rememberPosition} className="ml-auto inline-flex min-h-10 items-center rounded-full px-2 text-xs transition hover:bg-black/[0.035] hover:text-[color:var(--color-text-primary)]">Open post</Link>
       </div>
     </article>
   );
