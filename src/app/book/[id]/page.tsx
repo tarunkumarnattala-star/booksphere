@@ -99,7 +99,7 @@ export default async function BookPage({ params, searchParams }: { params: Promi
         <BookPromiseCard icon={<CheckCircle2 size={18} />} title="If you are deciding" body="Use the full-book decision to know whether this deserves deeper reading." />
       </section>
 
-      <section id="knowledge-preview" data-onboarding="book-knowledge" className="mt-8 scroll-mt-24 grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+      <section id="knowledge-preview" className="mt-8 scroll-mt-24 grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
         <div className="rounded-[32px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-8">
           {preview ? (
             <>

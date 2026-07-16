@@ -5,11 +5,11 @@ import { usePathname, useRouter } from "next/navigation";
 import { Check, X } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 
-const COMPLETED_KEY = "booksphere.onboarding.v1.completed";
-const ACTIVE_KEY = "booksphere.onboarding.v1.active";
+const COMPLETED_KEY = "booksphere.onboarding.v2.completed";
+const ACTIVE_KEY = "booksphere.onboarding.v2.active";
 const START_EVENT = "booksphere:onboarding:start";
 
-type GuideStage = "welcome" | "search" | "book" | "feed" | "action";
+type GuideStage = "welcome" | "explore" | "genres" | "feed" | "search" | "action";
 
 function isGuideEligiblePath(pathname: string) {
   return pathname === "/"
@@ -17,33 +17,37 @@ function isGuideEligiblePath(pathname: string) {
     || pathname.startsWith("/genres")
     || pathname.startsWith("/genre/")
     || pathname.startsWith("/feed")
-    || pathname.startsWith("/search")
-    || pathname.startsWith("/book/")
-    || pathname.startsWith("/profile/");
+    || pathname.startsWith("/search");
 }
 
 const steps: Record<Exclude<GuideStage, "welcome" | "action">, { count: string; title: string; body: string }> = {
-  search: {
-    count: "1 of 3",
-    title: "Start with what you need.",
-    body: "Search a book, question, decision, or goal."
+  explore: {
+    count: "1 of 4",
+    title: "Explore what readers found useful.",
+    body: "Start with practical ideas, perspectives, and discussions worth opening."
   },
-  book: {
-    count: "2 of 3",
-    title: "Understand it through readers.",
-    body: "See the core idea, real applications, disagreements, and limits."
+  genres: {
+    count: "2 of 4",
+    title: "Browse focused reading rooms.",
+    body: "Choose a topic to find its strongest books and reader insights."
   },
   feed: {
-    count: "3 of 3",
+    count: "3 of 4",
     title: "Add your perspective.",
     body: "Share something you learned, tried, noticed, or questioned. A book is optional."
+  },
+  search: {
+    count: "4 of 4",
+    title: "Search by what you need.",
+    body: "Use a book title, question, decision, or goal."
   }
 };
 
 function targetFor(stage: GuideStage) {
-  if (stage === "search" || stage === "action") return "[data-onboarding='search']";
-  if (stage === "book") return "[data-onboarding='book-knowledge']";
+  if (stage === "explore") return "[data-onboarding='explore']";
+  if (stage === "genres") return "[data-onboarding='genres']";
   if (stage === "feed") return "[data-onboarding='feed-composer']";
+  if (stage === "search" || stage === "action") return "[data-onboarding='search']";
   return null;
 }
 
@@ -71,7 +75,7 @@ export function FirstUseGuide() {
     window.addEventListener(START_EVENT, restart);
 
     const active = window.localStorage.getItem(ACTIVE_KEY) as GuideStage | null;
-    if (active && ["welcome", "search", "book", "feed", "action"].includes(active)) {
+    if (active && ["welcome", "explore", "genres", "feed", "search", "action"].includes(active)) {
       const timer = window.setTimeout(() => {
         setStage(active);
         setVisible(true);
@@ -137,26 +141,31 @@ export function FirstUseGuide() {
 
   function beginGuide() {
     trackEvent("onboarding_started");
-    persistStage("search");
-    router.push("/explore?guide=search");
+    persistStage("explore");
+    router.push("/explore?guide=explore");
   }
 
   function nextStep() {
-    if (stage === "search") {
-      persistStage("book");
-      router.push("/book/the-psychology-of-money#knowledge-preview");
+    if (stage === "explore") {
+      persistStage("genres");
+      router.push("/genres?guide=genres");
       return;
     }
-    if (stage === "book") {
+    if (stage === "genres") {
       persistStage("feed");
       router.push("/feed?guide=feed");
       return;
     }
     if (stage === "feed") {
+      persistStage("search");
+      router.push("/search?guide=search");
+      return;
+    }
+    if (stage === "search") {
       window.localStorage.setItem(COMPLETED_KEY, "true");
       trackEvent("onboarding_completed");
       persistStage("action");
-      router.push("/explore?guide=complete");
+      router.push("/search?guide=complete");
     }
   }
 
@@ -217,7 +226,7 @@ export function FirstUseGuide() {
           <p className="mt-2 text-sm leading-6 text-[color:var(--color-text-secondary)]">{step.body}</p>
           <div className="mt-5 flex items-center justify-between gap-3">
             <button type="button" onClick={skipGuide} className="min-h-11 px-2 text-sm font-medium text-[color:var(--color-text-secondary)] transition hover:text-[color:var(--color-text-primary)]">Skip</button>
-            <button ref={primaryButtonRef} type="button" onClick={nextStep} className="min-h-11 rounded-full bg-[color:var(--color-text-primary)] px-5 text-sm font-medium !text-white transition hover:opacity-85">{stage === "feed" ? "Finish" : "Next"}</button>
+            <button ref={primaryButtonRef} type="button" onClick={nextStep} className="min-h-11 rounded-full bg-[color:var(--color-text-primary)] px-5 text-sm font-medium !text-white transition hover:opacity-85">{stage === "search" ? "Finish" : "Next"}</button>
           </div>
         </>
       )}

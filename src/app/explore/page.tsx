@@ -37,20 +37,22 @@ export default async function ExplorePage() {
       <section className="container-page pb-3 pt-7 md:pb-4 md:pt-9 lg:pb-3 lg:pt-10">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,0.96fr)_minmax(420px,0.74fr)] lg:items-start">
           <div className="max-w-[900px]">
-            <p className="caption mb-4">Good evening</p>
-            <h1 className="large-title max-w-4xl">Understand books through the people applying them.</h1>
-            <p className="body-copy mt-5 max-w-2xl">
-              No time to finish every book? Learn the core ideas through summaries, applications, disagreements, and real reader perspectives.
-            </p>
-            <div className="mt-5 grid grid-cols-3 divide-x divide-[color:var(--color-hairline)] border-y border-[color:var(--color-hairline)] py-3 sm:hidden">
-              <MobileValueCue icon={<Clock3 size={15} />} text="Ideas fast" />
-              <MobileValueCue icon={<Users size={15} />} text="Reader views" />
-              <MobileValueCue icon={<CheckCircle2 size={15} />} text="Worth reading?" />
-            </div>
-            <div className="mt-6 hidden max-w-3xl gap-2.5 sm:grid sm:grid-cols-3">
-              <FirstFiveSecondCard icon={<Clock3 size={17} />} label="Start fast" text="Get the useful idea before committing hours." />
-              <FirstFiveSecondCard icon={<Users size={17} />} label="Learn socially" text="See how readers applied, challenged, and explained it." />
-              <FirstFiveSecondCard icon={<CheckCircle2 size={17} />} label="Decide clearly" text="Know when the full book is worth reading." />
+            <div data-onboarding="explore" className="rounded-[24px]">
+              <p className="caption mb-4">Good evening</p>
+              <h1 className="large-title max-w-4xl">Understand books through the people applying them.</h1>
+              <p className="body-copy mt-5 max-w-2xl">
+                No time to finish every book? Learn the core ideas through summaries, applications, disagreements, and real reader perspectives.
+              </p>
+              <div className="mt-5 grid grid-cols-3 divide-x divide-[color:var(--color-hairline)] border-y border-[color:var(--color-hairline)] py-3 sm:hidden">
+                <MobileValueCue icon={<Clock3 size={15} />} text="Ideas fast" />
+                <MobileValueCue icon={<Users size={15} />} text="Reader views" />
+                <MobileValueCue icon={<CheckCircle2 size={15} />} text="Worth reading?" />
+              </div>
+              <div className="mt-6 hidden max-w-3xl gap-2.5 sm:grid sm:grid-cols-3">
+                <FirstFiveSecondCard icon={<Clock3 size={17} />} label="Start fast" text="Get the useful idea before committing hours." />
+                <FirstFiveSecondCard icon={<Users size={17} />} label="Learn socially" text="See how readers applied, challenged, and explained it." />
+                <FirstFiveSecondCard icon={<CheckCircle2 size={17} />} label="Decide clearly" text="Know when the full book is worth reading." />
+              </div>
             </div>
             <HeroInlineSearch books={books} />
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">

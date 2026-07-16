@@ -89,7 +89,7 @@ export function HeroInlineSearch({ books }: { books: Book[] }) {
   }
 
   return (
-    <div data-onboarding="search" className="relative z-[80] mt-7 max-w-2xl">
+    <div className="relative z-[80] mt-7 max-w-2xl">
       <div className="flex items-center gap-3 rounded-[20px] bg-white px-4 py-3 shadow-[0_12px_36px_rgba(0,0,0,0.06)] ring-1 ring-black/[0.04] transition focus-within:ring-black/20">
         <span className="grid size-10 shrink-0 place-items-center rounded-full bg-black/[0.055]">
           <Search size={18} />
@@ -97,7 +97,6 @@ export function HeroInlineSearch({ books }: { books: Book[] }) {
         <div className="min-w-0 flex-1">
           <input
             ref={inputRef}
-            data-onboarding-search-input
             value={query}
             onChange={(event) => updateQuery(event.target.value)}
             onInput={(event) => updateQuery(event.currentTarget.value)}

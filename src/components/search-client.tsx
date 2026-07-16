@@ -79,7 +79,7 @@ export function SearchClient({ initialQuery = "", persistedDiscussions = [] }: {
 
   return (
     <div className="mt-7 md:mt-8">
-      <form onSubmit={handleSubmit} className="max-w-[920px]">
+      <form data-onboarding="search" onSubmit={handleSubmit} className="max-w-[920px] rounded-[26px]">
         <label className="group flex items-center gap-4 rounded-[26px] bg-white px-4 py-3 shadow-[0_14px_36px_rgba(0,0,0,0.055)] ring-1 ring-black/[0.055] transition focus-within:ring-[rgba(168,120,24,0.34)] md:px-6 md:py-4">
           <span className="grid size-12 shrink-0 place-items-center rounded-full bg-[color:var(--color-soft-fill)] text-[color:var(--color-text-primary)] md:size-14">
             <Search size={24} strokeWidth={1.8} />
@@ -87,6 +87,7 @@ export function SearchClient({ initialQuery = "", persistedDiscussions = [] }: {
           <span className="sr-only">Search books, authors, ideas, or questions</span>
           <input
             ref={inputRef}
+            data-onboarding-search-input
             value={query}
             onChange={(event) => updateQuery(event.target.value)}
             onKeyDown={handleKeyDown}
