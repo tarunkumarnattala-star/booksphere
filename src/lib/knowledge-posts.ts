@@ -19,13 +19,18 @@ async function hydrateKnowledgePosts(rows: DbKnowledgePost[]) {
   if (!supabase || rows.length === 0) return [] as KnowledgePost[];
   const postIds = rows.map((row) => row.id);
   const userIds = [...new Set(rows.map((row) => row.user_id))];
-  const [profilesResult, likesResult] = await Promise.all([
+  const [profilesResult, likesResult, commentsResult] = await Promise.all([
     supabase.from("profiles").select("id,name,username").in("id", userIds),
-    supabase.from("likes").select("target_id").eq("target_type", "knowledge_post").in("target_id", postIds)
+    supabase.from("likes").select("target_id").eq("target_type", "knowledge_post").in("target_id", postIds),
+    supabase.from("discussion_comments").select("knowledge_post_id").in("knowledge_post_id", postIds)
   ]);
   const profiles = Object.fromEntries(((profilesResult.data || []) as DbProfile[]).map((profile) => [profile.id, profile]));
   const likes = (likesResult.data || []).reduce<Record<string, number>>((counts, row) => {
     counts[row.target_id] = (counts[row.target_id] || 0) + 1;
+    return counts;
+  }, {});
+  const comments = (commentsResult.data || []).reduce<Record<string, number>>((counts, row) => {
+    if (row.knowledge_post_id) counts[row.knowledge_post_id] = (counts[row.knowledge_post_id] || 0) + 1;
     return counts;
   }, {});
 
@@ -40,8 +45,66 @@ async function hydrateKnowledgePosts(rows: DbKnowledgePost[]) {
     referenceTitle: row.reference_title || undefined,
     createdAt: row.created_at,
     likes: likes[row.id] || 0,
-    comments: 0
+    comments: comments[row.id] || 0
   }));
+}
+
+export function knowledgePostTitleFromBody(body: string) {
+  const firstLine = body.split(/\n|(?<=[.!?])\s/)[0].trim();
+  return firstLine.length <= 120 ? firstLine : `${firstLine.slice(0, 117).trim()}...`;
+}
+
+export async function getKnowledgePostViewerState(profileId: string, postId: string) {
+  if (!supabase) return { liked: false };
+  const { data } = await supabase
+    .from("likes")
+    .select("id")
+    .eq("user_id", profileId)
+    .eq("target_type", "knowledge_post")
+    .eq("target_id", postId)
+    .maybeSingle();
+  return { liked: Boolean(data) };
+}
+
+export async function toggleSupabaseKnowledgePostLike(profileId: string, postId: string, adding: boolean) {
+  if (!supabase) return { error: "Community actions are temporarily unavailable." };
+  const query = adding
+    ? supabase.from("likes").upsert(
+        { user_id: profileId, target_type: "knowledge_post", target_id: postId },
+        { onConflict: "user_id,target_type,target_id" }
+      )
+    : supabase.from("likes").delete().eq("user_id", profileId).eq("target_type", "knowledge_post").eq("target_id", postId);
+  const { error } = await query;
+  return { error: error ? "We could not save your like. Please try again." : null };
+}
+
+export async function updateSupabaseKnowledgePost(profileId: string, postId: string, input: {
+  body: string;
+  topic?: string;
+  referenceTitle?: string;
+}) {
+  if (!supabase) return { post: null, error: "Community editing is temporarily unavailable." };
+  const { data, error } = await supabase
+    .from("knowledge_posts")
+    .update({
+      title: knowledgePostTitleFromBody(input.body),
+      body: input.body.trim(),
+      topic: input.topic?.trim() || null,
+      reference_title: input.referenceTitle?.trim() || null
+    })
+    .eq("id", postId)
+    .eq("user_id", profileId)
+    .select(knowledgePostSelect)
+    .single();
+  if (error || !data) return { post: null, error: "We could not save your edit. Please try again." };
+  const [post] = await hydrateKnowledgePosts([data as DbKnowledgePost]);
+  return { post: post || null, error: null };
+}
+
+export async function deleteSupabaseKnowledgePost(profileId: string, postId: string) {
+  if (!supabase) return { error: "Community editing is temporarily unavailable." };
+  const { error } = await supabase.from("knowledge_posts").delete().eq("id", postId).eq("user_id", profileId);
+  return { error: error ? "We could not delete this post. Please try again." : null };
 }
 
 export async function getSupabaseKnowledgePosts(limit = 30) {
@@ -49,6 +112,18 @@ export async function getSupabaseKnowledgePosts(limit = 30) {
   const { data, error } = await supabase
     .from("knowledge_posts")
     .select(knowledgePostSelect)
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  if (error || !data?.length) return [];
+  return hydrateKnowledgePosts(data as DbKnowledgePost[]);
+}
+
+export async function getSupabaseKnowledgePostsByUser(userId: string, limit = 50) {
+  if (!supabase) return [] as KnowledgePost[];
+  const { data, error } = await supabase
+    .from("knowledge_posts")
+    .select(knowledgePostSelect)
+    .eq("user_id", userId)
     .order("created_at", { ascending: false })
     .limit(limit);
   if (error || !data?.length) return [];

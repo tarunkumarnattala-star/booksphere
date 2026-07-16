@@ -36,7 +36,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
 
   const userDiscussions = (canonicalBundle?.contributions || discussions.filter((post) => post.userId === profile.id))
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-  const userKnowledge = canonicalBundle ? [] : knowledgePosts
+  const userKnowledge = canonicalBundle ? canonicalBundle.knowledgePosts : knowledgePosts
     .filter((post) => post.userId === profile.id)
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   const contributions: ProfileContribution[] = [

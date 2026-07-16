@@ -438,12 +438,15 @@ export type ContributionComment = {
   viewerLiked?: boolean;
 };
 
-export async function getSupabaseComments(postId: string, viewerProfileId?: string) {
+export type CommentTargetType = "discussion_post" | "knowledge_post";
+
+export async function getSupabaseComments(postId: string, viewerProfileId?: string, targetType: CommentTargetType = "discussion_post") {
   if (!supabase) return [] as ContributionComment[];
+  const targetColumn = targetType === "knowledge_post" ? "knowledge_post_id" : "discussion_post_id";
   const { data, error } = await supabase
     .from("discussion_comments")
     .select("id,user_id,parent_comment_id,body,created_at,updated_at,profiles(name)")
-    .eq("discussion_post_id", postId)
+    .eq(targetColumn, postId)
     .order("created_at", { ascending: false })
     .limit(50);
   if (error || !data) return [];
@@ -470,11 +473,14 @@ export async function getSupabaseComments(postId: string, viewerProfileId?: stri
   });
 }
 
-export async function createSupabaseComment(profileId: string, postId: string, body: string, parentId?: string) {
+export async function createSupabaseComment(profileId: string, postId: string, body: string, parentId?: string, targetType: CommentTargetType = "discussion_post") {
   if (!supabase) return { comment: null, error: "Supabase is not configured." };
+  const target = targetType === "knowledge_post"
+    ? { knowledge_post_id: postId, discussion_post_id: null }
+    : { discussion_post_id: postId, knowledge_post_id: null };
   const { data, error } = await supabase
     .from("discussion_comments")
-    .insert({ user_id: profileId, discussion_post_id: postId, parent_comment_id: parentId || null, body })
+    .insert({ user_id: profileId, ...target, parent_comment_id: parentId || null, body })
     .select("id,user_id,parent_comment_id,body,created_at,updated_at,profiles(name)")
     .single();
   if (error || !data) return { comment: null, error: "We could not post your comment. Your text is still here." };

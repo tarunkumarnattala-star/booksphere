@@ -1,7 +1,8 @@
 import { books } from "./data";
 import { hydrateContributions, type DbContribution } from "./contributions";
 import { supabase } from "./supabase";
-import type { DiscussionPost, Profile } from "./types";
+import { getSupabaseKnowledgePostsByUser } from "./knowledge-posts";
+import type { DiscussionPost, KnowledgePost, Profile } from "./types";
 
 type DbProfile = {
   id: string;
@@ -14,6 +15,7 @@ type DbProfile = {
 export type CanonicalProfileBundle = {
   profile: Profile;
   contributions: DiscussionPost[];
+  knowledgePosts: KnowledgePost[];
   totals: {
     likesReceived: number;
     commentsReceived: number;
@@ -71,6 +73,7 @@ export async function getCanonicalProfileBundle(username: string): Promise<Canon
     : { data: [] };
   const dbBooksById = Object.fromEntries(((dbBooks || []) as Array<{ id: string; title: string; author: string }>).map((book) => [book.id, book]));
   const contributions = await hydrateContributions(postRows, dbBooksById);
+  const knowledgePosts = await getSupabaseKnowledgePostsByUser(profileRow.id);
   const usefulnessReceived = contributions.reduce((sum, post) => sum + (post.usefulness || []).reduce((inner, reaction) => inner + reaction.count, 0), 0);
   const profile: Profile = {
     id: profileRow.id,
@@ -87,6 +90,7 @@ export async function getCanonicalProfileBundle(username: string): Promise<Canon
   return {
     profile,
     contributions,
+    knowledgePosts,
     totals: {
       likesReceived: contributions.reduce((sum, post) => sum + post.likes, 0),
       commentsReceived: contributions.reduce((sum, post) => sum + post.comments, 0),

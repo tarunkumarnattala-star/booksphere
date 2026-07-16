@@ -4,15 +4,10 @@ import { useState } from "react";
 import { BookOpen, CheckCircle2, Plus, Send } from "lucide-react";
 import { requireProfile } from "@/lib/auth-client";
 import { canUseLocalCommunityFallback } from "@/lib/community-runtime";
-import { createSupabaseKnowledgePost } from "@/lib/knowledge-posts";
+import { createSupabaseKnowledgePost, knowledgePostTitleFromBody } from "@/lib/knowledge-posts";
 import type { KnowledgePost } from "@/lib/types";
 import { LOCAL_KNOWLEDGE_POSTS_KEY } from "./knowledge-feed";
 import { LoginRequiredNotice } from "./login-required-notice";
-
-function titleFromThought(thought: string) {
-  const firstLine = thought.split(/\n|(?<=[.!?])\s/)[0].trim();
-  return firstLine.length <= 120 ? firstLine : `${firstLine.slice(0, 117).trim()}...`;
-}
 
 function storeLocalPost(post: KnowledgePost) {
   try {
@@ -53,7 +48,7 @@ export function FeedComposer() {
       userId: auth.local ? "local-reader" : auth.profileId,
       authorName: auth.local ? "You" : undefined,
       authorUsername: auth.local ? "local-reader" : undefined,
-      title: titleFromThought(cleanThought),
+      title: knowledgePostTitleFromBody(cleanThought),
       body: cleanThought,
       topic: topic.trim() || "Reflection",
       referenceTitle: referenceTitle.trim() || undefined,
@@ -87,7 +82,7 @@ export function FeedComposer() {
     setShowContext(false);
     setPublished(true);
     setPublishing(false);
-    window.setTimeout(() => setPublished(false), 1800);
+    window.setTimeout(() => setPublished(false), 1000);
   }
 
   return (
@@ -132,7 +127,7 @@ export function FeedComposer() {
           className="fixed inset-x-4 bottom-24 z-[100] mx-auto flex w-fit max-w-[calc(100vw-2rem)] items-center gap-2 rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-semibold text-white shadow-[0_18px_50px_rgba(0,0,0,0.24)] md:bottom-8"
         >
           <CheckCircle2 size={18} aria-hidden="true" />
-          Your post is live.
+          Posted to your feed.
         </div>
       )}
     </form>

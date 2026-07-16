@@ -7,7 +7,7 @@ import { BookCover } from "./book-cover";
 import { CommentThread } from "./comment-thread";
 import { FollowButton } from "./follow-button";
 import { LOCAL_KNOWLEDGE_POSTS_KEY } from "./knowledge-feed";
-import { PostActions } from "./post-actions";
+import { KnowledgePostActions } from "./knowledge-post-actions";
 import { KnowledgePost } from "@/lib/types";
 import { getBook, getProfileById, knowledgePosts } from "@/lib/data";
 import { getSupabaseKnowledgePost } from "@/lib/knowledge-posts";
@@ -111,10 +111,14 @@ export function LocalKnowledgePostPage({ id }: { id: string }) {
               </div>
             )}
 
-            <PostActions targetId={post.id} likes={post.likes} comments={post.comments} />
+            <KnowledgePostActions post={post} onUpdated={setPost} onDeleted={() => setPost(null)} />
           </article>
 
-          <CommentThread postId={post.id} />
+          <CommentThread
+            postId={post.id}
+            targetType="knowledge_post"
+            onCountChange={(change) => setPost((current) => current ? { ...current, comments: Math.max(0, current.comments + change) } : current)}
+          />
         </div>
 
         <aside className="space-y-5 xl:sticky xl:top-28 xl:self-start">

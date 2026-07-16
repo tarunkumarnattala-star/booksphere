@@ -62,7 +62,7 @@ create table if not exists discussion_posts (
 
 create table if not exists discussion_comments (
   id uuid primary key default gen_random_uuid(),
-  discussion_post_id uuid not null references discussion_posts(id) on delete cascade,
+  discussion_post_id uuid references discussion_posts(id) on delete cascade,
   parent_comment_id uuid references discussion_comments(id) on delete set null,
   user_id uuid not null references profiles(id) on delete cascade,
   body text not null check (char_length(trim(body)) >= 3),
@@ -78,6 +78,16 @@ create table if not exists knowledge_posts (
   topic text,
   created_at timestamptz not null default now()
 );
+
+alter table discussion_comments
+  add column if not exists knowledge_post_id uuid references knowledge_posts(id) on delete cascade;
+
+alter table discussion_comments
+  drop constraint if exists discussion_comments_single_parent_target;
+alter table discussion_comments
+  add constraint discussion_comments_single_parent_target check (
+    num_nonnulls(discussion_post_id, knowledge_post_id) = 1
+  );
 
 create table if not exists likes (
   id uuid primary key default gen_random_uuid(),
@@ -154,6 +164,7 @@ create index if not exists books_trending_seed_idx on books(is_trending_seed, tr
 create index if not exists discussion_posts_book_idx on discussion_posts(book_id, created_at desc);
 create index if not exists discussion_comments_post_idx on discussion_comments(discussion_post_id, created_at desc);
 create index if not exists discussion_comments_parent_idx on discussion_comments(parent_comment_id, created_at asc);
+create index if not exists discussion_comments_knowledge_post_idx on discussion_comments(knowledge_post_id, created_at desc);
 create index if not exists knowledge_posts_user_idx on knowledge_posts(user_id, created_at desc);
 create index if not exists likes_target_idx on likes(target_type, target_id);
 create index if not exists saved_books_book_idx on saved_books(book_id, created_at desc);
@@ -264,7 +275,10 @@ create policy "Book genres are readable" on book_genres for select using (true);
 create policy "Badges are readable" on badges for select using (true);
 create policy "User badges are readable" on user_badges for select using (true);
 create policy "Discussions are readable" on discussion_posts for select using (true);
-create policy "Comments are readable" on discussion_comments for select using (true);
+create policy "Comments are readable" on discussion_comments for select using (
+  exists (select 1 from discussion_posts post where post.id = discussion_comments.discussion_post_id)
+  or exists (select 1 from knowledge_posts post where post.id = discussion_comments.knowledge_post_id)
+);
 create policy "Knowledge posts are readable" on knowledge_posts for select using (true);
 
 create policy "Authenticated users create discussions" on discussion_posts

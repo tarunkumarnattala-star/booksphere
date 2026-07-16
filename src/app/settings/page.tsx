@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CheckCircle2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { CircleAlert } from "lucide-react";
 import { requireProfile } from "@/lib/auth-client";
 import { canUseLocalCommunityFallback } from "@/lib/community-runtime";
 import { getLocalProfile } from "@/lib/local-session";
@@ -14,6 +15,7 @@ type SettingsDraft = typeof emptyDraft;
 type LoadState = "loading" | "ready" | "unavailable";
 
 export default function SettingsPage() {
+  const router = useRouter();
   const [draft, setDraft] = useState<SettingsDraft>(emptyDraft);
   const [profileId, setProfileId] = useState<string | null>(null);
   const [loadState, setLoadState] = useState<LoadState>("loading");
@@ -86,8 +88,8 @@ export default function SettingsPage() {
     if (!supabase && canUseLocalCommunityFallback()) {
       window.localStorage.setItem(SETTINGS_KEY, JSON.stringify(cleanDraft));
       setDraft(cleanDraft);
-      setMessage("Local profile preview saved.");
       setSaving(false);
+      router.push("/profile/local-reader");
       return;
     }
 
@@ -105,7 +107,8 @@ export default function SettingsPage() {
     }
 
     setDraft(cleanDraft);
-    setMessage("Profile updated.");
+    router.push(`/profile/${cleanDraft.username}`);
+    router.refresh();
   }
 
   return (
@@ -120,7 +123,7 @@ export default function SettingsPage() {
           <label className="grid gap-2 text-sm font-medium">Display name<input required minLength={2} maxLength={80} value={draft.name} onChange={(event) => setDraft({ ...draft, name: event.target.value })} placeholder="Display name" className="rounded-[18px] bg-black/[0.035] px-4 py-3 font-medium outline-none ring-1 ring-transparent focus:ring-black/20" /></label>
           <label className="grid gap-2 text-sm font-medium">Username<input required minLength={3} maxLength={30} pattern="[a-zA-Z0-9_-]+" value={draft.username} onChange={(event) => setDraft({ ...draft, username: event.target.value })} placeholder="Username" className="rounded-[18px] bg-black/[0.035] px-4 py-3 font-medium outline-none ring-1 ring-transparent focus:ring-black/20" /></label>
           <label className="grid gap-2 text-sm font-medium">Bio<textarea maxLength={280} value={draft.bio} onChange={(event) => setDraft({ ...draft, bio: event.target.value })} rows={5} placeholder="What do you read and contribute?" className="rounded-[18px] bg-black/[0.035] px-4 py-3 font-medium outline-none ring-1 ring-transparent focus:ring-black/20" /><span className="text-right text-xs font-normal text-[color:var(--color-text-secondary)]">{draft.bio.length}/280</span></label>
-          {message && <p role="status" className="flex items-center gap-2 rounded-[16px] bg-black/[0.035] px-4 py-3 text-sm font-medium"><CheckCircle2 size={17} /> {message}</p>}
+          {message && <p role="alert" className="flex items-center gap-2 rounded-[16px] bg-[color:var(--color-rose)]/10 px-4 py-3 text-sm font-medium text-[color:var(--color-rose)]"><CircleAlert size={17} /> {message}</p>}
           <button disabled={saving} className="rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-semibold !text-white transition hover:opacity-85 disabled:opacity-50">{saving ? "Saving..." : "Save profile"}</button>
         </form>
       )}

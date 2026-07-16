@@ -26,13 +26,27 @@ export function KnowledgeFeed({ seedPosts, variant = "grid" }: { seedPosts: Know
       const post = (event as CustomEvent<KnowledgePost>).detail;
       setPosts((current) => [post, ...current.filter((item) => item.id !== post.id)]);
     };
+    const updatePost = (event: Event) => {
+      const post = (event as CustomEvent<KnowledgePost>).detail;
+      setPosts((current) => current.map((item) => item.id === post.id ? post : item));
+    };
+    const deletePost = (event: Event) => {
+      const postId = (event as CustomEvent<string>).detail;
+      setPosts((current) => current.filter((item) => item.id !== postId));
+    };
     if (canUseLocalCommunityFallback()) {
       queueMicrotask(() => {
         setPosts([...readLocalKnowledgePosts(), ...seedPosts].filter((post, index, all) => all.findIndex((item) => item.id === post.id) === index));
       });
     }
     window.addEventListener("booksphere:knowledge-post-created", addPost);
-    return () => window.removeEventListener("booksphere:knowledge-post-created", addPost);
+    window.addEventListener("booksphere:knowledge-post-updated", updatePost);
+    window.addEventListener("booksphere:knowledge-post-deleted", deletePost);
+    return () => {
+      window.removeEventListener("booksphere:knowledge-post-created", addPost);
+      window.removeEventListener("booksphere:knowledge-post-updated", updatePost);
+      window.removeEventListener("booksphere:knowledge-post-deleted", deletePost);
+    };
   }, [seedPosts]);
 
   if (variant === "stream") {

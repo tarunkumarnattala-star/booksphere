@@ -6,6 +6,7 @@ import { requireProfile } from "@/lib/auth-client";
 import { canUseLocalCommunityFallback, COMMUNITY_UNAVAILABLE_MESSAGE } from "@/lib/community-runtime";
 import {
   ContributionComment,
+  CommentTargetType,
   createSupabaseComment,
   deleteSupabaseComment,
   getSupabaseComments,
@@ -53,7 +54,7 @@ function flattenThread(comments: ContributionComment[], sort: "top" | "new") {
   return rows;
 }
 
-export function CommentThread({ postId }: { postId: string }) {
+export function CommentThread({ postId, targetType = "discussion_post", onCountChange }: { postId: string; targetType?: CommentTargetType; onCountChange?: (change: number) => void }) {
   const [sort, setSort] = useState<"top" | "new">("top");
   const [body, setBody] = useState("");
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
@@ -63,7 +64,11 @@ export function CommentThread({ postId }: { postId: string }) {
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
   const [likedCommentIds, setLikedCommentIds] = useState<string[]>([]);
-  const [comments, setComments] = useState<ContributionComment[]>(starterComments(postId));
+  const fallbackComments = useMemo(
+    () => targetType === "discussion_post" ? starterComments(postId) : [],
+    [postId, targetType]
+  );
+  const [comments, setComments] = useState<ContributionComment[]>(fallbackComments);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -72,7 +77,7 @@ export function CommentThread({ postId }: { postId: string }) {
       if (supabase) {
         setLoading(true);
         const auth = await requireProfile();
-        const remote = await getSupabaseComments(postId, auth.ok ? auth.profileId : undefined);
+        const remote = await getSupabaseComments(postId, auth.ok ? auth.profileId : undefined, targetType);
         if (!cancelled) {
           setComments(remote);
           setLoading(false);
@@ -85,22 +90,22 @@ export function CommentThread({ postId }: { postId: string }) {
       }
       queueMicrotask(() => {
         try {
-          const stored = JSON.parse(window.localStorage.getItem(`booksphere.comments.${postId}`) || "[]") as ContributionComment[];
-          setComments([...stored, ...starterComments(postId)]);
+          const stored = JSON.parse(window.localStorage.getItem(`booksphere.comments.${targetType}.${postId}`) || "[]") as ContributionComment[];
+          setComments([...stored, ...fallbackComments]);
         } catch {
-          setComments(starterComments(postId));
+          setComments(fallbackComments);
         }
       });
     }
     void refresh();
     return () => { cancelled = true; };
-  }, [postId]);
+  }, [fallbackComments, postId, targetType]);
 
   const threadRows = useMemo(() => flattenThread(comments, sort), [comments, sort]);
 
   function persistLocal(next: ContributionComment[]) {
     const owned = next.filter((comment) => comment.canEdit || comment.canDelete);
-    window.localStorage.setItem(`booksphere.comments.${postId}`, JSON.stringify(owned));
+    window.localStorage.setItem(`booksphere.comments.${targetType}.${postId}`, JSON.stringify(owned));
   }
 
   async function submitComment(text: string, parentId?: string) {
@@ -128,7 +133,7 @@ export function CommentThread({ postId }: { postId: string }) {
     setComments((current) => [optimistic, ...current]);
 
     if (supabase) {
-      const result = await createSupabaseComment(auth.profileId, postId, text.trim(), parentId);
+      const result = await createSupabaseComment(auth.profileId, postId, text.trim(), parentId, targetType);
       if (result.error || !result.comment) {
         setComments((current) => current.filter((comment) => comment.id !== optimistic.id));
         setError(result.error || "We could not post your comment. Your text is still here.");
@@ -146,6 +151,7 @@ export function CommentThread({ postId }: { postId: string }) {
       return false;
     }
     trackEvent(parentId ? "comment_replied" : "contribution_commented", { postId, parentId });
+    onCountChange?.(1);
     return true;
   }
 
@@ -209,13 +215,16 @@ export function CommentThread({ postId }: { postId: string }) {
       if (result.error) {
         setComments(previous);
         setError(result.error);
+        return;
       }
     } else if (canUseLocalCommunityFallback()) {
       persistLocal(next);
     } else {
       setComments(previous);
       setError(COMMUNITY_UNAVAILABLE_MESSAGE);
+      return;
     }
+    onCountChange?.(-1);
   }
 
   async function toggleCommentLike(commentId: string) {
