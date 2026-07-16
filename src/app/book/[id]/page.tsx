@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { BookOpen, CheckCircle2, Clock3, PenLine, Users } from "lucide-react";
+import { BookOpen, MessageCircle, PenLine, Scale } from "lucide-react";
 import { BookCommunityActions } from "@/components/book-community-actions";
 import { BookCover } from "@/components/book-cover";
 import { CommentThread } from "@/components/comment-thread";
@@ -77,29 +77,13 @@ export default async function BookPage({ params, searchParams }: { params: Promi
         </div>
       </section>
 
-      <section className="mt-10 rounded-[28px] bg-white p-4 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-5">
-        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="caption mb-1">Viewing for</p>
-            <p className="text-sm font-medium text-[color:var(--color-text-secondary)]">Choose the lens that matches where you are with this book.</p>
-          </div>
-          <div className="flex flex-wrap gap-2" role="group" aria-label="Reader view">
-            {["Before reading", "While reading", "After reading"].map((view, index) => (
-              <a key={view} href={index === 2 ? "#perspective-map" : "#knowledge-preview"} className={`rounded-full px-4 py-2 text-sm font-medium transition ${index === 0 ? "bg-[color:var(--color-text-primary)] !text-white" : "bg-black/[0.035] text-[color:var(--color-text-secondary)] hover:bg-black/[0.06] hover:text-[color:var(--color-text-primary)]"}`}>
-                {view}
-              </a>
-            ))}
-          </div>
-        </div>
+      <section aria-label="Explore this book" className="mt-10 grid grid-cols-3 divide-x divide-[color:var(--color-hairline)] border-y border-[color:var(--color-hairline)] py-3">
+        <BookOutcomeLink href="#knowledge-preview" icon={<BookOpen size={17} />} label="Useful ideas" />
+        <BookOutcomeLink href="#perspective-map" icon={<MessageCircle size={17} />} label="Reader views" />
+        <BookOutcomeLink href="#full-book-decision" icon={<Scale size={17} />} label="Worth reading?" />
       </section>
 
-      <section className="mt-6 grid gap-3 md:grid-cols-3">
-        <BookPromiseCard icon={<Clock3 size={18} />} title="If you have 5 minutes" body="Start with the useful ideas and the reader examples that make them concrete." />
-        <BookPromiseCard icon={<Users size={18} />} title="If you want perspective" body="Compare what people applied, questioned, disagreed with, and found incomplete." />
-        <BookPromiseCard icon={<CheckCircle2 size={18} />} title="If you are deciding" body="Use the full-book decision to know whether this deserves deeper reading." />
-      </section>
-
-      <section id="knowledge-preview" className="mt-8 scroll-mt-24 grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+      <section id="knowledge-preview" className="mt-8 scroll-mt-24">
         <div className="rounded-[32px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-8">
           {preview ? (
             <>
@@ -126,46 +110,27 @@ export default async function BookPage({ params, searchParams }: { params: Promi
                   {preview.helps.map((item) => <p key={item} className="body-copy text-[15px] leading-6">{item}</p>)}
                 </div>
               </div>
+              {book.sourceLinks.length > 0 && (
+                <div className="mt-6 border-t border-[color:var(--color-hairline)] pt-5">
+                  <p className="footnote mb-3">Sources used for this orientation</p>
+                  <div className="flex flex-wrap gap-2">
+                    {book.sourceLinks.map((source) => <a key={source.url} href={source.url} target="_blank" rel="noreferrer" className="rounded-full bg-black/[0.035] px-3 py-1.5 text-sm font-medium text-[color:var(--color-text-secondary)] transition hover:bg-black/[0.065]">{source.label}</a>)}
+                  </div>
+                </div>
+              )}
             </>
           ) : (
-            <>
-              <p className="caption">Editorial Review</p>
-              <h2 className="title-3 mt-3">Book-specific context is being checked</h2>
-              <p className="body-copy mt-4">BookSphere has not published a knowledge preview for this title yet. The catalog record is available, but summaries, claims, and reading guidance stay hidden until they pass source and editorial review.</p>
-              <p className="mt-4 rounded-[20px] bg-[#f7f2e8] p-4 text-sm font-medium leading-6 text-[color:var(--color-text-primary)]">This prevents a generic category description from being mistaken for the book&apos;s actual argument.</p>
-            </>
-          )}
-        </div>
-        <div className="rounded-[32px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-8">
-          <p className="caption">Editorial Record</p>
-          <div className="mt-5 grid gap-4 sm:grid-cols-2">
-            <Signal label="Review status" value={book.editorialStatus === "verified" ? "Source reviewed" : "In progress"} />
-            <Signal label="Publication" value={book.publicationLabel || String(book.publishedYear)} />
-            <Signal label="Starter prompts" value={seedPosts.length.toString()} />
-            <Signal label="Reader contributions" value={persistedPosts.length.toString()} />
-          </div>
-          {book.sourceLinks.length > 0 && (
-            <div className="mt-6 border-t border-[color:var(--color-hairline)] pt-5">
-              <p className="footnote mb-3">Sources used for this orientation</p>
-              <div className="flex flex-wrap gap-2">
-                {book.sourceLinks.map((source) => <a key={source.url} href={source.url} target="_blank" rel="noreferrer" className="rounded-full bg-black/[0.035] px-3 py-1.5 text-sm font-medium text-[color:var(--color-text-secondary)] transition hover:bg-black/[0.065]">{source.label}</a>)}
+            <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+              <div className="max-w-3xl">
+                <p className="caption">Knowledge preview</p>
+                <h2 className="title-3 mt-2">The verified overview is coming soon</h2>
+                <p className="body-copy mt-3 text-[15px] leading-6">We have not published a summary for this title yet. Reader perspectives are available now.</p>
               </div>
+              <a href="#discussions" className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-medium !text-white transition hover:opacity-85">
+                Read perspectives
+              </a>
             </div>
           )}
-          <div className="mt-6 grid gap-4 md:grid-cols-2">
-            <div>
-              <p className="footnote mb-2">Most discussed themes</p>
-              <div className="flex flex-wrap gap-2">
-                {book.mostDiscussedThemes.map((theme) => <span key={theme} className="rounded-full bg-black/[0.035] px-3 py-1.5 text-sm font-medium text-[color:var(--color-text-secondary)]">{theme}</span>)}
-              </div>
-            </div>
-            <div>
-              <p className="footnote mb-2">Best for</p>
-              <div className="flex flex-wrap gap-2">
-                {book.bestForTags.map((tag) => <span key={tag} className="rounded-full bg-black/[0.035] px-3 py-1.5 text-sm font-medium text-[color:var(--color-text-secondary)]">{tag}</span>)}
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -218,7 +183,7 @@ export default async function BookPage({ params, searchParams }: { params: Promi
             ))}
           </div>
         </div>
-        <div className="rounded-[32px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-8">
+        <div id="full-book-decision" className="scroll-mt-24 rounded-[32px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-8">
           <p className="caption">Should you read the full book?</p>
           <h2 className="title-3 mt-3">A balanced decision</h2>
           {preview ? (
@@ -284,25 +249,12 @@ export default async function BookPage({ params, searchParams }: { params: Promi
   );
 }
 
-function Signal({ label, value }: { label: string; value: string }) {
+function BookOutcomeLink({ href, icon, label }: { href: string; icon: ReactNode; label: string }) {
   return (
-    <div>
-      <p className="title-3">{value}</p>
-      <p className="footnote mt-1">{label}</p>
-    </div>
-  );
-}
-
-function BookPromiseCard({ icon, title, body }: { icon: ReactNode; title: string; body: string }) {
-  return (
-    <div className="rounded-[24px] bg-white p-5 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">
-      <div className="mb-4 flex items-center gap-2 text-[color:var(--color-accent)]">
-        {icon}
-        <p className="caption text-[10px]">Reader shortcut</p>
-      </div>
-      <h2 className="text-lg font-semibold tracking-[-0.02em] text-[color:var(--color-text-primary)]">{title}</h2>
-      <p className="mt-2 text-sm leading-6 text-[color:var(--color-text-secondary)]">{body}</p>
-    </div>
+    <a href={href} className="flex min-w-0 items-center justify-center gap-2 px-2 py-2 text-center text-xs font-medium text-[color:var(--color-text-secondary)] transition hover:text-[color:var(--color-text-primary)] sm:text-sm">
+      <span className="shrink-0 text-[color:var(--color-accent)]">{icon}</span>
+      <span>{label}</span>
+    </a>
   );
 }
 
