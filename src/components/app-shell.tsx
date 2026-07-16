@@ -2,6 +2,7 @@ import { Suspense, type ReactNode } from "react";
 import { MobileBottomNav } from "./mobile-bottom-nav";
 import { TopNav } from "./top-nav";
 import Link from "next/link";
+import { FirstUseGuide } from "./first-use-guide";
 
 export function AppShell({ children }: { children: ReactNode }) {
   return (
@@ -20,6 +21,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <Suspense fallback={null}>
         <MobileBottomNav />
       </Suspense>
+      <FirstUseGuide />
     </>
   );
 }

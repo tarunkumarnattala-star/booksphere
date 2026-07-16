@@ -92,7 +92,7 @@ export function FeedComposer() {
   }
 
   return (
-    <form onSubmit={submit} className="rounded-[26px] bg-white p-4 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-5">
+    <form data-onboarding="feed-composer" onSubmit={submit} className="rounded-[26px] bg-white p-4 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-5">
       <div className="flex gap-3">
         <div className="grid size-10 shrink-0 place-items-center rounded-full bg-[color:var(--color-text-primary)] text-sm font-semibold text-white">N</div>
         <div className="min-w-0 flex-1">

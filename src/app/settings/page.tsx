@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { CircleAlert } from "lucide-react";
+import { CircleAlert, Compass } from "lucide-react";
 import { requireProfile } from "@/lib/auth-client";
 import { canUseLocalCommunityFallback } from "@/lib/community-runtime";
 import { getLocalProfile } from "@/lib/local-session";
@@ -126,6 +126,16 @@ export default function SettingsPage() {
           <button disabled={saving} className="rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-semibold !text-white transition hover:opacity-85 disabled:opacity-50">{saving ? "Saving..." : "Save profile"}</button>
         </form>
       )}
+      <div className="mt-6 border-t border-[color:var(--color-hairline)] pt-5">
+        <button
+          type="button"
+          onClick={() => window.dispatchEvent(new Event("booksphere:onboarding:start"))}
+          className="inline-flex min-h-11 items-center gap-2 rounded-full px-3 text-sm font-medium text-[color:var(--color-text-secondary)] transition hover:bg-white hover:text-[color:var(--color-text-primary)]"
+        >
+          <Compass size={16} />
+          Show app guide again
+        </button>
+      </div>
     </div>
   );
 }
