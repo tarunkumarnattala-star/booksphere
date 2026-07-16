@@ -74,7 +74,7 @@ create table if not exists knowledge_posts (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references profiles(id) on delete cascade,
   title text not null check (char_length(trim(title)) >= 4),
-  body text not null check (char_length(trim(body)) >= 20),
+  body text not null check (char_length(trim(body)) >= 4),
   topic text,
   created_at timestamptz not null default now()
 );

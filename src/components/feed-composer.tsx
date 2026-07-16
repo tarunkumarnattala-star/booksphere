@@ -9,6 +9,8 @@ import type { KnowledgePost } from "@/lib/types";
 import { LOCAL_KNOWLEDGE_POSTS_KEY } from "./knowledge-feed";
 import { LoginRequiredNotice } from "./login-required-notice";
 
+const MIN_POST_LENGTH = 4;
+
 function storeLocalPost(post: KnowledgePost) {
   try {
     const stored = JSON.parse(window.localStorage.getItem(LOCAL_KNOWLEDGE_POSTS_KEY) || "[]") as KnowledgePost[];
@@ -31,8 +33,8 @@ export function FeedComposer() {
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const cleanThought = thought.trim();
-    if (cleanThought.length < 20) {
-      setError("Add enough context for another person to understand the thought.");
+    if (cleanThought.length < MIN_POST_LENGTH) {
+      setError("Write at least 4 characters before sharing.");
       return;
     }
     const auth = await requireProfile();
@@ -57,32 +59,36 @@ export function FeedComposer() {
       comments: 0
     };
 
-    let post = draft;
-    if (!auth.local && !canUseLocalCommunityFallback()) {
-      const result = await createSupabaseKnowledgePost({
-        profileId: auth.profileId,
-        title: draft.title,
-        body: draft.body,
-        topic: draft.topic,
-        referenceTitle: draft.referenceTitle
-      });
-      if (!result.post) {
-        setError(result.error || "We could not publish this thought.");
-        setPublishing(false);
-        return;
+    try {
+      let post = draft;
+      if (!auth.local && !canUseLocalCommunityFallback()) {
+        const result = await createSupabaseKnowledgePost({
+          profileId: auth.profileId,
+          title: draft.title,
+          body: draft.body,
+          topic: draft.topic,
+          referenceTitle: draft.referenceTitle
+        });
+        if (!result.post) {
+          setError(result.error || "We could not publish this thought.");
+          return;
+        }
+        post = result.post;
       }
-      post = result.post;
-    }
 
-    storeLocalPost(post);
-    window.dispatchEvent(new CustomEvent("booksphere:knowledge-post-created", { detail: post }));
-    setThought("");
-    setTopic("");
-    setReferenceTitle("");
-    setShowContext(false);
-    setPublished(true);
-    setPublishing(false);
-    window.setTimeout(() => setPublished(false), 1000);
+      storeLocalPost(post);
+      window.dispatchEvent(new CustomEvent("booksphere:knowledge-post-created", { detail: post }));
+      setThought("");
+      setTopic("");
+      setReferenceTitle("");
+      setShowContext(false);
+      setPublished(true);
+      window.setTimeout(() => setPublished(false), 1000);
+    } catch {
+      setError("We could not publish this thought. Check your connection and try again.");
+    } finally {
+      setPublishing(false);
+    }
   }
 
   return (
@@ -94,7 +100,10 @@ export function FeedComposer() {
           <textarea
             id="feed-thought"
             value={thought}
-            onChange={(event) => setThought(event.target.value)}
+            onChange={(event) => {
+              setThought(event.target.value);
+              if (error) setError("");
+            }}
             rows={3}
             maxLength={2000}
             placeholder="What did you learn, notice, try, or change?"
@@ -113,7 +122,7 @@ export function FeedComposer() {
               {showContext ? <BookOpen size={16} /> : <Plus size={16} />}
               Add context
             </button>
-            <button type="submit" disabled={publishing || thought.trim().length < 20} className="ml-auto inline-flex min-h-10 items-center gap-2 rounded-full bg-[color:var(--color-text-primary)] px-4 text-sm font-medium !text-white transition hover:opacity-85 disabled:cursor-not-allowed disabled:opacity-35">
+            <button type="submit" disabled={publishing || thought.trim().length < MIN_POST_LENGTH} className="ml-auto inline-flex min-h-10 items-center gap-2 rounded-full bg-[color:var(--color-text-primary)] px-4 text-sm font-medium !text-white transition hover:opacity-85 disabled:cursor-not-allowed disabled:opacity-35">
               <Send size={15} />
               {publishing ? "Sharing" : "Share"}
             </button>
