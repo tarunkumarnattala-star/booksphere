@@ -31,6 +31,19 @@ export type CanonicalProfileBundle = {
   };
 };
 
+export type ProfileConnection = {
+  id: string;
+  name: string;
+  username: string;
+  bio: string;
+};
+
+export type ProfileConnectionsBundle = {
+  profile: ProfileConnection;
+  followers: ProfileConnection[];
+  following: ProfileConnection[];
+};
+
 function topGenresFromContributions(contributions: DiscussionPost[]) {
   const counts = new Map<string, number>();
   contributions.forEach((post) => {
@@ -104,5 +117,66 @@ export async function getCanonicalProfileBundle(username: string): Promise<Canon
       disagreements: contributions.filter((post) => post.postType === "Disagreement").length,
       summaries: contributions.filter((post) => post.postType === "Summary").length
     }
+  };
+}
+
+export async function getCanonicalProfileConnections(username: string): Promise<ProfileConnectionsBundle | null> {
+  if (!supabase) return null;
+
+  const { data: profileRow, error: profileError } = await supabase
+    .from("profiles")
+    .select("id,name,username,bio")
+    .eq("username", username)
+    .maybeSingle();
+
+  if (profileError || !profileRow) return null;
+
+  const [followerRows, followingRows] = await Promise.all([
+    supabase
+      .from("follows")
+      .select("follower_id,created_at")
+      .eq("following_id", profileRow.id)
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("follows")
+      .select("following_id,created_at")
+      .eq("follower_id", profileRow.id)
+      .order("created_at", { ascending: false })
+  ]);
+
+  if (followerRows.error || followingRows.error) return null;
+
+  const followerIds = (followerRows.data || []).map((row) => row.follower_id as string);
+  const followingIds = (followingRows.data || []).map((row) => row.following_id as string);
+  const connectionIds = [...new Set([...followerIds, ...followingIds])];
+  const { data: connectionRows, error: connectionsError } = connectionIds.length
+    ? await supabase.from("profiles").select("id,name,username,bio").in("id", connectionIds)
+    : { data: [], error: null };
+
+  if (connectionsError) return null;
+
+  const connectionsById = new Map(
+    (connectionRows || []).map((row) => [row.id as string, toProfileConnection(row)])
+  );
+
+  return {
+    profile: toProfileConnection(profileRow),
+    followers: followerIds.flatMap((id) => {
+      const connection = connectionsById.get(id);
+      return connection ? [connection] : [];
+    }),
+    following: followingIds.flatMap((id) => {
+      const connection = connectionsById.get(id);
+      return connection ? [connection] : [];
+    })
+  };
+}
+
+function toProfileConnection(row: { id: string; name: string; username: string; bio: string | null }): ProfileConnection {
+  return {
+    id: row.id,
+    name: row.name,
+    username: row.username,
+    bio: row.bio || "Sharing useful perspectives on BookSphere."
   };
 }

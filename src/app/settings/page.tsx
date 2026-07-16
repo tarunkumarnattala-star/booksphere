@@ -89,7 +89,7 @@ export default function SettingsPage() {
       window.localStorage.setItem(SETTINGS_KEY, JSON.stringify(cleanDraft));
       setDraft(cleanDraft);
       setSaving(false);
-      router.push("/profile/local-reader");
+      router.replace("/profile/local-reader");
       return;
     }
 
@@ -107,8 +107,7 @@ export default function SettingsPage() {
     }
 
     setDraft(cleanDraft);
-    router.push(`/profile/${cleanDraft.username}`);
-    router.refresh();
+    router.replace(`/profile/${cleanDraft.username}`);
   }
 
   return (

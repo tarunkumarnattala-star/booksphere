@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { BookOpen, MessageCircle, ThumbsUp } from "lucide-react";
+import { BookOpen, Lightbulb, MessageCircle, ThumbsUp, UserCheck, Users } from "lucide-react";
 import { BookCover } from "@/components/book-cover";
 import { GenrePill } from "@/components/genre-pill";
 import { ProfilePrimaryAction } from "@/components/profile-primary-action";
@@ -79,16 +79,16 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
           </div>
         </div>
 
-        <dl className="mt-7 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-[color:var(--color-hairline)] pt-6 sm:grid-cols-4">
-          <ProofItem label="Followers" value={formatCount(profile.followers)} />
-          <ProofItem label="Following" value={formatCount(profile.following)} />
-          <ProofItem label="Contributions" value={`${contributions.length}`} />
-          <ProofItem label="Books referenced" value={`${referencedBooks.length}`} />
-        </dl>
+        <div className="mt-7 grid grid-cols-2 gap-2 border-t border-[color:var(--color-hairline)] pt-5 sm:grid-cols-4">
+          <ProofItem label="Followers" value={formatCount(profile.followers)} href={`/profile/${profile.username}/connections?view=followers`} icon={<Users size={16} />} />
+          <ProofItem label="Following" value={formatCount(profile.following)} href={`/profile/${profile.username}/connections?view=following`} icon={<UserCheck size={16} />} />
+          <ProofItem label="Contributions" value={`${contributions.length}`} href="#contributions" icon={<Lightbulb size={16} />} />
+          <ProofItem label="Books referenced" value={`${referencedBooks.length}`} href="#books-referenced" icon={<BookOpen size={16} />} />
+        </div>
       </section>
 
       <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
-        <main>
+        <main id="contributions" className="scroll-mt-24">
           <div className="mb-5">
             <p className="caption">Contributions</p>
             <h2 className="title-2 mt-2">Useful ideas shared</h2>
@@ -110,7 +110,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
           )}
         </main>
 
-        <aside className="lg:sticky lg:top-24">
+        <aside id="books-referenced" className="scroll-mt-24 lg:sticky lg:top-24">
           <div className="mb-5">
             <p className="caption">Book trail</p>
             <h2 className="title-3 mt-2">Books behind the ideas</h2>
@@ -132,12 +132,15 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
   );
 }
 
-function ProofItem({ label, value }: { label: string; value: string }) {
+function ProofItem({ label, value, href, icon }: { label: string; value: string; href: string; icon: React.ReactNode }) {
   return (
-    <div>
-      <dt className="caption text-[10px]">{label}</dt>
-      <dd className="mt-1 text-lg font-semibold text-[color:var(--color-text-primary)]">{value}</dd>
-    </div>
+    <Link href={href} className="group block min-h-[76px] rounded-[18px] px-3 py-3 transition hover:bg-black/[0.035] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/20">
+      <span className="flex items-center gap-2 text-[11px] font-medium text-[color:var(--color-text-secondary)]">
+        <span className="text-[color:var(--color-accent-strong)]">{icon}</span>
+        {label}
+      </span>
+      <span className="mt-1.5 block text-lg font-semibold text-[color:var(--color-text-primary)] transition group-hover:translate-x-0.5">{value}</span>
+    </Link>
   );
 }
 
