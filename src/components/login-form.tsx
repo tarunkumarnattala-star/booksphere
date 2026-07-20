@@ -8,8 +8,14 @@ import { createLocalProfile } from "@/lib/local-session";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 import { canUseLocalCommunityFallback, COMMUNITY_UNAVAILABLE_MESSAGE } from "@/lib/community-runtime";
 
-export function LoginForm() {
+function safeReturnPath(next?: string) {
+  if (!next || !next.startsWith("/") || next.startsWith("//") || next.startsWith("/login")) return "/explore";
+  return next;
+}
+
+export function LoginForm({ next }: { next?: string }) {
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || (typeof location !== "undefined" ? location.origin : "");
+  const returnPath = safeReturnPath(next);
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -23,7 +29,7 @@ export function LoginForm() {
     setLoading(true);
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${appUrl}/explore` }
+      options: { redirectTo: `${appUrl}${returnPath}` }
     });
     if (error) {
       setMessage("Google sign-in could not be started. Please try email instead.");
@@ -48,12 +54,12 @@ export function LoginForm() {
       createLocalProfile(cleanEmail);
       trackEvent("local_signup", { method: "email" });
       setMessage("Local beta account created. Taking you back to BookSphere...");
-      setTimeout(() => router.push("/explore"), 350);
+      setTimeout(() => router.push(returnPath), 350);
       return;
     }
     const { error } = await supabase.auth.signInWithOtp({
       email: cleanEmail,
-      options: { emailRedirectTo: `${appUrl}/explore` }
+      options: { emailRedirectTo: `${appUrl}${returnPath}` }
     });
     setLoading(false);
     setMessage(error ? error.message : "Check your email for a magic link.");

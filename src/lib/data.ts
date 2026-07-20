@@ -418,6 +418,13 @@ const verifiedEditorialContext: Record<string, {
     bestFor: ["health-conscious adults", "caregivers", "evidence-minded readers"],
     sources: [{ label: "Publisher book page", url: "https://www.penguinrandomhouse.com/books/705161/outlive-by-peter-attia-md-with-bill-gifford/" }]
   },
+  "Zero to One": {
+    description: "A contrarian book about building companies that create genuinely new value instead of only improving or copying what already exists.",
+    whyMatters: "It gives founders and product builders a sharp framework for discussing innovation, independent thinking, durable advantage, and how new ideas reach a market.",
+    themes: ["innovation", "contrarian thinking", "durable advantage"],
+    bestFor: ["founders", "product builders", "independent thinkers"],
+    sources: [{ label: "Publisher book page", url: "https://www.penguinrandomhouse.com/books/234730/zero-to-one-by-peter-thiel-with-blake-masters/9780804139304/" }]
+  },
   "The Lean Startup": {
     description: "A startup-management framework centered on validated learning, rapid experiments, and the build-measure-learn feedback loop.",
     whyMatters: "It remains a useful common language for testing uncertainty, especially when readers also discuss where experimentation can become shallow or misleading.",
@@ -482,8 +489,8 @@ export const books: Book[] = bookRows.map(([title, author, publishedYear, genreN
     trendingSeedOrder: trendingSeedOrder[title],
     mostDiscussedThemes: verifiedContext?.themes || themesByGenre[primaryGenre] || ["ideas", "practice", "questions"],
     bestForTags: verifiedContext?.bestFor || bestForByGenre[primaryGenre] || ["thoughtful readers", "teams", "students"],
-    description: verifiedContext?.description || `${title} by ${author} is included in the ${primaryGenre} catalog. Its BookSphere knowledge preview is still undergoing editorial review.`,
-    whyMatters: verifiedContext?.whyMatters || "Catalog entry only. Book-specific claims will appear after source and editorial review."
+    description: verifiedContext?.description || `${title} by ${author} is a ${primaryGenre.toLowerCase()} title with reader perspectives, questions, and applications gathered around it.`,
+    whyMatters: verifiedContext?.whyMatters || "Use the reader perspectives to understand what people took from this book and decide whether it deserves your full attention."
   };
 });
 
@@ -844,6 +851,12 @@ const verifiedIdeaSeeds: Record<string, Array<{ title: string; explanation: stri
     { title: "Healthspan is not only lifespan", explanation: "Attia's framework emphasizes preserving physical, cognitive, and emotional function across the years someone remains alive.", why: "It changes the discussion from avoiding death alone to maintaining the abilities that make later life usable.", example: "Define the physical activities you hope to perform in later decades, then discuss appropriate preparation with a qualified professional.", reference: "Healthspan" },
     { title: "Prevention depends on individual risk", explanation: "The book argues for acting earlier on long-term risk, while the appropriate tests and interventions still depend on personal history and clinical judgment.", why: "It supports better questions without turning general education into a treatment plan.", example: "Use the framework to prepare questions for a clinician, not to diagnose yourself from a chapter.", reference: "Medicine 3.0 framework" }
   ],
+  "Zero to One": [
+    { title: "New value is different from copying", explanation: "Thiel distinguishes creating something genuinely new from spreading or improving a model the world already understands.", why: "It asks builders to identify what is actually novel about their product rather than treating growth alone as innovation.", example: "Describe the new capability your product creates without comparing it to an existing company.", reference: "Zero to one" },
+    { title: "Competition can erase differentiation", explanation: "The book argues that companies create more durable value when they solve a distinct problem well enough to avoid becoming interchangeable.", why: "A clear difference can protect attention, pricing power, and the ability to plan beyond the next reaction to a rival.", example: "Name the narrow group for whom your product is meaningfully better, then test whether they recognize that difference.", reference: "Competition and durable advantage" },
+    { title: "Ask what important truth is overlooked", explanation: "A central prompt asks readers to identify an important belief they hold that few other people share.", why: "The question exposes whether a strategy comes from independent reasoning or from repeating accepted assumptions.", example: "Write one industry belief you doubt, then list the evidence that would prove you wrong.", reference: "The contrarian question" },
+    { title: "Distribution belongs in the product plan", explanation: "The book treats sales and distribution as essential parts of building a company, not as work that begins after the product is finished.", why: "A strong product creates no impact if the right people never discover, trust, or adopt it.", example: "Choose one realistic path through which the first hundred users will hear about the product and decide to try it.", reference: "Sales and distribution" }
+  ],
   "The Lean Startup": [
     { title: "Learning must be validated", explanation: "Ries argues that startup progress should be measured by evidence about customers and a business model, not only by completed features.", why: "It makes uncertainty something a team can test.", example: "State the riskiest customer assumption and design the smallest credible test that could disconfirm it.", reference: "Validated learning" },
     { title: "An MVP is an experiment", explanation: "A minimum viable product is meant to test a specific assumption with the least work needed for reliable learning, not excuse permanently poor quality.", why: "It prevents teams from confusing speed with carelessness.", example: "Write the question the MVP must answer before deciding what can be omitted.", reference: "Minimum viable product" }
@@ -890,14 +903,52 @@ export const bookChapters: BookChapter[] = books.flatMap((book) => {
       id: `${book.id}-chapter-core`,
       bookId: book.id,
       title: "Core ideas",
-      overview: `Chapter-level knowledge is still being built for ${book.title}. Start with the central concepts readers discuss most.`,
+      overview: `Start with the concepts readers use most often to explain, apply, and challenge ${book.title}.`,
       conceptIds: concepts.map((concept) => concept.id)
     }
   ] : [];
 });
 
+const knowledgePreviewOverrides: Record<string, Omit<BookKnowledgePreview, "bookId">> = {
+  "Zero to One": {
+    coreThesis: "Zero to One argues that meaningful progress comes from creating new value, not only competing inside familiar models. Its most useful questions concern what makes an idea genuinely different, why a company can remain distinctive, and how product, distribution, people, and timing work together.",
+    helps: [
+      "Founders deciding whether an idea is truly differentiated.",
+      "Product builders shaping an early market and distribution plan.",
+      "Independent thinkers testing accepted assumptions about innovation."
+    ],
+    limitations: [
+      "The book is a founder's framework, not a step-by-step operating manual.",
+      "Its strongest claims about competition and monopoly should be debated rather than copied as universal rules.",
+      "The examples reflect a particular technology-investing context and do not transfer equally to every industry."
+    ],
+    fullBookDecision: {
+      readFullBookIf: [
+        "You are choosing, founding, or shaping a new company.",
+        "You want the complete reasoning and examples behind its contrarian claims.",
+        "You want to challenge your assumptions about competition, distribution, and innovation."
+      ],
+      previewEnoughIf: [
+        "You need the central questions before evaluating a startup idea.",
+        "You are comparing several approaches to entrepreneurship.",
+        "You mainly want the reader applications and disagreements."
+      ],
+      chooseAnotherIf: [
+        "You need a tactical guide to customer interviews or daily operations.",
+        "You want broad evidence across many industries rather than a contrarian technology thesis.",
+        "You need a beginner guide to launching a small, conventional business."
+      ],
+      fullBookAdds: "The full book adds the argument's progression, examples, and sharper context around its controversial claims. Read it when those claims affect a real company decision; use BookSphere first when you need orientation and multiple reader interpretations.",
+      depth: "Practical",
+      timeCommitment: "About 4 focused hours"
+    }
+  }
+};
+
 export const bookKnowledgePreviews: BookKnowledgePreview[] = books.filter((book) => book.editorialStatus === "verified").map((book) => {
   const genre = primaryGenre(book);
+  const override = knowledgePreviewOverrides[book.title];
+  if (override) return { bookId: book.id, ...override };
   return {
     bookId: book.id,
     coreThesis: `${book.description} ${book.whyMatters}`,
@@ -1119,7 +1170,7 @@ export function getRecentlyAdded(genre?: string, max = 10) {
 }
 
 export function getBookActivityLine(book: Book, signal: DiscoveryShelf["signal"] = "discussions") {
-  if (signal === "editorial") return book.editorialStatus === "verified" ? "Source-reviewed preview" : "Catalog entry";
+  if (signal === "editorial") return book.editorialStatus === "verified" ? "Knowledge guide" : "Reader discussion";
   if (signal === "insights") return `💡 ${book.insightCount} reader insights`;
   if (signal === "saves") return `❤️ ${book.saveCount} saves`;
   if (signal === "recommendations") {

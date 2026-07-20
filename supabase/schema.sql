@@ -377,6 +377,14 @@ create table if not exists saved_insights (
   unique (user_id, discussion_post_id)
 );
 
+create table if not exists saved_knowledge_posts (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references profiles(id) on delete cascade,
+  knowledge_post_id uuid not null references knowledge_posts(id) on delete cascade,
+  created_at timestamptz not null default now(),
+  unique (user_id, knowledge_post_id)
+);
+
 create table if not exists followed_discussions (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references profiles(id) on delete cascade,
@@ -428,6 +436,8 @@ create table if not exists editorial_picks (
 
 create index if not exists saved_insights_user_idx on saved_insights(user_id, created_at desc);
 create index if not exists saved_insights_post_idx on saved_insights(discussion_post_id, created_at desc);
+create index if not exists saved_knowledge_posts_user_idx on saved_knowledge_posts(user_id, created_at desc);
+create index if not exists saved_knowledge_posts_post_idx on saved_knowledge_posts(knowledge_post_id, created_at desc);
 create index if not exists followed_discussions_user_idx on followed_discussions(user_id, created_at desc);
 create index if not exists followed_discussions_post_idx on followed_discussions(discussion_post_id, created_at desc);
 create index if not exists post_awards_post_idx on post_awards(discussion_post_id, award_type);
@@ -436,6 +446,7 @@ create index if not exists reading_path_books_path_idx on reading_path_books(rea
 create index if not exists editorial_picks_week_idx on editorial_picks(week_start desc, order_index);
 
 alter table saved_insights enable row level security;
+alter table saved_knowledge_posts enable row level security;
 alter table followed_discussions enable row level security;
 alter table post_awards enable row level security;
 alter table reading_paths enable row level security;
@@ -446,6 +457,9 @@ drop policy if exists "Saved insights are readable" on saved_insights;
 drop policy if exists "Users read own saved insights" on saved_insights;
 drop policy if exists "Users insert own saved insights" on saved_insights;
 drop policy if exists "Users delete own saved insights" on saved_insights;
+drop policy if exists "Users read own saved knowledge posts" on saved_knowledge_posts;
+drop policy if exists "Users insert own saved knowledge posts" on saved_knowledge_posts;
+drop policy if exists "Users delete own saved knowledge posts" on saved_knowledge_posts;
 drop policy if exists "Followed discussions are readable" on followed_discussions;
 drop policy if exists "Users read own followed discussions" on followed_discussions;
 drop policy if exists "Users insert own followed discussions" on followed_discussions;
@@ -464,6 +478,16 @@ create policy "Users insert own saved insights" on saved_insights
 for insert to authenticated
 with check (exists (select 1 from profiles p where p.id = user_id and p.auth_user_id = (select auth.uid())));
 create policy "Users delete own saved insights" on saved_insights
+for delete to authenticated
+using (exists (select 1 from profiles p where p.id = user_id and p.auth_user_id = (select auth.uid())));
+
+create policy "Users read own saved knowledge posts" on saved_knowledge_posts
+for select to authenticated
+using (exists (select 1 from profiles p where p.id = user_id and p.auth_user_id = (select auth.uid())));
+create policy "Users insert own saved knowledge posts" on saved_knowledge_posts
+for insert to authenticated
+with check (exists (select 1 from profiles p where p.id = user_id and p.auth_user_id = (select auth.uid())));
+create policy "Users delete own saved knowledge posts" on saved_knowledge_posts
 for delete to authenticated
 using (exists (select 1 from profiles p where p.id = user_id and p.auth_user_id = (select auth.uid())));
 

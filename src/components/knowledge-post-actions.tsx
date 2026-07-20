@@ -197,11 +197,11 @@ export function KnowledgePostActions({ post, onUpdated, onDeleted }: {
   return (
     <div className="mt-8 border-t border-[color:var(--color-hairline)] pt-5">
       <div className="flex flex-wrap items-center gap-2 text-sm font-medium text-[color:var(--color-text-secondary)]">
-        <button type="button" onClick={toggleLike} className="inline-flex min-h-10 items-center gap-2 rounded-full bg-black/[0.035] px-3 transition hover:bg-black/[0.06]" aria-pressed={liked}>
+        <button type="button" onClick={toggleLike} className="inline-flex min-h-10 items-center gap-2 rounded-full bg-black/[0.035] px-3 transition hover:bg-black/[0.06]" aria-label={liked ? "Remove like from this post" : "Like this post"} aria-pressed={liked}>
           <Heart size={16} className={liked ? "fill-[color:var(--color-rose)] text-[color:var(--color-rose)]" : ""} />
           {visibleLikes}
         </button>
-        <button type="button" onClick={openComments} className="inline-flex min-h-10 items-center gap-2 rounded-full bg-black/[0.035] px-3 transition hover:bg-black/[0.06]">
+        <button type="button" onClick={openComments} className="inline-flex min-h-10 items-center gap-2 rounded-full bg-black/[0.035] px-3 transition hover:bg-black/[0.06]" aria-label={`View ${post.comments} ${post.comments === 1 ? "comment" : "comments"}`}>
           <MessageCircle size={16} /> {post.comments}
         </button>
         <button type="button" onClick={sharePost} className="inline-flex min-h-10 items-center gap-2 rounded-full bg-black/[0.035] px-3 transition hover:bg-black/[0.06]">

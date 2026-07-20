@@ -5,7 +5,9 @@ import { getSupabaseKnowledgePosts } from "@/lib/knowledge-posts";
 
 export const dynamic = "force-dynamic";
 
-export default async function FeedPage() {
+export default async function FeedPage({ searchParams }: { searchParams?: Promise<{ topic?: string }> }) {
+  const params = searchParams ? await searchParams : {};
+  const initialTopic = params.topic?.trim().slice(0, 80) || "";
   const persistedPosts = await getSupabaseKnowledgePosts(24);
   const posts = [...persistedPosts, ...knowledgePosts].filter(
     (post, index, all) => all.findIndex((item) => item.id === post.id) === index
@@ -21,7 +23,7 @@ export default async function FeedPage() {
         </p>
       </header>
 
-      <FeedComposer />
+      <FeedComposer initialTopic={initialTopic} />
 
       <section className="mt-8">
         <div className="mb-4 flex items-end justify-between gap-4">

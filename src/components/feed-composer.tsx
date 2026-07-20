@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { BookOpen, CheckCircle2, Plus, Send } from "lucide-react";
+import { BookOpen, CheckCircle2, Plus, Send, Sparkles } from "lucide-react";
 import { requireProfile } from "@/lib/auth-client";
 import { canUseLocalCommunityFallback } from "@/lib/community-runtime";
 import { createSupabaseKnowledgePost, knowledgePostTitleFromBody } from "@/lib/knowledge-posts";
@@ -20,11 +20,19 @@ function storeLocalPost(post: KnowledgePost) {
   }
 }
 
-export function FeedComposer() {
+export function FeedComposer({
+  initialTopic = "",
+  compact = false,
+  onPublished
+}: {
+  initialTopic?: string;
+  compact?: boolean;
+  onPublished?: (post: KnowledgePost) => void;
+}) {
   const [thought, setThought] = useState("");
-  const [topic, setTopic] = useState("");
+  const [topic, setTopic] = useState(initialTopic);
   const [referenceTitle, setReferenceTitle] = useState("");
-  const [showContext, setShowContext] = useState(false);
+  const [showContext, setShowContext] = useState(!compact && Boolean(initialTopic));
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
   const [published, setPublished] = useState(false);
@@ -78,8 +86,9 @@ export function FeedComposer() {
 
       storeLocalPost(post);
       window.dispatchEvent(new CustomEvent("booksphere:knowledge-post-created", { detail: post }));
+      onPublished?.(post);
       setThought("");
-      setTopic("");
+      setTopic(compact ? initialTopic : "");
       setReferenceTitle("");
       setShowContext(false);
       setPublished(true);
@@ -92,10 +101,13 @@ export function FeedComposer() {
   }
 
   return (
-    <form data-onboarding="feed-composer" onSubmit={submit} className="rounded-[26px] bg-white p-4 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-5">
+    <form data-onboarding="feed-composer" onSubmit={submit} className={`rounded-[26px] bg-white shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] ${compact ? "p-4" : "p-4 md:p-5"}`}>
       <div className="flex gap-3">
-        <div className="grid size-10 shrink-0 place-items-center rounded-full bg-[color:var(--color-text-primary)] text-sm font-semibold text-white">N</div>
+        <div className="grid size-10 shrink-0 place-items-center rounded-full bg-[color:var(--color-text-primary)] text-sm font-semibold text-white">
+          {compact ? <Sparkles size={17} /> : "N"}
+        </div>
         <div className="min-w-0 flex-1">
+          {compact && initialTopic && <p className="caption mb-2 text-[10px]">About {initialTopic}</p>}
           <label htmlFor="feed-thought" className="sr-only">Share what you learned or noticed</label>
           <textarea
             id="feed-thought"
@@ -104,12 +116,12 @@ export function FeedComposer() {
               setThought(event.target.value);
               if (error) setError("");
             }}
-            rows={3}
+            rows={compact ? 2 : 3}
             maxLength={2000}
-            placeholder="What did you learn, notice, try, or change?"
+            placeholder={initialTopic ? `What did you notice about ${initialTopic}?` : "What did you learn, notice, try, or change?"}
             className="w-full resize-none border-0 bg-transparent text-[17px] font-medium leading-7 text-[color:var(--color-text-primary)] outline-none placeholder:text-[color:var(--color-text-muted)]"
           />
-          {showContext && (
+          {!compact && showContext && (
             <div className="mt-3 grid gap-2 border-t border-[color:var(--color-hairline)] pt-3 sm:grid-cols-2">
               <input value={topic} onChange={(event) => setTopic(event.target.value)} maxLength={80} placeholder="Topic (optional)" className="min-h-11 rounded-[16px] bg-black/[0.035] px-4 text-sm font-medium outline-none focus:ring-1 focus:ring-black/15" />
               <input value={referenceTitle} onChange={(event) => setReferenceTitle(event.target.value)} maxLength={200} placeholder="Book or source (optional)" className="min-h-11 rounded-[16px] bg-black/[0.035] px-4 text-sm font-medium outline-none focus:ring-1 focus:ring-black/15" />
@@ -118,10 +130,12 @@ export function FeedComposer() {
           {error && <p role="alert" className="mt-3 text-sm font-medium text-[color:var(--color-rose)]">{error}</p>}
           {notice && <LoginRequiredNotice message={notice} onDismiss={() => setNotice("")} />}
           <div className="mt-3 flex items-center gap-2 border-t border-[color:var(--color-hairline)] pt-3">
-            <button type="button" onClick={() => setShowContext((value) => !value)} className="inline-flex min-h-10 items-center gap-2 rounded-full px-3 text-sm font-medium text-[color:var(--color-text-secondary)] transition hover:bg-black/[0.035] hover:text-[color:var(--color-text-primary)]">
-              {showContext ? <BookOpen size={16} /> : <Plus size={16} />}
-              Add context
-            </button>
+            {!compact && (
+              <button type="button" onClick={() => setShowContext((value) => !value)} className="inline-flex min-h-10 items-center gap-2 rounded-full px-3 text-sm font-medium text-[color:var(--color-text-secondary)] transition hover:bg-black/[0.035] hover:text-[color:var(--color-text-primary)]">
+                {showContext ? <BookOpen size={16} /> : <Plus size={16} />}
+                Add context
+              </button>
+            )}
             <button type="submit" disabled={publishing || thought.trim().length < MIN_POST_LENGTH} className="ml-auto inline-flex min-h-10 items-center gap-2 rounded-full bg-[color:var(--color-text-primary)] px-4 text-sm font-medium !text-white transition hover:opacity-85 disabled:cursor-not-allowed disabled:opacity-35">
               <Send size={15} />
               {publishing ? "Sharing" : "Share"}

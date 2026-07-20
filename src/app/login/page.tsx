@@ -1,6 +1,8 @@
 import { LoginForm } from "@/components/login-form";
 
-export default function LoginPage() {
+export default async function LoginPage({ searchParams }: { searchParams: Promise<{ next?: string }> }) {
+  const { next } = await searchParams;
+
   return (
     <div className="editorial-page grid max-w-6xl gap-8 lg:grid-cols-[minmax(0,1fr)_420px] lg:gap-10">
       <section className="flex flex-col justify-center">
@@ -10,7 +12,7 @@ export default function LoginPage() {
           Log in to save books, recommend titles, follow thoughtful readers, and share perspectives that help other readers think more clearly.
         </p>
       </section>
-      <LoginForm />
+      <LoginForm next={next} />
     </div>
   );
 }

@@ -38,6 +38,7 @@ export default async function BookPage({ params, searchParams }: { params: Promi
   const ideas = getBookIdeas(book.id);
   const preview = getBookKnowledgePreview(book.id);
   const clusters = getPerspectiveClustersForBook(book.id, posts);
+  const activeClusters = clusters.filter((cluster) => cluster.posts.length > 0);
   const concepts = getBookConcepts(book.id);
   const chapters = getBookChapters(book.id);
 
@@ -54,11 +55,21 @@ export default async function BookPage({ params, searchParams }: { params: Promi
           </div>
           <h1 className="large-title mt-6 max-w-4xl">{book.title}</h1>
           <p className="headline mt-4 text-[color:var(--color-text-secondary)]">{book.author}</p>
-          <p className="body-copy mt-6 max-w-3xl">{book.description}</p>
+          <div className="mt-6 grid gap-5 border-y border-[color:var(--color-hairline)] py-5 sm:grid-cols-[minmax(0,1fr)_minmax(220px,0.45fr)] sm:gap-8">
+            <div>
+              <p className="caption text-[10px]">What this book is about</p>
+              <p className="mt-2 max-w-3xl text-base leading-7 text-[color:var(--color-text-primary)]">{book.description}</p>
+            </div>
+            <div>
+              <p className="caption text-[10px]">Who it is for</p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {book.bestForTags.slice(0, 3).map((tag) => <span key={tag} className="rounded-full bg-black/[0.035] px-3 py-1.5 text-sm font-medium text-[color:var(--color-text-secondary)]">{tag}</span>)}
+              </div>
+            </div>
+          </div>
           <div className="mt-5 flex flex-wrap gap-2">
             <span className="rounded-full bg-black/[0.035] px-3 py-1.5 text-sm font-medium text-[color:var(--color-text-secondary)]">{book.publicationLabel}</span>
-            <span className="rounded-full bg-black/[0.035] px-3 py-1.5 text-sm font-medium text-[color:var(--color-text-secondary)]">{preview?.fullBookDecision.depth || "Practical"} depth</span>
-            <span className="rounded-full bg-black/[0.035] px-3 py-1.5 text-sm font-medium text-[color:var(--color-text-secondary)]">{book.editorialStatus === "verified" ? "Source-reviewed preview" : "Editorial review in progress"}</span>
+            {preview && <span className="rounded-full bg-black/[0.035] px-3 py-1.5 text-sm font-medium text-[color:var(--color-text-secondary)]">{preview.fullBookDecision.timeCommitment}</span>}
             <span className="rounded-full bg-black/[0.035] px-3 py-1.5 text-sm font-medium text-[color:var(--color-text-secondary)]">{posts.length} perspectives</span>
           </div>
 
@@ -67,8 +78,8 @@ export default async function BookPage({ params, searchParams }: { params: Promi
           </div>
 
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <a href="#knowledge-preview" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-medium !text-white transition hover:opacity-85">
-              <BookOpen size={17} /> Get the useful ideas
+            <a href={preview ? "#knowledge-preview" : "#discussions"} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-medium !text-white transition hover:opacity-85">
+              <BookOpen size={17} /> {preview ? "Learn the useful ideas" : "Read reader perspectives"}
             </a>
             <Link href={`/book/${book.id}/create-discussion`} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium text-[color:var(--color-text-primary)] shadow-[var(--shadow-soft)] ring-1 ring-black/[0.04] transition hover:bg-black/[0.035]">
               <PenLine size={17} /> Share Insight
@@ -78,20 +89,19 @@ export default async function BookPage({ params, searchParams }: { params: Promi
       </section>
 
       <section aria-label="Explore this book" className="mt-10 grid grid-cols-3 divide-x divide-[color:var(--color-hairline)] border-y border-[color:var(--color-hairline)] py-3">
-        <BookOutcomeLink href="#knowledge-preview" icon={<BookOpen size={17} />} label="Useful ideas" />
+        <BookOutcomeLink href={preview ? "#knowledge-preview" : "#discussions"} icon={<BookOpen size={17} />} label={preview ? "Useful ideas" : "Reader insights"} />
         <BookOutcomeLink href="#perspective-map" icon={<MessageCircle size={17} />} label="Reader views" />
-        <BookOutcomeLink href="#full-book-decision" icon={<Scale size={17} />} label="Worth reading?" />
+        <BookOutcomeLink href={preview ? "#full-book-decision" : "#discussions"} icon={<Scale size={17} />} label={preview ? "Worth reading?" : "Open threads"} />
       </section>
 
-      <section id="knowledge-preview" className="mt-8 scroll-mt-24">
-        <div className="rounded-[32px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-8">
-          {preview ? (
-            <>
-              <p className="caption">Knowledge Preview</p>
-              <h2 className="title-3 mt-3">The book&apos;s practical knowledge layer</h2>
-              <p className="body-copy mt-4">{preview.coreThesis}</p>
-              <p className="mt-4 rounded-[20px] bg-[#f7f2e8] p-4 text-sm font-medium leading-6 text-[color:var(--color-text-primary)]">
-                This is an editorial orientation, not a substitute for the author&apos;s full argument. Use the source record and reader perspectives to test it.
+      {preview && (
+        <section id="knowledge-preview" className="mt-8 scroll-mt-24">
+          <div className="rounded-[32px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-8">
+              <p className="caption">Learn this book</p>
+              <h2 className="title-3 mt-3">The useful ideas, explained simply</h2>
+              <p className="body-copy mt-4 max-w-4xl">{preview.coreThesis}</p>
+              <p className="mt-4 text-sm font-medium leading-6 text-[color:var(--color-text-secondary)]">
+                Start here for orientation. Then compare how readers applied, challenged, or limited each idea.
               </p>
               <div className="mt-6 grid gap-3 sm:grid-cols-2">
                 {ideas.map((idea) => (
@@ -104,49 +114,31 @@ export default async function BookPage({ params, searchParams }: { params: Promi
                   </div>
                 ))}
               </div>
-              <div className="mt-8 border-t border-[color:var(--color-hairline)] pt-6">
-                <p className="caption">Who this book helps</p>
-                <div className="mt-4 grid gap-2">
-                  {preview.helps.map((item) => <p key={item} className="body-copy text-[15px] leading-6">{item}</p>)}
-                </div>
-              </div>
               {book.sourceLinks.length > 0 && (
                 <div className="mt-6 border-t border-[color:var(--color-hairline)] pt-5">
-                  <p className="footnote mb-3">Sources used for this orientation</p>
+                  <p className="footnote mb-3">Book source</p>
                   <div className="flex flex-wrap gap-2">
                     {book.sourceLinks.map((source) => <a key={source.url} href={source.url} target="_blank" rel="noreferrer" className="rounded-full bg-black/[0.035] px-3 py-1.5 text-sm font-medium text-[color:var(--color-text-secondary)] transition hover:bg-black/[0.065]">{source.label}</a>)}
                   </div>
                 </div>
               )}
-            </>
-          ) : (
-            <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-              <div className="max-w-3xl">
-                <p className="caption">Knowledge preview</p>
-                <h2 className="title-3 mt-2">The verified overview is coming soon</h2>
-                <p className="body-copy mt-3 text-[15px] leading-6">We have not published a summary for this title yet. Reader perspectives are available now.</p>
-              </div>
-              <a href="#discussions" className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-medium !text-white transition hover:opacity-85">
-                Read perspectives
-              </a>
-            </div>
-          )}
-        </div>
-      </section>
+          </div>
+        </section>
+      )}
 
       <section id="perspective-map" className="mt-6 scroll-mt-24 rounded-[32px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-8">
         <div className="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
           <div>
-            <p className="caption mb-2">Perspective Map</p>
-            <h2 className="title-3">Understand it through people</h2>
-            <p className="subheadline mt-2 max-w-3xl">Reader contributions grouped by how they help: applications, summaries, disagreements, questions, and limits.</p>
+            <p className="caption mb-2">Reader perspectives</p>
+            <h2 className="title-3">See where the ideas worked, failed, or changed</h2>
+            <p className="subheadline mt-2 max-w-3xl">Only perspectives readers have actually contributed appear here.</p>
           </div>
           <a href="#discussions" className="text-sm font-medium text-[color:var(--color-text-primary)] transition hover:opacity-70">
             Open discussions
           </a>
         </div>
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {clusters.map((cluster) => (
+          {activeClusters.map((cluster) => (
             <div key={cluster.key} className="rounded-[24px] bg-black/[0.025] p-5">
               <div className="flex items-start justify-between gap-3">
                 <div>
@@ -162,21 +154,25 @@ export default async function BookPage({ params, searchParams }: { params: Promi
                   <p className="mt-1 line-clamp-2 text-xs leading-5 text-[color:var(--color-text-muted)]">{cluster.posts[0].body}</p>
                 </a>
               )}
-              {!cluster.posts.length && (
-                <Link href={`/book/${book.id}/create-discussion`} className="mt-4 inline-flex min-h-11 items-center rounded-full bg-white px-4 py-2 text-sm font-medium text-[color:var(--color-text-primary)] ring-1 ring-black/[0.04] transition hover:bg-black/[0.035]">
-                  Add the first perspective
-                </Link>
-              )}
             </div>
           ))}
         </div>
+        {!activeClusters.length && (
+          <div className="flex flex-col gap-4 rounded-[24px] bg-black/[0.025] p-5 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-sm leading-6 text-[color:var(--color-text-secondary)]">No reader perspective has been added yet. Share what you applied, questioned, or disagreed with.</p>
+            <Link href={`/book/${book.id}/create-discussion`} className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-medium text-[color:var(--color-text-primary)] ring-1 ring-black/[0.04] transition hover:bg-black/[0.035]">
+              Add a perspective
+            </Link>
+          </div>
+        )}
       </section>
 
-      <section className="mt-6 grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+      {preview && (
+      <section className="mt-6 grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
         <div className="rounded-[32px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-8">
-          <p className="caption">Chapter and concept knowledge</p>
-          <h2 className="title-3 mt-3">Concepts readers can build around</h2>
-          <p className="body-copy mt-3 text-[15px] leading-6">{chapters[0]?.overview || `Chapter-level knowledge is still being built for ${book.title}.`}</p>
+          <p className="caption">Key concepts</p>
+          <h2 className="title-3 mt-3">The language readers use</h2>
+          <p className="body-copy mt-3 text-[15px] leading-6">{chapters[0]?.overview}</p>
           <div className="mt-5 flex flex-wrap gap-2">
             {concepts.slice(0, 6).map((concept) => (
               <span key={concept.id} className="rounded-full bg-black/[0.035] px-3 py-2 text-sm font-medium text-[color:var(--color-text-secondary)]">{concept.name}</span>
@@ -185,19 +181,22 @@ export default async function BookPage({ params, searchParams }: { params: Promi
         </div>
         <div id="full-book-decision" className="scroll-mt-24 rounded-[32px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-8">
           <p className="caption">Should you read the full book?</p>
-          <h2 className="title-3 mt-3">A balanced decision</h2>
-          {preview ? (
-            <>
+          <h2 className="title-3 mt-3">Decide before committing the time</h2>
               <p className="body-copy mt-3 text-[15px] leading-6">{preview.fullBookDecision.fullBookAdds}</p>
               <div className="mt-5 grid gap-4 md:grid-cols-3">
                 <DecisionList title="Read it if" items={preview.fullBookDecision.readFullBookIf} />
                 <DecisionList title="Preview may be enough if" items={preview.fullBookDecision.previewEnoughIf} />
                 <DecisionList title="Choose another if" items={preview.fullBookDecision.chooseAnotherIf} />
               </div>
-            </>
-          ) : <p className="body-copy mt-3 text-[15px] leading-6">Reading guidance will appear after the book-specific editorial review is complete.</p>}
+              <div className="mt-6 border-t border-[color:var(--color-hairline)] pt-5">
+                <p className="caption text-[10px]">Keep in mind</p>
+                <ul className="mt-3 grid gap-2 text-sm leading-6 text-[color:var(--color-text-secondary)]">
+                  {preview.limitations.map((item) => <li key={item}>• {item}</li>)}
+                </ul>
+              </div>
         </div>
       </section>
+      )}
 
       <section id="discussions" className="scroll-mt-24 border-t border-[color:var(--color-hairline)] pt-12 md:pt-16">
         <div className="mb-6 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">

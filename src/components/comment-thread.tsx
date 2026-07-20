@@ -200,6 +200,7 @@ export function CommentThread({ postId, targetType = "discussion_post", onCountC
   }
 
   async function deleteComment(commentId: string) {
+    if (!window.confirm("Delete this comment? This cannot be undone.")) return;
     const auth = await requireProfile();
     if (!auth.ok) {
       setNotice(auth.message);
@@ -277,7 +278,7 @@ export function CommentThread({ postId, targetType = "discussion_post", onCountC
       </div>
       <div className="mt-4 grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]">
         <input maxLength={4000} value={body} onChange={(event) => setBody(event.target.value)} placeholder="Add a useful response..." aria-label="Write a comment" className="min-h-11 min-w-0 flex-1 rounded-full bg-black/[0.035] px-4 py-3 text-base font-medium outline-none ring-1 ring-transparent focus:ring-black/20" />
-        <button type="button" onClick={submitTopLevel} className="min-h-11 rounded-full bg-[color:var(--color-text-primary)] px-4 py-3 text-sm font-medium !text-white">Post</button>
+        <button type="button" disabled={body.trim().length < 3} onClick={submitTopLevel} className="min-h-11 rounded-full bg-[color:var(--color-text-primary)] px-4 py-3 text-sm font-medium !text-white disabled:cursor-not-allowed disabled:opacity-35">Post</button>
       </div>
       {notice && <LoginRequiredNotice message={notice} onDismiss={() => setNotice("")} />}
       {error && <p role="alert" className="mt-3 rounded-[16px] bg-[color:var(--color-rose)]/10 px-4 py-3 text-sm font-medium text-[color:var(--color-rose)]">{error}</p>}
@@ -315,7 +316,7 @@ export function CommentThread({ postId, targetType = "discussion_post", onCountC
               <div className="mt-2 grid gap-2">
                 <textarea maxLength={4000} rows={3} value={editBody} onChange={(event) => setEditBody(event.target.value)} aria-label="Edit comment" className="w-full rounded-[14px] bg-black/[0.035] px-3 py-2 text-sm leading-6 outline-none ring-1 ring-transparent focus:ring-black/20" />
                 <div className="flex gap-2">
-                  <button type="button" onClick={() => saveEdit(comment.id)} className="min-h-9 rounded-full bg-[color:var(--color-text-primary)] px-4 text-xs font-medium !text-white">Save</button>
+                  <button type="button" disabled={editBody.trim().length < 3} onClick={() => saveEdit(comment.id)} className="min-h-9 rounded-full bg-[color:var(--color-text-primary)] px-4 text-xs font-medium !text-white disabled:cursor-not-allowed disabled:opacity-35">Save</button>
                   <button type="button" onClick={() => setEditingId(null)} className="min-h-9 rounded-full bg-black/[0.035] px-4 text-xs font-medium">Cancel</button>
                 </div>
               </div>
@@ -329,7 +330,7 @@ export function CommentThread({ postId, targetType = "discussion_post", onCountC
             {replyingTo === comment.id && (
               <div className="mt-2 grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]">
                 <input autoFocus maxLength={4000} value={replyBody} onChange={(event) => setReplyBody(event.target.value)} placeholder={`Reply to ${comment.name}`} aria-label={`Reply to ${comment.name}`} className="min-h-10 min-w-0 rounded-full bg-black/[0.035] px-3 text-sm font-medium outline-none ring-1 ring-transparent focus:ring-black/20" />
-                <button type="button" onClick={() => submitReply(comment.id)} className="min-h-10 rounded-full bg-[color:var(--color-text-primary)] px-4 text-xs font-medium !text-white">Reply</button>
+                <button type="button" disabled={replyBody.trim().length < 3} onClick={() => submitReply(comment.id)} className="min-h-10 rounded-full bg-[color:var(--color-text-primary)] px-4 text-xs font-medium !text-white disabled:cursor-not-allowed disabled:opacity-35">Reply</button>
               </div>
             )}
           </article>

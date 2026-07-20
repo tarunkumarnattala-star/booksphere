@@ -55,15 +55,23 @@ export function knowledgePostTitleFromBody(body: string) {
 }
 
 export async function getKnowledgePostViewerState(profileId: string, postId: string) {
-  if (!supabase) return { liked: false };
-  const { data } = await supabase
-    .from("likes")
-    .select("id")
-    .eq("user_id", profileId)
-    .eq("target_type", "knowledge_post")
-    .eq("target_id", postId)
-    .maybeSingle();
-  return { liked: Boolean(data) };
+  if (!supabase) return { liked: false, saved: false };
+  const [likeResult, saveResult] = await Promise.all([
+    supabase
+      .from("likes")
+      .select("id")
+      .eq("user_id", profileId)
+      .eq("target_type", "knowledge_post")
+      .eq("target_id", postId)
+      .maybeSingle(),
+    supabase
+      .from("saved_knowledge_posts")
+      .select("id")
+      .eq("user_id", profileId)
+      .eq("knowledge_post_id", postId)
+      .maybeSingle()
+  ]);
+  return { liked: Boolean(likeResult.data), saved: Boolean(saveResult.data) };
 }
 
 export async function toggleSupabaseKnowledgePostLike(profileId: string, postId: string, adding: boolean) {
@@ -76,6 +84,18 @@ export async function toggleSupabaseKnowledgePostLike(profileId: string, postId:
     : supabase.from("likes").delete().eq("user_id", profileId).eq("target_type", "knowledge_post").eq("target_id", postId);
   const { error } = await query;
   return { error: error ? "We could not save your like. Please try again." : null };
+}
+
+export async function toggleSupabaseKnowledgePostSave(profileId: string, postId: string, adding: boolean) {
+  if (!supabase) return { error: "Community actions are temporarily unavailable." };
+  const query = adding
+    ? supabase.from("saved_knowledge_posts").upsert(
+        { user_id: profileId, knowledge_post_id: postId },
+        { onConflict: "user_id,knowledge_post_id" }
+      )
+    : supabase.from("saved_knowledge_posts").delete().eq("user_id", profileId).eq("knowledge_post_id", postId);
+  const { error } = await query;
+  return { error: error ? "We could not save this post. Please try again." : null };
 }
 
 export async function updateSupabaseKnowledgePost(profileId: string, postId: string, input: {

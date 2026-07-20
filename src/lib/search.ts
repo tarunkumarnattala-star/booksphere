@@ -1,4 +1,5 @@
 import { Book, DiscussionPost, Genre, KnowledgePost, Profile, ReadingPath } from "./types";
+import { findKnowledgeConcept, getRelatedKnowledgeConcepts, knowledgeConcepts, type KnowledgeConcept } from "./concepts";
 
 export type BookSearchResult = {
   book: Book;
@@ -273,7 +274,7 @@ export type KnowledgeSearchData = {
 };
 
 export type KnowledgeResultBase = {
-  type: "book" | "discussion" | "reading_path";
+  type: "book" | "discussion" | "knowledge_post" | "reading_path" | "concept";
   id: string;
   title: string;
   subtitle: string;
@@ -296,18 +297,30 @@ export type KnowledgeDiscussionResult = KnowledgeResultBase & {
   coverUrl?: string;
 };
 
+export type KnowledgePostResult = KnowledgeResultBase & {
+  type: "knowledge_post";
+  post: KnowledgePost;
+};
+
 export type KnowledgeReadingPathResult = KnowledgeResultBase & {
   type: "reading_path";
   path: ReadingPath;
   books: Book[];
 };
 
-export type KnowledgeSearchResult = KnowledgeBookResult | KnowledgeDiscussionResult | KnowledgeReadingPathResult;
+export type KnowledgeConceptResult = KnowledgeResultBase & {
+  type: "concept";
+  concept: KnowledgeConcept;
+};
+
+export type KnowledgeSearchResult = KnowledgeBookResult | KnowledgeDiscussionResult | KnowledgePostResult | KnowledgeReadingPathResult | KnowledgeConceptResult;
 
 export type KnowledgeSearchResponse = {
+  concept?: KnowledgeConceptResult;
   bestMatch?: KnowledgeSearchResult;
   books: KnowledgeBookResult[];
   discussions: KnowledgeDiscussionResult[];
+  knowledgePosts: KnowledgePostResult[];
   readingPaths: KnowledgeReadingPathResult[];
   relatedIdeas: string[];
   readersAlsoContinuedWith: KnowledgeBookResult[];
@@ -593,6 +606,20 @@ function bookResult(book: Book, score: number, matchReason: string): KnowledgeBo
   };
 }
 
+function conceptResult(concept: KnowledgeConcept): KnowledgeConceptResult {
+  return {
+    type: "concept",
+    id: concept.id,
+    concept,
+    title: concept.name,
+    subtitle: concept.question,
+    description: concept.definition,
+    matchReason: "Concept explained",
+    knowledgeMatchScore: 100,
+    destinationUrl: `/search?q=${encodeURIComponent(concept.name)}`
+  };
+}
+
 function getRelatedIdeasFromQuery(query: string, bestBook?: Book, intentContext?: ReturnType<typeof contextForIntent>) {
   const ideas = new Set<string>();
   if (bestBook) (bookIdeaMap[bestBook.id] || [...bestBook.mostDiscussedThemes, ...bestBook.bestForTags]).forEach((idea) => ideas.add(idea));
@@ -666,13 +693,16 @@ export function searchKnowledge(query: string, data: KnowledgeSearchData): Knowl
     ...data.books.flatMap((book) => [book.title, book.author, ...book.genres, ...book.mostDiscussedThemes, ...book.bestForTags]),
     ...data.genres.map((genre) => genre.name),
     ...data.discussions.map((discussion) => discussion.title),
-    ...data.readingPaths.map((path) => path.title)
+    ...data.readingPaths.map((path) => path.title),
+    ...knowledgeConcepts.flatMap((concept) => [concept.name, concept.question, ...concept.searchTerms])
   ]);
   const normalized = normalizeSearchText(correctedQuery);
   if (!normalized) {
     return {
+      concept: undefined,
       books: [],
       discussions: [],
+      knowledgePosts: [],
       readingPaths: [],
       relatedIdeas: [],
       readersAlsoContinuedWith: [],
@@ -682,8 +712,9 @@ export function searchKnowledge(query: string, data: KnowledgeSearchData): Knowl
   }
 
   const intentContext = contextForIntent(correctedQuery);
+  const matchedConcept = findKnowledgeConcept(correctedQuery);
 
-  const books = data.books
+  const organicBooks = data.books
     .map((book) => {
       const { score, reason } = calculateBookScore(book, correctedQuery, intentContext);
       return bookResult(book, score, reason);
@@ -697,12 +728,25 @@ export function searchKnowledge(query: string, data: KnowledgeSearchData): Knowl
       return b.knowledgeMatchScore - a.knowledgeMatchScore || b.book.discussionCount - a.book.discussionCount || a.title.localeCompare(b.title);
     });
 
+  const conceptBooks = (matchedConcept?.bookIds || [])
+    .map((id) => data.books.find((book) => book.id === id))
+    .filter((book): book is Book => Boolean(book))
+    .map((book, index) => bookResult(book, 92 - index * 3, index === 0 ? "Best book for this concept" : "Explores this concept"));
+
+  const books = [...conceptBooks, ...organicBooks]
+    .filter((result, index, all) => all.findIndex((candidate) => candidate.id === result.id) === index)
+    .sort((a, b) => b.knowledgeMatchScore - a.knowledgeMatchScore || b.book.discussionCount - a.book.discussionCount);
+
   const bestBook = books[0]?.book;
 
   const discussions = data.discussions
     .map((discussion) => {
       const book = data.books.find((item) => item.id === discussion.bookId);
-      const { score, reason } = calculateDiscussionScore(discussion, book, correctedQuery, intentContext);
+      const scored = calculateDiscussionScore(discussion, book, correctedQuery, intentContext);
+      const discussionText = normalizeSearchText(`${discussion.title} ${discussion.body} ${book?.title || ""} ${book?.mostDiscussedThemes.join(" ") || ""}`);
+      const conceptMatch = matchedConcept?.searchTerms.some((term) => discussionText.includes(normalizeSearchText(term)));
+      const score = conceptMatch ? Math.max(scored.score, 72) : scored.score;
+      const reason = conceptMatch ? "Reader perspective on this concept" : scored.reason;
       return {
         type: "discussion" as const,
         id: discussion.id,
@@ -719,7 +763,31 @@ export function searchKnowledge(query: string, data: KnowledgeSearchData): Knowl
     })
     .filter((result) => result.knowledgeMatchScore > 0)
     .sort((a, b) => b.knowledgeMatchScore - a.knowledgeMatchScore || b.discussion.likes - a.discussion.likes)
-    .slice(0, 8);
+    .slice(0, matchedConcept ? 4 : 8);
+
+  const conceptKnowledgePosts = matchedConcept
+    ? data.knowledgePosts
+        .map((post) => {
+          const postText = normalizeSearchText(`${post.title} ${post.body} ${post.topic} ${post.referenceTitle || ""}`);
+          const exactTopic = normalizeSearchText(post.topic) === normalizeSearchText(matchedConcept.name);
+          const termMatch = matchedConcept.searchTerms.some((term) => postText.includes(normalizeSearchText(term)));
+          const score = exactTopic ? 90 : termMatch ? 72 : 0;
+          return {
+            type: "knowledge_post" as const,
+            id: post.id,
+            post,
+            title: post.title,
+            subtitle: `${post.authorName || "Reader"} · ${post.topic}`,
+            description: post.body,
+            matchReason: "Real-life perspective",
+            knowledgeMatchScore: score,
+            destinationUrl: `/post/${post.id}`
+          };
+        })
+        .filter((result) => result.knowledgeMatchScore > 0)
+        .sort((a, b) => b.knowledgeMatchScore - a.knowledgeMatchScore || b.post.likes - a.post.likes || b.post.comments - a.post.comments)
+        .slice(0, 4)
+    : [];
 
   const readingPaths = data.readingPaths
     .map((path) => {
@@ -742,19 +810,24 @@ export function searchKnowledge(query: string, data: KnowledgeSearchData): Knowl
     .sort((a, b) => b.knowledgeMatchScore - a.knowledgeMatchScore)
     .slice(0, 6);
 
-  const bestMatch = [...books.slice(0, 1), ...discussions.slice(0, 1), ...readingPaths.slice(0, 1)]
+  const matchedConceptResult = matchedConcept ? conceptResult(matchedConcept) : undefined;
+  const bestMatch = matchedConceptResult || [...books.slice(0, 1), ...discussions.slice(0, 1), ...readingPaths.slice(0, 1)]
     .sort((a, b) => b.knowledgeMatchScore - a.knowledgeMatchScore)[0];
   const fallbackBooks = !books.length && !discussions.length && !readingPaths.length ? fallbackBookRecommendations(data, correctedQuery) : [];
-  const visibleBooks = (books.length ? books.filter((result) => result.id !== bestMatch?.id) : fallbackBooks).slice(0, 8);
-  const relatedIdeas = getRelatedIdeasFromQuery(correctedQuery, bestBook, intentContext);
+  const visibleBooks = (books.length ? books.filter((result) => result.id !== bestMatch?.id) : fallbackBooks).slice(0, matchedConcept ? 4 : 8);
+  const relatedIdeas = matchedConcept
+    ? getRelatedKnowledgeConcepts(matchedConcept).map((concept) => concept.name).slice(0, 3)
+    : getRelatedIdeasFromQuery(correctedQuery, bestBook, intentContext);
   const readersAlsoContinuedWith = getContinuedWithBooks(data.books, bestBook, intentContext);
   const relatedSearches = getRelatedSearchesFromQuery(correctedQuery, bestBook, intentContext);
-  const noResults = !bestMatch && visibleBooks.length === 0 && discussions.length === 0 && readingPaths.length === 0 && relatedIdeas.length === 0;
+  const noResults = !matchedConceptResult && !bestMatch && visibleBooks.length === 0 && discussions.length === 0 && conceptKnowledgePosts.length === 0 && readingPaths.length === 0 && relatedIdeas.length === 0;
 
   return {
+    concept: matchedConceptResult,
     bestMatch,
     books: visibleBooks,
     discussions,
+    knowledgePosts: conceptKnowledgePosts,
     readingPaths,
     relatedIdeas,
     readersAlsoContinuedWith,

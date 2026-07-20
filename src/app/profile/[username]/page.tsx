@@ -93,7 +93,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
             <p className="caption">Contributions</p>
             <h2 className="title-2 mt-2">Useful ideas shared</h2>
             <p className="body-copy mt-2 max-w-2xl text-[15px]">
-              Book-grounded ideas, applications, questions, and disagreements from this reader.
+              Ideas from life and books: what this reader learned, tried, questioned, or changed.
             </p>
           </div>
 

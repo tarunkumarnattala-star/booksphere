@@ -4,12 +4,15 @@ import { useMemo, useRef, useState } from "react";
 import type { FormEvent, KeyboardEvent, ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowUpRight, BookOpen, MessageCircle, Search } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, BookOpen, CircleAlert, Lightbulb, MessageCircle, Search, Sparkles } from "lucide-react";
 import { BookCover } from "@/components/book-cover";
+import { FeedComposer } from "@/components/feed-composer";
+import { SearchPreviewActions } from "@/components/search-preview-actions";
+import { featuredKnowledgeConcepts } from "@/lib/concepts";
 import { books, discussions, genres, knowledgePosts, readingPaths } from "@/lib/data";
 import { searchKnowledge } from "@/lib/search";
-import { KnowledgeBookResult, KnowledgeDiscussionResult, KnowledgeReadingPathResult, KnowledgeSearchResult } from "@/lib/search";
-import { DiscussionPost } from "@/lib/types";
+import { KnowledgeBookResult, KnowledgeConceptResult, KnowledgeDiscussionResult, KnowledgePostResult, KnowledgeReadingPathResult, KnowledgeSearchResult } from "@/lib/search";
+import { DiscussionPost, KnowledgePost } from "@/lib/types";
 import { isSupabaseConfigured } from "@/lib/supabase";
 
 const intentCards = [
@@ -21,13 +24,15 @@ const intentCards = [
   "Improve Decision-Making"
 ];
 
-const trendingQuestions = [
-  "Which book changed how you think about money?",
-  "What is the best startup book you have ever read?",
-  "Which psychology book actually changed your behavior?"
-];
-
-export function SearchClient({ initialQuery = "", persistedDiscussions = [] }: { initialQuery?: string; persistedDiscussions?: DiscussionPost[] }) {
+export function SearchClient({
+  initialQuery = "",
+  persistedDiscussions = [],
+  persistedKnowledgePosts = []
+}: {
+  initialQuery?: string;
+  persistedDiscussions?: DiscussionPost[];
+  persistedKnowledgePosts?: KnowledgePost[];
+}) {
   const [query, setQuery] = useState(initialQuery);
   const [suggested, setSuggested] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -37,16 +42,33 @@ export function SearchClient({ initialQuery = "", persistedDiscussions = [] }: {
   const results = useMemo(() => {
     const mergedDiscussions = (isSupabaseConfigured ? persistedDiscussions : [...persistedDiscussions, ...discussions])
       .filter((post, index, all) => all.findIndex((item) => item.id === post.id) === index);
+    const mergedKnowledgePosts = (isSupabaseConfigured ? persistedKnowledgePosts : [...persistedKnowledgePosts, ...knowledgePosts])
+      .filter((post, index, all) => all.findIndex((item) => item.id === post.id) === index);
     return searchKnowledge(query, {
       books,
       genres,
       discussions: mergedDiscussions,
-      knowledgePosts,
+      knowledgePosts: mergedKnowledgePosts,
       readingPaths
     });
-  }, [persistedDiscussions, query]);
+  }, [persistedDiscussions, persistedKnowledgePosts, query]);
+  const focusedConcept = Boolean(initialQuery && results.concept);
+
+  function openConceptQuery(nextQuery: string) {
+    const cleanNextQuery = nextQuery.trim();
+    updateQuery(cleanNextQuery);
+    const currentQuery = new URLSearchParams(window.location.search).get("q") || "";
+    if (currentQuery !== cleanNextQuery) {
+      router.push(`/search?q=${encodeURIComponent(cleanNextQuery)}`);
+    }
+  }
 
   function openBestMatch() {
+    if (results.bestMatch?.type === "concept") {
+      inputRef.current?.blur();
+      openConceptQuery(cleanQuery);
+      return;
+    }
     if (results.bestMatch) router.push(results.bestMatch.destinationUrl);
   }
 
@@ -73,29 +95,33 @@ export function SearchClient({ initialQuery = "", persistedDiscussions = [] }: {
   }
 
   function runIntentSearch(value: string) {
-    updateQuery(value);
+    openConceptQuery(value);
     requestAnimationFrame(() => inputRef.current?.focus());
   }
 
   return (
-    <div className="mt-7 md:mt-8">
-      <form data-onboarding="search" onSubmit={handleSubmit} className="max-w-[920px] rounded-[26px]">
+    <div className={focusedConcept ? "" : "mt-7 md:mt-8"}>
+      {focusedConcept ? (
+        <Link href="/search" className="mb-5 inline-flex min-h-10 items-center gap-2 rounded-full px-2 text-sm font-medium text-[color:var(--color-text-secondary)] transition hover:text-[color:var(--color-text-primary)]">
+          <ArrowLeft size={17} /> Trending ideas
+        </Link>
+      ) : <form data-onboarding="search" onSubmit={handleSubmit} className="max-w-[920px] rounded-[26px]">
         <label className="group flex items-center gap-4 rounded-[26px] bg-white px-4 py-3 shadow-[0_14px_36px_rgba(0,0,0,0.055)] ring-1 ring-black/[0.055] transition focus-within:ring-[rgba(168,120,24,0.34)] md:px-6 md:py-4">
           <span className="grid size-12 shrink-0 place-items-center rounded-full bg-[color:var(--color-soft-fill)] text-[color:var(--color-text-primary)] md:size-14">
             <Search size={24} strokeWidth={1.8} />
           </span>
-          <span className="sr-only">Search books, authors, ideas, or questions</span>
+          <span className="sr-only">Search books, concepts, questions, or goals</span>
           <input
             ref={inputRef}
             data-onboarding-search-input
             value={query}
             onChange={(event) => updateQuery(event.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Search books, authors, ideas, or questions..."
+            placeholder="Search books, concepts, questions, or goals..."
             className="min-w-0 flex-1 border-0 bg-transparent text-[18px] font-[400] tracking-[-0.02em] text-[color:var(--color-text-primary)] outline-none placeholder:text-[color:var(--color-text-muted)] md:text-[22px]"
           />
         </label>
-      </form>
+      </form>}
 
       {!hasQuery ? <DefaultSearchState onSelect={runIntentSearch} /> : (
         <KnowledgeResults
@@ -123,13 +149,27 @@ function DefaultSearchState({ onSelect }: { onSelect: (query: string) => void })
       <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-3">
         {intentCards.map((intent) => <IntentCard key={intent} title={intent} onClick={() => onSelect(intent)} />)}
       </div>
-      <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-[color:var(--color-hairline)] pt-4">
-        <span className="caption text-[10px]">Popular</span>
-        {trendingQuestions.map((question) => (
-          <button key={question} type="button" onClick={() => onSelect(question)} className="text-left text-sm font-medium text-[color:var(--color-text-secondary)] transition hover:text-[color:var(--color-text-primary)]">
-            {question}
-          </button>
-        ))}
+      <div className="mt-5 border-t border-[color:var(--color-hairline)] pt-4">
+        <div className="mb-3 flex items-center justify-between gap-4">
+          <span className="caption text-[10px]">Trending ideas, explained</span>
+          <span className="hidden text-xs text-[color:var(--color-text-muted)] sm:inline">Clear context beyond the trend</span>
+        </div>
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+          {featuredKnowledgeConcepts.map((concept) => (
+            <button
+              key={concept.id}
+              type="button"
+              onClick={() => onSelect(concept.name)}
+              className="group flex min-h-[72px] min-w-0 items-start gap-2.5 rounded-[16px] bg-white px-3 py-3 text-left shadow-[0_6px_20px_rgba(0,0,0,0.035)] ring-1 ring-black/[0.04] transition hover:bg-black/[0.025]"
+            >
+              <Sparkles size={16} className="mt-0.5 shrink-0 text-[color:var(--color-accent)]" strokeWidth={1.8} />
+              <span className="min-w-0">
+                <span className="line-clamp-2 block text-[13px] font-medium leading-[18px] text-[color:var(--color-text-primary)] sm:text-sm">{concept.question}</span>
+                <span className="mt-1 block truncate text-[11px] text-[color:var(--color-text-muted)] sm:text-xs">{concept.name}</span>
+              </span>
+            </button>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -153,38 +193,129 @@ function KnowledgeResults({
   }
 
   return (
-    <div className="mt-16 space-y-20">
+    <div className={results.concept ? "space-y-10" : "mt-16 space-y-20"}>
       {results.bestMatch && (
-        <section>
-          <SectionIntro eyebrow="Best match" title="Start here" subtitle="The strongest match across books, discussions, reading paths, and related ideas." />
-          <div className="mt-8 max-w-[960px]">
+        <section id={results.bestMatch.type === "concept" ? "concept-result" : undefined}>
+          {results.bestMatch.type !== "concept" && <SectionIntro eyebrow="Best match" title="Start here" subtitle="The strongest match across books, discussions, reading paths, and related ideas." />}
+          <div className={`${results.bestMatch.type === "concept" ? "" : "mt-8"} max-w-[960px]`}>
             <BestMatchCard result={results.bestMatch} />
           </div>
         </section>
       )}
 
-      <SearchResultGroup title="Recommended Books" subtitle="Ranked by title, author, topic relevance, reading-path fit, and editorial curation." isEmpty={!results.books.length}>
+      {results.concept && (
+        <ConceptConversation
+          conceptName={results.concept.concept.name}
+          discussions={results.discussions}
+          knowledgePosts={results.knowledgePosts}
+        />
+      )}
+
+      <SearchResultGroup
+        title={results.concept ? "Books that explain it" : "Recommended Books"}
+        subtitle={results.concept ? "Go deeper with the strongest books already connected to this idea." : "Ranked by title, author, topic relevance, reading-path fit, and editorial curation."}
+        isEmpty={!results.books.length}
+      >
         <div className="grid gap-4 lg:grid-cols-2">
           {results.books.map((result) => <BookSearchResultCard key={result.id} result={result} />)}
         </div>
       </SearchResultGroup>
 
-      <SearchResultGroup title="Perspectives" subtitle="Canonical community contributions that turn a book into a question, application, disagreement, or useful lesson." isEmpty={!results.discussions.length}>
-        <div className="grid gap-4 lg:grid-cols-2">
-          {results.discussions.map((result) => <DiscussionSearchResultCard key={result.id} result={result} />)}
-        </div>
-      </SearchResultGroup>
+      {!results.concept && (
+        <SearchResultGroup
+          title="Perspectives"
+          subtitle="Canonical community contributions that turn a book into a question, application, disagreement, or useful lesson."
+          isEmpty={!results.discussions.length}
+        >
+          <div className="grid gap-4 lg:grid-cols-2">
+            {results.discussions.map((result) => <DiscussionSearchResultCard key={result.id} result={result} />)}
+          </div>
+        </SearchResultGroup>
+      )}
 
-      <SearchResultGroup title="Reading Paths" subtitle="Sequences that help you move from one useful idea to the next." isEmpty={!results.readingPaths.length}>
-        <div className="grid gap-5 lg:grid-cols-2 xl:grid-cols-3">
-          {results.readingPaths.map((result) => <ReadingPathSearchResultCard key={result.id} result={result} />)}
-        </div>
-      </SearchResultGroup>
+      {!results.concept && (
+        <SearchResultGroup title="Reading Paths" subtitle="Sequences that help you move from one useful idea to the next." isEmpty={!results.readingPaths.length}>
+          <div className="grid gap-5 lg:grid-cols-2 xl:grid-cols-3">
+            {results.readingPaths.map((result) => <ReadingPathSearchResultCard key={result.id} result={result} />)}
+          </div>
+        </SearchResultGroup>
+      )}
 
       {results.relatedIdeas.length > 0 && <RelatedIdeas ideas={results.relatedIdeas} onSelect={onSelectQuery} />}
-      {results.readersAlsoContinuedWith.length > 0 && <ReadersAlsoContinuedWith books={results.readersAlsoContinuedWith} />}
-      {results.relatedSearches.length > 0 && <RelatedSearches searches={results.relatedSearches} onSelect={onSelectQuery} />}
+      {!results.concept && results.readersAlsoContinuedWith.length > 0 && <ReadersAlsoContinuedWith books={results.readersAlsoContinuedWith} />}
+      {!results.concept && results.relatedSearches.length > 0 && <RelatedSearches searches={results.relatedSearches} onSelect={onSelectQuery} />}
     </div>
+  );
+}
+
+function ConceptConversation({
+  conceptName,
+  discussions,
+  knowledgePosts: conceptPosts
+}: {
+  conceptName: string;
+  discussions: KnowledgeDiscussionResult[];
+  knowledgePosts: KnowledgePostResult[];
+}) {
+  const router = useRouter();
+  const [sharing, setSharing] = useState(false);
+  const visiblePosts = conceptPosts.slice(0, 2);
+  const visibleDiscussions = discussions.slice(0, Math.max(0, 2 - visiblePosts.length));
+  const hasConversation = visiblePosts.length + visibleDiscussions.length > 0;
+  return (
+    <section id="concept-conversation">
+      <SectionIntro
+        eyebrow="Conversation"
+        title="What are people noticing?"
+        subtitle={`Compare how readers are applying, questioning, or challenging ${conceptName}.`}
+      />
+      {hasConversation && (
+        <div className="mt-6 grid gap-4 lg:grid-cols-2">
+          {visiblePosts.map((result) => <KnowledgePostSearchResultCard key={result.id} result={result} />)}
+          {visibleDiscussions.map((result) => <DiscussionSearchResultCard key={result.id} result={result} />)}
+        </div>
+      )}
+      <div className="mt-5 flex flex-col items-start gap-2 border-t border-[color:var(--color-hairline)] pt-5 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-sm font-medium text-[color:var(--color-text-secondary)]">
+          {hasConversation ? "Add what happened when you tried it." : "No one has shared an experience with this idea yet."}
+        </p>
+        <button type="button" onClick={() => setSharing((value) => !value)} aria-expanded={sharing} className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[color:var(--color-text-primary)] px-5 text-sm font-medium !text-white transition hover:opacity-85">
+          <MessageCircle size={16} /> Share your experience
+        </button>
+      </div>
+      {sharing && (
+        <div className="mt-4 max-w-[820px]">
+          <FeedComposer
+            initialTopic={conceptName}
+            compact
+            onPublished={() => {
+              router.refresh();
+              window.setTimeout(() => setSharing(false), 900);
+            }}
+          />
+        </div>
+      )}
+    </section>
+  );
+}
+
+function KnowledgePostSearchResultCard({ result }: { result: KnowledgePostResult }) {
+  return (
+    <article className="rounded-[24px] bg-white p-5 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.04]">
+      <div className="flex items-center justify-between gap-3">
+        <span className="caption">{result.post.topic}</span>
+        <span className="text-xs text-[color:var(--color-text-muted)]">{result.post.authorName || "Reader"}</span>
+      </div>
+      <Link href={result.destinationUrl} className="group block">
+        <h3 className="title-3 mt-3 line-clamp-2 transition group-hover:opacity-75">{result.title}</h3>
+        <p className="mt-2 line-clamp-2 text-sm leading-6 text-[color:var(--color-text-secondary)]">{result.description}</p>
+      </Link>
+      <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-medium text-[color:var(--color-text-secondary)]">
+        <SearchPreviewActions kind="knowledge" targetId={result.post.id} likes={result.post.likes} />
+        <span className="px-1">{result.post.comments} comments</span>
+        <Link href={result.destinationUrl} className="ml-auto inline-flex min-h-10 items-center gap-1 px-1 text-[color:var(--color-text-primary)]">Open post <ArrowUpRight size={14} /></Link>
+      </div>
+    </article>
   );
 }
 
@@ -211,9 +342,66 @@ function IntentCard({ title, onClick }: { title: string; onClick: () => void }) 
 }
 
 function BestMatchCard({ result }: { result: KnowledgeSearchResult }) {
+  if (result.type === "concept") return <ConceptSearchResultCard result={result} />;
   if (result.type === "book") return <BookSearchResultCard result={result} featured />;
   if (result.type === "discussion") return <DiscussionSearchResultCard result={result} featured />;
+  if (result.type === "knowledge_post") return <KnowledgePostSearchResultCard result={result} />;
   return <ReadingPathSearchResultCard result={result} featured />;
+}
+
+function ConceptSearchResultCard({ result }: { result: KnowledgeConceptResult }) {
+  const { concept } = result;
+  return (
+    <article className="rounded-[28px] bg-white p-5 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.04] md:p-7">
+      <div className="flex items-start justify-between gap-4 border-b border-[color:var(--color-hairline)] pb-5">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="caption">{concept.category}</span>
+            <span className="rounded-full bg-[#f7f1e5] px-3 py-1 text-xs font-medium text-[color:var(--color-accent)]">Source-aware</span>
+          </div>
+          <h3 className="title-2 mt-3">{concept.name}</h3>
+          <p className="mt-2 text-base font-medium text-[color:var(--color-text-secondary)]">{concept.question}</p>
+        </div>
+        <span className="grid size-11 shrink-0 place-items-center rounded-full bg-[color:var(--color-soft-fill)] text-[color:var(--color-accent)]">
+          <Lightbulb size={21} strokeWidth={1.8} />
+        </span>
+      </div>
+
+      <div className="grid gap-5 py-5 md:grid-cols-2 md:gap-8">
+        <div>
+          <p className="caption text-[10px]">In simple terms</p>
+          <p className="mt-2 text-[17px] leading-7 text-[color:var(--color-text-primary)]">{concept.definition}</p>
+        </div>
+        <div>
+          <p className="caption text-[10px]">Why it is useful</p>
+          <p className="mt-2 text-[15px] leading-6 text-[color:var(--color-text-secondary)]">{concept.whyItMatters}</p>
+        </div>
+      </div>
+
+      <div className="border-t border-[color:var(--color-hairline)]">
+        <details className="group border-b border-[color:var(--color-hairline)] py-4">
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-medium">
+            See a real-life example <span className="text-lg text-[color:var(--color-text-muted)] group-open:rotate-45">+</span>
+          </summary>
+          <p className="mt-3 max-w-[760px] text-sm leading-6 text-[color:var(--color-text-secondary)]">{concept.practicalExample}</p>
+        </details>
+        <details className="group border-b border-[color:var(--color-hairline)] py-4">
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-medium">
+            <span className="inline-flex items-center gap-2"><CircleAlert size={16} /> What people often get wrong</span>
+            <span className="text-lg text-[color:var(--color-text-muted)] group-open:rotate-45">+</span>
+          </summary>
+          <p className="mt-3 max-w-[760px] text-sm leading-6 text-[color:var(--color-text-secondary)]">{concept.misconception}</p>
+        </details>
+      </div>
+
+      <div className="flex flex-col gap-3 pt-5 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-sm font-medium text-[color:var(--color-text-primary)]">Continue with books and reader perspectives below.</p>
+        <a href={concept.source.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-sm font-medium text-[color:var(--color-text-secondary)] transition hover:text-[color:var(--color-text-primary)]">
+          Check the source <ArrowUpRight size={15} />
+        </a>
+      </div>
+    </article>
+  );
 }
 
 function SearchResultGroup({ title, subtitle, isEmpty, children }: { title: string; subtitle: string; isEmpty: boolean; children: ReactNode }) {
@@ -243,8 +431,9 @@ function BookSearchResultCard({ result, featured = false }: { result: KnowledgeB
 
 function DiscussionSearchResultCard({ result, featured = false }: { result: KnowledgeDiscussionResult; featured?: boolean }) {
   return (
-    <Link href={result.destinationUrl} className={`interactive-lift group rounded-[32px] bg-white p-5 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.04] ${featured ? "md:p-7" : ""}`}>
-      <div className="flex gap-4">
+    <article className={`rounded-[32px] bg-white p-5 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.04] ${featured ? "md:p-7" : ""}`}>
+      <Link href={result.destinationUrl} className="group block">
+        <div className="flex gap-4">
         {result.book && <BookCover book={result.book} className="w-[74px] shrink-0 rounded-[16px]" />}
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
@@ -254,15 +443,15 @@ function DiscussionSearchResultCard({ result, featured = false }: { result: Know
           <h3 className={featured ? "title-2 mt-3" : "title-3 mt-3 line-clamp-2"}>{result.title}</h3>
           <p className="subheadline mt-1">{result.subtitle}</p>
         </div>
-      </div>
-      <p className="body-copy mt-5 line-clamp-3 text-[15px] leading-6">{result.description}</p>
-      <div className="mt-5 flex flex-wrap items-center gap-4 text-sm font-medium text-[color:var(--color-text-secondary)]">
+        </div>
+        <p className="body-copy mt-5 line-clamp-3 text-[15px] leading-6">{result.description}</p>
+      </Link>
+      <div className="mt-5 flex flex-wrap items-center gap-2 text-sm font-medium text-[color:var(--color-text-secondary)]">
+        <SearchPreviewActions kind="discussion" targetId={result.discussion.id} likes={result.discussion.likes} saves={result.discussion.saves} />
         <span className="inline-flex items-center gap-1"><MessageCircle size={16} /> {result.discussion.comments} comments</span>
-        <span>{result.discussion.likes} likes</span>
-        <span>{result.discussion.saves} saves</span>
-        <span className="text-[color:var(--color-text-primary)]">Open thread <ArrowUpRight className="inline" size={15} /></span>
+        <Link href={result.destinationUrl} className="inline-flex min-h-10 items-center gap-1 px-1 text-[color:var(--color-text-primary)]">Open thread <ArrowUpRight size={15} /></Link>
       </div>
-    </Link>
+    </article>
   );
 }
 

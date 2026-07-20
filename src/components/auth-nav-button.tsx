@@ -2,11 +2,14 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { clearLocalProfile, getLocalProfile } from "@/lib/local-session";
 import { supabase } from "@/lib/supabase";
 import { canUseLocalCommunityFallback } from "@/lib/community-runtime";
 
 export function AuthNavButton() {
+  const pathname = usePathname();
+  const router = useRouter();
   const [signedIn, setSignedIn] = useState(false);
   const [label, setLabel] = useState("Log in");
   const [profileHref, setProfileHref] = useState("/profile/booksphere-team");
@@ -47,11 +50,15 @@ export function AuthNavButton() {
     clearLocalProfile();
     setSignedIn(false);
     setLabel("Log in");
+    setProfileHref("/profile/booksphere-team");
+    router.replace("/explore");
+    router.refresh();
   }
 
   if (!signedIn) {
+    const loginHref = pathname === "/login" ? "/login" : `/login?next=${encodeURIComponent(pathname)}`;
     return (
-      <Link href="/login" className="inline-flex min-h-11 items-center rounded-full bg-[color:var(--color-text-primary)] px-4 py-2 text-sm font-medium !text-white transition duration-200 hover:opacity-85">
+      <Link href={loginHref} className="inline-flex min-h-11 items-center rounded-full bg-[color:var(--color-text-primary)] px-4 py-2 text-sm font-medium !text-white transition duration-200 hover:opacity-85">
         Log in
       </Link>
     );
