@@ -54,7 +54,17 @@ function flattenThread(comments: ContributionComment[], sort: "top" | "new") {
   return rows;
 }
 
-export function CommentThread({ postId, targetType = "discussion_post", onCountChange }: { postId: string; targetType?: CommentTargetType; onCountChange?: (change: number) => void }) {
+export function CommentThread({
+  postId,
+  targetType = "discussion_post",
+  mode = "comments",
+  onCountChange
+}: {
+  postId: string;
+  targetType?: CommentTargetType;
+  mode?: "comments" | "answers";
+  onCountChange?: (change: number) => void;
+}) {
   const [sort, setSort] = useState<"top" | "new">("top");
   const [body, setBody] = useState("");
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
@@ -270,21 +280,21 @@ export function CommentThread({ postId, targetType = "discussion_post", onCountC
   return (
     <section id="comments" className="scroll-mt-24 rounded-[28px] bg-white p-4 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] sm:p-5">
       <div className="flex items-center justify-between gap-4">
-        <h3 className="title-3">Comments</h3>
+        <h3 className="title-3">{mode === "answers" ? "Answers" : "Comments"}</h3>
         <div className="rounded-full bg-black/[0.035] p-1 text-xs font-medium">
           <button type="button" aria-pressed={sort === "top"} onClick={() => setSort("top")} className={`min-h-11 rounded-full px-3 py-1.5 ${sort === "top" ? "bg-[color:var(--color-text-primary)] !text-white" : "text-[color:var(--color-text-secondary)]"}`}>Top</button>
           <button type="button" aria-pressed={sort === "new"} onClick={() => setSort("new")} className={`min-h-11 rounded-full px-3 py-1.5 ${sort === "new" ? "bg-[color:var(--color-text-primary)] !text-white" : "text-[color:var(--color-text-secondary)]"}`}>New</button>
         </div>
       </div>
       <div className="mt-4 grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]">
-        <input maxLength={4000} value={body} onChange={(event) => setBody(event.target.value)} placeholder="Add a useful response..." aria-label="Write a comment" className="min-h-11 min-w-0 flex-1 rounded-full bg-black/[0.035] px-4 py-3 text-base font-medium outline-none ring-1 ring-transparent focus:ring-black/20" />
-        <button type="button" disabled={body.trim().length < 3} onClick={submitTopLevel} className="min-h-11 rounded-full bg-[color:var(--color-text-primary)] px-4 py-3 text-sm font-medium !text-white disabled:cursor-not-allowed disabled:opacity-35">Post</button>
+        <input maxLength={4000} value={body} onChange={(event) => setBody(event.target.value)} placeholder={mode === "answers" ? "Write a clear answer..." : "Add a useful response..."} aria-label={mode === "answers" ? "Write an answer" : "Write a comment"} className="min-h-11 min-w-0 flex-1 rounded-full bg-black/[0.035] px-4 py-3 text-base font-medium outline-none ring-1 ring-transparent focus:ring-black/20" />
+        <button type="button" disabled={body.trim().length < 3} onClick={submitTopLevel} className="min-h-11 rounded-full bg-[color:var(--color-text-primary)] px-4 py-3 text-sm font-medium !text-white disabled:cursor-not-allowed disabled:opacity-35">{mode === "answers" ? "Answer" : "Post"}</button>
       </div>
       {notice && <LoginRequiredNotice message={notice} onDismiss={() => setNotice("")} />}
       {error && <p role="alert" className="mt-3 rounded-[16px] bg-[color:var(--color-rose)]/10 px-4 py-3 text-sm font-medium text-[color:var(--color-rose)]">{error}</p>}
       <div className="mt-5 space-y-3">
         {loading && <p className="text-sm font-medium text-[color:var(--color-text-secondary)]">Loading comments...</p>}
-        {!loading && comments.length === 0 && <p className="text-sm font-medium text-[color:var(--color-text-secondary)]">No comments yet. Add a specific response to make the thread more useful.</p>}
+        {!loading && comments.length === 0 && <p className="text-sm font-medium text-[color:var(--color-text-secondary)]">{mode === "answers" ? "No answers yet. Add a clear explanation, example, or source." : "No comments yet. Add a specific response to make the thread more useful."}</p>}
         {threadRows.map(({ comment, depth }) => (
           <article
             key={comment.id}

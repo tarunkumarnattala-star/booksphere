@@ -181,7 +181,7 @@ function KnowledgeResults({
   }
 
   return (
-    <div className={results.concept ? "space-y-10" : "mt-16 space-y-20"}>
+    <div className={results.concept ? "space-y-10" : "mt-8 space-y-12 md:mt-12 md:space-y-16"}>
       {!results.concept && results.interpretedIntent && (
         <div className="flex max-w-[920px] flex-wrap items-center gap-2 border-b border-[color:var(--color-hairline)] pb-4">
           <span className="caption text-[10px]">Understood as</span>
@@ -190,7 +190,7 @@ function KnowledgeResults({
       )}
       {results.bestMatch && (
         <section id={results.bestMatch.type === "concept" ? "concept-result" : undefined}>
-          {results.bestMatch.type !== "concept" && <SectionIntro eyebrow="Best match" title="Start here" subtitle="The strongest match across books, discussions, reading paths, and related ideas." />}
+          {results.bestMatch.type !== "concept" && <SectionIntro eyebrow="Best match" title="Start here" subtitle="The strongest useful match across BookSphere." />}
           <div className={`${results.bestMatch.type === "concept" ? "" : "mt-8"} max-w-[960px]`}>
             <BestMatchCard result={results.bestMatch} />
           </div>

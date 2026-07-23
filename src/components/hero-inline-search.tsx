@@ -16,9 +16,9 @@ const quickQueries = [
   { label: "finance", icon: Lightbulb }
 ];
 
-export function HeroInlineSearch({ books }: { books: Book[] }) {
+export function HeroInlineSearch({ books, initialQuery = "" }: { books: Book[]; initialQuery?: string }) {
   const router = useRouter();
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(initialQuery);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const hasQuery = query.trim().length > 0;
@@ -30,6 +30,13 @@ export function HeroInlineSearch({ books }: { books: Book[] }) {
   function updateQuery(nextQuery: string) {
     setQuery(nextQuery);
     setSelectedIndex(0);
+    const url = new URL(window.location.href);
+    if (nextQuery.trim()) {
+      url.searchParams.set("q", nextQuery);
+    } else {
+      url.searchParams.delete("q");
+    }
+    window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
   }
 
   useEffect(() => {

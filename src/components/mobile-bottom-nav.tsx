@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Compass, LibraryBig, Search, UserRound, UsersRound } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
@@ -19,7 +19,18 @@ const baseMobileItems = [
 
 export function MobileBottomNav() {
   const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [profileHref, setProfileHref] = useState("/profile/booksphere-team");
+
+  useEffect(() => {
+    const item = baseMobileItems.find(({ href }) => pathname === href);
+    if (!item || item.label === "Profile") return;
+    const query = searchParams.toString();
+    const currentHref = `${pathname}${query ? `?${query}` : ""}`;
+    const storageKey = `booksphere:last:${item.label.toLowerCase()}`;
+    window.sessionStorage.setItem(storageKey, currentHref);
+  }, [pathname, searchParams]);
 
   useEffect(() => {
     let active = true;
@@ -47,7 +58,10 @@ export function MobileBottomNav() {
     };
   }, []);
 
-  const mobileItems = baseMobileItems.map((item) => item.label === "Profile" ? { ...item, href: profileHref } : item);
+  const mobileItems = baseMobileItems.map((item) => {
+    if (item.label === "Profile") return { ...item, href: profileHref };
+    return item;
+  });
 
   return (
     <nav aria-label="Primary mobile navigation" className="fixed inset-x-0 bottom-0 z-50 border-t border-[color:var(--color-hairline)] bg-[#f5f5f7]/90 px-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] pt-2 backdrop-blur-2xl lg:hidden">
@@ -58,11 +72,18 @@ export function MobileBottomNav() {
             ? pathname === "/genres" || pathname.startsWith("/genre/")
             : item.label === "Profile"
               ? pathname.startsWith("/profile/")
-              : pathname === item.href;
+              : pathname === item.href.split("?")[0];
           return (
             <Link
               key={item.href}
               href={item.href}
+              onClick={(event) => {
+                if (item.label === "Profile") return;
+                const rememberedHref = window.sessionStorage.getItem(`booksphere:last:${item.label.toLowerCase()}`);
+                if (!rememberedHref || rememberedHref === item.href) return;
+                event.preventDefault();
+                router.push(rememberedHref);
+              }}
               aria-current={active ? "page" : undefined}
               className={cn(
                 "flex min-h-12 flex-col items-center justify-center gap-1 rounded-[18px] px-1 py-1.5 text-[11px] font-medium text-[color:var(--color-text-muted)] transition duration-200 sm:px-2",

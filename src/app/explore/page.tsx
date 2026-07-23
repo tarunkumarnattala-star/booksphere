@@ -27,7 +27,8 @@ import { bookCoverData } from "@/lib/book-cover-data";
 
 export const dynamic = "force-dynamic";
 
-export default async function ExplorePage() {
+export default async function ExplorePage({ searchParams }: { searchParams?: Promise<{ q?: string }> }) {
+  const query = searchParams ? await searchParams : {};
   const shelves = getHomeDiscoveryShelves();
   const persistedPosts = await getSupabaseFeedContributions(10);
   const trendingPosts = isSupabaseConfigured ? persistedPosts : getTrendingDiscussionPosts(10);
@@ -54,7 +55,7 @@ export default async function ExplorePage() {
                 <FirstFiveSecondCard icon={<CheckCircle2 size={17} />} label="Decide clearly" text="Know when the full book is worth reading." />
               </div>
             </div>
-            <HeroInlineSearch books={books} />
+            <HeroInlineSearch books={books} initialQuery={query.q || ""} />
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <a href="#editorial-perspectives" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-medium !text-white transition hover:opacity-85">
                 Read useful perspectives <ArrowRight size={16} />

@@ -430,6 +430,14 @@ const intentMappings: Record<string, {
     pathSlugs: [],
     ideas: ["purpose", "direction", "deliberate growth", "meaningful work", "long-term thinking"],
     relatedSearches: ["find career direction", "build discipline", "meaningful work", "long-term goals"]
+  },
+  "Understand Human Psychology": {
+    query: "human psychology behavior motivation emotion relationships social thinking",
+    terms: ["people", "person", "human", "humans", "behavior", "behaviour", "psychology", "motivation", "emotion", "personality", "relationship", "relationships", "social", "mind"],
+    bookIds: ["thinking-fast-and-slow", "predictably-irrational", "influence", "the-righteous-mind", "quiet", "mindset"],
+    pathSlugs: ["understand-human-psychology"],
+    ideas: ["human behavior", "motivation", "bias", "relationships", "social psychology"],
+    relatedSearches: ["why people behave this way", "motivation", "cognitive bias", "relationships"]
   }
 };
 
@@ -442,7 +450,8 @@ const naturalLanguageIntentTerms: Array<{ terms: string[]; intent: string }> = [
   { terms: ["startup", "company", "founder", "business"], intent: "Start a Company" },
   { terms: ["think", "clearly", "decision", "decisions", "mental model"], intent: "Think More Clearly" },
   { terms: ["leader", "leadership", "manager", "team"], intent: "Become a Better Leader" },
-  { terms: ["success", "successful", "achieve", "achievement", "career", "purpose", "direction", "ambition"], intent: "Build a Meaningful Career" }
+  { terms: ["success", "successful", "achieve", "achievement", "career", "purpose", "direction", "ambition"], intent: "Build a Meaningful Career" },
+  { terms: ["people", "person", "human", "humans", "behavior", "behaviour", "psychology", "motivation", "emotion", "personality", "relationships", "social"], intent: "Understand Human Psychology" }
 ];
 
 const bookIdeaMap: Record<string, string[]> = {

@@ -27,13 +27,13 @@ const promptByType: Record<PostType, string> = {
 
 const contextTags = ["Work", "Leadership", "Study", "Finance", "Relationships", "Health", "Communication", "Startup", "Personal Habits", "Creativity"];
 
-export function CreateDiscussionForm({ book }: { book: Book }) {
+export function CreateDiscussionForm({ book, initialPostType = "Insight" }: { book: Book; initialPostType?: PostType }) {
   const [submitted, setSubmitted] = useState(false);
   const [createdPostId, setCreatedPostId] = useState("");
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [form, setForm] = useState({
-    postType: "Insight" as PostType,
+    postType: initialPostType,
     title: "",
     body: "",
     quoteReference: "",

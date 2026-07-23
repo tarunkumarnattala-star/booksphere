@@ -12,7 +12,7 @@ import { GenrePill } from "@/components/genre-pill";
 import { LocalDiscussionList } from "@/components/local-discussion-list";
 import { SectionShelf } from "@/components/section-shelf";
 import { DiscussionSort } from "@/lib/types";
-import { books, discussionSortOptions, getBook, getBookChapters, getBookConcepts, getBookIdeas, getBookKnowledgePreview, getDiscussionsForBook, getOftenReadNext, getPerspectiveClustersForBook, sortDiscussions } from "@/lib/data";
+import { books, discussionSortOptions, getBook, getBookConcepts, getBookIdeas, getBookKnowledgePreview, getDiscussionsForBook, getOftenReadNext, getPerspectiveClustersForBook, sortDiscussions } from "@/lib/data";
 import { getSupabaseContributionsForBook } from "@/lib/contributions";
 import { isSupabaseConfigured } from "@/lib/supabase";
 import { bookCoverData } from "@/lib/book-cover-data";
@@ -25,7 +25,7 @@ function parseSort(value?: string): DiscussionSort {
   return discussionSortOptions.some((option) => option.value === value) ? value as DiscussionSort : "hot";
 }
 
-export default async function BookPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams?: Promise<{ sort?: string }> }) {
+export default async function BookPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams?: Promise<{ sort?: string; thread?: string }> }) {
   const { id } = await params;
   const query = searchParams ? await searchParams : {};
   const sort = parseSort(query?.sort);
@@ -34,13 +34,14 @@ export default async function BookPage({ params, searchParams }: { params: Promi
   const persistedPosts = await getSupabaseContributionsForBook(book);
   const seedPosts = isSupabaseConfigured ? [] : getDiscussionsForBook(book.id);
   const posts = sortDiscussions([...persistedPosts, ...seedPosts], sort);
+  const selectedPost = posts.find((post) => post.id === query.thread) || posts[0];
+  const displayPosts = selectedPost ? [selectedPost, ...posts.filter((post) => post.id !== selectedPost.id)] : posts;
   const nextBooks = getOftenReadNext(book.id);
   const ideas = getBookIdeas(book.id);
   const preview = getBookKnowledgePreview(book.id);
   const clusters = getPerspectiveClustersForBook(book.id, posts);
   const activeClusters = clusters.filter((cluster) => cluster.posts.length > 0);
   const concepts = getBookConcepts(book.id);
-  const chapters = getBookChapters(book.id);
 
   return (
     <div className="editorial-page max-w-[1320px]">
@@ -133,9 +134,14 @@ export default async function BookPage({ params, searchParams }: { params: Promi
             <h2 className="title-3">See where the ideas worked, failed, or changed</h2>
             <p className="subheadline mt-2 max-w-3xl">Only perspectives readers have actually contributed appear here.</p>
           </div>
-          <a href="#discussions" className="text-sm font-medium text-[color:var(--color-text-primary)] transition hover:opacity-70">
-            Open discussions
-          </a>
+          <div className="flex flex-wrap items-center gap-3">
+            <a href="#discussions" className="text-sm font-medium text-[color:var(--color-text-primary)] transition hover:opacity-70">
+              Open discussions
+            </a>
+            <Link href={`/book/${book.id}/create-discussion?type=Question`} className="inline-flex min-h-10 items-center rounded-full bg-black/[0.04] px-4 text-sm font-medium text-[color:var(--color-text-primary)] transition hover:bg-black/[0.07]">
+              Ask readers
+            </Link>
+          </div>
         </div>
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {activeClusters.map((cluster) => (
@@ -167,50 +173,21 @@ export default async function BookPage({ params, searchParams }: { params: Promi
         )}
       </section>
 
-      {preview && (
-      <section className="mt-6 grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
-        <div className="rounded-[32px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-8">
-          <p className="caption">Key concepts</p>
-          <h2 className="title-3 mt-3">The language readers use</h2>
-          <p className="body-copy mt-3 text-[15px] leading-6">{chapters[0]?.overview}</p>
-          <div className="mt-5 flex flex-wrap gap-2">
-            {concepts.slice(0, 6).map((concept) => (
-              <span key={concept.id} className="rounded-full bg-black/[0.035] px-3 py-2 text-sm font-medium text-[color:var(--color-text-secondary)]">{concept.name}</span>
-            ))}
-          </div>
-        </div>
-        <div id="full-book-decision" className="scroll-mt-24 rounded-[32px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-8">
-          <p className="caption">Should you read the full book?</p>
-          <h2 className="title-3 mt-3">Decide before committing the time</h2>
-              <p className="body-copy mt-3 text-[15px] leading-6">{preview.fullBookDecision.fullBookAdds}</p>
-              <div className="mt-5 grid gap-4 md:grid-cols-3">
-                <DecisionList title="Read it if" items={preview.fullBookDecision.readFullBookIf} />
-                <DecisionList title="Preview may be enough if" items={preview.fullBookDecision.previewEnoughIf} />
-                <DecisionList title="Choose another if" items={preview.fullBookDecision.chooseAnotherIf} />
-              </div>
-              <div className="mt-6 border-t border-[color:var(--color-hairline)] pt-5">
-                <p className="caption text-[10px]">Keep in mind</p>
-                <ul className="mt-3 grid gap-2 text-sm leading-6 text-[color:var(--color-text-secondary)]">
-                  {preview.limitations.map((item) => <li key={item}>• {item}</li>)}
-                </ul>
-              </div>
-        </div>
-      </section>
-      )}
-
-      <section id="discussions" className="scroll-mt-24 border-t border-[color:var(--color-hairline)] pt-12 md:pt-16">
+      <section id="discussions" className="mt-10 scroll-mt-24 border-t border-[color:var(--color-hairline)] pt-10 md:mt-12 md:pt-12">
         <div className="mb-6 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
           <div>
             <p className="caption mb-2">Perspectives</p>
             <h2 className="title-1">What readers learned, applied, or challenged</h2>
             <p className="subheadline mt-2">Open a thread to see the summary, question, application, disagreement, or lesson behind the book.</p>
           </div>
-          <Link href={`/book/${book.id}/create-discussion`} className="hidden rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-medium !text-white transition hover:opacity-85 md:inline-flex">
-            New Post
-          </Link>
-          <Link href={`/book/${book.id}/create-discussion`} className="inline-flex min-h-11 w-full items-center justify-center rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-medium !text-white transition hover:opacity-85 md:hidden">
-            New perspective
-          </Link>
+          <div className="flex w-full gap-2 md:w-auto">
+            <Link href={`/book/${book.id}/create-discussion?type=Question`} className="inline-flex min-h-11 flex-1 items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-medium text-[color:var(--color-text-primary)] ring-1 ring-black/[0.06] transition hover:bg-black/[0.035] md:flex-none">
+              Ask readers
+            </Link>
+            <Link href={`/book/${book.id}/create-discussion`} className="inline-flex min-h-11 flex-1 items-center justify-center rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-medium !text-white transition hover:opacity-85 md:flex-none">
+              New perspective
+            </Link>
+          </div>
         </div>
 
         <div className="mb-8">
@@ -220,7 +197,7 @@ export default async function BookPage({ params, searchParams }: { params: Promi
         <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
           <div className="min-w-0 space-y-5">
             <LocalDiscussionList bookId={book.id} />
-            {posts.length ? posts.map((post) => <DiscussionCard key={post.id} post={post} />) : (
+            {displayPosts.length ? displayPosts.map((post) => <DiscussionCard key={post.id} post={post} />) : (
               <EmptyState
                 title="No discussions yet"
                 body="Be the first to turn this book into a useful conversation. Start with what changed your thinking, what you applied, or what you disagree with."
@@ -232,7 +209,7 @@ export default async function BookPage({ params, searchParams }: { params: Promi
               />
             )}
           </div>
-          {posts.length ? <CommentThread postId={posts[0].id} /> : (
+          {selectedPost ? <CommentThread postId={selectedPost.id} mode={selectedPost.postType === "Question" ? "answers" : "comments"} /> : (
             <EmptyState
               title="Comments open after the first post"
               body="BookSphere keeps comments attached to specific perspectives so replies stay focused and useful."
@@ -240,6 +217,42 @@ export default async function BookPage({ params, searchParams }: { params: Promi
           )}
         </div>
       </section>
+
+      {preview && (
+        <section className="mt-10 grid gap-5 md:mt-12 lg:grid-cols-[0.72fr_1.28fr]">
+          <div className="rounded-[24px] bg-white p-5 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-6">
+            <p className="caption">Key concepts</p>
+            <h2 className="title-3 mt-2">Useful language from the book</h2>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {concepts.slice(0, 6).map((concept) => (
+                <span key={concept.id} className="rounded-full bg-black/[0.035] px-3 py-2 text-sm font-medium text-[color:var(--color-text-secondary)]">{concept.name}</span>
+              ))}
+            </div>
+          </div>
+          <div id="full-book-decision" className="scroll-mt-24 rounded-[24px] bg-white p-5 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-6">
+            <p className="caption">Should you read the full book?</p>
+            <h2 className="title-3 mt-2">Choose the depth you need</h2>
+            <p className="mt-3 text-sm leading-6 text-[color:var(--color-text-secondary)]">
+              Read the full book for the author’s complete argument and examples. Use BookSphere for orientation and real reader experience.
+            </p>
+            <details className="group mt-4 border-t border-[color:var(--color-hairline)] pt-4">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-semibold text-[color:var(--color-text-primary)]">
+                See the reading decision
+                <span className="text-lg font-normal text-[color:var(--color-text-muted)] transition group-open:rotate-45">+</span>
+              </summary>
+              <div className="mt-4 grid gap-5 md:grid-cols-3">
+                <DecisionList title="Read it if" items={preview.fullBookDecision.readFullBookIf.slice(0, 2)} />
+                <DecisionList title="This preview may be enough if" items={preview.fullBookDecision.previewEnoughIf.slice(0, 2)} />
+                <DecisionList title="Choose another if" items={preview.fullBookDecision.chooseAnotherIf.slice(0, 2)} />
+              </div>
+              <div className="mt-5 border-t border-[color:var(--color-hairline)] pt-4">
+                <p className="caption text-[10px]">Keep in mind</p>
+                <p className="mt-2 text-sm leading-6 text-[color:var(--color-text-secondary)]">{preview.limitations[0]}</p>
+              </div>
+            </details>
+          </div>
+        </section>
+      )}
 
       <div className="mt-16 border-t border-[color:var(--color-hairline)] pt-6">
         <SectionShelf title="Often read next" subtitle="Related books to continue with after you have seen the conversation around this one." books={nextBooks} badge="Read Next" signal="insights" />

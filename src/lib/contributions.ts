@@ -118,7 +118,7 @@ function awardCounts(rows: Array<{ discussion_post_id: string; award_type: Award
 const contributionSelect = "id,book_id,user_id,post_type,perspective_type,title,body,quote_reference,chapter_id,concept_id,connected_book_id,context_type,action_taken,outcome,what_failed,would_change,status,created_at,updated_at";
 
 export function contributionDestinationUrl(post: DiscussionPost) {
-  return `/book/${post.bookId}#${post.id}`;
+  return `/book/${post.bookId}?thread=${post.id}#discussions`;
 }
 
 export async function hydrateContributions(rows: DbContribution[], dbBooksById: Record<string, DbBookRef> = {}) {
