@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, Search } from "lucide-react";
+import { BookOpen } from "lucide-react";
 import { APP_NAME } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import { AuthNavButton } from "./auth-nav-button";
@@ -83,10 +83,7 @@ export function TopNav() {
           })}
         </div>
 
-        <div className="flex items-center gap-2">
-          <Link href="/search" aria-label="Search BookSphere" className="grid size-11 place-items-center rounded-full text-[color:var(--color-text-secondary)] transition hover:bg-black/[0.04] hover:text-[color:var(--color-text-primary)] lg:hidden">
-            <Search size={18} />
-          </Link>
+        <div className="flex items-center">
           <AuthNavButton />
         </div>
       </nav>

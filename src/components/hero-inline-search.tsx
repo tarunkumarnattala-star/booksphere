@@ -2,19 +2,10 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Brain, CircleDollarSign, Lightbulb, MessageCircle, Rocket, Search, Target, X } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { searchBooks } from "@/lib/search";
 import { SearchResultsPanel } from "@/components/search-results-panel";
 import type { Book } from "@/lib/types";
-
-const quickQueries = [
-  { label: "investment", icon: CircleDollarSign },
-  { label: "psychology", icon: Brain },
-  { label: "habits", icon: Target },
-  { label: "startups", icon: Rocket },
-  { label: "communication", icon: MessageCircle },
-  { label: "finance", icon: Lightbulb }
-];
 
 export function HeroInlineSearch({ books, initialQuery = "" }: { books: Book[]; initialQuery?: string }) {
   const router = useRouter();
@@ -114,7 +105,6 @@ export function HeroInlineSearch({ books, initialQuery = "" }: { books: Book[]; 
             spellCheck={false}
             className="w-full bg-transparent text-[17px] font-medium tracking-[-0.02em] outline-none placeholder:text-[color:var(--color-text-muted)]"
           />
-          {!hasQuery && <p className="mt-0.5 text-xs font-medium text-[color:var(--color-text-muted)]">Try investment, psychology, or habits</p>}
         </div>
         {hasQuery && (
           <button
@@ -127,24 +117,6 @@ export function HeroInlineSearch({ books, initialQuery = "" }: { books: Book[]; 
           </button>
         )}
       </div>
-
-      {!hasQuery && (
-        <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
-          {quickQueries.map(({ label, icon: Icon }) => (
-            <button
-              key={label}
-              type="button"
-              onClick={() => updateQuery(label)}
-              className="group inline-flex min-h-11 items-center gap-2 rounded-full bg-white/82 px-3.5 py-2 text-xs font-medium text-[color:var(--color-text-primary)] shadow-[0_8px_22px_rgba(0,0,0,0.045)] ring-1 ring-black/[0.025] transition hover:-translate-y-0.5 hover:bg-[color:var(--color-text-primary)] hover:!text-white"
-            >
-              <span className="grid size-6 shrink-0 place-items-center rounded-full bg-black/[0.045] text-[color:var(--color-accent)] transition group-hover:bg-white/14 group-hover:!text-white">
-                <Icon size={13} strokeWidth={2} />
-              </span>
-              <span className="truncate">{label}</span>
-            </button>
-          ))}
-        </div>
-      )}
 
       <SearchResultsPanel
         query={query}

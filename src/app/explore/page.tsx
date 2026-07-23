@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { ArrowRight, CheckCircle2, Clock3, Users } from "lucide-react";
+import { ArrowRight, CheckCircle2, Clock3, Plus, Users } from "lucide-react";
 import { EditorialPickCard } from "@/components/editorial-pick-card";
 import { GenreDirectory } from "@/components/genre-directory";
 import { HeroInlineSearch } from "@/components/hero-inline-search";
@@ -117,7 +117,44 @@ export default async function ExplorePage({ searchParams }: { searchParams?: Pro
       <SectionShelf title="Worth Returning To" subtitle="Evergreen books selected for long-term knowledge value." books={getMostSaved()} badge="Evergreen" signal="editorial" />
 
       <GenreDirectory genres={genres} booksByGenre={(genreName) => books.filter((book) => book.genres.includes(genreName))} heading="Browse by Genre" subtitle="Focused reading rooms organized around ideas, not shelves in a database." />
+
+      <section id="about-booksphere" className="container-page scroll-mt-24 py-10 md:py-14">
+        <div className="mx-auto max-w-4xl">
+          <p className="caption mb-2">About BookSphere</p>
+          <h2 className="title-2">Questions, answered simply.</h2>
+          <div className="mt-6 divide-y divide-[color:var(--color-hairline)] border-y border-[color:var(--color-hairline)]">
+            <ProductAnswer
+              question="What is BookSphere?"
+              answer="BookSphere helps you understand books through concise context and real reader perspectives, including how people applied, questioned, or challenged an idea."
+            />
+            <ProductAnswer
+              question="Does BookSphere replace the full book?"
+              answer="It gives you the core ideas and lived perspectives quickly, then helps you decide whether the full book's examples, evidence, and depth are worth your time."
+            />
+            <ProductAnswer
+              question="How are book pages and the Feed different?"
+              answer="A book page is centered on knowledge from one book. The Feed is centered on knowledge from people and real life; a book can be referenced, but it is never required."
+            />
+            <ProductAnswer
+              question="Do I need an account?"
+              answer="You can explore books and perspectives without one. An account is needed when you want to post, comment, save, or follow."
+            />
+          </div>
+        </div>
+      </section>
     </div>
+  );
+}
+
+function ProductAnswer({ question, answer }: { question: string; answer: string }) {
+  return (
+    <details className="group">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-5 py-5 text-base font-semibold text-[color:var(--color-text-primary)] [&::-webkit-details-marker]:hidden">
+        <span>{question}</span>
+        <Plus size={18} className="shrink-0 text-[color:var(--color-text-secondary)] transition-transform group-open:rotate-45" />
+      </summary>
+      <p className="max-w-3xl pb-5 pr-10 text-sm leading-6 text-[color:var(--color-text-secondary)]">{answer}</p>
+    </details>
   );
 }
 
