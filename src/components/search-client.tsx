@@ -34,7 +34,6 @@ export function SearchClient({
   persistedKnowledgePosts?: KnowledgePost[];
 }) {
   const [query, setQuery] = useState(initialQuery);
-  const [suggested, setSuggested] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const cleanQuery = query.trim();
@@ -63,33 +62,28 @@ export function SearchClient({
     }
   }
 
-  function openBestMatch() {
-    if (results.bestMatch?.type === "concept") {
-      inputRef.current?.blur();
-      openConceptQuery(cleanQuery);
-      return;
-    }
-    if (results.bestMatch) router.push(results.bestMatch.destinationUrl);
+  function submitSearch() {
+    if (!cleanQuery) return;
+    inputRef.current?.blur();
+    openConceptQuery(cleanQuery);
   }
 
   function handleSubmit(event: FormEvent) {
     event.preventDefault();
-    openBestMatch();
+    submitSearch();
   }
 
   function updateQuery(nextQuery: string) {
-    setSuggested(false);
     setQuery(nextQuery);
   }
 
   function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
     if (event.key === "Enter") {
       event.preventDefault();
-      openBestMatch();
+      submitSearch();
     }
     if (event.key === "Escape") {
       setQuery("");
-      setSuggested(false);
       inputRef.current?.blur();
     }
   }
@@ -127,8 +121,6 @@ export function SearchClient({
         <KnowledgeResults
           query={cleanQuery}
           results={results}
-          suggested={suggested}
-          onSuggest={() => setSuggested(true)}
           onSelectQuery={runIntentSearch}
         />
       )}
@@ -178,22 +170,24 @@ function DefaultSearchState({ onSelect }: { onSelect: (query: string) => void })
 function KnowledgeResults({
   query,
   results,
-  suggested,
-  onSuggest,
   onSelectQuery
 }: {
   query: string;
   results: ReturnType<typeof searchKnowledge>;
-  suggested: boolean;
-  onSuggest: () => void;
   onSelectQuery: (query: string) => void;
 }) {
   if (results.noResults) {
-    return <NoResultsState query={query} suggested={suggested} onSuggest={onSuggest} onSelectQuery={onSelectQuery} />;
+    return <NoResultsState query={query} onSelectQuery={onSelectQuery} />;
   }
 
   return (
     <div className={results.concept ? "space-y-10" : "mt-16 space-y-20"}>
+      {!results.concept && results.interpretedIntent && (
+        <div className="flex max-w-[920px] flex-wrap items-center gap-2 border-b border-[color:var(--color-hairline)] pb-4">
+          <span className="caption text-[10px]">Understood as</span>
+          <span className="text-sm font-medium text-[color:var(--color-text-primary)]">{results.interpretedIntent}</span>
+        </div>
+      )}
       {results.bestMatch && (
         <section id={results.bestMatch.type === "concept" ? "concept-result" : undefined}>
           {results.bestMatch.type !== "concept" && <SectionIntro eyebrow="Best match" title="Start here" subtitle="The strongest match across books, discussions, reading paths, and related ideas." />}
@@ -223,12 +217,13 @@ function KnowledgeResults({
 
       {!results.concept && (
         <SearchResultGroup
-          title="Perspectives"
-          subtitle="Canonical community contributions that turn a book into a question, application, disagreement, or useful lesson."
-          isEmpty={!results.discussions.length}
+          title="Ideas and perspectives"
+          subtitle="Reader experiences and book discussions connected to what you searched."
+          isEmpty={!results.discussions.length && !results.knowledgePosts.length}
         >
           <div className="grid gap-4 lg:grid-cols-2">
-            {results.discussions.map((result) => <DiscussionSearchResultCard key={result.id} result={result} />)}
+            {results.knowledgePosts.filter((result) => result.id !== results.bestMatch?.id).map((result) => <KnowledgePostSearchResultCard key={result.id} result={result} />)}
+            {results.discussions.filter((result) => result.id !== results.bestMatch?.id).map((result) => <DiscussionSearchResultCard key={result.id} result={result} />)}
           </div>
         </SearchResultGroup>
       )}
@@ -517,19 +512,16 @@ function RelatedSearches({ searches, onSelect }: { searches: string[]; onSelect:
   );
 }
 
-function NoResultsState({ query, suggested, onSuggest, onSelectQuery }: { query: string; suggested: boolean; onSuggest: () => void; onSelectQuery: (query: string) => void }) {
+function NoResultsState({ query, onSelectQuery }: { query: string; onSelectQuery: (query: string) => void }) {
   return (
     <section className="mt-16 max-w-[820px] rounded-[36px] bg-white p-8 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.04] md:p-10">
       <div className="mb-6 grid size-14 place-items-center rounded-full bg-[#f7f1e5] text-[color:var(--color-accent)]">
         <BookOpen size={24} strokeWidth={1.8} />
       </div>
-      <p className="caption mb-3">No result</p>
-      <h2 className="title-1">We do not have this yet.</h2>
-      <p className="body-copy mt-4 max-w-[660px]">BookSphere is starting with a focused knowledge library. We are working hard to bring more books, discussions, and reading paths into the app.</p>
+      <p className="caption mb-3">No strong match yet</p>
+      <h2 className="title-1">This part of the library is still growing.</h2>
+      <p className="body-copy mt-4 max-w-[660px]">We could not confidently connect this search to a book, concept, or reader experience. BookSphere would rather say that clearly than recommend something unrelated.</p>
       <div className="mt-8 flex flex-wrap gap-3">
-        <button type="button" onClick={onSuggest} className="rounded-full bg-[color:var(--color-text-primary)] px-6 py-3 text-sm font-medium !text-white transition hover:opacity-90">
-          {suggested ? "Suggestion saved" : "Suggest this book or idea"}
-        </button>
         {[
           "habits",
           "money",
