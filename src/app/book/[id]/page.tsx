@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { BookOpen, MessageCircle, PenLine, Scale } from "lucide-react";
+import { BookOpen, CircleHelp, MessageCircle, PenLine, Scale } from "lucide-react";
 import { BookCommunityActions } from "@/components/book-community-actions";
 import { BookCover } from "@/components/book-cover";
 import { CommentThread } from "@/components/comment-thread";
@@ -40,7 +40,8 @@ export default async function BookPage({ params, searchParams }: { params: Promi
   const ideas = getBookIdeas(book.id);
   const preview = getBookKnowledgePreview(book.id);
   const clusters = getPerspectiveClustersForBook(book.id, posts);
-  const activeClusters = clusters.filter((cluster) => cluster.posts.length > 0);
+  const activeClusters = clusters.filter((cluster) => cluster.key !== "questions" && cluster.posts.length > 0);
+  const questions = posts.filter((post) => post.postType === "Question");
   const concepts = getBookConcepts(book.id);
 
   return (
@@ -89,8 +90,9 @@ export default async function BookPage({ params, searchParams }: { params: Promi
         </div>
       </section>
 
-      <section aria-label="Explore this book" className="mt-10 grid grid-cols-3 divide-x divide-[color:var(--color-hairline)] border-y border-[color:var(--color-hairline)] py-3">
+      <section aria-label="Explore this book" className="mt-10 grid grid-cols-4 divide-x divide-[color:var(--color-hairline)] border-y border-[color:var(--color-hairline)] py-3">
         <BookOutcomeLink href={preview ? "#knowledge-preview" : "#discussions"} icon={<BookOpen size={17} />} label={preview ? "Useful ideas" : "Reader insights"} />
+        <BookOutcomeLink href="#questions-and-answers" icon={<CircleHelp size={17} />} label="Q&A" />
         <BookOutcomeLink href="#perspective-map" icon={<MessageCircle size={17} />} label="Reader views" />
         <BookOutcomeLink href={preview ? "#full-book-decision" : "#discussions"} icon={<Scale size={17} />} label={preview ? "Worth reading?" : "Open threads"} />
       </section>
@@ -126,6 +128,44 @@ export default async function BookPage({ params, searchParams }: { params: Promi
           </div>
         </section>
       )}
+
+      <section id="questions-and-answers" className="mt-6 scroll-mt-24 rounded-[32px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-8">
+        <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+          <div>
+            <p className="caption mb-2">Questions &amp; answers</p>
+            <h2 className="title-3">Ask what the book leaves unclear</h2>
+            <p className="subheadline mt-2 max-w-3xl">Get explanations, examples, and sources from readers who have studied or applied the book.</p>
+          </div>
+          <Link href={`/book/${book.id}/create-discussion?type=Question`} className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-medium !text-white transition hover:opacity-85">
+            Ask a question
+          </Link>
+        </div>
+
+        {questions.length > 0 ? (
+          <div className="mt-6 grid gap-3 md:grid-cols-2">
+            {questions.slice(0, 4).map((question) => (
+              <article key={question.id} className="rounded-[22px] bg-black/[0.025] p-5">
+                <p className="caption text-[10px]">{question.comments === 1 ? "1 answer" : `${question.comments} answers`}</p>
+                <h3 className="mt-2 text-base font-semibold leading-6 text-[color:var(--color-text-primary)]">{question.title}</h3>
+                <p className="mt-2 line-clamp-2 text-sm leading-6 text-[color:var(--color-text-secondary)]">{question.body}</p>
+                <Link href={`/book/${book.id}?thread=${question.id}#discussions`} className="mt-4 inline-flex text-sm font-medium text-[color:var(--color-text-primary)] transition hover:opacity-70">
+                  {question.comments > 0 ? "Read answers" : "Add the first answer"}
+                </Link>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <div className="mt-6 flex flex-col gap-4 rounded-[22px] bg-black/[0.025] p-5 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-sm font-semibold text-[color:var(--color-text-primary)]">No questions yet</p>
+              <p className="mt-1 text-sm leading-6 text-[color:var(--color-text-secondary)]">Ask about a confusing idea, missing example, disagreement, or real-life application.</p>
+            </div>
+            <Link href={`/book/${book.id}/create-discussion?type=Question`} className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-medium text-[color:var(--color-text-primary)] ring-1 ring-black/[0.04] transition hover:bg-black/[0.035]">
+              Ask the first question
+            </Link>
+          </div>
+        )}
+      </section>
 
       <section id="perspective-map" className="mt-6 scroll-mt-24 rounded-[32px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-8">
         <div className="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
