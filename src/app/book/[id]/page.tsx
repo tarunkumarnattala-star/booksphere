@@ -45,47 +45,45 @@ export default async function BookPage({ params, searchParams }: { params: Promi
 
   return (
     <div className="editorial-page max-w-[1320px]">
-      <section className="grid gap-8 lg:grid-cols-[300px_minmax(0,1fr)] lg:gap-12">
-        <div>
-          <BookCover book={bookCoverData(book)} priority className="mx-auto w-full max-w-[220px] sm:max-w-[260px] lg:max-w-none" />
+      <section>
+        <div className="grid grid-cols-[96px_minmax(0,1fr)] items-start gap-4 sm:grid-cols-[150px_minmax(0,1fr)] sm:gap-6 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-10">
+          <BookCover book={bookCoverData(book)} priority className="w-full" />
+
+          <div className="min-w-0">
+            <div className="flex flex-wrap gap-1.5 sm:gap-2">
+              {book.genres.slice(0, 2).map((genre) => <GenrePill key={genre} name={genre} />)}
+            </div>
+            <h1 className="mt-3 text-[30px] font-semibold leading-[0.98] tracking-[-0.045em] text-[color:var(--color-text-primary)] sm:mt-4 sm:text-[42px] lg:text-[58px]">{book.title}</h1>
+            <p className="mt-2 text-sm font-medium text-[color:var(--color-text-secondary)] sm:mt-3 sm:text-lg">{book.author}</p>
+
+            <div className="mt-4 border-t border-[color:var(--color-hairline)] pt-4 sm:mt-5 sm:pt-5">
+              <p className="caption text-[9px] sm:text-[10px]">What this book is about</p>
+              <p className="mt-2 line-clamp-4 text-sm leading-6 text-[color:var(--color-text-primary)] sm:line-clamp-none sm:max-w-3xl sm:text-base sm:leading-7">{book.description}</p>
+            </div>
+          </div>
         </div>
 
-        <div className="flex flex-col justify-center">
-          <div className="flex flex-wrap gap-2">
-            {book.genres.map((genre) => <GenrePill key={genre} name={genre} />)}
+        <div className="mt-5 grid gap-3 border-y border-[color:var(--color-hairline)] py-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-5">
+          <div className="flex min-w-0 flex-wrap items-center gap-2">
+            <span className="caption mr-1 text-[9px]">Best for</span>
+            {book.bestForTags.slice(0, 3).map((tag) => <span key={tag} className="rounded-full bg-black/[0.035] px-2.5 py-1 text-xs font-medium text-[color:var(--color-text-secondary)] sm:text-sm">{tag}</span>)}
           </div>
-          <h1 className="large-title mt-6 max-w-4xl">{book.title}</h1>
-          <p className="headline mt-4 text-[color:var(--color-text-secondary)]">{book.author}</p>
-          <div className="mt-6 grid gap-5 border-y border-[color:var(--color-hairline)] py-5 sm:grid-cols-[minmax(0,1fr)_minmax(220px,0.45fr)] sm:gap-8">
-            <div>
-              <p className="caption text-[10px]">What this book is about</p>
-              <p className="mt-2 max-w-3xl text-base leading-7 text-[color:var(--color-text-primary)]">{book.description}</p>
-            </div>
-            <div>
-              <p className="caption text-[10px]">Who it is for</p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {book.bestForTags.slice(0, 3).map((tag) => <span key={tag} className="rounded-full bg-black/[0.035] px-3 py-1.5 text-sm font-medium text-[color:var(--color-text-secondary)]">{tag}</span>)}
-              </div>
-            </div>
-          </div>
-          <div className="mt-5 flex flex-wrap gap-2">
-            <span className="rounded-full bg-black/[0.035] px-3 py-1.5 text-sm font-medium text-[color:var(--color-text-secondary)]">{book.publicationLabel}</span>
-            {preview && <span className="rounded-full bg-black/[0.035] px-3 py-1.5 text-sm font-medium text-[color:var(--color-text-secondary)]">{preview.fullBookDecision.timeCommitment}</span>}
-            <span className="rounded-full bg-black/[0.035] px-3 py-1.5 text-sm font-medium text-[color:var(--color-text-secondary)]">{posts.length} perspectives</span>
-          </div>
+          <p className="text-xs font-medium text-[color:var(--color-text-muted)] sm:text-right">
+            {book.publicationLabel}{preview ? ` · ${preview.fullBookDecision.timeCommitment}` : ""} · {posts.length} {posts.length === 1 ? "perspective" : "perspectives"}
+          </p>
+        </div>
 
-          <div className="mt-8">
-            <BookCommunityActions book={book} />
-          </div>
+        <div className="mt-5">
+          <BookCommunityActions book={book} />
+        </div>
 
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <a href={preview ? "#knowledge-preview" : "#discussions"} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-medium !text-white transition hover:opacity-85">
-              <BookOpen size={17} /> {preview ? "Learn the useful ideas" : "Read reader perspectives"}
-            </a>
-            <Link href={`/book/${book.id}/create-discussion`} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium text-[color:var(--color-text-primary)] shadow-[var(--shadow-soft)] ring-1 ring-black/[0.04] transition hover:bg-black/[0.035]">
-              <PenLine size={17} /> Share Insight
-            </Link>
-          </div>
+        <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+          <a href={preview ? "#knowledge-preview" : "#discussions"} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-medium !text-white transition hover:opacity-85">
+            <BookOpen size={17} /> {preview ? "Learn the useful ideas" : "Read reader perspectives"}
+          </a>
+          <Link href={`/book/${book.id}/create-discussion`} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium text-[color:var(--color-text-primary)] shadow-[var(--shadow-soft)] ring-1 ring-black/[0.04] transition hover:bg-black/[0.035]">
+            <PenLine size={17} /> Share Insight
+          </Link>
         </div>
       </section>
 
