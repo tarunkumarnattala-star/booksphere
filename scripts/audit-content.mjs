@@ -95,7 +95,7 @@ for (const title of verifiedIdeaTitles) if (!verifiedTitles.has(title)) errors.p
 
 for (const genre of genreNames) {
   const count = books.filter((book) => book.genres.includes(genre)).length;
-  if (count < 10) warnings.push(`${genre} has only ${count} books; launch target is at least 20 placements`);
+  if (count < 20) warnings.push(`${genre} has only ${count} books; launch target is at least 20 placements`);
 }
 
 if (/discussionCount:\s*\d*[1-9]/.test(sourceText) || /recommendationYesCount:\s*\d*[1-9]/.test(sourceText)) {
