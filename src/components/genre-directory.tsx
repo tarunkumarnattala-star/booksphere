@@ -18,7 +18,13 @@ const genreDescriptions: Record<string, string> = {
   Biography: "Lives worth studying through decisions and patterns.",
   History: "The past as a lens for understanding the present.",
   Relationships: "Attachment, trust, repair, and communication.",
-  Leadership: "Responsibility, culture, judgment, and team trust."
+  Leadership: "Responsibility, culture, judgment, and team trust.",
+  "Technology & AI": "Intelligent systems, automation, ethics, and human impact.",
+  Science: "Evidence, discovery, uncertainty, and how the world works.",
+  Economics: "Incentives, markets, institutions, inequality, and tradeoffs.",
+  Creativity: "Originality, craft, taste, and turning ideas into work.",
+  Career: "Direction, strengths, opportunity, and meaningful work.",
+  "Society & Culture": "Identity, institutions, power, media, and collective life."
 };
 
 export function GenreDirectory({
