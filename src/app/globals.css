@@ -1336,23 +1336,23 @@ button:disabled {
   }
 
   .landing-hero {
-    min-height: 940px;
+    min-height: 820px;
     padding: 104px 18px 28px;
   }
 
   .landing-hero h1 {
     margin-top: 20px;
-    font-size: clamp(58px, 20vw, 78px);
+    font-size: clamp(52px, 15.8vw, 62px);
   }
 
   .landing-hero h2 {
     margin-top: 28px;
-    font-size: clamp(31px, 9.2vw, 40px);
+    font-size: clamp(30px, 8.6vw, 35px);
   }
 
   .landing-hero-description {
     margin-top: 20px;
-    font-size: 16px;
+    font-size: 15px;
   }
 
   .landing-hero-action {
@@ -1366,15 +1366,16 @@ button:disabled {
   }
 
   .landing-hero-action > span {
-    max-width: none;
+    display: none;
   }
 
   .landing-hero-product {
-    right: -185px;
-    bottom: -52px;
-    width: 660px;
-    min-height: 465px;
-    transform: rotate(-1.2deg);
+    top: 580px;
+    right: 18px;
+    bottom: auto;
+    width: calc(100% - 36px);
+    min-height: 330px;
+    transform: rotate(-0.8deg);
   }
 
   .landing-window-bar {
@@ -1388,18 +1389,18 @@ button:disabled {
   }
 
   .landing-book-preview {
-    grid-template-columns: 126px 300px;
-    gap: 22px;
-    padding: 26px 28px 20px;
+    grid-template-columns: 94px minmax(0, 1fr);
+    gap: 16px;
+    padding: 20px;
   }
 
   .landing-hero-cover {
-    width: 126px;
+    width: 94px;
   }
 
   .landing-book-copy h3 {
-    margin-top: 12px;
-    font-size: 30px;
+    margin-top: 10px;
+    font-size: 25px;
   }
 
   .landing-divider {
@@ -1407,11 +1408,15 @@ button:disabled {
   }
 
   .landing-book-copy > p:last-child {
+    display: -webkit-box;
+    overflow: hidden;
     font-size: 13px;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
   }
 
   .landing-perspective-strip {
-    margin: 0 28px;
+    margin: 0 20px;
   }
 
   .landing-strip-actions {
