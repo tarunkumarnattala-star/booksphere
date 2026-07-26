@@ -1,10 +1,19 @@
+"use client";
+
 import { Suspense, type ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import { MobileBottomNav } from "./mobile-bottom-nav";
 import { TopNav } from "./top-nav";
 import Link from "next/link";
 import { FirstUseGuide } from "./first-use-guide";
 
 export function AppShell({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
+
+  if (pathname === "/") {
+    return <>{children}</>;
+  }
+
   return (
     <>
       <TopNav />
