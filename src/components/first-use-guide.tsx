@@ -43,12 +43,17 @@ const steps: Record<Exclude<GuideStage, "welcome" | "action">, { count: string; 
   }
 };
 
-function targetFor(stage: GuideStage) {
-  if (stage === "explore") return "[data-onboarding='explore']";
-  if (stage === "genres") return "[data-onboarding='genres']";
-  if (stage === "feed") return "[data-onboarding='feed-composer']";
-  if (stage === "search" || stage === "action") return "[data-onboarding='search']";
+function highlightFor(stage: GuideStage) {
+  if (stage === "explore") return "explore";
+  if (stage === "genres") return "genres";
+  if (stage === "feed") return "feed-composer";
+  if (stage === "search" || stage === "action") return "search";
   return null;
+}
+
+function targetFor(stage: GuideStage) {
+  const name = highlightFor(stage);
+  return name ? `[data-onboarding='${name}']` : null;
 }
 
 export function FirstUseGuide() {
@@ -104,29 +109,32 @@ export function FirstUseGuide() {
     primaryButtonRef.current?.focus({ preventScroll: true });
 
     const selector = targetFor(stage);
-    if (!selector) return;
+    const highlight = highlightFor(stage);
+    if (!selector || !highlight) return;
 
     let cancelled = false;
     let attempts = 0;
-    let highlighted: HTMLElement | null = null;
 
     const findTarget = () => {
       if (cancelled) return;
-      highlighted = document.querySelector<HTMLElement>(selector);
-      if (!highlighted && attempts < 20) {
+      const target = document.querySelector<HTMLElement>(selector);
+      if (!target && attempts < 20) {
         attempts += 1;
         window.setTimeout(findTarget, 120);
         return;
       }
-      if (!highlighted) return;
-      highlighted.dataset.onboardingActive = "true";
-      highlighted.scrollIntoView({ behavior: "smooth", block: "center" });
+      if (!target) return;
+      // Mark the highlight on <html> rather than on the target itself. The target can live in a
+      // route segment that hydrates after this effect runs, and writing an attribute onto a
+      // React-owned node before its subtree hydrates produces a hydration mismatch.
+      document.documentElement.dataset.onboardingActive = highlight;
+      target.scrollIntoView({ behavior: "smooth", block: "center" });
     };
 
     findTarget();
     return () => {
       cancelled = true;
-      if (highlighted) delete highlighted.dataset.onboardingActive;
+      delete document.documentElement.dataset.onboardingActive;
     };
   }, [pathname, stage, visible]);
 

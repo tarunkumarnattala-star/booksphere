@@ -250,7 +250,10 @@ button:disabled {
   animation: onboarding-panel-in 220ms ease-out both;
 }
 
-[data-onboarding-active="true"] {
+html[data-onboarding-active="explore"] [data-onboarding="explore"],
+html[data-onboarding-active="genres"] [data-onboarding="genres"],
+html[data-onboarding-active="feed-composer"] [data-onboarding="feed-composer"],
+html[data-onboarding-active="search"] [data-onboarding="search"] {
   position: relative;
   z-index: 90;
   border-radius: 24px;
