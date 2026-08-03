@@ -45,7 +45,7 @@ export default async function ReadingPathPage({ params }: { params: Promise<{ sl
               <p className="subheadline mt-1">{book.author}</p>
               <p className="body-copy mt-3 text-[15px] leading-6">{path.notes[book.id] || book.whyMatters}</p>
               <div className="mt-3 flex flex-wrap gap-2">
-                {book.genres.slice(0, 3).map((genre) => <GenrePill key={genre} name={genre} />)}
+                {book.genres.slice(0, 3).map((genre) => <GenrePill key={genre} name={genre} interactive={false} />)}
               </div>
             </div>
             <span className="hidden items-center gap-2 text-sm font-medium text-[color:var(--color-text-primary)] md:flex">
