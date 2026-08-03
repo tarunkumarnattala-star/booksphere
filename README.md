@@ -18,7 +18,7 @@ npm run build
 npm run start -- -H 127.0.0.1 -p 3001
 ```
 
-If a stale local `.next` lock blocks a build in the Codex sandbox, use the temporary build directory supported by `next.config.ts`:
+If a stale `.next` lock blocks a build, or you want to build without disturbing a running dev server, use the temporary build directory supported by `next.config.ts`:
 
 ```bash
 NEXT_DIST_DIR=.next-build-check npm run build
@@ -48,7 +48,7 @@ If Supabase is not configured in production, community write actions are disable
 
 ## Book Cover Fetching
 
-Book covers are handled by [covers.ts](/Users/mrtee/Documents/Codex/2026-06-29/you-are-a-senior-full-stack/src/lib/covers.ts) and [route.ts](/Users/mrtee/Documents/Codex/2026-06-29/you-are-a-senior-full-stack/src/app/api/book-cover/route.ts).
+Book covers are handled by [covers.ts](src/lib/covers.ts) and [route.ts](src/app/api/book-cover/route.ts).
 
 Priority:
 
@@ -62,9 +62,9 @@ The cover resolver is intentionally read-only. Curated cover URLs should be adde
 
 ## Updating Seed Books
 
-Local MVP seed data lives in [data.ts](/Users/mrtee/Documents/Codex/2026-06-29/you-are-a-senior-full-stack/src/lib/data.ts).
+Local MVP seed data lives in [data.ts](src/lib/data.ts).
 
-Supabase seed data lives in [seed.sql](/Users/mrtee/Documents/Codex/2026-06-29/you-are-a-senior-full-stack/supabase/seed.sql).
+Supabase seed data lives in [seed.sql](supabase/seed.sql).
 
 For each book, keep:
 
@@ -94,7 +94,7 @@ BookSphere is discussion-first, not ratings-first. The homepage now starts with 
 - Hidden Gems
 - Recently Added
 
-The app-level ranking helpers live in [data.ts](/Users/mrtee/Documents/Codex/2026-06-29/you-are-a-senior-full-stack/src/lib/data.ts):
+The app-level ranking helpers live in [data.ts](src/lib/data.ts):
 
 - `getEditorsPicks(genre?)`
 - `getTrendingDiscussions(genre?)`
@@ -114,7 +114,7 @@ Discussion sorting supports `Hot`, `New`, `Rising`, `Top Today`, `Top Week`, `To
 
 ## New Community Tables
 
-The Reddit-inspired MVP layer adds these Supabase tables in [20260701000000_reddit_community_features.sql](/Users/mrtee/Documents/Codex/2026-06-29/you-are-a-senior-full-stack/supabase/migrations/20260701000000_reddit_community_features.sql):
+The Reddit-inspired MVP layer adds these Supabase tables in [20260701000000_reddit_community_features.sql](supabase/migrations/20260701000000_reddit_community_features.sql):
 
 - `saved_insights`
 - `followed_discussions`
@@ -130,7 +130,7 @@ RLS rules allow public reads for public content and allow authenticated users to
 1. Create a Supabase project.
 2. Run `supabase/schema.sql` once on a new project to create the base schema.
 3. Apply every migration in `supabase/migrations` in timestamp order. The final launch hardening migration makes Data API grants explicit, protects private saved activity, and adds database rate limits.
-4. Run [seed.sql](/Users/mrtee/Documents/Codex/2026-06-29/you-are-a-senior-full-stack/supabase/seed.sql).
+4. Run [seed.sql](supabase/seed.sql).
 5. Enable Google Auth in Supabase.
 6. Add email magic-link auth in Supabase Auth settings.
 7. Add local and production redirect URLs:
@@ -154,7 +154,7 @@ Use this before sharing the MVP publicly.
 ### Supabase
 
 - Run `supabase/schema.sql`, then apply all files in `supabase/migrations` to the production project.
-- Run [seed.sql](/Users/mrtee/Documents/Codex/2026-06-29/you-are-a-senior-full-stack/supabase/seed.sql) after schema creation.
+- Run [seed.sql](supabase/seed.sql) after schema creation.
 - Confirm RLS is enabled on every public table.
 - Confirm public users can read books, genres, profiles, discussions, and knowledge posts.
 - Confirm signed-in users can save books, save insights, follow discussions, award posts, recommend books, follow readers, report content, and create their own posts.
@@ -289,4 +289,4 @@ The UI is built around:
 - Clean white/off-white backgrounds
 - Mobile bottom navigation
 
-Design tokens live in [globals.css](/Users/mrtee/Documents/Codex/2026-06-29/you-are-a-senior-full-stack/src/app/globals.css): typography scale, color system, spacing rhythm, radius, shadow, and motion tokens.
+Design tokens live in [globals.css](src/app/globals.css): typography scale, color system, spacing rhythm, radius, shadow, and motion tokens.

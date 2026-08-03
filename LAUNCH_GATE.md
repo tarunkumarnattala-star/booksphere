@@ -2,91 +2,114 @@
 
 This is the frozen-product checklist. Do not add major features until every blocker here is resolved.
 
-Last QA pass: July 2, 2026.
+Last QA pass: August 3, 2026.
+
+Production: <https://booksphere-iota.vercel.app> — public, `/api/health` returns `200 healthy` with `database: reachable`.
+
+## How to read this document
+
+Every row is marked with how it was checked, because "it works" and "someone watched it work" are different claims:
+
+- **VERIFIED** — exercised against the live app or production database, with the result recorded.
+- **CODE ONLY** — the implementation is present and typechecks, but no one has run it end to end.
+- **NOT CHECKED** — genuinely untested.
+
+The single largest gap is that **no write path has been exercised while signed in**. Everything under "Community writes" is CODE ONLY for that reason. See [Blockers](#final-public-launch-blockers).
 
 ## Core Journey
 
-| Step | Beta preview status | Public launch status | Notes |
+| Step | Status | How it was checked |
+| --- | --- | --- |
+| Visit BookSphere | VERIFIED | `/` renders the landing page. It no longer redirects to `/explore` — both calls to action point at `/login?next=/explore`, so first-time visitors enter through beta signup. |
+| Understand value in 5 seconds | VERIFIED | Landing hero states the product in one line, followed by eight sections of real copy. No placeholder text. |
+| Browse books | VERIFIED | Explore, genre shelves, search, and reading paths all render from seed data. All 16 main routes return 200 in production. |
+| Open a book | VERIFIED | Book pages render cover, metadata, community signal, sorting, comments, actions, and the read-next shelf. |
+| Read discussion | VERIFIED | 30 discussion posts exist in the production database and render. |
+| Create account | NOT CHECKED | Google and email magic-link flows have never been run against production. |
+| Post insight | CODE ONLY | Writes to `discussion_posts` via `createSupabaseContribution`. Never executed while authenticated. |
+| Get engagement | CODE ONLY | Likes, saves, follows, awards, reports, and comments all write to Supabase. Never executed while authenticated. |
+| Return tomorrow | NOT CHECKED | Requires a signed-in session persisted across devices. |
+
+## Community Writes
+
+Every action below is wired to Supabase. `localStorage` is used **only** as a development fallback, gated behind `canUseLocalCommunityFallback()`, which is false whenever Supabase is configured.
+
+| Action | Destination | Implementation | Status |
 | --- | --- | --- | --- |
-| Visit BookSphere | YES | YES | `/` renders the explore experience directly. |
-| Understand value in 5 seconds | YES | YES | The hero clearly frames BookSphere as a place to discover books through meaningful reader insights and discussions. |
-| Browse books | YES | YES | Explore shelves, genre shelves, search, and reading paths work from seed data. |
-| Open a book | YES | YES | Book pages render cover, metadata, community signal, discussion sorting, comments, actions, and read-next shelf. |
-| Read discussion | YES | YES | Discussion cards render seeded and local beta discussions. |
-| Create account | YES for beta local account | NEEDS SUPABASE QA | Local beta login works without Supabase; production must test Google/email auth. |
-| Post insight | YES in local beta | NEEDS SUPABASE WRITE QA | Local insight appears on the book page and survives refresh. Production should write to `discussion_posts`. |
-| Get engagement | YES in local beta | NEEDS SUPABASE WRITE QA | Likes, saves, follows, awards, reports, and comments persist locally. Production writes need end-to-end QA. |
-| Return tomorrow | YES on same browser | NEEDS SUPABASE | Local browser state persists; cross-device/account persistence requires Supabase. |
+| Create discussion | `discussion_posts` | `createSupabaseContribution` | CODE ONLY |
+| Comment, edit, delete | `discussion_comments` | `createSupabaseComment` and siblings | CODE ONLY |
+| Like | `likes` | `toggleSupabaseLike` | CODE ONLY |
+| Save insight | `saved_insights` | `toggleSupabaseSaveInsight` | CODE ONLY |
+| Follow discussion | `followed_discussions` | `toggleSupabaseFollowDiscussion` | CODE ONLY |
+| Award a post | `post_awards` | upsert in `post-actions.tsx` | CODE ONLY |
+| Report content | `reports` | upsert in `post-actions.tsx` | CODE ONLY |
+| Save book, recommend | `saved_books`, `book_recommendations` | `book-community-actions.tsx` | CODE ONLY |
+| Knowledge post CRUD | `knowledge_posts` | `knowledge-posts.ts` | CODE ONLY |
 
-## Product Checklist
-
-| Item | Status | Notes |
-| --- | --- | --- |
-| Homepage immediately explains product | YES | Headline, subcopy, search, metrics, and live reading room are clear. |
-| Search works | YES | Includes aliases for `investment`, `invetsment`, `genres`, and `geners`. |
-| Genres work | YES | `/genres` and `/genre/[slug]` exist and use non-empty fallback shelves. |
-| Books load | YES | Static seed data loads 100 books. |
-| Covers load correctly | YES | All 100 seed books have explicit real Open Library cover URLs. |
-| Discussions work | YES | Seeded discussions plus local beta posts. |
-| Comments work | YES in beta | Comments persist locally and have top/new sorting. |
-| Save book works | YES in beta | Local persistence; Supabase table exists. |
-| Save insight works | YES in beta | Local persistence; `/saved` now reads actual local saved insight IDs. |
-| Follow works | YES in beta | Contributor and discussion follows persist locally. |
-| Profiles work | YES | Profile pages render intellectual identity sections. |
-| Settings work | YES in beta | Profile settings save a local beta draft instead of being a dead form. |
-| Share action works | YES in beta | Copies/opens share URL when browser support is available. |
-| Report button works | YES in beta | Persists report state locally. |
-
-## Design Checklist
+## Database
 
 | Item | Status | Notes |
 | --- | --- | --- |
-| Mobile looks great | NEEDS HUMAN DEVICE QA | Code is responsive, but real device QA is still required. |
-| Desktop looks great | PARTIAL PASS | Major blank-space and overflow bugs were fixed; user should do a final visual scan in browser. |
-| No layout breaks | PARTIAL PASS | Type/lint/build pass; recent hero/book-page overlap issues were fixed. Still needs human visual sweep. |
-| No placeholder images | YES for seed books | Inputs still use placeholder helper text, which is expected. |
-| No lorem ipsum | YES | No lorem ipsum found. |
-| No fake real users | YES | Starter accounts are clearly `BookSphere Team`, `Community Starter`, `Reader Ops`, or local `You`. |
-| No star ratings | YES | Discovery is based on discussion, saves, recommendations, and curation. |
+| Schema and migrations applied | VERIFIED | All 14 migrations present; tables respond. |
+| Seed data loaded | VERIFIED | 226 books, 6 profiles, 30 discussions, 22 awards, 5 reading paths, 5 editorial picks. |
+| Public reads work | VERIFIED | `books`, `profiles`, `discussion_posts`, `knowledge_posts`, `reading_paths`, `editorial_picks` all readable anonymously. |
+| Private tables protected | VERIFIED | `saved_books`, `saved_insights`, and `followed_discussions` return 401 to anonymous callers. RLS is doing its job. |
+| Seed catalog resolves to database rows | VERIFIED | All 222 seed books resolve: 217 by exact title and author, 5 by the title-only fallback added in `e4b945d`. Zero unresolvable. |
+| Users cannot edit another user's content | CODE ONLY | RLS policies exist; never tested with two real accounts. |
 
-## Performance Checklist
-
-| Item | Status | Notes |
-| --- | --- | --- |
-| Fast loading | YES locally | Production build passes and routes are static/SSG where possible. |
-| Optimized images | PARTIAL | Covers use real remote URLs and lazy loading; later production can add an image cache/proxy. |
-| No console errors | NEEDS BROWSER QA | Build/type/lint pass; browser console still needs manual check in the running app. |
-| No crashes | YES in build | Production build passes. |
-
-## Trust Checklist
+## Design
 
 | Item | Status | Notes |
 | --- | --- | --- |
-| Report button works | YES in beta | Persists locally; production DB write needs QA. |
-| Users can delete own content | YES in beta | Local posts can be deleted. Production RLS exists; mutation wiring needs QA. |
-| Login works | YES in beta | Local beta login works. Production Supabase auth needs QA. |
-| Logout works | YES in beta | Local logout works. Supabase logout code exists. |
-| Error messages are friendly | YES | Login-required and validation messages are user-facing. |
+| Desktop looks right | VERIFIED | Landing, Explore, book, and reading-path pages reviewed in-browser. |
+| Mobile looks right | CODE ONLY | Checked at a 375px viewport with no horizontal overflow. **Not tested on a real handset.** |
+| No layout breaks | VERIFIED | Build, types, and lint clean; no overflow at mobile or desktop widths. |
+| No placeholder images | VERIFIED | All seed books use real Open Library cover URLs. |
+| No lorem ipsum | VERIFIED | None present. |
+| No fake real users | VERIFIED | Starter accounts are clearly labelled `BookSphere Team`, `Community Starter`, or `Reader Ops`. |
+| No star ratings | VERIFIED | Discovery is by discussion, saves, recommendations, and curation, by design. |
 
-## Final Private Beta Blockers
+## Correctness
 
-1. Complete one human visual scan on desktop and mobile widths.
-2. Check browser console manually while testing the main journey.
-3. Test local beta login, create insight, save book, save insight, comment, follow, report, delete.
-4. Invite 10 people quietly and watch where they hesitate.
+| Item | Status | Notes |
+| --- | --- | --- |
+| No console errors | VERIFIED | Landing, Explore, book, and reading-path pages are clean, including a full walk of the onboarding tour across four route changes. |
+| Onboarding tour hydration | VERIFIED | Fixed in `acee6a9`. The tour marked its highlight target directly, which raced hydration; the marker now lives on `<html>`. |
+| Valid HTML on reading paths | VERIFIED | Fixed in `2f98de5`. Genre pills nested an `<a>` inside the card's `<a>`. Confirmed in the production HTML: 0 nested anchors, 5 card links intact. |
+| Production build | VERIFIED | Exit 0, 493 static pages. |
+| Types and lint | VERIFIED | `typecheck` and `lint` both exit 0 with no warnings. |
+| Health endpoint | VERIFIED | Production returns `200 healthy`, `database: reachable`. |
+
+## Environment
+
+| Item | Status | Notes |
+| --- | --- | --- |
+| `NEXT_PUBLIC_APP_NAME` | VERIFIED | Set in Vercel. |
+| `NEXT_PUBLIC_APP_URL` | VERIFIED | Set in Vercel Production. Must be the https origin; `audit:launch` rejects anything else. |
+| `NEXT_PUBLIC_SUPPORT_EMAIL` | VERIFIED | `booksphere.support@gmail.com`, rendering as a mailto on `/privacy` and `/terms`. |
+| `NEXT_PUBLIC_SUPABASE_URL` and key | VERIFIED | Corrected on 2026-08-03; the previous production values were stale and left the database unreachable. |
+| No service-role key in the web deployment | VERIFIED | Only the publishable key is present, by design. |
+| Preview environment | CODE ONLY | Supabase values were refreshed, but no preview deployment has been loaded to confirm. |
+
+Remember that `NEXT_PUBLIC_*` variables are inlined at **build** time. Changing one in Vercel has no effect until the next deploy.
 
 ## Final Public Launch Blockers
 
-1. Connect create discussion to Supabase writes.
-2. Connect comments to Supabase writes.
-3. Connect post actions to Supabase writes: likes, save insight, follow discussion, awards, report, delete own post.
-4. Run real Google/email auth QA.
-5. Run mobile device QA.
-6. Run browser console QA.
-7. Add production analytics dashboard/event review.
+1. **Sign in once and exercise the write paths.** This is the one blocker that cannot be cleared by reading code. Create a post, comment, like, save a book, save an insight, and follow a contributor. Confirm each survives a page refresh, then confirm it appears from a second device or browser. Until this is done, every row marked CODE ONLY above is an assumption.
+2. **Run real auth QA.** Google login and email magic-link, each creating a profile row automatically.
+3. **Confirm ownership rules with two accounts.** One account must not be able to edit or delete another's content, and must not be able to read another's saved books, saved insights, or followed discussions.
+4. **Test on a real phone.** A 375px viewport is not a handset; it says nothing about touch targets, iOS Safari, or scroll behaviour.
+5. **Decide what the landing page gates.** `/` now funnels every visitor to signup. Explore remains reachable by direct URL but is no longer discoverable from the homepage. That is correct for a closed beta and wrong for a public launch.
+6. **Add production analytics review.** No dashboard or event review exists yet.
+
+## Known Limitations
+
+- Browsing uses local seed data for speed; the database backs community features rather than discovery.
+- Reports are stored, but moderation happens in the Supabase dashboard until an admin view exists.
+- There are no notifications, direct messages, payments, AI summaries, or voice features, by design.
 
 ## Launch Recommendation
 
-Private beta: YES after one final visual pass in the browser.
+**Private beta:** yes, once blocker 1 is cleared. Everything else on the list is either verified or acceptable for a small invited group.
 
-Broad public launch: NOT YET. Finish Supabase persistence, real auth QA, mobile device QA, and console QA first.
+**Public launch:** not yet. Blockers 1 through 4 all need to be cleared first, and blocker 5 is a product decision you should make deliberately rather than inherit from a merge.
