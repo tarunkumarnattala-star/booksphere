@@ -20,7 +20,7 @@ The single largest gap is that **no write path has been exercised while signed i
 
 | Step | Status | How it was checked |
 | --- | --- | --- |
-| Visit BookSphere | VERIFIED | `/` renders the landing page. It no longer redirects to `/explore` — both calls to action point at `/login?next=/explore`, so first-time visitors enter through beta signup. |
+| Visit BookSphere | VERIFIED | `/` renders the landing page. It no longer redirects to `/explore` — both calls to action point at `/login?next=/explore`, so first-time visitors enter through beta signup. This gating is intentional; see Settled Decisions. |
 | Understand value in 5 seconds | VERIFIED | Landing hero states the product in one line, followed by eight sections of real copy. No placeholder text. |
 | Browse books | VERIFIED | Explore, genre shelves, search, and reading paths all render from seed data. All 16 main routes return 200 in production. |
 | Open a book | VERIFIED | Book pages render cover, metadata, community signal, sorting, comments, actions, and the read-next shelf. |
@@ -99,8 +99,15 @@ Remember that `NEXT_PUBLIC_*` variables are inlined at **build** time. Changing 
 2. **Run real auth QA.** Google login and email magic-link, each creating a profile row automatically.
 3. **Confirm ownership rules with two accounts.** One account must not be able to edit or delete another's content, and must not be able to read another's saved books, saved insights, or followed discussions.
 4. **Test on a real phone.** A 375px viewport is not a handset; it says nothing about touch targets, iOS Safari, or scroll behaviour.
-5. **Decide what the landing page gates.** `/` now funnels every visitor to signup. Explore remains reachable by direct URL but is no longer discoverable from the homepage. That is correct for a closed beta and wrong for a public launch.
-6. **Add production analytics review.** No dashboard or event review exists yet.
+5. **Add production analytics review.** No dashboard or event review exists yet.
+
+## Settled Decisions
+
+**The landing page stays gated.** Decided August 3, 2026.
+
+`/` funnels every visitor to `/login?next=/explore`. Explore stays reachable by direct URL but is deliberately not discoverable from the homepage. This is the intended shape for the closed beta and should not be "fixed" — if the homepage ever renders Explore again, that is a regression, not an improvement.
+
+Revisit this once the private beta closes. A gated homepage costs organic discovery and search indexing, so it is the right trade only while the goal is a controlled group of invited readers rather than growth.
 
 ## Known Limitations
 
@@ -112,4 +119,4 @@ Remember that `NEXT_PUBLIC_*` variables are inlined at **build** time. Changing 
 
 **Private beta:** yes, once blocker 1 is cleared. Everything else on the list is either verified or acceptable for a small invited group.
 
-**Public launch:** not yet. Blockers 1 through 4 all need to be cleared first, and blocker 5 is a product decision you should make deliberately rather than inherit from a merge.
+**Public launch:** not yet. Blockers 1 through 4 all need to be cleared first, and the gated homepage recorded under Settled Decisions needs revisiting — it is right for an invited beta and wrong for open discovery.
