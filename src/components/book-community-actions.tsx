@@ -5,6 +5,7 @@ import { Bookmark, ThumbsDown, ThumbsUp } from "lucide-react";
 import { Book } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
 import { requireProfile } from "@/lib/auth-client";
+import { resolveDbBook } from "@/lib/contributions";
 import { hasLocalItem, toggleLocalItem } from "@/lib/local-store";
 import { trackEvent } from "@/lib/analytics";
 import { LoginRequiredNotice } from "./login-required-notice";
@@ -31,7 +32,7 @@ export function BookCommunityActions({ book }: { book: Book }) {
     let active = true;
     async function loadState() {
       const auth = await requireProfile();
-      const { data: dbBook } = await supabase!.from("books").select("id").eq("title", book.title).eq("author", book.author).maybeSingle();
+      const dbBook = await resolveDbBook({ title: book.title, author: book.author });
       if (!dbBook?.id) return;
       const { data: counts } = await supabase!.from("book_engagement_counts").select("saves_count").eq("book_id", dbBook.id).maybeSingle();
       if (active && counts) setSaveCount(Number(counts.saves_count || 0));
@@ -56,19 +57,14 @@ export function BookCommunityActions({ book }: { book: Book }) {
     }
 
     if (!supabase) return { profileId: auth.profileId, bookId: book.id };
-    const { data: dbBook, error: bookError } = await supabase
-      .from("books")
-      .select("id")
-      .eq("title", book.title)
-      .eq("author", book.author)
-      .maybeSingle();
+    const dbBook = await resolveDbBook({ title: book.title, author: book.author });
 
-    if (bookError || !dbBook?.id) {
+    if (!dbBook?.id) {
       setError("We could not find this book in the database yet. Try again after seed data is synced.");
       return null;
     }
 
-    return { profileId: auth.profileId, bookId: dbBook.id as string };
+    return { profileId: auth.profileId, bookId: dbBook.id };
   }
 
   async function toggleSaved() {

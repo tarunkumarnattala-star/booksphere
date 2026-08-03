@@ -71,16 +71,27 @@ function localBookForDbBook(dbBook?: DbBookRef | null) {
   return books.find((book) => book.title.toLowerCase() === dbBook.title.toLowerCase() && book.author.toLowerCase() === dbBook.author.toLowerCase());
 }
 
-async function resolveDbBook(book: Book) {
+export async function resolveDbBook(book: Pick<Book, "title" | "author">) {
   if (!supabase) return null;
-  const { data, error } = await supabase
+  const strict = await supabase
     .from("books")
     .select("id,title,author")
     .ilike("title", book.title)
     .ilike("author", book.author)
     .maybeSingle();
-  if (error || !data?.id) return null;
-  return data as DbBookRef;
+  if (strict.data?.id) return strict.data as DbBookRef;
+
+  // Author strings drift between the seed catalog and the database — "Peter Thiel and
+  // Blake Masters" here versus "Peter Thiel" there — which otherwise strands the book
+  // with no discussions, saves, or recommendations. Titles are unique on both sides, so
+  // fall back to the title alone. maybeSingle() still returns null if that is ambiguous.
+  const byTitle = await supabase
+    .from("books")
+    .select("id,title,author")
+    .ilike("title", book.title)
+    .maybeSingle();
+  if (byTitle.error || !byTitle.data?.id) return null;
+  return byTitle.data as DbBookRef;
 }
 
 function countBy<T extends string>(items: Array<Record<T, string | null | undefined>>, key: T) {
