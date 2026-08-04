@@ -189,12 +189,34 @@ for each row execute function set_updated_at();
 
 create or replace function create_profile_for_auth_user()
 returns trigger as $$
+declare
+  base_name text;
+  base_username text;
 begin
+  -- Values must satisfy profiles_launch_content_length: name 2..80 chars,
+  -- username ~ '^[a-z0-9_-]{3,30}$'. The 6-char uuid suffix keeps usernames
+  -- unique, so the slug portion is capped at 23 characters. An unbounded slug
+  -- here broke signup entirely for longer email addresses (see migration
+  -- 20260805000000_fix_signup_username_length.sql).
+  base_name := left(trim(coalesce(new.raw_user_meta_data->>'full_name', split_part(new.email, '@', 1), 'Reader')), 80);
+  if char_length(base_name) < 2 then
+    base_name := 'Reader';
+  end if;
+
+  base_username := lower(regexp_replace(
+    coalesce(new.raw_user_meta_data->>'user_name', split_part(new.email, '@', 1), 'reader'),
+    '[^a-zA-Z0-9_]+', '-', 'g'
+  ));
+  base_username := trim(both '-' from left(base_username, 23));
+  if char_length(base_username) < 3 then
+    base_username := 'reader';
+  end if;
+
   insert into public.profiles (auth_user_id, name, username, avatar_url)
   values (
     new.id,
-    coalesce(new.raw_user_meta_data->>'full_name', split_part(new.email, '@', 1), 'Reader'),
-    lower(regexp_replace(coalesce(new.raw_user_meta_data->>'user_name', split_part(new.email, '@', 1), 'reader'), '[^a-zA-Z0-9_]+', '-', 'g')) || '-' || left(replace(new.id::text, '-', ''), 6),
+    base_name,
+    base_username || '-' || left(replace(new.id::text, '-', ''), 6),
     new.raw_user_meta_data->>'avatar_url'
   )
   on conflict (auth_user_id) do nothing;
