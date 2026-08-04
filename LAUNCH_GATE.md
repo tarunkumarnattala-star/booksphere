@@ -14,7 +14,7 @@ Every row is marked with how it was checked, because "it works" and "someone wat
 - **CODE ONLY** — the implementation is present and typechecks, but no one has run it end to end.
 - **NOT CHECKED** — genuinely untested.
 
-The single largest gap is that **no write path has been exercised while signed in** — and as of August 3, sign-in itself does not work, because magic-link email is not being delivered. Everything under "Community writes" is CODE ONLY for that reason. See [Blockers](#final-public-launch-blockers).
+The single largest gap is that **no write path has been exercised while signed in**. Everything under "Community writes" is CODE ONLY for that reason. See [Blockers](#final-public-launch-blockers).
 
 A caution learned the hard way: this app reports success optimistically. Buttons flip state, counters move, and "Published to your feed" appears whether or not anything reached the database. Do not mark a row VERIFIED from the UI alone — check the table.
 
@@ -27,7 +27,7 @@ A caution learned the hard way: this app reports success optimistically. Buttons
 | Browse books | VERIFIED | Explore, genre shelves, search, and reading paths all render from seed data. All 16 main routes return 200 in production. |
 | Open a book | VERIFIED | Book pages render cover, metadata, community signal, sorting, comments, actions, and the read-next shelf. |
 | Read discussion | VERIFIED | 30 discussion posts exist in the production database and render. |
-| Create account | **BROKEN** | Magic-link email is not being delivered, so no `auth.users` row can be created. Google is not enabled at all. Sign-in does not currently work in production — see blocker 1. |
+| Create account | UNCONFIRMED | Resend SMTP was configured on August 4 and the operator reports sign-in worked, but no new `auth.users` row or profile has appeared in the database yet, so it is not marked VERIFIED. Until a domain is verified in Resend, magic links deliver **only to the Resend account owner's address** — every other invitee's link will bounce. Google is hidden (provider disabled). |
 | Post insight | CODE ONLY | Writes to `discussion_posts` via `createSupabaseContribution`. Never executed while authenticated. |
 | Get engagement | CODE ONLY | Likes, saves, follows, awards, reports, and comments all write to Supabase. Never executed while authenticated. |
 | Return tomorrow | NOT CHECKED | Requires a signed-in session persisted across devices. |
@@ -78,7 +78,7 @@ Every action below is wired to Supabase. `localStorage` is used **only** as a de
 | No console errors | VERIFIED | Landing, Explore, book, and reading-path pages are clean, including a full walk of the onboarding tour across four route changes. |
 | Onboarding tour hydration | VERIFIED | Fixed in `acee6a9`. The tour marked its highlight target directly, which raced hydration; the marker now lives on `<html>`. |
 | Valid HTML on reading paths | VERIFIED | Fixed in `2f98de5`. Genre pills nested an `<a>` inside the card's `<a>`. Confirmed in the production HTML: 0 nested anchors, 5 card links intact. |
-| Production build | VERIFIED | Exit 0, 493 static pages. |
+| Production build | VERIFIED | Exit 0, 496 static pages (including `/admin/reports`, `robots.txt`, `sitemap.xml`). |
 | Types and lint | VERIFIED | `typecheck` and `lint` both exit 0 with no warnings. |
 | Health endpoint | VERIFIED | Production returns `200 healthy`, `database: reachable`. |
 
@@ -97,12 +97,13 @@ Remember that `NEXT_PUBLIC_*` variables are inlined at **build** time. Changing 
 
 ## Final Public Launch Blockers
 
-1. **Set up custom SMTP.** Auth currently relies on Supabase's built-in email service, which is rate-limited to a few messages per hour and documented as unsuitable for production. On August 3 this silently blocked sign-in entirely: magic links stopped arriving, no `auth.users` row was ever created, and the UI still reported "Check your email for a magic link". Every community write then failed as an unauthenticated no-op while appearing to succeed on screen. Configure a real provider under Authentication → Emails → SMTP Settings before anything else — nothing below can be tested until sign-in works, and a beta of 100 readers would hit this limit immediately.
+1. **Verify a sending domain in Resend.** Resend SMTP is configured (August 4), which fixed the built-in email service silently dropping magic links on August 3. But until a domain is verified, Resend delivers **only to the account owner's own address** — the first invited beta reader's sign-in link will bounce. Verifying a domain (DNS records, ~30 minutes once a domain exists) is what actually opens sign-in to other people. It also resolves the `booksphere.vercel.app` name collision that already misdirected one QA pass.
 2. **Sign in once and exercise the write paths.** This is the one blocker that cannot be cleared by reading code. Create a post, comment, like, save a book, save an insight, and follow a contributor. Confirm each survives a page refresh, then confirm it appears from a second device or browser. Until this is done, every row marked CODE ONLY above is an assumption.
-3. **Run real auth QA.** Google login and email magic-link, each creating a profile row automatically.
-4. **Confirm ownership rules with two accounts.** One account must not be able to edit or delete another's content, and must not be able to read another's saved books, saved insights, or followed discussions.
-5. **Test on a real phone.** A 375px viewport is not a handset; it says nothing about touch targets, iOS Safari, or scroll behaviour.
-6. **Add production analytics review.** No dashboard or event review exists yet.
+3. **Run real auth QA.** Email magic-link, creating a profile row automatically. The Google button is now hidden behind `NEXT_PUBLIC_GOOGLE_AUTH_ENABLED` (default off) because the provider is disabled in Supabase — a visible dead button failed for every user who tried it. To offer Google later: enable the provider in Supabase Auth, set the flag to `true` in Vercel, redeploy, then QA it.
+4. **Apply the moderation migration.** `/admin/reports` exists but reads nothing until `supabase/migrations/20260804000000_moderator_reports_access.sql` is run in the SQL editor and `is_moderator` is set to true on the operator's profile row. Until then reports remain write-only.
+5. **Confirm ownership rules with two accounts.** One account must not be able to edit or delete another's content, and must not be able to read another's saved books, saved insights, or followed discussions.
+6. **Test on a real phone.** A 375px viewport is not a handset; it says nothing about touch targets, iOS Safari, or scroll behaviour.
+7. **Add production analytics review.** No dashboard or event review exists yet.
 
 ## Settled Decisions
 
@@ -115,11 +116,11 @@ Revisit this once the private beta closes. A gated homepage costs organic discov
 ## Known Limitations
 
 - Browsing uses local seed data for speed; the database backs community features rather than discovery.
-- Reports are stored, but moderation happens in the Supabase dashboard until an admin view exists.
+- Reports are stored and reviewable at `/admin/reports` by moderator accounts, once the moderator migration is applied. Actioning a report (removing content, contacting a user) is still manual.
 - There are no notifications, direct messages, payments, AI summaries, or voice features, by design.
 
 ## Launch Recommendation
 
 **Private beta:** not yet. Blockers 1 and 2 must be cleared first — sign-in does not currently work, so no community feature has ever been exercised by a real account. Everything else on the list is either verified or acceptable for a small invited group.
 
-**Public launch:** not yet. Blockers 1 through 5 all need to be cleared first, and the gated homepage recorded under Settled Decisions needs revisiting — it is right for an invited beta and wrong for open discovery.
+**Public launch:** not yet. Blockers 1 through 6 all need to be cleared first, and the gated homepage recorded under Settled Decisions needs revisiting — it is right for an invited beta and wrong for open discovery.

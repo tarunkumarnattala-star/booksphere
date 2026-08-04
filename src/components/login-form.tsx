@@ -13,6 +13,13 @@ function safeReturnPath(next?: string) {
   return next;
 }
 
+// The Google button is hidden until the provider is actually enabled in Supabase
+// (Authentication -> Providers). Rendering it while the provider is off gives every
+// user a dead button: Supabase returns "provider is not enabled" and sign-in fails.
+// When Google is turned on, set NEXT_PUBLIC_GOOGLE_AUTH_ENABLED=true in Vercel and
+// redeploy (NEXT_PUBLIC_* values are inlined at build time).
+const googleAuthEnabled = process.env.NEXT_PUBLIC_GOOGLE_AUTH_ENABLED === "true";
+
 export function LoginForm({ next }: { next?: string }) {
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || (typeof location !== "undefined" ? location.origin : "");
   const returnPath = safeReturnPath(next);
@@ -69,20 +76,24 @@ export function LoginForm({ next }: { next?: string }) {
     <div className="rounded-[32px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-8">
       <p className="caption">Welcome Back</p>
       <h2 className="title-2 mt-2">Log in to write, follow, and save books.</h2>
-      <button
-        type="button"
-        onClick={signInWithGoogle}
-        disabled={loading}
-        className="mt-6 flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-[color:var(--color-text-primary)] px-4 py-3 text-sm font-medium !text-white transition hover:opacity-85"
-      >
-        Continue with Google
-      </button>
-      <div className="my-5 flex items-center gap-3 text-xs font-semibold uppercase text-[color:var(--color-text-muted)]">
-        <span className="h-px flex-1 bg-[color:var(--color-hairline)]" />
-        or use email
-        <span className="h-px flex-1 bg-[color:var(--color-hairline)]" />
-      </div>
-      <form onSubmit={signInWithEmail} className="grid gap-3">
+      {googleAuthEnabled && (
+        <>
+          <button
+            type="button"
+            onClick={signInWithGoogle}
+            disabled={loading}
+            className="mt-6 flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-[color:var(--color-text-primary)] px-4 py-3 text-sm font-medium !text-white transition hover:opacity-85"
+          >
+            Continue with Google
+          </button>
+          <div className="my-5 flex items-center gap-3 text-xs font-semibold uppercase text-[color:var(--color-text-muted)]">
+            <span className="h-px flex-1 bg-[color:var(--color-hairline)]" />
+            or use email
+            <span className="h-px flex-1 bg-[color:var(--color-hairline)]" />
+          </div>
+        </>
+      )}
+      <form onSubmit={signInWithEmail} className={`grid gap-3 ${googleAuthEnabled ? "" : "mt-6"}`}>
         <label htmlFor="login-email" className="text-sm font-medium text-[color:var(--color-text-primary)]">
           Email address
         </label>
