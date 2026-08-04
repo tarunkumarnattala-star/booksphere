@@ -14,7 +14,9 @@ Every row is marked with how it was checked, because "it works" and "someone wat
 - **CODE ONLY** — the implementation is present and typechecks, but no one has run it end to end.
 - **NOT CHECKED** — genuinely untested.
 
-The single largest gap is that **no write path has been exercised while signed in**. Everything under "Community writes" is CODE ONLY for that reason. See [Blockers](#final-public-launch-blockers).
+The single largest gap is that **no write path has been exercised while signed in** — and as of August 3, sign-in itself does not work, because magic-link email is not being delivered. Everything under "Community writes" is CODE ONLY for that reason. See [Blockers](#final-public-launch-blockers).
+
+A caution learned the hard way: this app reports success optimistically. Buttons flip state, counters move, and "Published to your feed" appears whether or not anything reached the database. Do not mark a row VERIFIED from the UI alone — check the table.
 
 ## Core Journey
 
@@ -25,7 +27,7 @@ The single largest gap is that **no write path has been exercised while signed i
 | Browse books | VERIFIED | Explore, genre shelves, search, and reading paths all render from seed data. All 16 main routes return 200 in production. |
 | Open a book | VERIFIED | Book pages render cover, metadata, community signal, sorting, comments, actions, and the read-next shelf. |
 | Read discussion | VERIFIED | 30 discussion posts exist in the production database and render. |
-| Create account | NOT CHECKED | Google and email magic-link flows have never been run against production. |
+| Create account | **BROKEN** | Magic-link email is not being delivered, so no `auth.users` row can be created. Google is not enabled at all. Sign-in does not currently work in production — see blocker 1. |
 | Post insight | CODE ONLY | Writes to `discussion_posts` via `createSupabaseContribution`. Never executed while authenticated. |
 | Get engagement | CODE ONLY | Likes, saves, follows, awards, reports, and comments all write to Supabase. Never executed while authenticated. |
 | Return tomorrow | NOT CHECKED | Requires a signed-in session persisted across devices. |
@@ -95,11 +97,12 @@ Remember that `NEXT_PUBLIC_*` variables are inlined at **build** time. Changing 
 
 ## Final Public Launch Blockers
 
-1. **Sign in once and exercise the write paths.** This is the one blocker that cannot be cleared by reading code. Create a post, comment, like, save a book, save an insight, and follow a contributor. Confirm each survives a page refresh, then confirm it appears from a second device or browser. Until this is done, every row marked CODE ONLY above is an assumption.
-2. **Run real auth QA.** Google login and email magic-link, each creating a profile row automatically.
-3. **Confirm ownership rules with two accounts.** One account must not be able to edit or delete another's content, and must not be able to read another's saved books, saved insights, or followed discussions.
-4. **Test on a real phone.** A 375px viewport is not a handset; it says nothing about touch targets, iOS Safari, or scroll behaviour.
-5. **Add production analytics review.** No dashboard or event review exists yet.
+1. **Set up custom SMTP.** Auth currently relies on Supabase's built-in email service, which is rate-limited to a few messages per hour and documented as unsuitable for production. On August 3 this silently blocked sign-in entirely: magic links stopped arriving, no `auth.users` row was ever created, and the UI still reported "Check your email for a magic link". Every community write then failed as an unauthenticated no-op while appearing to succeed on screen. Configure a real provider under Authentication → Emails → SMTP Settings before anything else — nothing below can be tested until sign-in works, and a beta of 100 readers would hit this limit immediately.
+2. **Sign in once and exercise the write paths.** This is the one blocker that cannot be cleared by reading code. Create a post, comment, like, save a book, save an insight, and follow a contributor. Confirm each survives a page refresh, then confirm it appears from a second device or browser. Until this is done, every row marked CODE ONLY above is an assumption.
+3. **Run real auth QA.** Google login and email magic-link, each creating a profile row automatically.
+4. **Confirm ownership rules with two accounts.** One account must not be able to edit or delete another's content, and must not be able to read another's saved books, saved insights, or followed discussions.
+5. **Test on a real phone.** A 375px viewport is not a handset; it says nothing about touch targets, iOS Safari, or scroll behaviour.
+6. **Add production analytics review.** No dashboard or event review exists yet.
 
 ## Settled Decisions
 
@@ -117,6 +120,6 @@ Revisit this once the private beta closes. A gated homepage costs organic discov
 
 ## Launch Recommendation
 
-**Private beta:** yes, once blocker 1 is cleared. Everything else on the list is either verified or acceptable for a small invited group.
+**Private beta:** not yet. Blockers 1 and 2 must be cleared first — sign-in does not currently work, so no community feature has ever been exercised by a real account. Everything else on the list is either verified or acceptable for a small invited group.
 
-**Public launch:** not yet. Blockers 1 through 4 all need to be cleared first, and the gated homepage recorded under Settled Decisions needs revisiting — it is right for an invited beta and wrong for open discovery.
+**Public launch:** not yet. Blockers 1 through 5 all need to be cleared first, and the gated homepage recorded under Settled Decisions needs revisiting — it is right for an invited beta and wrong for open discovery.
