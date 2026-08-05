@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { clearLocalProfile, getLocalProfile } from "@/lib/local-session";
+import { NotificationBell } from "./notification-bell";
 import { supabase } from "@/lib/supabase";
 import { canUseLocalCommunityFallback } from "@/lib/community-runtime";
 
@@ -66,6 +67,7 @@ export function AuthNavButton() {
 
   return (
     <div className="flex items-center gap-2">
+      <NotificationBell />
       <Link href={profileHref} className="hidden max-w-[140px] truncate rounded-full bg-white px-4 py-2 text-sm font-medium text-[color:var(--color-text-primary)] ring-1 ring-black/[0.04] lg:block">
         {label}
       </Link>
