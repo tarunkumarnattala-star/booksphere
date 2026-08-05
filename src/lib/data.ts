@@ -1,4 +1,4 @@
-import { Book, BookChapter, BookConcept, BookIdea, BookKnowledgePreview, DiscoveryShelf, DiscussionPost, DiscussionRankingLabel, DiscussionSort, EditorialPick, Genre, KnowledgePost, PerspectiveCluster, Profile, ReadingPath } from "./types";
+import { Book, BookChapter, BookConcept, BookIdea, BookKnowledgePreview, DiscoveryShelf, DiscussionPost, DiscussionRankingLabel, DiscussionSort, EditorialPick, Genre, KnowledgePost, PerspectiveCluster, PostType, Profile, ReadingPath } from "./types";
 import { searchEverything, searchKnowledge } from "./search";
 import { slugify } from "./utils";
 
@@ -737,6 +737,35 @@ const starterTemplates = [
     body: (book: Book) => `Community Starter prompt: choose one concept from ${book.title} and explain it in plain language so someone can understand the practical point before deciding whether to read the full book.`
   }
 ];
+
+// Reader-facing versions of the starter prompts. The seed bodies above are written
+// in the voice of a starter account, so only the framing questions are reused here.
+// An empty book page is the product's weakest moment: "share the first insight" asks
+// for a blank page, while a specific question is something a reader can answer.
+export function starterPromptsForBook(book: Book): Array<{ postType: PostType; title: string; hint: string }> {
+  return [
+    {
+      postType: "Application",
+      title: `Where did you actually use an idea from ${book.title}?`,
+      hint: "A decision, routine, or conversation it changed"
+    },
+    {
+      postType: "Disagreement",
+      title: `Where does ${book.title} stop working?`,
+      hint: "The condition or context where the advice breaks"
+    },
+    {
+      postType: "Insight",
+      title: `What is commonly misunderstood about ${book.title}?`,
+      hint: "The nuance people flatten when they summarise it"
+    },
+    {
+      postType: "Summary",
+      title: `Explain one idea from ${book.title} without the jargon`,
+      hint: "Plain language, so someone can judge if it is worth reading"
+    }
+  ];
+}
 
 export const discussions: DiscussionPost[] = books.slice(0, 30).flatMap((book, index) => {
   const first = starterTemplates[index % starterTemplates.length];

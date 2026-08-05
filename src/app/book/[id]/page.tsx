@@ -12,7 +12,7 @@ import { GenrePill } from "@/components/genre-pill";
 import { LocalDiscussionList } from "@/components/local-discussion-list";
 import { SectionShelf } from "@/components/section-shelf";
 import { DiscussionSort } from "@/lib/types";
-import { books, discussionSortOptions, getBook, getBookConcepts, getBookIdeas, getBookKnowledgePreview, getDiscussionsForBook, getOftenReadNext, getPerspectiveClustersForBook, sortDiscussions } from "@/lib/data";
+import { books, discussionSortOptions, getBook, getBookConcepts, getBookIdeas, getBookKnowledgePreview, getDiscussionsForBook, getOftenReadNext, getPerspectiveClustersForBook, sortDiscussions, starterPromptsForBook } from "@/lib/data";
 import { getSupabaseContributionsForBook } from "@/lib/contributions";
 import { isSupabaseConfigured } from "@/lib/supabase";
 import { bookCoverData } from "@/lib/book-cover-data";
@@ -196,15 +196,28 @@ export default async function BookPage({ params, searchParams }: { params: Promi
           <div className="min-w-0 space-y-5">
             <LocalDiscussionList bookId={book.id} />
             {displayPosts.length ? displayPosts.map((post) => <DiscussionCard key={post.id} post={post} />) : (
-              <EmptyState
-                title="No discussions yet"
-                body="Be the first to turn this book into a useful conversation. Start with what changed your thinking, what you applied, or what you disagree with."
-                action={(
-                  <Link href={`/book/${book.id}/create-discussion`} className="rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-medium !text-white transition hover:opacity-85">
-                    Share the first insight
-                  </Link>
-                )}
-              />
+              <div className="rounded-[28px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-8">
+                <h3 className="title-3">Nobody has written about this one yet</h3>
+                <p className="body-copy mt-2 max-w-lg text-[15px] leading-6">
+                  The useful part of a book is what happened when someone applied it. Pick a question below and answer it from your own experience.
+                </p>
+                <ul className="mt-6 grid gap-3">
+                  {starterPromptsForBook(book).map((prompt) => (
+                    <li key={prompt.title}>
+                      <Link
+                        href={`/book/${book.id}/create-discussion?type=${encodeURIComponent(prompt.postType)}&title=${encodeURIComponent(prompt.title)}`}
+                        className="group flex items-start gap-3 rounded-[20px] bg-black/[0.025] p-4 transition hover:bg-black/[0.05]"
+                      >
+                        <PenLine size={17} className="mt-0.5 shrink-0 text-[color:var(--color-text-muted)]" />
+                        <span className="min-w-0">
+                          <span className="block text-[15px] font-medium text-[color:var(--color-text-primary)]">{prompt.title}</span>
+                          <span className="mt-1 block text-sm text-[color:var(--color-text-secondary)]">{prompt.hint}</span>
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
           </div>
           {selectedPost ? <CommentThread postId={selectedPost.id} mode={selectedPost.postType === "Question" ? "answers" : "comments"} /> : (

@@ -31,14 +31,14 @@ const contextTags = ["Work", "Leadership", "Study", "Finance", "Relationships", 
 const MIN_TITLE_LENGTH = 4;
 const MIN_BODY_LENGTH = 20;
 
-export function CreateDiscussionForm({ book, initialPostType = "Insight" }: { book: Book; initialPostType?: PostType }) {
+export function CreateDiscussionForm({ book, initialPostType = "Insight", initialTitle = "" }: { book: Book; initialPostType?: PostType; initialTitle?: string }) {
   const [submitted, setSubmitted] = useState(false);
   const [createdPostId, setCreatedPostId] = useState("");
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [form, setForm] = useState({
     postType: initialPostType,
-    title: "",
+    title: initialTitle,
     body: "",
     quoteReference: "",
     contextType: "",
