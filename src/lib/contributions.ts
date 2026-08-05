@@ -1,5 +1,6 @@
 import { supabase } from "./supabase";
 import { books, getBook } from "./data";
+import { slugify } from "./utils";
 import type { AwardType, Book, DiscussionPost, PostType, UsefulnessReaction, UsefulnessReactionType } from "./types";
 
 export type DbContribution = {
@@ -71,8 +72,22 @@ function localBookForDbBook(dbBook?: DbBookRef | null) {
   return books.find((book) => book.title.toLowerCase() === dbBook.title.toLowerCase() && book.author.toLowerCase() === dbBook.author.toLowerCase());
 }
 
-export async function resolveDbBook(book: Pick<Book, "title" | "author">) {
+export async function resolveDbBook(book: Pick<Book, "title" | "author"> & { id?: string }) {
   if (!supabase) return null;
+
+  // Preferred path: the slug is an explicit key both sides agree on, added by
+  // migration 20260806000000. Matching on it means neither a retitled book nor a
+  // reworded author string can strand a book's community data.
+  const slug = book.id || slugify(book.title);
+  const bySlug = await supabase
+    .from("books")
+    .select("id,title,author")
+    .eq("slug", slug)
+    .maybeSingle();
+  if (bySlug.data?.id) return bySlug.data as DbBookRef;
+
+  // Fallbacks, in decreasing strictness, so this still works before the migration
+  // is applied and if a slug is ever missing.
   const strict = await supabase
     .from("books")
     .select("id,title,author")
@@ -81,10 +96,6 @@ export async function resolveDbBook(book: Pick<Book, "title" | "author">) {
     .maybeSingle();
   if (strict.data?.id) return strict.data as DbBookRef;
 
-  // Author strings drift between the seed catalog and the database — "Peter Thiel and
-  // Blake Masters" here versus "Peter Thiel" there — which otherwise strands the book
-  // with no discussions, saves, or recommendations. Titles are unique on both sides, so
-  // fall back to the title alone. maybeSingle() still returns null if that is ambiguous.
   const byTitle = await supabase
     .from("books")
     .select("id,title,author")

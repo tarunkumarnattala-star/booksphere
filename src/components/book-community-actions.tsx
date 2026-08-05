@@ -32,7 +32,7 @@ export function BookCommunityActions({ book }: { book: Book }) {
     let active = true;
     async function loadState() {
       const auth = await requireProfile();
-      const dbBook = await resolveDbBook({ title: book.title, author: book.author });
+      const dbBook = await resolveDbBook({ id: book.id, title: book.title, author: book.author });
       if (!dbBook?.id) return;
       const { data: counts } = await supabase!.from("book_engagement_counts").select("saves_count").eq("book_id", dbBook.id).maybeSingle();
       if (active && counts) setSaveCount(Number(counts.saves_count || 0));
@@ -57,7 +57,7 @@ export function BookCommunityActions({ book }: { book: Book }) {
     }
 
     if (!supabase) return { profileId: auth.profileId, bookId: book.id };
-    const dbBook = await resolveDbBook({ title: book.title, author: book.author });
+    const dbBook = await resolveDbBook({ id: book.id, title: book.title, author: book.author });
 
     if (!dbBook?.id) {
       setError("We could not find this book in the database yet. Try again after seed data is synced.");
