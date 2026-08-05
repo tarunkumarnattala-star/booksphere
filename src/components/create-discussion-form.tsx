@@ -27,6 +27,10 @@ const promptByType: Record<PostType, string> = {
 
 const contextTags = ["Work", "Leadership", "Study", "Finance", "Relationships", "Health", "Communication", "Startup", "Personal Habits", "Creativity"];
 
+// Matches the discussion_posts check constraints in the database.
+const MIN_TITLE_LENGTH = 4;
+const MIN_BODY_LENGTH = 20;
+
 export function CreateDiscussionForm({ book, initialPostType = "Insight" }: { book: Book; initialPostType?: PostType }) {
   const [submitted, setSubmitted] = useState(false);
   const [createdPostId, setCreatedPostId] = useState("");
@@ -64,12 +68,15 @@ export function CreateDiscussionForm({ book, initialPostType = "Insight" }: { bo
       setNotice(auth.message);
       return;
     }
-    if (form.title.trim().length < 8) {
-      setError("Give the thread a specific title so readers know why it is worth opening.");
+    // These mirror the database check constraints on discussion_posts
+    // (title >= 4, body >= 20). Keep them in step: a looser form would let the
+    // post fail at the database with a far less helpful message.
+    if (form.title.trim().length < MIN_TITLE_LENGTH) {
+      setError(`Give the thread a title of at least ${MIN_TITLE_LENGTH} characters.`);
       return;
     }
-    if (form.body.trim().length < 80) {
-      setError("Add at least 80 characters. BookSphere works best when posts include a useful idea, example, or question.");
+    if (form.body.trim().length < MIN_BODY_LENGTH) {
+      setError(`Add at least ${MIN_BODY_LENGTH} characters so another reader can follow your point.`);
       return;
     }
     setError("");
@@ -158,7 +165,7 @@ export function CreateDiscussionForm({ book, initialPostType = "Insight" }: { bo
           <input
             maxLength={180}
             value={form.title}
-            onChange={(event) => setForm({ ...form, title: event.target.value })}
+            onChange={(event) => { setError(""); setForm({ ...form, title: event.target.value }); }}
             placeholder="The idea that changed how I think about..."
             className="rounded-[20px] bg-black/[0.035] px-4 py-3 outline-none ring-1 ring-transparent focus:ring-black/20"
           />
@@ -168,12 +175,12 @@ export function CreateDiscussionForm({ book, initialPostType = "Insight" }: { bo
           <textarea
             maxLength={10000}
             value={form.body}
-            onChange={(event) => setForm({ ...form, body: event.target.value })}
+            onChange={(event) => { setError(""); setForm({ ...form, body: event.target.value }); }}
             rows={8}
             placeholder="Write the useful part: what you noticed, applied, questioned, challenged, connected, or would want another reader to understand."
             className="rounded-[20px] bg-black/[0.035] px-4 py-3 outline-none ring-1 ring-transparent focus:ring-black/20"
           />
-          <span className="text-xs font-medium text-[color:var(--color-text-muted)]">{bodyCount}/80 minimum characters</span>
+          <span className="text-xs font-medium text-[color:var(--color-text-muted)]">{bodyCount}/{MIN_BODY_LENGTH} minimum characters</span>
         </label>
         {isApplicationLike && (
           <div className="grid gap-4 rounded-[24px] bg-black/[0.025] p-4 md:grid-cols-2">
