@@ -57,7 +57,10 @@ function objectKeys(name) {
   }));
 }
 
-const genreNames = new Set(arrayInitializer("genres").elements.map(literalString).filter(Boolean));
+// Validate against the full declared genre list, not the exported one. `genres` is now
+// derived from the narrowed catalog, so it only contains genres that survived; every
+// row in bookRows still has to name a genre that legitimately exists.
+const genreNames = new Set(arrayInitializer("allGenres").elements.map(literalString).filter(Boolean));
 const publicationLabels = objectKeys("publicationLabels");
 const verifiedTitles = objectKeys("verifiedEditorialContext");
 const verifiedIdeaTitles = objectKeys("verifiedIdeaSeeds");

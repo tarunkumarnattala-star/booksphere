@@ -4,7 +4,7 @@ import { slugify } from "./utils";
 
 const SEED_NOW = Date.UTC(2026, 5, 29, 12, 0, 0);
 
-export const genres: Genre[] = [
+const allGenres: Genre[] = [
   "Business",
   "Finance",
   "Investing",
@@ -603,8 +603,54 @@ const verifiedEditorialContext: Record<string, {
   }
 };
 
-export const books: Book[] = bookRows.map(([title, author, publishedYear, genreNames], index) => {
-  const filteredGenres = genreNames.filter((name) => genres.some((genre) => genre.name === name));
+// The catalog is deliberately narrow. 226 books across 20 genres meant almost every
+// page a visitor opened had no discussion on it, which reads as abandoned rather than
+// early. A focused shelf makes the same amount of community content feel dense: about
+// half of these books already carry a discussion, against roughly one in seven before.
+//
+// The theme is work and building - startups, strategy, management, and the
+// communication and execution habits that surround them. Selection favoured books that
+// already have community content, kept every book the Startups 101 reading path needs,
+// and kept Atomic Habits because the only real reader post in production is on it.
+//
+// This is the single control for catalog breadth. Widening the shelf, or swapping the
+// theme, means editing this list and nothing else: everything downstream - genres,
+// search, shelves, reading paths, ideas, sitemap - derives from `books`.
+const FOCUS_BOOK_SLUGS = new Set([
+  // Startups
+  "the-lean-startup",
+  "zero-to-one",
+  "the-mom-test",
+  "traction",
+  "the-hard-thing-about-hard-things",
+  "crossing-the-chasm",
+  "the-innovator-s-dilemma",
+  // Strategy and the business itself
+  "blue-ocean-strategy",
+  "built-to-last",
+  "good-to-great",
+  "measure-what-matters",
+  "rework",
+  // Management and leadership
+  "high-output-management",
+  "the-effective-executive",
+  "extreme-ownership",
+  "leaders-eat-last",
+  "dare-to-lead",
+  // Communication at work
+  "crucial-conversations",
+  "made-to-stick",
+  "influence",
+  "never-split-the-difference",
+  // Execution and personal effectiveness
+  "atomic-habits",
+  "deep-work",
+  "essentialism",
+  "the-7-habits-of-highly-effective-people"
+]);
+
+const allBooks: Book[] = bookRows.map(([title, author, publishedYear, genreNames], index) => {
+  const filteredGenres = genreNames.filter((name) => allGenres.some((genre) => genre.name === name));
   const primaryGenre = filteredGenres[0] || "Business";
   const verifiedContext = verifiedEditorialContext[title];
 
@@ -641,6 +687,18 @@ export const books: Book[] = bookRows.map(([title, author, publishedYear, genreN
     whyMatters: verifiedContext?.whyMatters || "Use the reader perspectives to understand what people took from this book and decide whether it deserves your full attention."
   };
 });
+
+export const books: Book[] = allBooks.filter((book) => FOCUS_BOOK_SLUGS.has(book.id));
+
+// Genres are derived from the shelf rather than declared, so narrowing the catalog can
+// never leave a browsable genre with one book or none in it - which would recreate the
+// abandoned feeling the narrow shelf exists to fix. Three is the floor for a genre page
+// that reads as a collection instead of a leftover.
+const MIN_BOOKS_PER_GENRE = 3;
+
+export const genres: Genre[] = allGenres.filter(
+  (genre) => books.filter((book) => book.genres.includes(genre.name)).length >= MIN_BOOKS_PER_GENRE
+);
 
 const previewByGenre: Record<string, string> = {
   Business: "how organizations make better choices, build durable advantages, and turn judgment into execution",
@@ -851,7 +909,7 @@ export const knowledgePosts: KnowledgePost[] = [
   }
 ];
 
-export const readingPaths: ReadingPath[] = [
+const allReadingPaths: ReadingPath[] = [
   {
     id: "path-startups-101",
     title: "Startups 101",
@@ -937,6 +995,15 @@ export const readingPaths: ReadingPath[] = [
     }
   }
 ];
+
+// A path is only shown when every book on it is still in the catalog. A half-empty
+// sequence reads worse than one fewer path, and silently dropping steps would make the
+// remaining ones look arbitrary. Narrowing the shelf leaves Startups 101 intact; the
+// others belong to themes this catalog no longer covers and should be rewritten for
+// the current focus rather than shown with holes in them.
+export const readingPaths: ReadingPath[] = allReadingPaths.filter((path) =>
+  path.bookIds.every((bookId) => FOCUS_BOOK_SLUGS.has(bookId))
+);
 
 const ideaThemesByGenre: Record<string, Array<{ title: string; explanation: string; why: string; example: string; reference: string }>> = {
   "Personal Growth": [
