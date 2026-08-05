@@ -2,7 +2,7 @@
 
 This is the frozen-product checklist. Do not add major features until every blocker here is resolved.
 
-Last QA pass: August 6, 2026.
+Last QA pass: August 6, 2026. Automated audit re-run clean at the end of that pass.
 
 Production: <https://booksphere-iota.vercel.app> — public, `/api/health` returns `200 healthy` with `database: reachable`.
 
@@ -17,6 +17,8 @@ Every row is marked with how it was checked, because "it works" and "someone wat
 The single largest gap is that **no write path has been exercised while signed in**. Everything under "Community writes" is CODE ONLY for that reason. See [Blockers](#final-public-launch-blockers).
 
 A caution learned the hard way: this app reports success optimistically. Buttons flip state, counters move, and "Published to your feed" appears whether or not anything reached the database. Do not mark a row VERIFIED from the UI alone — check the table.
+
+A second caution, about the tooling rather than the app. During the August 6 audit the headless browser produced four false alarms: a zero-width viewport made every page look blank and stuck on "Loading BookSphere", `document.body.innerText` under-reported so pages looked empty, synthetic input events did not update React state so search looked broken, and truncated image URLs made every cover look like a 400. Each was disproved by a second source — a screenshot, real keyboard input, the full URL. Confirm a failure two ways before recording it here.
 
 ## Core Journey
 
@@ -64,7 +66,7 @@ Every action below is wired to Supabase. `localStorage` is used **only** as a de
 | Item | Status | Notes |
 | --- | --- | --- |
 | Desktop looks right | VERIFIED | Landing, Explore, book, and reading-path pages reviewed in-browser. |
-| Mobile looks right | CODE ONLY | Checked at a 375px viewport with no horizontal overflow. **Not tested on a real handset.** |
+| Mobile looks right | CODE ONLY | Explore, book, feed and genre pages checked at 375px in a headless browser: no horizontal overflow, no broken images, no nested anchors, bottom nav intact. **Still not tested on a real handset**, so this says nothing about iOS Safari, touch targets under a thumb, or scroll feel. |
 | No layout breaks | VERIFIED | Build, types, and lint clean; no overflow at mobile or desktop widths. |
 | No placeholder images | VERIFIED | All seed books use real Open Library cover URLs. |
 | No lorem ipsum | VERIFIED | None present. |
@@ -73,11 +75,24 @@ Every action below is wired to Supabase. `localStorage` is used **only** as a de
 
 ## Correctness
 
+Roughly 1,400 automated assertions against production, re-run clean at the end of the August 6 pass:
+
+| Audit | Scope | Result |
+| --- | --- | --- |
+| Routes | All 426 sitemap URLs (394 books, 20 genres, 5 paths, 7 static) plus 404 and auth-route checks — 436 assertions. Each page checked for status, complete HTML, and no `undefined`, `NaN` or `[object Object]` reaching the reader. | 0 failures, 0 responses over 4s |
+| Internal links | Every link on every page: 830 distinct targets across 431 pages | 0 broken, 0 empty-text |
+| Cover images | 66 resolved end-to-end through the image optimiser; all 394 book pages carry a cover | 0 failures |
+| Data integrity | Every catalog book has a database row, so no book can be browsable yet unable to hold community content | 394 of 394 |
+| Health | `/api/health` | 200 healthy, database reachable |
+
+Link crawling is the check worth keeping. It is the only one that found the uuid-link bug in `7aa48e9`: four book pages returned 200 and rendered perfectly while carrying a link to `/book/<uuid>` that 404'd. Sampling pages would never have surfaced it — the break was inside otherwise healthy pages.
+
 | Item | Status | Notes |
 | --- | --- | --- |
-| Missing pages return 404 | VERIFIED | Book, genre, reading-path and composer routes declare `dynamicParams = false`, so an unknown slug is a real 404 rather than the not-found screen served with HTTP 200, which a crawler would index as a valid page. `/profile` and `/post` stay dynamic because real users and posts are created at runtime. |
+| Missing pages return 404 | VERIFIED | Unknown book, genre, reading-path and composer slugs all answer 404 (4 of 4 re-checked). Reading paths were fixed by `dynamicParams = false`, but that only gates prerendered routes: books and genres await Supabase, so they render dynamically and kept answering HTTP 200 with the not-found screen — a soft 404 a crawler indexes as real content. Those are gated in `src/proxy.ts` before the page runs. `/profile` and `/post` stay open because real users and posts appear at runtime. |
 | No console errors | VERIFIED | Landing, Explore, book, and reading-path pages are clean, including a full walk of the onboarding tour across four route changes. |
 | Onboarding tour hydration | VERIFIED | Fixed in `acee6a9`. The tour marked its highlight target directly, which raced hydration; the marker now lives on `<html>`. |
+| Discussion links resolve | VERIFIED | Fixed in `7aa48e9`. Resolving a database book back to the catalog matched on author, so four book pages linked to `/book/<uuid>` and 404'd. Now joins on slug. Re-crawled: 830 links, 0 broken. |
 | Valid HTML on reading paths | VERIFIED | Fixed in `2f98de5`. Genre pills nested an `<a>` inside the card's `<a>`. Confirmed in the production HTML: 0 nested anchors, 5 card links intact. |
 | Production build | VERIFIED | Exit 0, 833 static pages. Sitemap covers 426 URLs. |
 | Types and lint | VERIFIED | `typecheck` and `lint` both exit 0 with no warnings. |
@@ -101,7 +116,7 @@ Remember that `NEXT_PUBLIC_*` variables are inlined at **build** time. Changing 
 1. **Verify a sending domain in Resend.** Resend SMTP is configured (August 4), which fixed the built-in email service silently dropping magic links on August 3. But until a domain is verified, Resend delivers **only to the account owner's own address** — the first invited beta reader's sign-in link will bounce. Verifying a domain (DNS records, ~30 minutes once a domain exists) is what actually opens sign-in to other people. It also resolves the `booksphere.vercel.app` name collision that already misdirected one QA pass.
 2. **Sign in once and exercise the write paths.** This is the one blocker that cannot be cleared by reading code. Create a post, comment, like, save a book, save an insight, and follow a contributor. Confirm each survives a page refresh, then confirm it appears from a second device or browser. Until this is done, every row marked CODE ONLY above is an assumption.
 3. **Run real auth QA.** Email magic-link, creating a profile row automatically. The Google button is now hidden behind `NEXT_PUBLIC_GOOGLE_AUTH_ENABLED` (default off) because the provider is disabled in Supabase — a visible dead button failed for every user who tried it. To offer Google later: enable the provider in Supabase Auth, set the flag to `true` in Vercel, redeploy, then QA it.
-4. **Apply the moderation migration.** `/admin/reports` exists but reads nothing until `supabase/migrations/20260804000000_moderator_reports_access.sql` is run in the SQL editor and `is_moderator` is set to true on the operator's profile row. Until then reports remain write-only.
+4. **Apply the moderation migration.** Verified still outstanding on August 6: `profiles.is_moderator` does not exist in production, so `/admin/reports` shows its access gate to everyone and reports stay write-only — a reader can report abuse and nobody can read it. Run `supabase/migrations/20260804000000_moderator_reports_access.sql` in the SQL editor, then set `is_moderator = true` on the operator's profile row. The page degrades safely until then, but the feature does not exist.
 5. **Confirm ownership rules with two accounts.** One account must not be able to edit or delete another's content, and must not be able to read another's saved books, saved insights, or followed discussions.
 6. **Test on a real phone.** A 375px viewport is not a handset; it says nothing about touch targets, iOS Safari, or scroll behaviour.
 7. **Add production analytics review.** No dashboard or event review exists yet.
@@ -117,7 +132,7 @@ Revisit this once the private beta closes. A gated homepage costs organic discov
 ## Known Limitations
 
 - Browsing uses local seed data for speed; the database backs community features rather than discovery.
-- Reports are stored and reviewable at `/admin/reports` by moderator accounts, once the moderator migration is applied. Actioning a report (removing content, contacting a user) is still manual.
+- Reports are stored but **not yet readable**: the moderator migration has not been applied in production, so no account can open the queue. Once it is, `/admin/reports` lists them for moderator accounts. Actioning a report — removing content, contacting a user — is still manual.
 - There are no notifications, direct messages, payments, AI summaries, or voice features, by design.
 
 ## Launch Recommendation
