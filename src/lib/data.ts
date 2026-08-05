@@ -390,7 +390,175 @@ const bookRows: Array<[string, string, number, string[]]> = [
   ["The Outsiders", "William N. Thorndike", 2012, ["Investing", "Business", "Leadership"]],
   ["The Black Swan", "Nassim Nicholas Taleb", 2007, ["Investing", "Finance", "Psychology"]],
   ["Against the Gods", "Peter L. Bernstein", 1996, ["Investing", "Finance", "History"]],
-  ["The Big Short", "Michael Lewis", 2010, ["Investing", "Finance", "History"]]
+  ["The Big Short", "Michael Lewis", 2010, ["Investing", "Finance", "History"]],
+  ["Homo Deus", "Yuval Noah Harari", 2015, ["History", "Technology & AI", "Philosophy"]],
+  ["21 Lessons for the 21st Century", "Yuval Noah Harari", 2018, ["Society & Culture", "Philosophy", "Technology & AI"]],
+  ["Guns, Germs, and Steel", "Jared Diamond", 1997, ["History", "Science", "Society & Culture"]],
+  ["SPQR", "Mary Beard", 2015, ["History"]],
+  ["The Guns of August", "Barbara W. Tuchman", 1962, ["History"]],
+  ["A People's History of the United States", "Howard Zinn", 1980, ["History", "Society & Culture"]],
+  ["The Rise and Fall of the Third Reich", "William L. Shirer", 1960, ["History"]],
+  ["1776", "David McCullough", 2005, ["History", "Biography"]],
+  ["Salt", "Mark Kurlansky", 2002, ["History", "Science"]],
+  ["The Devil in the White City", "Erik Larson", 2003, ["History", "Biography"]],
+  ["The Selfish Gene", "Richard Dawkins", 1976, ["Science", "Psychology"]],
+  ["Silent Spring", "Rachel Carson", 1962, ["Science", "Society & Culture", "History"]],
+  ["The Body", "Bill Bryson", 2019, ["Science", "Health"]],
+  ["A Short History of Nearly Everything", "Bill Bryson", 2003, ["Science", "History"]],
+  ["Behave", "Robert M. Sapolsky", 2017, ["Psychology", "Science"]],
+  ["Determined", "Robert M. Sapolsky", 2023, ["Psychology", "Science", "Philosophy"]],
+  ["Why Zebras Don't Get Ulcers", "Robert M. Sapolsky", 1994, ["Psychology", "Health", "Science"]],
+  ["Emotional Intelligence", "Daniel Goleman", 1995, ["Psychology", "Leadership", "Personal Growth"]],
+  ["The Happiness Hypothesis", "Jonathan Haidt", 2006, ["Psychology", "Philosophy"]],
+  ["The Paradox of Choice", "Barry Schwartz", 2004, ["Psychology", "Economics"]],
+  ["Blink", "Malcolm Gladwell", 2005, ["Psychology", "Business"]],
+  ["Outliers", "Malcolm Gladwell", 2008, ["Psychology", "Society & Culture", "Career"]],
+  ["The Tipping Point", "Malcolm Gladwell", 2000, ["Psychology", "Business", "Society & Culture"]],
+  ["Talking to Strangers", "Malcolm Gladwell", 2019, ["Psychology", "Communication", "Society & Culture"]],
+  ["David and Goliath", "Malcolm Gladwell", 2013, ["Psychology", "Society & Culture"]],
+  ["Think Again", "Adam Grant", 2021, ["Psychology", "Communication", "Leadership"]],
+  ["Hidden Potential", "Adam Grant", 2023, ["Psychology", "Personal Growth", "Career"]],
+  ["Chatter", "Ethan Kross", 2021, ["Psychology", "Personal Growth", "Health"]],
+  ["Stolen Focus", "Johann Hari", 2022, ["Society & Culture", "Psychology", "Productivity"]],
+  ["Lifespan", "David A. Sinclair", 2019, ["Health", "Science"]],
+  ["The Obesity Code", "Jason Fung", 2016, ["Health", "Science"]],
+  ["Burnout", "Emily Nagoski", 2019, ["Health", "Psychology", "Career"]],
+  ["Good Energy", "Casey Means", 2024, ["Health", "Science"]],
+  ["Come As You Are", "Emily Nagoski", 2015, ["Health", "Relationships", "Psychology"]],
+  ["On the Shortness of Life", "Seneca", 49, ["Philosophy", "Personal Growth"]],
+  ["The Daily Stoic", "Ryan Holiday", 2016, ["Philosophy", "Personal Growth"]],
+  ["Ego Is the Enemy", "Ryan Holiday", 2016, ["Philosophy", "Personal Growth", "Leadership"]],
+  ["Stillness Is the Key", "Ryan Holiday", 2019, ["Philosophy", "Personal Growth", "Productivity"]],
+  ["The Consolations of Philosophy", "Alain de Botton", 2000, ["Philosophy"]],
+  ["Justice", "Michael J. Sandel", 2009, ["Philosophy", "Society & Culture"]],
+  ["The Courage to Be Disliked", "Ichiro Kishimi", 2013, ["Philosophy", "Psychology", "Personal Growth"]],
+  ["The Age of Surveillance Capitalism", "Shoshana Zuboff", 2019, ["Technology & AI", "Society & Culture", "Economics"]],
+  ["Thinking in Systems", "Donella H. Meadows", 2008, ["Economics", "Science", "Business"]],
+  ["Basic Economics", "Thomas Sowell", 2000, ["Economics"]],
+  ["How the World Really Works", "Vaclav Smil", 2022, ["Economics", "Science", "Society & Culture"]],
+  ["Good Strategy Bad Strategy", "Richard P. Rumelt", 2011, ["Business", "Leadership", "Startups"]],
+  ["The Personal MBA", "Josh Kaufman", 2010, ["Business", "Career"]],
+  ["Start with Why", "Simon Sinek", 2009, ["Leadership", "Business"]],
+  ["The Infinite Game", "Simon Sinek", 2019, ["Leadership", "Business"]],
+  ["Radical Candor", "Kim Scott", 2017, ["Leadership", "Communication", "Career"]],
+  ["The Five Dysfunctions of a Team", "Patrick Lencioni", 2002, ["Leadership", "Business"]],
+  ["Multipliers", "Liz Wiseman", 2010, ["Leadership", "Business"]],
+  ["Turn the Ship Around!", "L. David Marquet", 2012, ["Leadership", "Business"]],
+  ["No Rules Rules", "Reed Hastings", 2020, ["Leadership", "Business", "Startups"]],
+  ["The Culture Map", "Erin Meyer", 2014, ["Communication", "Business", "Leadership"]],
+  ["Working Backwards", "Colin Bryar", 2021, ["Business", "Leadership", "Startups"]],
+  ["Build", "Tony Fadell", 2022, ["Startups", "Business", "Career"]],
+  ["Company of One", "Paul Jarvis", 2019, ["Business", "Startups", "Career"]],
+  ["The E-Myth Revisited", "Michael E. Gerber", 1995, ["Business", "Startups"]],
+  ["Principles", "Ray Dalio", 2017, ["Business", "Leadership", "Personal Growth"]],
+  ["The Almanack of Naval Ravikant", "Eric Jorgenson", 2020, ["Personal Growth", "Business", "Philosophy"]],
+  ["Delivering Happiness", "Tony Hsieh", 2010, ["Business", "Leadership"]],
+  ["Setting the Table", "Danny Meyer", 2006, ["Business", "Leadership"]],
+  ["Let My People Go Surfing", "Yvon Chouinard", 2005, ["Business", "Leadership", "Society & Culture"]],
+  ["Rich Dad Poor Dad", "Robert T. Kiyosaki", 1997, ["Finance", "Investing"]],
+  ["I Will Teach You to Be Rich", "Ramit Sethi", 2009, ["Finance", "Personal Growth"]],
+  ["The Total Money Makeover", "Dave Ramsey", 2003, ["Finance"]],
+  ["Die with Zero", "Bill Perkins", 2020, ["Finance", "Personal Growth", "Philosophy"]],
+  ["Just Keep Buying", "Nick Maggiulli", 2022, ["Investing", "Finance"]],
+  ["Same as Ever", "Morgan Housel", 2023, ["Finance", "Psychology", "History"]],
+  ["The Algebra of Wealth", "Scott Galloway", 2024, ["Finance", "Career"]],
+  ["A Man for All Markets", "Edward O. Thorp", 2017, ["Investing", "Biography"]],
+  ["A World Without Email", "Cal Newport", 2021, ["Productivity", "Career", "Communication"]],
+  ["What Color Is Your Parachute?", "Richard N. Bolles", 1970, ["Career"]],
+  ["Building a Second Brain", "Tiago Forte", 2022, ["Productivity", "Creativity", "Technology & AI"]],
+  ["Indistractable", "Nir Eyal", 2019, ["Productivity", "Psychology"]],
+  ["The Power of Full Engagement", "Jim Loehr", 2003, ["Productivity", "Health", "Career"]],
+  ["Hyperfocus", "Chris Bailey", 2018, ["Productivity", "Psychology"]],
+  ["Feel-Good Productivity", "Ali Abdaal", 2024, ["Productivity", "Personal Growth"]],
+  ["Supercommunicators", "Charles Duhigg", 2024, ["Communication", "Psychology"]],
+  ["Thanks for the Feedback", "Douglas Stone", 2014, ["Communication", "Leadership", "Career"]],
+  ["Words That Work", "Frank Luntz", 2007, ["Communication", "Business"]],
+  ["TED Talks", "Chris Anderson", 2016, ["Communication", "Creativity"]],
+  ["The 5 Love Languages", "Gary Chapman", 1992, ["Relationships"]],
+  ["The Warmth of Other Suns", "Isabel Wilkerson", 2010, ["Society & Culture", "History", "Biography"]],
+  ["Poverty, by America", "Matthew Desmond", 2023, ["Society & Culture", "Economics"]],
+  ["Bullshit Jobs", "David Graeber", 2018, ["Society & Culture", "Economics", "Career"]],
+  ["Einstein", "Walter Isaacson", 2007, ["Biography", "Science", "History"]],
+  ["When Breath Becomes Air", "Paul Kalanithi", 2016, ["Biography", "Health", "Philosophy"]],
+  ["Open", "Andre Agassi", 2009, ["Biography", "Personal Growth"]],
+  ["The Diary of a Young Girl", "Anne Frank", 1947, ["Biography", "History"]],
+  ["Long Walk to Freedom", "Nelson Mandela", 1994, ["Biography", "History", "Leadership"]],
+  ["Greenlights", "Matthew McConaughey", 2020, ["Biography", "Personal Growth"]],
+  ["Crying in H Mart", "Michelle Zauner", 2021, ["Biography", "Society & Culture"]],
+  ["The Subtle Art of Not Giving a F*ck", "Mark Manson", 2016, ["Personal Growth", "Philosophy"]],
+  ["Everything Is F*cked", "Mark Manson", 2019, ["Personal Growth", "Philosophy", "Society & Culture"]],
+  ["The Four Agreements", "Don Miguel Ruiz", 1997, ["Personal Growth", "Philosophy"]],
+  ["The Power of Now", "Eckhart Tolle", 1997, ["Personal Growth", "Philosophy"]],
+  ["12 Rules for Life", "Jordan B. Peterson", 2018, ["Personal Growth", "Philosophy", "Psychology"]],
+  ["Build the Life You Want", "Arthur C. Brooks", 2023, ["Personal Growth", "Psychology", "Health"]],
+  ["From Strength to Strength", "Arthur C. Brooks", 2022, ["Personal Growth", "Career", "Psychology"]],
+  ["The Gifts of Imperfection", "Bren\u00e9 Brown", 2010, ["Personal Growth", "Psychology"]],
+  ["Daring Greatly", "Bren\u00e9 Brown", 2012, ["Personal Growth", "Psychology", "Leadership"]],
+  ["Atlas of the Heart", "Bren\u00e9 Brown", 2021, ["Psychology", "Personal Growth", "Communication"]],
+  ["The Body Is Not an Apology", "Sonya Renee Taylor", 2018, ["Personal Growth", "Society & Culture"]],
+  ["Tiny Habits", "BJ Fogg", 2019, ["Personal Growth", "Psychology", "Productivity"]],
+  ["The Molecule of More", "Daniel Z. Lieberman", 2018, ["Psychology", "Science", "Health"]],
+  ["Dopamine Nation", "Anna Lembke", 2021, ["Psychology", "Health", "Society & Culture"]],
+  ["Bittersweet", "Susan Cain", 2022, ["Psychology", "Creativity", "Philosophy"]],
+  ["The Second Mountain", "David Brooks", 2019, ["Personal Growth", "Philosophy", "Society & Culture"]],
+  ["How to Know a Person", "David Brooks", 2023, ["Communication", "Psychology", "Relationships"]],
+  ["Never Finished", "David Goggins", 2022, ["Personal Growth", "Health"]],
+  ["Discipline Is Destiny", "Ryan Holiday", 2022, ["Personal Growth", "Philosophy"]],
+  ["Right Thing, Right Now", "Ryan Holiday", 2024, ["Philosophy", "Personal Growth", "Leadership"]],
+  ["Linchpin", "Seth Godin", 2010, ["Creativity", "Career", "Business"]],
+  ["Purple Cow", "Seth Godin", 2003, ["Business", "Creativity", "Startups"]],
+  ["This Is Marketing", "Seth Godin", 2018, ["Business", "Communication", "Startups"]],
+  ["Draft No. 4", "John McPhee", 2017, ["Creativity", "Communication"]],
+  ["Zen in the Art of Writing", "Ray Bradbury", 1990, ["Creativity", "Communication"]],
+  ["Save the Cat!", "Blake Snyder", 2005, ["Creativity", "Communication"]],
+  ["Wired for Love", "Stan Tatkin", 2011, ["Relationships", "Psychology"]],
+  ["Boundaries", "Henry Cloud", 1992, ["Relationships", "Personal Growth"]],
+  ["Games People Play", "Eric Berne", 1964, ["Psychology", "Relationships", "Communication"]],
+  ["Men Are from Mars, Women Are from Venus", "John Gray", 1992, ["Relationships", "Communication"]],
+  ["Poor Charlie's Almanack", "Peter D. Kaufman", 2005, ["Investing", "Psychology", "Business"]],
+  ["Mastering the Market Cycle", "Howard Marks", 2018, ["Investing", "Finance", "Economics"]],
+  ["The Little Book That Beats the Market", "Joel Greenblatt", 2005, ["Investing", "Finance"]],
+  ["Beating the Street", "Peter Lynch", 1993, ["Investing", "Finance"]],
+  ["100 Baggers", "Christopher W. Mayer", 2015, ["Investing", "Finance"]],
+  ["Devil Take the Hindmost", "Edward Chancellor", 1999, ["Investing", "History", "Economics"]],
+  ["Manias, Panics, and Crashes", "Charles P. Kindleberger", 1978, ["Investing", "Economics", "History"]],
+  ["Common Sense on Mutual Funds", "John C. Bogle", 1999, ["Investing", "Finance"]],
+  ["Genius Makers", "Cade Metz", 2021, ["Technology & AI", "Biography", "Science"]],
+  ["AI Superpowers", "Kai-Fu Lee", 2018, ["Technology & AI", "Economics", "Society & Culture"]],
+  ["The Master Algorithm", "Pedro Domingos", 2015, ["Technology & AI", "Science"]],
+  ["The Everything Store", "Brad Stone", 2013, ["Business", "Biography", "Technology & AI"]],
+  ["Hackers", "Steven Levy", 1984, ["Technology & AI", "History", "Creativity"]],
+  ["Running Lean", "Ash Maurya", 2010, ["Startups", "Business"]],
+  ["Lean Analytics", "Alistair Croll", 2013, ["Startups", "Business", "Technology & AI"]],
+  ["The Innovator's Solution", "Clayton M. Christensen", 2003, ["Business", "Startups", "Leadership"]],
+  ["Competing Against Luck", "Clayton M. Christensen", 2016, ["Business", "Startups", "Psychology"]],
+  ["Loonshots", "Safi Bahcall", 2019, ["Startups", "Science", "Leadership"]],
+  ["Secrets of Sand Hill Road", "Scott Kupor", 2019, ["Startups", "Finance", "Business"]],
+  ["The Undoing Project", "Michael Lewis", 2016, ["Psychology", "Biography", "Economics"]],
+  ["Liar's Poker", "Michael Lewis", 1989, ["Finance", "Biography", "Society & Culture"]],
+  ["Flash Boys", "Michael Lewis", 2014, ["Finance", "Technology & AI", "Society & Culture"]],
+  ["Moneyball", "Michael Lewis", 2003, ["Business", "Psychology", "Society & Culture"]],
+  ["Debt: The First 5,000 Years", "David Graeber", 2011, ["Economics", "History", "Society & Culture"]],
+  ["The Price of Tomorrow", "Jeff Booth", 2020, ["Economics", "Technology & AI", "Finance"]],
+  ["Broken Money", "Lyn Alden", 2023, ["Finance", "Economics", "History"]],
+  ["The 4-Hour Workweek", "Timothy Ferriss", 2007, ["Productivity", "Career", "Business"]],
+  ["Tools of Titans", "Timothy Ferriss", 2016, ["Personal Growth", "Productivity", "Career"]],
+  ["Tribe of Mentors", "Timothy Ferriss", 2017, ["Personal Growth", "Career", "Creativity"]],
+  ["Free to Focus", "Michael Hyatt", 2019, ["Productivity", "Career"]],
+  ["The Bullet Journal Method", "Ryder Carroll", 2018, ["Productivity", "Creativity", "Personal Growth"]],
+  ["The Blue Zones", "Dan Buettner", 2008, ["Health", "Society & Culture"]],
+  ["The Cure for Burnout", "Emily Ballesteros", 2024, ["Health", "Career", "Productivity"]],
+  ["Team of Teams", "Stanley McChrystal", 2015, ["Leadership", "Business", "History"]],
+  ["Leadership in Turbulent Times", "Doris Kearns Goodwin", 2018, ["Leadership", "History", "Biography"]],
+  ["The Making of a Manager", "Julie Zhuo", 2019, ["Leadership", "Career", "Business"]],
+  ["An Elegant Puzzle", "Will Larson", 2019, ["Leadership", "Technology & AI", "Business"]],
+  ["The Manager's Path", "Camille Fournier", 2017, ["Leadership", "Career", "Technology & AI"]],
+  ["Crucial Accountability", "Kerry Patterson", 2004, ["Communication", "Leadership"]],
+  ["Getting to Yes", "Roger Fisher", 1981, ["Communication", "Business", "Career"]],
+  ["Getting Past No", "William Ury", 1991, ["Communication", "Business"]],
+  ["Quiet Leadership", "David Rock", 2006, ["Leadership", "Psychology", "Communication"]],
+  ["Your Brain at Work", "David Rock", 2009, ["Psychology", "Productivity", "Career"]],
+  ["The Coaching Habit", "Michael Bungay Stanier", 2016, ["Leadership", "Communication", "Career"]]
 ];
 
 const editorPickOrder: Record<string, number> = {
@@ -500,7 +668,8 @@ const publicationLabels: Record<string, string> = {
   "Letters from a Stoic": "c. 65 CE",
   "The Republic": "c. 375 BCE",
   "Nicomachean Ethics": "c. 340 BCE",
-  "Tao Te Ching": "date uncertain; commonly placed c. 4th century BCE"
+  "Tao Te Ching": "date uncertain; commonly placed c. 4th century BCE",
+  "On the Shortness of Life": "c. 49 CE"
 };
 
 const verifiedEditorialContext: Record<string, {
@@ -603,52 +772,6 @@ const verifiedEditorialContext: Record<string, {
   }
 };
 
-// The catalog is deliberately narrow. 226 books across 20 genres meant almost every
-// page a visitor opened had no discussion on it, which reads as abandoned rather than
-// early. A focused shelf makes the same amount of community content feel dense: about
-// half of these books already carry a discussion, against roughly one in seven before.
-//
-// The theme is work and building - startups, strategy, management, and the
-// communication and execution habits that surround them. Selection favoured books that
-// already have community content, kept every book the Startups 101 reading path needs,
-// and kept Atomic Habits because the only real reader post in production is on it.
-//
-// This is the single control for catalog breadth. Widening the shelf, or swapping the
-// theme, means editing this list and nothing else: everything downstream - genres,
-// search, shelves, reading paths, ideas, sitemap - derives from `books`.
-const FOCUS_BOOK_SLUGS = new Set([
-  // Startups
-  "the-lean-startup",
-  "zero-to-one",
-  "the-mom-test",
-  "traction",
-  "the-hard-thing-about-hard-things",
-  "crossing-the-chasm",
-  "the-innovator-s-dilemma",
-  // Strategy and the business itself
-  "blue-ocean-strategy",
-  "built-to-last",
-  "good-to-great",
-  "measure-what-matters",
-  "rework",
-  // Management and leadership
-  "high-output-management",
-  "the-effective-executive",
-  "extreme-ownership",
-  "leaders-eat-last",
-  "dare-to-lead",
-  // Communication at work
-  "crucial-conversations",
-  "made-to-stick",
-  "influence",
-  "never-split-the-difference",
-  // Execution and personal effectiveness
-  "atomic-habits",
-  "deep-work",
-  "essentialism",
-  "the-7-habits-of-highly-effective-people"
-]);
-
 const allBooks: Book[] = bookRows.map(([title, author, publishedYear, genreNames], index) => {
   const filteredGenres = genreNames.filter((name) => allGenres.some((genre) => genre.name === name));
   const primaryGenre = filteredGenres[0] || "Business";
@@ -688,7 +811,7 @@ const allBooks: Book[] = bookRows.map(([title, author, publishedYear, genreNames
   };
 });
 
-export const books: Book[] = allBooks.filter((book) => FOCUS_BOOK_SLUGS.has(book.id));
+export const books: Book[] = allBooks;
 
 // Genres are derived from the shelf rather than declared, so narrowing the catalog can
 // never leave a browsable genre with one book or none in it - which would recreate the
@@ -1002,7 +1125,7 @@ const allReadingPaths: ReadingPath[] = [
 // others belong to themes this catalog no longer covers and should be rewritten for
 // the current focus rather than shown with holes in them.
 export const readingPaths: ReadingPath[] = allReadingPaths.filter((path) =>
-  path.bookIds.every((bookId) => FOCUS_BOOK_SLUGS.has(bookId))
+  path.bookIds.every((bookId) => allBooks.some((book) => book.id === bookId))
 );
 
 const ideaThemesByGenre: Record<string, Array<{ title: string; explanation: string; why: string; example: string; reference: string }>> = {
