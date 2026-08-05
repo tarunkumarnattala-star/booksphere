@@ -25,7 +25,7 @@ export type DbContribution = {
   updated_at?: string | null;
 };
 
-type DbBookRef = { id: string; title: string; author: string };
+type DbBookRef = { id: string; title: string; author: string; slug?: string | null };
 type DbProfileRef = { id: string; name: string; username: string };
 
 export const perspectiveTypeByPostType: Record<PostType, string> = {
@@ -69,7 +69,14 @@ export const reactionLabelByDb: Record<string, UsefulnessReactionType> = Object.
 
 function localBookForDbBook(dbBook?: DbBookRef | null) {
   if (!dbBook) return undefined;
-  return books.find((book) => book.title.toLowerCase() === dbBook.title.toLowerCase() && book.author.toLowerCase() === dbBook.author.toLowerCase());
+  // Resolve back to the catalog by slug. The catalog id is slugify(title) and the
+  // database column holds the same value, so the two agree by construction. Matching on
+  // author instead - as this did - fails for every book whose author string drifted
+  // between the two sources, and the caller then falls back to the database uuid, which
+  // renders as /book/<uuid> and 404s. That silently broke four live book pages.
+  const slug = dbBook.slug || slugify(dbBook.title);
+  return books.find((book) => book.id === slug)
+    || books.find((book) => book.title.toLowerCase() === dbBook.title.toLowerCase());
 }
 
 export async function resolveDbBook(book: Pick<Book, "title" | "author"> & { id?: string }) {
@@ -231,7 +238,7 @@ export async function getSupabaseFeedContributions(limit = 20) {
 
   if (error || !data?.length) return [];
   const bookIds = [...new Set((data as DbContribution[]).map((row) => row.book_id))];
-  const { data: dbBooks } = await supabase.from("books").select("id,title,author").in("id", bookIds);
+  const { data: dbBooks } = await supabase.from("books").select("id,title,author,slug").in("id", bookIds);
   const dbBooksById = Object.fromEntries(((dbBooks || []) as DbBookRef[]).map((book) => [book.id, book]));
   return hydrateContributions(data as DbContribution[], dbBooksById);
 }
@@ -294,7 +301,7 @@ export async function getSupabaseContributionById(id: string) {
     .maybeSingle();
   if (error || !data) return { post: null, error: "Community results could not be loaded right now." };
   const bookIds = [(data as DbContribution).book_id];
-  const { data: dbBooks } = await supabase.from("books").select("id,title,author").in("id", bookIds);
+  const { data: dbBooks } = await supabase.from("books").select("id,title,author,slug").in("id", bookIds);
   const dbBooksById = Object.fromEntries(((dbBooks || []) as DbBookRef[]).map((book) => [book.id, book]));
   const [post] = await hydrateContributions([data as DbContribution], dbBooksById);
   return { post: post || null, error: null };
@@ -309,7 +316,7 @@ export async function getSupabaseContributionsByIds(ids: string[]) {
     .in("id", ids);
   if (error || !data?.length) return [];
   const bookIds = [...new Set((data as DbContribution[]).map((row) => row.book_id))];
-  const { data: dbBooks } = await supabase.from("books").select("id,title,author").in("id", bookIds);
+  const { data: dbBooks } = await supabase.from("books").select("id,title,author,slug").in("id", bookIds);
   const dbBooksById = Object.fromEntries(((dbBooks || []) as DbBookRef[]).map((book) => [book.id, book]));
   const hydrated = await hydrateContributions(data as DbContribution[], dbBooksById);
   return ids.map((id) => hydrated.find((post) => post.id === id)).filter((post): post is DiscussionPost => Boolean(post));
@@ -360,7 +367,7 @@ export async function updateSupabaseContribution(profileId: string, id: string, 
   if (error) return { post: null, error: "We could not save your changes. Your edited text is still here." };
   if (!data) return { post: null, error: "You do not have permission to change this contribution." };
   const bookIds = [(data as DbContribution).book_id];
-  const { data: dbBooks } = await supabase.from("books").select("id,title,author").in("id", bookIds);
+  const { data: dbBooks } = await supabase.from("books").select("id,title,author,slug").in("id", bookIds);
   const dbBooksById = Object.fromEntries(((dbBooks || []) as DbBookRef[]).map((book) => [book.id, book]));
   const [post] = await hydrateContributions([data as DbContribution], dbBooksById);
   return { post: post || null, error: null };
