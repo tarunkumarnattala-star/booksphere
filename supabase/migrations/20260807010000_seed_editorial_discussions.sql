@@ -1,18 +1,21 @@
--- Twenty editorial discussion posts, attributed to the BookSphere Team account.
+-- Twenty editorial discussion posts under the BookSphere Team account.
 --
--- These are deliberately NOT written as personal experience. Every one is an Insight,
--- Question or Disagreement: framings that an editorial account can honestly make.
--- None claims "I applied this and here is what happened", because the account did not,
--- and inventing reader experience would break the one promise a discussion product
--- cannot recover from once broken. The launch checklist already commits to no fake
--- users; this keeps that commitment while giving threads something to answer.
+-- Deliberately Insight, Question and Disagreement only. None is written as personal
+-- experience, because the account has none, and inventing reader outcomes would break
+-- the one promise a discussion product cannot recover from. Each names where an idea
+-- is genuinely contested, then ends on a question a real reader can answer.
 --
--- Each post names where an idea is contested, then ends on a real question, so the
--- first genuine reader has an opening rather than a blank page.
+-- The rate-limit trigger on discussion_posts requires auth.uid() and caps a user at 10
+-- posts an hour. Both are correct for readers and both block an operator seeding from
+-- the SQL editor, so the trigger is disabled and restored inside one transaction: if
+-- anything fails, the rollback re-enables it rather than leaving the table unguarded.
 --
--- Book ids are resolved by slug, so this depends on 20260806000000 (slug key) and
--- 20260807000000 (catalog sync) having run first. Safe to re-run: the guard at the end
--- skips any post whose title already exists.
+-- Depends on 20260806000000 (slug key) and 20260807000000 (catalog sync). Safe to
+-- re-run; posts whose title already exists are skipped.
+
+begin;
+
+alter table public.discussion_posts disable trigger discussion_posts_rate_limit;
 
 insert into public.discussion_posts (book_id, user_id, post_type, perspective_type, title, body, status)
 select v.book_id, v.user_id, v.post_type, v.perspective_type, v.title, v.body, v.status
@@ -160,3 +163,7 @@ For anyone who has used this during something genuinely bad: did the distinction
 ) as v(book_id, user_id, post_type, perspective_type, title, body, status)
 where v.book_id is not null
   and not exists (select 1 from public.discussion_posts d where d.title = v.title);
+
+alter table public.discussion_posts enable trigger discussion_posts_rate_limit;
+
+commit;
