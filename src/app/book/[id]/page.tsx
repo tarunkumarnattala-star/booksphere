@@ -17,6 +17,12 @@ import { getSupabaseContributionsForBook } from "@/lib/contributions";
 import { isSupabaseConfigured } from "@/lib/supabase";
 import { bookCoverData } from "@/lib/book-cover-data";
 
+// The catalog is the complete set of valid params, so anything else is genuinely not a
+// page. Declaring that lets Next answer with a real 404 at the routing layer; calling
+// notFound() from inside the page renders the right screen but still returns HTTP 200,
+// which reads to a crawler as a valid page and gets indexed.
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return books.map((book) => ({ id: book.id }));
 }

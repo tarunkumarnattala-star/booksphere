@@ -2,7 +2,7 @@
 
 This is the frozen-product checklist. Do not add major features until every blocker here is resolved.
 
-Last QA pass: August 3, 2026.
+Last QA pass: August 6, 2026.
 
 Production: <https://booksphere-iota.vercel.app> — public, `/api/health` returns `200 healthy` with `database: reachable`.
 
@@ -26,7 +26,7 @@ A caution learned the hard way: this app reports success optimistically. Buttons
 | Understand value in 5 seconds | VERIFIED | Landing hero states the product in one line, followed by eight sections of real copy. No placeholder text. |
 | Browse books | VERIFIED | Explore, genre shelves, search, and reading paths all render from seed data. All 16 main routes return 200 in production. |
 | Open a book | VERIFIED | Book pages render cover, metadata, community signal, sorting, comments, actions, and the read-next shelf. |
-| Read discussion | VERIFIED | 30 discussion posts exist in the production database and render. |
+| Read discussion | VERIFIED | 51 discussion posts render, including 20 editorial posts across 20 books. Those are Insight, Question and Disagreement only, attributed to BookSphere Team; none is written as personal experience, because inventing reader outcomes would break the no-fake-users commitment below. |
 | Create account | VERIFIED | Fixed and proven on August 5. Signup previously returned 500 for any email whose local part exceeded 23 characters: the profile trigger generated usernames over the 30-character cap in `profiles_launch_content_length`, aborting the whole `auth.users` insert. Broken since July 15. After applying `20260805000000_fix_signup_username_length.sql`, a probe signup with a 33-character local part succeeded and produced a valid profile (`booksphere-qa-probe-tri-a71c6f`, exactly 30 characters, full name preserved). Google remains hidden (provider disabled). |
 | Post insight | CODE ONLY | Writes to `discussion_posts` via `createSupabaseContribution`. Never executed while authenticated. |
 | Get engagement | CODE ONLY | Likes, saves, follows, awards, reports, and comments all write to Supabase. Never executed while authenticated. |
@@ -53,10 +53,10 @@ Every action below is wired to Supabase. `localStorage` is used **only** as a de
 | Item | Status | Notes |
 | --- | --- | --- |
 | Schema and migrations applied | VERIFIED | All 14 migrations present; tables respond. |
-| Seed data loaded | VERIFIED | 226 books, 6 profiles, 30 discussions, 22 awards, 5 reading paths, 5 editorial picks. |
+| Seed data loaded | VERIFIED | 394 books, 7 profiles, 51 discussions, 22 awards, 5 reading paths, 5 editorial picks. The catalog was narrowed to 25 books on August 6 and reversed the same day: a reader who searches for a book and finds nothing is a dead end, which is worse than an empty discussion page. |
 | Public reads work | VERIFIED | `books`, `profiles`, `discussion_posts`, `knowledge_posts`, `reading_paths`, `editorial_picks` all readable anonymously. |
 | Private tables protected | VERIFIED | `saved_books`, `saved_insights`, and `followed_discussions` return 401 to anonymous callers. RLS is doing its job. |
-| Seed catalog resolves to database rows | VERIFIED | All 222 seed books resolve: 217 by exact title and author, 5 by the title-only fallback added in `e4b945d`. Zero unresolvable. |
+| Seed catalog resolves to database rows | VERIFIED | Catalog and database now join on an explicit `slug` column rather than matching title and author strings. All 391 catalog books have a database row, so every browsable book can host community content. |
 | Users cannot edit another user's content | CODE ONLY | RLS policies exist; never tested with two real accounts. |
 
 ## Design
@@ -75,10 +75,11 @@ Every action below is wired to Supabase. `localStorage` is used **only** as a de
 
 | Item | Status | Notes |
 | --- | --- | --- |
+| Missing pages return 404 | VERIFIED | Book, genre, reading-path and composer routes declare `dynamicParams = false`, so an unknown slug is a real 404 rather than the not-found screen served with HTTP 200, which a crawler would index as a valid page. `/profile` and `/post` stay dynamic because real users and posts are created at runtime. |
 | No console errors | VERIFIED | Landing, Explore, book, and reading-path pages are clean, including a full walk of the onboarding tour across four route changes. |
 | Onboarding tour hydration | VERIFIED | Fixed in `acee6a9`. The tour marked its highlight target directly, which raced hydration; the marker now lives on `<html>`. |
 | Valid HTML on reading paths | VERIFIED | Fixed in `2f98de5`. Genre pills nested an `<a>` inside the card's `<a>`. Confirmed in the production HTML: 0 nested anchors, 5 card links intact. |
-| Production build | VERIFIED | Exit 0, 496 static pages (including `/admin/reports`, `robots.txt`, `sitemap.xml`). |
+| Production build | VERIFIED | Exit 0, 833 static pages. Sitemap covers 426 URLs. |
 | Types and lint | VERIFIED | `typecheck` and `lint` both exit 0 with no warnings. |
 | Health endpoint | VERIFIED | Production returns `200 healthy`, `database: reachable`. |
 
