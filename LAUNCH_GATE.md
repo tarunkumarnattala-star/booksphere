@@ -54,11 +54,12 @@ Every action below is wired to Supabase. `localStorage` is used **only** as a de
 
 | Item | Status | Notes |
 | --- | --- | --- |
-| Schema and migrations applied | VERIFIED | All 14 migrations present; tables respond. |
+| Schema and migrations applied | VERIFIED | 18 migrations present and applied, including the signup fix, the slug join key, the catalog sync and the moderation policies. |
 | Seed data loaded | VERIFIED | 394 books, 7 profiles, 51 discussions, 22 awards, 5 reading paths, 5 editorial picks. The catalog was narrowed to 25 books on August 6 and reversed the same day: a reader who searches for a book and finds nothing is a dead end, which is worse than an empty discussion page. |
 | Public reads work | VERIFIED | `books`, `profiles`, `discussion_posts`, `knowledge_posts`, `reading_paths`, `editorial_picks` all readable anonymously. |
 | Private tables protected | VERIFIED | `saved_books`, `saved_insights`, and `followed_discussions` return 401 to anonymous callers. RLS is doing its job. |
-| Seed catalog resolves to database rows | VERIFIED | Catalog and database now join on an explicit `slug` column rather than matching title and author strings. All 391 catalog books have a database row, so every browsable book can host community content. |
+| Seed catalog resolves to database rows | VERIFIED | Catalog and database now join on an explicit `slug` column rather than matching title and author strings. All 394 catalog books have a database row (re-verified in the August 6 audit), so no book can be browsable yet unable to hold community content. |
+| Moderation queue works | VERIFIED | `profiles.is_moderator` applied on August 6 and granted to `@tarunkumarnattala-3427dc`. The boundary is enforced in the database, not the interface: an anonymous caller is refused reports on every query shape tried (`select=id`, `select=*`, and a targeted column list all return 401), so a modified client cannot extract them either. `/admin/` is disallowed in robots.txt. Not visually confirmed — the browser tool failed during that check. |
 | Users cannot edit another user's content | CODE ONLY | RLS policies exist; never tested with two real accounts. |
 
 ## Design
@@ -116,10 +117,9 @@ Remember that `NEXT_PUBLIC_*` variables are inlined at **build** time. Changing 
 1. **Verify a sending domain in Resend.** Resend SMTP is configured (August 4), which fixed the built-in email service silently dropping magic links on August 3. But until a domain is verified, Resend delivers **only to the account owner's own address** — the first invited beta reader's sign-in link will bounce. Verifying a domain (DNS records, ~30 minutes once a domain exists) is what actually opens sign-in to other people. It also resolves the `booksphere.vercel.app` name collision that already misdirected one QA pass.
 2. **Sign in once and exercise the write paths.** This is the one blocker that cannot be cleared by reading code. Create a post, comment, like, save a book, save an insight, and follow a contributor. Confirm each survives a page refresh, then confirm it appears from a second device or browser. Until this is done, every row marked CODE ONLY above is an assumption.
 3. **Run real auth QA.** Email magic-link, creating a profile row automatically. The Google button is now hidden behind `NEXT_PUBLIC_GOOGLE_AUTH_ENABLED` (default off) because the provider is disabled in Supabase — a visible dead button failed for every user who tried it. To offer Google later: enable the provider in Supabase Auth, set the flag to `true` in Vercel, redeploy, then QA it.
-4. **Apply the moderation migration.** Verified still outstanding on August 6: `profiles.is_moderator` does not exist in production, so `/admin/reports` shows its access gate to everyone and reports stay write-only — a reader can report abuse and nobody can read it. Run `supabase/migrations/20260804000000_moderator_reports_access.sql` in the SQL editor, then set `is_moderator = true` on the operator's profile row. The page degrades safely until then, but the feature does not exist.
-5. **Confirm ownership rules with two accounts.** One account must not be able to edit or delete another's content, and must not be able to read another's saved books, saved insights, or followed discussions.
-6. **Test on a real phone.** A 375px viewport is not a handset; it says nothing about touch targets, iOS Safari, or scroll behaviour.
-7. **Add production analytics review.** No dashboard or event review exists yet.
+4. **Confirm ownership rules with two accounts.** One account must not be able to edit or delete another's content, and must not be able to read another's saved books, saved insights, or followed discussions.
+5. **Test on a real phone.** A 375px viewport is not a handset; it says nothing about touch targets, iOS Safari, or scroll behaviour.
+6. **Add production analytics review.** No dashboard or event review exists yet.
 
 ## Settled Decisions
 
@@ -132,11 +132,12 @@ Revisit this once the private beta closes. A gated homepage costs organic discov
 ## Known Limitations
 
 - Browsing uses local seed data for speed; the database backs community features rather than discovery.
-- Reports are stored but **not yet readable**: the moderator migration has not been applied in production, so no account can open the queue. Once it is, `/admin/reports` lists them for moderator accounts. Actioning a report — removing content, contacting a user — is still manual.
+- Reports are readable at `/admin/reports` by moderator accounts. Actioning a report — removing content, contacting a user — is still manual.
+- Moderator identities are discoverable: `profiles` is publicly readable by design, so anyone can query which accounts hold the flag. It exposes no capability, only a targeting list.
 - There are no notifications, direct messages, payments, AI summaries, or voice features, by design.
 
 ## Launch Recommendation
 
 **Private beta:** not yet. Blockers 1 and 2 must be cleared first — sign-in does not currently work, so no community feature has ever been exercised by a real account. Everything else on the list is either verified or acceptable for a small invited group.
 
-**Public launch:** not yet. Blockers 1 through 6 all need to be cleared first, and the gated homepage recorded under Settled Decisions needs revisiting — it is right for an invited beta and wrong for open discovery.
+**Public launch:** not yet. Blockers 1 through 5 all need to be cleared first, and the gated homepage recorded under Settled Decisions needs revisiting — it is right for an invited beta and wrong for open discovery.
