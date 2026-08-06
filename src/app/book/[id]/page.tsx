@@ -88,15 +88,20 @@ export default async function BookPage({ params, searchParams }: { params: Promi
             <BookOpen size={17} /> {preview ? "Learn the useful ideas" : "Read reader perspectives"}
           </a>
           <Link href={`/book/${book.id}/create-discussion`} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium text-[color:var(--color-text-primary)] shadow-[var(--shadow-soft)] ring-1 ring-black/[0.04] transition hover:bg-black/[0.035]">
-            <PenLine size={17} /> Share Insight
+            <PenLine size={17} /> Share a perspective
           </Link>
         </div>
       </section>
 
-      <section aria-label="Explore this book" className="mt-10 grid grid-cols-3 divide-x divide-[color:var(--color-hairline)] border-y border-[color:var(--color-hairline)] py-3">
-        <BookOutcomeLink href={preview ? "#knowledge-preview" : "#discussions"} icon={<BookOpen size={17} />} label={preview ? "Useful ideas" : "Reader insights"} />
-        <BookOutcomeLink href="#perspective-map" icon={<MessageCircle size={17} />} label="Reader views" />
-        <BookOutcomeLink href={preview ? "#full-book-decision" : "#discussions"} icon={<Scale size={17} />} label={preview ? "Worth reading?" : "Open threads"} />
+      {/* Both preview anchors only exist when the book has one, so without a preview this
+          row had three tabs pointing at two places - the first and third were the same
+          destination under different names. Show only the destinations that exist. */}
+      <section aria-label="Explore this book" className={`mt-10 grid ${preview ? "grid-cols-3" : "grid-cols-2"} divide-x divide-[color:var(--color-hairline)] border-y border-[color:var(--color-hairline)] py-3`}>
+        {preview
+          ? <BookOutcomeLink href="#knowledge-preview" icon={<BookOpen size={17} />} label="Useful ideas" />
+          : <BookOutcomeLink href="#discussions" icon={<BookOpen size={17} />} label="Perspectives" />}
+        <BookOutcomeLink href="#perspective-map" icon={<MessageCircle size={17} />} label="Perspective map" />
+        {preview && <BookOutcomeLink href="#full-book-decision" icon={<Scale size={17} />} label="Worth reading?" />}
       </section>
 
       {preview && (
@@ -143,7 +148,7 @@ export default async function BookPage({ params, searchParams }: { params: Promi
               Open discussions
             </a>
             <Link href={`/book/${book.id}/create-discussion?type=Question`} className="inline-flex min-h-10 items-center rounded-full bg-black/[0.04] px-4 text-sm font-medium text-[color:var(--color-text-primary)] transition hover:bg-black/[0.07]">
-              Ask readers
+              Ask a question
             </Link>
           </div>
         </div>
@@ -182,14 +187,14 @@ export default async function BookPage({ params, searchParams }: { params: Promi
           <div>
             <p className="caption mb-2">Perspectives</p>
             <h2 className="title-1">What readers learned, applied, or challenged</h2>
-            <p className="subheadline mt-2">Open a thread to see the summary, question, application, disagreement, or lesson behind the book.</p>
+            <p className="subheadline mt-2">Open a perspective to see what a reader applied, questioned, challenged, or learned.</p>
           </div>
           <div className="flex w-full gap-2 md:w-auto">
             <Link href={`/book/${book.id}/create-discussion?type=Question`} className="inline-flex min-h-11 flex-1 items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-medium text-[color:var(--color-text-primary)] ring-1 ring-black/[0.06] transition hover:bg-black/[0.035] md:flex-none">
-              Ask readers
+              Ask a question
             </Link>
             <Link href={`/book/${book.id}/create-discussion`} className="inline-flex min-h-11 flex-1 items-center justify-center rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-medium !text-white transition hover:opacity-85 md:flex-none">
-              New perspective
+              Share a perspective
             </Link>
           </div>
         </div>
