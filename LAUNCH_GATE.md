@@ -28,7 +28,7 @@ A second caution, about the tooling rather than the app. During the August 6 aud
 | Understand value in 5 seconds | VERIFIED | Landing hero states the product in one line, followed by eight sections of real copy. No placeholder text. |
 | Browse books | VERIFIED | Explore, genre shelves, search, and reading paths all render from seed data. All 16 main routes return 200 in production. |
 | Open a book | VERIFIED | Book pages render cover, metadata, community signal, sorting, comments, actions, and the read-next shelf. |
-| Read discussion | VERIFIED | 51 discussion posts render, including 20 editorial posts across 20 books. Those are Insight, Question and Disagreement only, attributed to BookSphere Team; none is written as personal experience, because inventing reader outcomes would break the no-fake-users commitment below. |
+| Read discussion | VERIFIED | 51 discussion posts render, including 20 editorial posts across 20 books. Each has its own address at `/discussion/<id>` — all 51 verified reachable — with page metadata carrying the perspective's own title, so a shared link names the argument rather than the book it sits on. The book page still honours `?thread=` for in-page selection. Those are Insight, Question and Disagreement only, attributed to BookSphere Team; none is written as personal experience, because inventing reader outcomes would break the no-fake-users commitment below. |
 | Create account | VERIFIED | Fixed and proven on August 5. Signup previously returned 500 for any email whose local part exceeded 23 characters: the profile trigger generated usernames over the 30-character cap in `profiles_launch_content_length`, aborting the whole `auth.users` insert. Broken since July 15. After applying `20260805000000_fix_signup_username_length.sql`, a probe signup with a 33-character local part succeeded and produced a valid profile (`booksphere-qa-probe-tri-a71c6f`, exactly 30 characters, full name preserved). Google remains hidden (provider disabled). |
 | Post insight | CODE ONLY | Writes to `discussion_posts` via `createSupabaseContribution`. Never executed while authenticated. |
 | Get engagement | CODE ONLY | Likes, saves, follows, awards, reports, and comments all write to Supabase. Never executed while authenticated. |
@@ -81,7 +81,7 @@ Roughly 1,400 automated assertions against production, re-run clean at the end o
 | Audit | Scope | Result |
 | --- | --- | --- |
 | Routes | All 426 sitemap URLs (394 books, 20 genres, 5 paths, 7 static) plus 404 and auth-route checks — 436 assertions. Each page checked for status, complete HTML, and no `undefined`, `NaN` or `[object Object]` reaching the reader. | 0 failures, 0 responses over 4s |
-| Internal links | Every link on every page: 830 distinct targets across 431 pages | 0 broken, 0 empty-text |
+| Internal links | Every link on every page: 882 distinct targets across 431 pages, re-crawled after discussion links were retargeted to permalinks | 0 broken, 0 empty-text |
 | Cover images | 66 resolved end-to-end through the image optimiser; all 394 book pages carry a cover | 0 failures |
 | Data integrity | Every catalog book has a database row, so no book can be browsable yet unable to hold community content | 394 of 394 |
 | Health | `/api/health` | 200 healthy, database reachable |
@@ -95,8 +95,9 @@ Link crawling is the check worth keeping. It is the only one that found the uuid
 | Onboarding tour hydration | VERIFIED | Fixed in `acee6a9`. The tour marked its highlight target directly, which raced hydration; the marker now lives on `<html>`. |
 | Discussion links resolve | VERIFIED | Fixed in `7aa48e9`. Resolving a database book back to the catalog matched on author, so four book pages linked to `/book/<uuid>` and 404'd. Now joins on slug. Re-crawled: 830 links, 0 broken. |
 | Valid HTML on reading paths | VERIFIED | Fixed in `2f98de5`. Genre pills nested an `<a>` inside the card's `<a>`. Confirmed in the production HTML: 0 nested anchors, 5 card links intact. |
-| Production build | VERIFIED | Exit 0, 833 static pages. Sitemap covers 426 URLs. |
+| Production build | VERIFIED | Exit 0, 834 static pages. Sitemap covers 426 URLs. |
 | Types and lint | VERIFIED | `typecheck` and `lint` both exit 0 with no warnings. |
+| Reply inbox | CODE ONLY | `/notifications` lists replies to your posts and comments, derived from existing tables with a locally stored last-seen marker, and shows an unread count in the nav. Never seen with real replies, because that needs two signed-in accounts. |
 | Health endpoint | VERIFIED | Production returns `200 healthy`, `database: reachable`. |
 
 ## Environment
@@ -111,6 +112,31 @@ Link crawling is the check worth keeping. It is the only one that found the uuid
 | Preview environment | CODE ONLY | Supabase values were refreshed, but no preview deployment has been loaded to confirm. |
 
 Remember that `NEXT_PUBLIC_*` variables are inlined at **build** time. Changing one in Vercel has no effect until the next deploy.
+
+## What Shipped (August 5-6)
+
+Recorded because most of it was invisible from the interface: three of these were silently broken and produced no error at all.
+
+| Change | Commit | Why it mattered |
+| --- | --- | --- |
+| Signup accepted long email addresses | `241f266` | Any address with a local part over 23 characters returned 500 and created no account. Broken since July 15. A large share of invited readers would have been unable to join, with no error to explain it. |
+| Production Supabase credentials corrected | — | The live site could not reach its database at all. `/api/health` reported `degraded`. |
+| Books join the catalog on a slug | `e7ce883` | Five books, including Zero to One, could hold no community data: no saves, no recommendations, no discussions. The catalog and database were matched on author strings, which drift. |
+| Catalog synced to the database | `20260807000000` | 168 browsable books had no database row, so none could host a discussion. Same failure as above, 168 times over. |
+| Discussion links stopped pointing at uuids | `7aa48e9` | Four book pages linked to `/book/<uuid>`, a dead end. Found only by crawling every link on every page; each page returned 200 and looked perfect. |
+| Onboarding tour hydration | `acee6a9` | The tour wrote to a React-owned node mid-hydration, raising console errors on `/explore`. |
+| Valid HTML on reading paths | `2f98de5` | Genre pills nested an `<a>` inside the card's `<a>`, breaking the card's click target. |
+| Real 404s for unknown books and genres | `f581f83` | Every mistyped slug answered 200 and was indexable as real content. |
+| Moderation queue | `74d6fdc` | Readers could report abuse and nobody could read the reports. |
+| Analytics dashboard | `9c62688` | 21 event types were being recorded with no way to read them. |
+| Moderator table grants | `ea5f458` | Both admin pages were still unreadable: the policies were correct but the role had no table-level SELECT, so RLS never got a chance to filter. |
+| Reply inbox | `2ae70e1` | Nothing brought a reader back. `/notifications` shows replies to your writing, derived from existing tables, with an unread count in the nav. Email replies still need the domain. |
+| Starter prompts on empty book pages | `2ae70e1` | An empty book asked for a blank page. It now offers four concrete questions, including "what did you try that did not work" — the scarcest thing a first contributor can leave. |
+| Composer leads with lived outcomes | `beda2f9` | Eleven flat post types put Summary beside What Did Not Work as equals. Now grouped so the differentiated kinds lead; Quote dropped from the writable set. |
+| Discussion permalinks | `beda2f9` | A perspective had no address, so sharing one really shared the book page it sat on. |
+| Catalog 226 to 394 books | `5cb7eea` | Narrowed to 25 earlier the same day and reversed: a reader who searches for a book and finds nothing is a dead end, which is worse than an empty discussion page. |
+| CI | `74d6fdc` | Nothing stopped a broken commit reaching production. Typecheck, lint, content audit and build now run on every push. |
+| Sitemap and robots | `74d6fdc` | 426 URLs were invisible to search; account and moderation surfaces were indexable. |
 
 ## Final Public Launch Blockers
 
