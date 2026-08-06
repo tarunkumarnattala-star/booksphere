@@ -9,7 +9,7 @@ import { FollowButton } from "./follow-button";
 import { LOCAL_KNOWLEDGE_POSTS_KEY } from "./knowledge-feed";
 import { KnowledgePostActions } from "./knowledge-post-actions";
 import { KnowledgePost } from "@/lib/types";
-import { getBook, getProfileById } from "@/lib/data";
+import { authorProfileFor, getBook } from "@/lib/data";
 import { getSupabaseKnowledgePost } from "@/lib/knowledge-posts";
 
 function initialsFor(name: string) {
@@ -69,7 +69,7 @@ export function LocalKnowledgePostPage({ id, initialPost }: { id: string; initia
     );
   }
 
-  const fallbackProfile = getProfileById(post.userId);
+  const fallbackProfile = authorProfileFor(post);
   const profile = {
     ...fallbackProfile,
     name: post.authorName || fallbackProfile.name,

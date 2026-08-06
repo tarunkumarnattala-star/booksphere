@@ -1410,7 +1410,38 @@ export function getProfileById(id: string) {
       topGenres: ["Books", "Ideas"]
     };
   }
-  return profiles.find((profile) => profile.id === id) || profiles[0];
+  // Return undefined when the id is not one of the seeded editorial accounts. This used to
+  // fall back to profiles[0], which is the BookSphere Team account - so every real reader,
+  // whose id is a database uuid and never in this list, had their writing displayed under
+  // the house account's name and badge. Callers all carried a correct fallback built from
+  // the post's own author fields; none of them could ever run, because this never returned
+  // undefined. Use authorProfileFor() rather than calling this directly for a post.
+  return profiles.find((profile) => profile.id === id);
+}
+
+// The display identity for whoever wrote a post: the seeded profile when it is an
+// editorial account, and otherwise the author carried on the row itself. Attribution is
+// not cosmetic here - a reader who writes something and sees another name on it has been
+// told, correctly, that this is not a place to put their thinking.
+export function authorProfileFor(post: {
+  userId: string;
+  authorName?: string;
+  authorUsername?: string;
+  createdAt?: string;
+}): Profile {
+  const seeded = getProfileById(post.userId);
+  if (seeded) return seeded;
+  return {
+    id: post.userId,
+    name: post.authorName || "Reader",
+    username: post.authorUsername || post.userId,
+    bio: "",
+    createdAt: post.createdAt || new Date(SEED_NOW).toISOString(),
+    followers: 0,
+    following: 0,
+    badges: [],
+    topGenres: []
+  };
 }
 
 export function getBooksForGenre(genreName: string) {

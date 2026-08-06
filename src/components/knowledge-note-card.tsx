@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ArrowUpRight, BookOpen, Heart, MessageCircle } from "lucide-react";
 import { KnowledgePost } from "@/lib/types";
-import { getBook, getProfileById } from "@/lib/data";
+import { authorProfileFor, getBook } from "@/lib/data";
 import { rememberFeedPosition } from "@/lib/feed-return";
 import { FollowButton } from "./follow-button";
 
@@ -17,7 +17,7 @@ function initialsFor(name: string) {
 }
 
 export function KnowledgeNoteCard({ post, featured = false }: { post: KnowledgePost; featured?: boolean }) {
-  const fallbackProfile = getProfileById(post.userId);
+  const fallbackProfile = authorProfileFor(post);
   const profile = {
     ...fallbackProfile,
     name: post.authorName || fallbackProfile.name,

@@ -16,7 +16,7 @@ import {
   getHomeDiscoveryShelves,
   getMostDiscussed,
   getMostSaved,
-  getProfileById,
+  authorProfileFor,
   getTrendingDiscussionPosts,
   readingPaths
 } from "@/lib/data";
@@ -181,7 +181,7 @@ function MobileValueCue({ icon, text }: { icon: ReactNode; text: string }) {
 
 function LiveThreadCard({ post, priority = false }: { post: DiscussionPost; priority?: boolean }) {
   const book = getBook(post.bookId);
-  const profile = getProfileById(post.userId);
+  const profile = authorProfileFor(post);
 
   if (!book) return null;
 

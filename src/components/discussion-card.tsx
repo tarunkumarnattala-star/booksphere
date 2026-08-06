@@ -1,6 +1,6 @@
 import { MessageCircle, ThumbsUp } from "lucide-react";
 import { DiscussionPost } from "@/lib/types";
-import { getBook, getDiscussionRankingLabel, getProfileById } from "@/lib/data";
+import { authorProfileFor, getBook, getDiscussionRankingLabel } from "@/lib/data";
 import { contributionDestinationUrl } from "@/lib/contributions";
 import { BookCover } from "./book-cover";
 import { bookCoverData } from "@/lib/book-cover-data";
@@ -9,17 +9,7 @@ import { ProfileChip } from "./profile-chip";
 import { PostActions } from "./post-actions";
 
 export function DiscussionCard({ post, showBook = false, compact = false, canDelete = false, onDelete }: { post: DiscussionPost; showBook?: boolean; compact?: boolean; canDelete?: boolean; onDelete?: () => void }) {
-  const profile = getProfileById(post.userId) || {
-    id: post.userId,
-    name: post.authorName || "Reader",
-    username: post.authorUsername || "reader",
-    bio: "",
-    createdAt: post.createdAt,
-    followers: 0,
-    following: 0,
-    badges: [],
-    topGenres: []
-  };
+  const profile = authorProfileFor(post);
   const book = getBook(post.bookId);
   const ranking = getDiscussionRankingLabel(post);
   const topAwards = post.awards.slice(0, 2);

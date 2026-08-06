@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { Bookmark, MessageCircle, ThumbsUp } from "lucide-react";
 import { DiscussionPost } from "@/lib/types";
-import { getBook, getDiscussionRankingLabel, getProfileById } from "@/lib/data";
+import { authorProfileFor, getBook, getDiscussionRankingLabel } from "@/lib/data";
 import { BookCover } from "./book-cover";
 import { bookCoverData } from "@/lib/book-cover-data";
 import { initials } from "@/lib/utils";
 
 export function TrendingDiscussionCard({ post, featured = false }: { post: DiscussionPost; featured?: boolean }) {
   const book = getBook(post.bookId);
-  const profile = getProfileById(post.userId);
+  const profile = authorProfileFor(post);
   const ranking = getDiscussionRankingLabel(post);
 
   if (!book) return null;
