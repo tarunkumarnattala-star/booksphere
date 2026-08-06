@@ -12,6 +12,15 @@ import { supabase } from "@/lib/supabase";
 import { trackEvent } from "@/lib/analytics";
 import { LoginRequiredNotice } from "./login-required-notice";
 
+// TEMPORARY, for launch-eve diagnosis. Reporting, saving, editing and deleting all fail
+// on production while creating a post succeeds, and every theory so far has been wrong
+// because the reason never left the browser. Appending the Postgres code to the visible
+// message is the shortest path to the database's own answer. Remove once the cause is
+// known - a reader should never be shown an error code.
+function withCode(message: string, code?: string | null) {
+  return code ? `${message} [${code}]` : message;
+}
+
 const awardOptions: AwardType[] = ["Changed My Thinking", "Practical Advice", "Great Summary", "Best Explanation", "Actionable", "Deep Insight"];
 const usefulnessOptions: UsefulnessReactionType[] = ["Helped me understand", "Helped me apply", "Changed my thinking", "Strong counterargument", "Best summary", "Worth reading full book"];
 const editablePostTypes: PostType[] = ["Insight", "Application", "Disagreement", "Summary", "Question", "Connection", "Real-Life Result", "What Did Not Work", "Limitation", "Quote", "Personal Experience"];
@@ -207,7 +216,8 @@ export function PostActions({
 
     if (result.error) {
       setter(current);
-      setError(countError);
+      trackEvent("write_failed", { op: kind, targetId, code: result.code || null, message: result.error.slice(0, 200) });
+      setError(withCode(countError, result.code));
       setSyncingCommunity(false);
       return;
     }
@@ -300,7 +310,7 @@ export function PostActions({
     setReporting(false);
     if (reportError && reportError.code !== "23505") {
       trackEvent("write_failed", { op: "report_post", targetId, code: reportError.code || null, message: reportError.message?.slice(0, 200) || null });
-      setError("Your report could not be submitted. Please try again.");
+      setError(withCode("Your report could not be submitted. Please try again.", reportError.code));
       return;
     }
     setReported(true);
@@ -400,13 +410,17 @@ export function PostActions({
       setError("You do not have permission to change this contribution.");
       return;
     }
-    if (editDraft.title.trim().length < 8 || editDraft.body.trim().length < 80) {
-      setError("Give this contribution a specific title and at least 80 characters of useful context.");
+    // Same thresholds as the composer and the database, not the old 8/80. A post is
+    // creatable at 4 and 20; demanding 80 to edit it stranded every short post ever
+    // written, including the first one anyone made on production.
+    if (editDraft.title.trim().length < 4 || editDraft.body.trim().length < 20) {
+      setError("Give this a title of at least 4 characters and at least 20 characters of context.");
       return;
     }
     setSavingEdit(true);
     setError("");
     const result = await updateSupabaseContribution(auth.profileId, targetId, editDraft);
+    if (result.error) trackEvent("write_failed", { op: "edit_post", targetId, code: result.cause?.code || null, message: result.cause?.message || null });
     setSavingEdit(false);
     if (result.error) {
       setError(result.error);
@@ -433,7 +447,7 @@ export function PostActions({
       setDeletingPost(false);
       if (result.error) {
         trackEvent("write_failed", { op: "delete_post", targetId, code: result.cause?.code || null, message: result.cause?.message || null });
-        setError(result.error);
+        setError(withCode(result.error, result.cause?.code));
         return;
       }
       setDeleted(true);

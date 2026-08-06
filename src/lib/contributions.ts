@@ -354,8 +354,14 @@ export async function updateSupabaseContribution(profileId: string, id: string, 
   if (!supabase) return { post: null, error: "Community publishing is temporarily unavailable." };
   const title = input.title.trim();
   const body = input.body.trim();
-  if (title.length < 8 || body.length < 80) {
-    return { post: null, error: "Give this contribution a specific title and at least 80 characters of useful context." };
+  // Match the composer and the database check constraints (title >= 4, body >= 20).
+  // These were 8 and 80, which meant a post that was legal to create could be illegal to
+  // edit: anything published with a body between 20 and 79 characters was frozen forever,
+  // rejected client-side before the update was ever attempted. The edit form gave the
+  // reader no way to discover that, because nothing had told them the rules changed after
+  // publishing.
+  if (title.length < 4 || body.length < 20) {
+    return { post: null, error: "Give this a title of at least 4 characters and at least 20 characters of context.", cause: { code: "too_short", message: null } };
   }
   const { data, error } = await supabase
     .from("discussion_posts")
@@ -379,13 +385,13 @@ export async function updateSupabaseContribution(profileId: string, id: string, 
     .select(contributionSelect)
     .maybeSingle();
 
-  if (error) return { post: null, error: "We could not save your changes. Your edited text is still here." };
-  if (!data) return { post: null, error: "You do not have permission to change this contribution." };
+  if (error) return { post: null, error: "We could not save your changes. Your edited text is still here.", cause: { code: error.code || null, message: error.message?.slice(0, 200) || null } };
+  if (!data) return { post: null, error: "You do not have permission to change this contribution.", cause: { code: "no_match", message: null } };
   const bookIds = [(data as DbContribution).book_id];
   const { data: dbBooks } = await supabase.from("books").select("id,title,author,slug").in("id", bookIds);
   const dbBooksById = Object.fromEntries(((dbBooks || []) as DbBookRef[]).map((book) => [book.id, book]));
   const [post] = await hydrateContributions([data as DbContribution], dbBooksById);
-  return { post: post || null, error: null };
+  return { post: post || null, error: null, cause: null };
 }
 
 export async function deleteSupabaseContribution(profileId: string, id: string) {
@@ -435,7 +441,7 @@ async function toggleUniqueRow({
   if (adding) {
     const onConflict = table === "likes" ? "user_id,target_type,target_id" : "user_id,discussion_post_id";
     const { error } = await supabase.from(table).upsert(insert, { onConflict });
-    return { error: error?.message || null };
+    return { error: error?.message || null, code: error?.code || null };
   }
   let query = supabase.from(table).delete();
   Object.entries(match).forEach(([key, value]) => {
