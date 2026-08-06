@@ -59,7 +59,7 @@ Every action below is wired to Supabase. `localStorage` is used **only** as a de
 | Public reads work | VERIFIED | `books`, `profiles`, `discussion_posts`, `knowledge_posts`, `reading_paths`, `editorial_picks` all readable anonymously. |
 | Private tables protected | VERIFIED | `saved_books`, `saved_insights`, and `followed_discussions` return 401 to anonymous callers. RLS is doing its job. |
 | Seed catalog resolves to database rows | VERIFIED | Catalog and database now join on an explicit `slug` column rather than matching title and author strings. All 394 catalog books have a database row (re-verified in the August 6 audit), so no book can be browsable yet unable to hold community content. |
-| Moderation and analytics readable | **NOT VERIFIED** | Corrected on August 6. This was previously marked VERIFIED on the strength of anonymous callers being refused — but they were already refused before the moderator policies existed, so that proved nothing about a moderator. The launch hardening pass granted `insert` only on `reports` and `analytics_events`, and row-level security filters rows *after* a role clears the table grant, so both policies were inert and a moderator hit `permission denied for table` too. `20260808010000_grant_moderator_table_access.sql` adds the missing grants. Still unproven until someone opens the pages while signed in as a moderator. |
+| Moderation and analytics readable | VERIFIED | Confirmed August 6 by privilege check and by opening both pages while signed in as a moderator. `has_table_privilege` returns true for authenticated SELECT on `reports` and `analytics_events`, true for DELETE on `reports`, and **false** for anon SELECT — so the grant widened the door for signed-in roles without opening it to the public, and the moderator policy is what restricts rows. Anonymous callers are still refused on both tables across every query shape tried. Worth recording how this was got wrong first: it was marked VERIFIED on the evidence that anonymous callers get 401, but they were already refused before the policies existed. A check that would have passed before the change proves nothing about the change. |
 | Users cannot edit another user's content | CODE ONLY | RLS policies exist; never tested with two real accounts. |
 
 ## Design
@@ -119,7 +119,6 @@ Remember that `NEXT_PUBLIC_*` variables are inlined at **build** time. Changing 
 3. **Run real auth QA.** Email magic-link, creating a profile row automatically. The Google button is now hidden behind `NEXT_PUBLIC_GOOGLE_AUTH_ENABLED` (default off) because the provider is disabled in Supabase — a visible dead button failed for every user who tried it. To offer Google later: enable the provider in Supabase Auth, set the flag to `true` in Vercel, redeploy, then QA it.
 4. **Confirm ownership rules with two accounts.** One account must not be able to edit or delete another's content, and must not be able to read another's saved books, saved insights, or followed discussions.
 5. **Test on a real phone.** A 375px viewport is not a handset; it says nothing about touch targets, iOS Safari, or scroll behaviour.
-6. **Add production analytics review.** No dashboard or event review exists yet.
 
 ## Settled Decisions
 
@@ -133,6 +132,7 @@ Revisit this once the private beta closes. A gated homepage costs organic discov
 
 - Browsing uses local seed data for speed; the database backs community features rather than discovery.
 - Reports are readable at `/admin/reports` by moderator accounts. Actioning a report — removing content, contacting a user — is still manual.
+- Analytics is reviewable at `/admin/analytics` by moderator accounts: lifetime community totals, event volume over 30 and 7 days, an onboarding funnel with per-step drop-off, and events ranked by type. Events only record for signed-in readers, so the event sections stay empty until people are signing in.
 - Moderator identities are discoverable: `profiles` is publicly readable by design, so anyone can query which accounts hold the flag. It exposes no capability, only a targeting list.
 - There are no notifications, direct messages, payments, AI summaries, or voice features, by design.
 
@@ -140,4 +140,4 @@ Revisit this once the private beta closes. A gated homepage costs organic discov
 
 **Private beta:** not yet. Blockers 1 and 2 must be cleared first — sign-in does not currently work, so no community feature has ever been exercised by a real account. Everything else on the list is either verified or acceptable for a small invited group.
 
-**Public launch:** not yet. Blockers 1 through 5 all need to be cleared first, and the gated homepage recorded under Settled Decisions needs revisiting — it is right for an invited beta and wrong for open discovery.
+**Public launch:** not yet. Blockers 1 through 4 all need to be cleared first, and blocker 5 is a judgement call rather than a gate, and the gated homepage recorded under Settled Decisions needs revisiting — it is right for an invited beta and wrong for open discovery.
