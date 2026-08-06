@@ -123,3 +123,46 @@ address. I will diff the tables against the database the moment you have done th
 
 Neither is deferred in the sense the rest of this file means. They block launch. Everything above is
 a judgement about timing; those two are a dependency on you.
+
+---
+
+## Delete a post — still broken, workaround available
+
+**Status:** unresolved after four attempts. The button returns Postgres error `42501`.
+
+**What is known.** Deleting is a soft delete that sets `status = 'removed'`. Creating, editing,
+reporting, saving, following, liking and awarding all work; only this fails. The table grant,
+the ownership policy and execute on the trigger function were all verified `true` in production.
+
+**Three fixes that did not work, so nobody repeats them:**
+
+1. `.select()` after the update — the select policy is `status = 'published'`, so it asked to read
+   back a row it had just hidden from itself.
+2. `count: 'exact'` — looks like it avoids that, but PostgREST computes an exact count by reading
+   the updated rows. Same wall.
+3. Writing with no return at all — still 42501, which rules out the read being the problem and
+   means Postgres is refusing the write itself.
+
+**What is needed to finish it:** the message text beside the code. `42501` covers both "permission
+denied for table" (a missing grant) and "new row violates row-level security policy" (a WITH CHECK
+refusal), and they need opposite fixes. Failed attempts are recorded in `analytics_events` as
+`write_failed` events with the full message:
+
+```sql
+select metadata->>'code', metadata->>'message', created_at
+from public.analytics_events
+where event_name = 'write_failed' order by created_at desc limit 5;
+```
+
+**What it costs you meanwhile:** a reader who wants a post gone has to ask. One statement removes it:
+
+```sql
+update public.discussion_posts set status = 'removed' where id = '<post id>';
+```
+
+Scope that by **post id**, not by author — a cleanup written by author on August 6 also removed an
+older post from July that was not part of the test set.
+
+**Still to remove before launch:** the temporary diagnostics. `withCode()` in
+`src/components/post-actions.tsx` appends the raw Postgres code to error messages readers can see.
+It is marked TEMPORARY in the source. The `write_failed` telemetry underneath it should stay.

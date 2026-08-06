@@ -160,3 +160,23 @@ new size constraint. `rows_that_broke_it` came back `0`, so that was wrong — n
 Why the first two runs had no effect is unexplained; the likeliest reading is that the paste ran in
 a different editor tab than the one showing results. The `not valid` change is still worth keeping,
 since it removes that failure mode permanently, but it is not what fixed this.
+
+---
+
+## Found by clicking, not by auditing — August 6
+
+Five more bugs surfaced within minutes of walking the app as a real signed-in reader. None
+were caught by typecheck, lint, build, three green audits, or ~1,400 production assertions.
+Recorded because the pattern matters more than the individual fixes.
+
+| Bug | Effect | Commit |
+| --- | --- | --- |
+| **Every post attributed to the house account** | `getProfileById` ended in `\|\| profiles[0]`, which is BookSphere Team. Every real reader's id is a database uuid and never in the seeded list, so every perspective displayed under the editorial name — and the Follow button and profile link beneath it pointed there too. | `6d387f4` |
+| **Reporting permanently broken** | `.upsert()` compiles to `INSERT ... ON CONFLICT DO UPDATE`, which Postgres refuses to plan without UPDATE privilege. `authenticated` has insert/select/delete on `reports` and no update. Zero rows had ever been written. Fixed with a plain insert, treating 23505 as "already reported" — granting update would have let a reporter rewrite a report after a moderator read it. | `05c409f` |
+| **Saving a feed post permanently broken** | `saved_knowledge_posts` has the identical grant shape and the identical upsert. Never worked. Would not have been found by clicking, since it is on another screen. | `05c409f` |
+| **Short posts could never be edited** | The edit path demanded title ≥ 8 and body ≥ 80; the composer and the database require 4 and 20. Anything published between those bounds was frozen forever, rejected client-side before any update was attempted. | `9fdb42b` |
+| **The whole UPDATE path was refused** | Editing and deleting both failed while creating worked. Repaired the table grant, the ownership policy and execute on the before-update trigger function together, rather than spend another round trip identifying which. Editing works now; deleting does not. | `20260810000000` |
+
+**The lesson worth keeping.** Three of these were dead for every user, not merely untested, and
+each looked identical from the outside to a feature nobody had tried yet. An empty table is not
+evidence of an unused path. Walk the product as a user before believing any audit, including mine.
