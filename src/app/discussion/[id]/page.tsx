@@ -19,7 +19,12 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const { post } = await getSupabaseContributionById(id);
-  if (!post) return { title: "Perspective not found" };
+  // Raised here rather than only in the page body. generateMetadata runs before the
+  // response begins streaming, so the 404 status can still be set; by the time the page
+  // renders, the root loading.tsx boundary has already flushed a shell with 200 and the
+  // status is committed. That is why notFound() from a page body renders the right
+  // screen but answers 200 across every dynamic route in this app.
+  if (!post) notFound();
   const book = getBook(post.bookId);
   const author = post.authorName || "a reader";
   return {
