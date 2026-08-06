@@ -263,9 +263,9 @@ export async function createSupabaseContribution(input: {
   whatFailed?: string;
   wouldChange?: string;
 }) {
-  if (!supabase) return { post: null, error: "Supabase is not configured." };
+  if (!supabase) return { post: null, error: "Supabase is not configured.", cause: { code: "no_client", message: null } };
   const dbBook = await resolveDbBook(input.book);
-  if (!dbBook) return { post: null, error: "This book is not connected to the production database yet." };
+  if (!dbBook) return { post: null, error: "This book is not connected to the production database yet.", cause: { code: "book_unresolved", message: input.book.id } };
 
   const { data, error } = await supabase
     .from("discussion_posts")
@@ -290,9 +290,20 @@ export async function createSupabaseContribution(input: {
     .select(contributionSelect)
     .single();
 
-  if (error || !data) return { post: null, error: "We could not publish your perspective. Your draft has been preserved." };
+  // Return the underlying Postgres error alongside the friendly one. Collapsing every
+  // failure into a single sentence and discarding the cause meant a failed publish was
+  // indistinguishable from an RLS rejection, a check-constraint violation, a rate limit and a
+  // dropped connection - by both the reader and whoever has to fix it. The reader still sees
+  // the sentence; the cause goes to analytics so it is recoverable after the fact.
+  if (error || !data) {
+    return {
+      post: null,
+      error: "We could not publish your perspective. Your draft has been preserved.",
+      cause: error ? { code: error.code || null, message: error.message?.slice(0, 200) || null } : { code: "no_row", message: null }
+    };
+  }
   const [post] = await hydrateContributions([data as DbContribution], { [dbBook.id]: dbBook });
-  return { post, error: null };
+  return { post, error: null, cause: null };
 }
 
 export async function getSupabaseContributionById(id: string) {

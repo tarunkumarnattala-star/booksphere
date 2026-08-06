@@ -117,10 +117,15 @@ export function CreateDiscussionForm({ book, initialPostType = "Insight", initia
             body: bodyWithStructure,
             quoteReference: form.quoteReference
           }),
-          error: null
+          error: null,
+          cause: null
         };
 
     if (result.error || !result.post) {
+      // A failed publish used to leave no trace anywhere: the reader saw one sentence and
+      // the reason died in the browser. Record the cause so a report of "it would not post"
+      // can be answered from /admin/analytics instead of guessed at.
+      trackEvent("write_failed", { op: "create_post", bookId: book.id, code: result.cause?.code || null, message: result.cause?.message || null });
       setError(result.error || "We could not publish your perspective. Your draft has been preserved.");
       return;
     }
