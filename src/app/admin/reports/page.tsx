@@ -87,6 +87,9 @@ export default function AdminReportsPage() {
     <div className="container-page py-10 md:py-14">
       <p className="caption">Moderation</p>
       <h1 className="title-1 mt-2">Reported content</h1>
+      <p className="subheadline mt-3">
+        <Link className="font-medium underline underline-offset-4" href="/admin/analytics">View analytics</Link>
+      </p>
 
       {state === "loading" && <p className="body-copy mt-6">Checking access...</p>}
 
