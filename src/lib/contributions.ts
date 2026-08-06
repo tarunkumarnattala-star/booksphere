@@ -402,13 +402,30 @@ export async function deleteSupabaseContribution(profileId: string, id: string) 
   // visible to the person who wrote it. Asking for it back in the same round trip made a
   // successful delete look like a failure. Nothing here needs the row, only whether one
   // was matched, and a count needs no read access to the result.
-  const { error, count } = await supabase
+  // Write, then confirm separately. Never ask for the row back in the same statement.
+  //
+  // Deleting is a soft delete - it sets status to 'removed' - and the select policy on
+  // discussion_posts is `status = 'published'`. So the instant this update lands, the row
+  // stops being readable by the very person who wrote it. Any form of reading it back in
+  // the same round trip therefore fails with 42501: first `.select()`, then
+  // `count: 'exact'`, which looks like it avoids the problem but does not - PostgREST
+  // computes an exact count by reading the updated rows. Two fixes, same wall.
+  const { error } = await supabase
     .from("discussion_posts")
-    .update({ status: "removed" }, { count: "exact" })
+    .update({ status: "removed" })
     .eq("id", id)
     .eq("user_id", profileId);
   if (error) return { error: "We could not delete this contribution. Please try again.", cause: { code: error.code || null, message: error.message?.slice(0, 200) || null } };
-  if (!count) return { error: "You do not have permission to change this contribution.", cause: { code: "no_match", message: null } };
+
+  // Confirm by absence instead. A separate read runs the select policy in the direction it
+  // works: if the post is gone from published rows, the delete took. This also means a
+  // delete is only reported as successful when the database agrees it happened.
+  const { data: stillThere } = await supabase
+    .from("discussion_posts")
+    .select("id")
+    .eq("id", id)
+    .maybeSingle();
+  if (stillThere) return { error: "You do not have permission to change this contribution.", cause: { code: "still_visible", message: null } };
   return { error: null, cause: null };
 }
 
