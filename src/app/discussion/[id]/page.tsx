@@ -19,11 +19,13 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const { post } = await getSupabaseContributionById(id);
-  // Raised here rather than only in the page body. generateMetadata runs before the
-  // response begins streaming, so the 404 status can still be set; by the time the page
-  // renders, the root loading.tsx boundary has already flushed a shell with 200 and the
-  // status is committed. That is why notFound() from a page body renders the right
-  // screen but answers 200 across every dynamic route in this app.
+  // Raised here as well as in the page body so metadata is never generated for a post
+  // that does not exist. It does not change the status code: this was tried as a fix for
+  // the soft 404 on the theory that metadata runs before the response streams, and
+  // production disproved it - a malformed id, which never reaches a database lookup at
+  // all, still answers 200. Whatever commits the status here happens earlier than any
+  // application code, so it is not fixable from the route. Left in place because it is
+  // correct on its own terms; the status limitation is recorded in LAUNCH_GATE.md.
   if (!post) notFound();
   const book = getBook(post.bookId);
   const author = post.authorName || "a reader";
