@@ -941,9 +941,9 @@ export function starterPromptsForBook(book: Book): Array<{ postType: PostType; t
       hint: "The nuance people flatten when they summarise it"
     },
     {
-      postType: "Summary",
-      title: `Explain one idea from ${book.title} without the jargon`,
-      hint: "Plain language, so someone can judge if it is worth reading"
+      postType: "What Did Not Work",
+      title: `What did you try from ${book.title} that did not work?`,
+      hint: "The attempt that failed, and what you changed afterwards"
     }
   ];
 }

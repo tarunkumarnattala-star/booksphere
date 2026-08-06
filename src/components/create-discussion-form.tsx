@@ -10,7 +10,21 @@ import { addLocalDiscussion } from "@/lib/local-discussions";
 import { supabase } from "@/lib/supabase";
 import { LoginRequiredNotice } from "./login-required-notice";
 
-const postTypes: PostType[] = ["Insight", "Application", "Disagreement", "Summary", "Question", "Connection", "Real-Life Result", "What Did Not Work", "Limitation", "Quote", "Personal Experience"];
+// Grouped so the differentiated kinds lead. A flat list of eleven put "Summary" beside
+// "What Did Not Work", which reads as though they are worth the same - and they are not.
+// A summary is the one thing a language model already does better than any reader will,
+// while an account of what actually happened when someone applied an idea, especially
+// when it failed, exists nowhere else. Leading with lived outcomes is the whole product
+// promise, so the composer should ask for that first.
+//
+// Quote is deliberately absent: it adds nothing a reader cannot get elsewhere and
+// invites pasting copyrighted passages. Existing posts of every type still render; this
+// governs only what can be written from here.
+const postTypeGroups: Array<{ label: string; types: PostType[] }> = [
+  { label: "What happened when you used it", types: ["Real-Life Result", "What Did Not Work", "Application", "Personal Experience"] },
+  { label: "Where it breaks down", types: ["Disagreement", "Limitation"] },
+  { label: "Understanding the idea", types: ["Insight", "Question", "Connection", "Summary"] }
+];
 const promptByType: Record<PostType, string> = {
   Insight: "What idea changed how you think?",
   Application: "How did you apply this in real life?",
@@ -124,8 +138,8 @@ export function CreateDiscussionForm({ book, initialPostType = "Insight", initia
         <p className="body-copy mt-2 text-[15px] leading-6">
           Your perspective is now attached to this book so other readers can learn from the idea, application, question, or disagreement you shared.
         </p>
-        <a href={`/book/${book.id}#${createdPostId || "discussions"}`} className="mt-5 inline-flex rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-medium !text-white transition hover:opacity-85">
-          View your insight
+        <a href={createdPostId ? `/discussion/${createdPostId}` : `/book/${book.id}#discussions`} className="mt-5 inline-flex rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-medium !text-white transition hover:opacity-85">
+          View your perspective
         </a>
       </div>
     );
@@ -157,7 +171,11 @@ export function CreateDiscussionForm({ book, initialPostType = "Insight", initia
             onChange={(event) => setForm({ ...form, postType: event.target.value as PostType })}
             className="rounded-[20px] bg-black/[0.035] px-4 py-3 outline-none ring-1 ring-transparent focus:ring-black/20"
           >
-            {postTypes.map((type) => <option key={type}>{type}</option>)}
+            {postTypeGroups.map((group) => (
+              <optgroup key={group.label} label={group.label}>
+                {group.types.map((type) => <option key={type}>{type}</option>)}
+              </optgroup>
+            ))}
           </select>
         </label>
         <label className="grid gap-2 text-sm font-medium">
