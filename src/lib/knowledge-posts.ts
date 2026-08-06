@@ -89,12 +89,17 @@ export async function toggleSupabaseKnowledgePostLike(profileId: string, postId:
 export async function toggleSupabaseKnowledgePostSave(profileId: string, postId: string, adding: boolean) {
   if (!supabase) return { error: "Community actions are temporarily unavailable." };
   const query = adding
-    ? supabase.from("saved_knowledge_posts").upsert(
-        { user_id: profileId, knowledge_post_id: postId },
-        { onConflict: "user_id,knowledge_post_id" }
+    // insert, not upsert - same fault as reporting. saved_knowledge_posts grants
+    // authenticated select, insert and delete but no update, and upsert compiles to
+    // INSERT ... ON CONFLICT DO UPDATE, which Postgres refuses to plan without update
+    // privilege. Saving a feed post has therefore never worked either. A duplicate here
+    // means the post is already saved, which is exactly what the reader asked for.
+    ? supabase.from("saved_knowledge_posts").insert(
+        { user_id: profileId, knowledge_post_id: postId }
       )
     : supabase.from("saved_knowledge_posts").delete().eq("user_id", profileId).eq("knowledge_post_id", postId);
   const { error } = await query;
+  if (error && error.code === "23505") return { error: null };
   return { error: error ? "We could not save this post. Please try again." : null };
 }
 

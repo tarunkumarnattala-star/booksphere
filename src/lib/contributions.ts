@@ -390,16 +390,20 @@ export async function updateSupabaseContribution(profileId: string, id: string, 
 
 export async function deleteSupabaseContribution(profileId: string, id: string) {
   if (!supabase) return { error: "Community publishing is temporarily unavailable." };
-  const { data, error } = await supabase
+  // Count the affected rows instead of selecting them back. Deleting is a soft delete -
+  // it sets status to 'removed' - and the select policy on discussion_posts is
+  // `status = 'published'`, so the row this statement just wrote is, by design, no longer
+  // visible to the person who wrote it. Asking for it back in the same round trip made a
+  // successful delete look like a failure. Nothing here needs the row, only whether one
+  // was matched, and a count needs no read access to the result.
+  const { error, count } = await supabase
     .from("discussion_posts")
-    .update({ status: "removed" })
+    .update({ status: "removed" }, { count: "exact" })
     .eq("id", id)
-    .eq("user_id", profileId)
-    .select("id")
-    .maybeSingle();
-  if (error) return { error: "We could not delete this contribution. Please try again." };
-  if (!data) return { error: "You do not have permission to change this contribution." };
-  return { error: null };
+    .eq("user_id", profileId);
+  if (error) return { error: "We could not delete this contribution. Please try again.", cause: { code: error.code || null, message: error.message?.slice(0, 200) || null } };
+  if (!count) return { error: "You do not have permission to change this contribution.", cause: { code: "no_match", message: null } };
+  return { error: null, cause: null };
 }
 
 export async function getUserContributionState(profileId: string, targetId: string) {

@@ -284,12 +284,22 @@ export function PostActions({
       setReporting(false);
       return;
     }
-    const { error: reportError } = await supabase.from("reports").upsert(
-      { reporter_id: auth.profileId, target_type: "discussion_post", target_id: targetId, reason: reportReason },
-      { onConflict: "reporter_id,target_type,target_id" }
+    // insert, not upsert. PostgREST compiles upsert into INSERT ... ON CONFLICT DO UPDATE,
+    // and Postgres demands UPDATE privilege on the table when it plans that statement -
+    // whether or not a conflict ever occurs. `authenticated` holds insert, select and delete
+    // on reports and no update, so every report ever attempted failed with 42501. That is
+    // why the table has no rows at all: reporting has never once worked, for anyone.
+    //
+    // Granting update would fix the symptom and open a hole - a reporter could rewrite a
+    // report after a moderator had read it. A reporter has no business editing a filed
+    // report, so the insert stands alone and the unique index does the deduplicating:
+    // 23505 means this person already flagged this post, which is the outcome they wanted.
+    const { error: reportError } = await supabase.from("reports").insert(
+      { reporter_id: auth.profileId, target_type: "discussion_post", target_id: targetId, reason: reportReason }
     );
     setReporting(false);
-    if (reportError) {
+    if (reportError && reportError.code !== "23505") {
+      trackEvent("write_failed", { op: "report_post", targetId, code: reportError.code || null, message: reportError.message?.slice(0, 200) || null });
       setError("Your report could not be submitted. Please try again.");
       return;
     }
@@ -422,6 +432,7 @@ export function PostActions({
       const result = await deleteSupabaseContribution(auth.profileId, targetId);
       setDeletingPost(false);
       if (result.error) {
+        trackEvent("write_failed", { op: "delete_post", targetId, code: result.cause?.code || null, message: result.cause?.message || null });
         setError(result.error);
         return;
       }
