@@ -123,7 +123,12 @@ A green build is not evidence the behaviour is right, so all four were checked a
 | Finding | Check | Result |
 | --- | --- | --- |
 | F-03 | `page_viewed` present in the deployed layout chunk | shipped |
-| F-03 | anonymous insert into `analytics_events` | **401 — migration not run yet** |
+| F-03 | anonymous insert with null `user_id` | **201** |
+| F-03 | anonymous insert attributed to a real account | rejected by RLS, not by a missing grant |
+| F-03 | oversized `event_name` and `metadata` | both rejected, `23514` |
+| F-03 | anonymous select / update / delete on the same table | 401, 401, 401 — write-only, as intended |
+| F-03 | anonymous insert into `profiles`, `discussion_posts` | 401 both — the grant did not widen anything else |
+| F-03 | end-to-end on the live site, signed out | client posts `{"user_id":null,"event_name":"page_viewed",…}` → **201** |
 | F-04 | `client_error` present in the deployed error chunk | shipped |
 | F-05 | `/opengraph-image` | 200, `image/png`, 62 KB |
 | F-05 | `/discussion/<id>/opengraph-image` | 200, `image/png`, 49 KB |
@@ -132,6 +137,21 @@ A green build is not evidence the behaviour is right, so all four were checked a
 | F-07 | six old labels on `/book/sapiens` | all 0 occurrences |
 | F-07 | new labels | "Share a perspective" ×4, "Perspectives" ×2, "Perspective map" ×2 |
 
-**The one thing not closed:** anonymous analytics still returns 401 because
-`20260809000000_anonymous_analytics_events.sql` has not been run. The code is live and every
-anonymous event is being rejected. Step 1 of `LAUNCH_CHECKLIST.md`, two minutes.
+All four findings are closed in production.
+
+**On how F-03 was confirmed.** The browser's network recorder showed no request to Supabase at all,
+which looked like the tracker silently failing. It was not — the recorder does not capture
+cross-origin fetches. Patching `window.fetch` in the page showed the real traffic: a POST carrying
+`user_id: null` returning 201, from a session with no auth token. Absence of evidence in a tool is
+not evidence of absence, and this is the fifth time in this project that a tool's silence read as a
+bug.
+
+**A bonus the probe surfaced:** `page_viewed` was never the only event being rejected. Existing
+product events that fire before sign-in — `onboarding_shown` among them — were failing the same way
+and now succeed. The funnel was darker than the audit said.
+
+**One correction.** I predicted the migration kept rolling back because an existing row violated the
+new size constraint. `rows_that_broke_it` came back `0`, so that was wrong — no row ever broke it.
+Why the first two runs had no effect is unexplained; the likeliest reading is that the paste ran in
+a different editor tab than the one showing results. The `not valid` change is still worth keeping,
+since it removes that failure mode permanently, but it is not what fixed this.

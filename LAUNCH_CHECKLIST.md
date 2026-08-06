@@ -7,21 +7,15 @@ Nothing on this list is optional except where marked. Work top to bottom.
 
 ---
 
-## 1. Run the pending migration — 2 minutes
+## 1. ~~Run the pending migration~~ — DONE
 
-One migration is written but not applied:
-`supabase/migrations/20260809000000_anonymous_analytics_events.sql`
+`20260809000000_anonymous_analytics_events.sql` is applied and verified. Anonymous visitors now
+record events; the live site posts `user_id: null` page views and gets 201 back while signed out.
 
-Open the SQL editor at `https://supabase.com/dashboard/project/dhsophbjhaamucatumqr/sql/new`,
-**select all and delete first** (leftover text in the editor is what caused the 42601 errors last
-time), paste the file's contents, run.
-
-Until this runs, F-03 is only half fixed — the tracker is deployed and every anonymous event is
-being rejected with a 401 you will never see.
-
-**Confirm it worked:** load the site while signed out, then check `/admin/analytics`. Page-view
-events should appear. If they do not, the migration did not apply — do not assume it did because
-the editor said success.
+It took three attempts, and the first two reported success while changing nothing. That is the
+lesson worth carrying into the rest of this list: **the editor's green banner is not evidence.**
+Every migration from here should end with a `select` that prints the state you expect, and you
+should read the row.
 
 ---
 
@@ -125,7 +119,7 @@ Run through this in one sitting, in production, on your phone:
 
 - [ ] Magic link arrives at an address that is not yours (step 2)
 - [ ] All nine write paths verified against the database (step 3)
-- [ ] Anonymous page views appearing in `/admin/analytics` (step 1)
+- [x] Anonymous page views recording (step 1) — verified
 - [ ] Landing page loads and the ungated state is what you intend a stranger to see
 - [ ] Paste a discussion permalink into the app you plan to share on, and check the card renders
 - [ ] Spend limit set (step 4)
