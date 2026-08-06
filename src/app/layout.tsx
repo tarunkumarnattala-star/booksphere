@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { APP_NAME, APP_PROMISE } from "@/lib/config";
 import { AppShell } from "@/components/app-shell";
+import { PageViewTracker } from "@/components/page-view-tracker";
 
 const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3016";
 
@@ -46,6 +47,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <body>
+        <PageViewTracker />
         <AppShell>{children}</AppShell>
       </body>
     </html>
