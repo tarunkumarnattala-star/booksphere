@@ -115,5 +115,23 @@ cannot sign up; social cards will spread links to a product nobody can join.
 
 Each batch is its own commit, so any one of them can be reverted without touching the others.
 
-**Production verification after deploy** is recorded at the bottom of this file once the deploy
-lands — a green build is not evidence that the behaviour is right.
+## Verified in production after the deploy landed
+
+A green build is not evidence the behaviour is right, so all four were checked again on
+`booksphere-iota.vercel.app`.
+
+| Finding | Check | Result |
+| --- | --- | --- |
+| F-03 | `page_viewed` present in the deployed layout chunk | shipped |
+| F-03 | anonymous insert into `analytics_events` | **401 — migration not run yet** |
+| F-04 | `client_error` present in the deployed error chunk | shipped |
+| F-05 | `/opengraph-image` | 200, `image/png`, 62 KB |
+| F-05 | `/discussion/<id>/opengraph-image` | 200, `image/png`, 49 KB |
+| F-05 | both cards opened and read | render correctly — the post card shows INSIGHT, the perspective's own title, "BookSphere Team · The Hard Thing About Hard Things" |
+| F-05 | `og:image` and `twitter:card` on the permalink | present, `summary_large_image` |
+| F-07 | six old labels on `/book/sapiens` | all 0 occurrences |
+| F-07 | new labels | "Share a perspective" ×4, "Perspectives" ×2, "Perspective map" ×2 |
+
+**The one thing not closed:** anonymous analytics still returns 401 because
+`20260809000000_anonymous_analytics_events.sql` has not been run. The code is live and every
+anonymous event is being rejected. Step 1 of `LAUNCH_CHECKLIST.md`, two minutes.
