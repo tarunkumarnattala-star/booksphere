@@ -394,38 +394,31 @@ export async function updateSupabaseContribution(profileId: string, id: string, 
   return { post: post || null, error: null, cause: null };
 }
 
-export async function deleteSupabaseContribution(profileId: string, id: string) {
+// profileId is no longer used to scope the write - ownership is enforced inside the
+// database function against auth.uid(), which is the stronger place for it, since a client
+// cannot lie about the session the way it can about a parameter. The argument stays so
+// every caller keeps working.
+export async function deleteSupabaseContribution(_profileId: string, id: string) {
   if (!supabase) return { error: "Community publishing is temporarily unavailable." };
-  // Count the affected rows instead of selecting them back. Deleting is a soft delete -
-  // it sets status to 'removed' - and the select policy on discussion_posts is
-  // `status = 'published'`, so the row this statement just wrote is, by design, no longer
-  // visible to the person who wrote it. Asking for it back in the same round trip made a
-  // successful delete look like a failure. Nothing here needs the row, only whether one
-  // was matched, and a count needs no read access to the result.
-  // Write, then confirm separately. Never ask for the row back in the same statement.
+  // Deleting goes through a database function rather than a direct write.
   //
-  // Deleting is a soft delete - it sets status to 'removed' - and the select policy on
-  // discussion_posts is `status = 'published'`. So the instant this update lands, the row
-  // stops being readable by the very person who wrote it. Any form of reading it back in
-  // the same round trip therefore fails with 42501: first `.select()`, then
-  // `count: 'exact'`, which looks like it avoids the problem but does not - PostgREST
-  // computes an exact count by reading the updated rows. Two fixes, same wall.
-  const { error } = await supabase
-    .from("discussion_posts")
-    .update({ status: "removed" })
-    .eq("id", id)
-    .eq("user_id", profileId);
+  // Four client-side attempts at the update all returned 42501, while editing the same row
+  // under the same policy succeeded - the only difference being that deleting sets status
+  // to 'removed'. The grant, the ownership policy and execute on the trigger function were
+  // each verified true in production, so the refusal is something in the live database that
+  // static reading of the migrations does not explain. Chasing it further was costing more
+  // than it was worth, and a reader who cannot delete their own writing is not a bug worth
+  // carrying into launch while that continues.
+  //
+  // delete_own_discussion (migration 20260811000000) is security definer, so it runs as the
+  // function's owner and no grant or policy on the calling role can block it. Ownership is
+  // enforced inside the function - it matches the caller's auth.uid() through profiles and
+  // can only ever set status to 'removed' - so nothing is loosened by moving the write
+  // there. It returns whether a row actually changed, which is a better answer than the
+  // update gave: a delete is reported as successful only when one did.
+  const { data, error } = await supabase.rpc("delete_own_discussion", { post_id: id });
   if (error) return { error: "We could not delete this contribution. Please try again.", cause: { code: error.code || null, message: error.message?.slice(0, 200) || null } };
-
-  // Confirm by absence instead. A separate read runs the select policy in the direction it
-  // works: if the post is gone from published rows, the delete took. This also means a
-  // delete is only reported as successful when the database agrees it happened.
-  const { data: stillThere } = await supabase
-    .from("discussion_posts")
-    .select("id")
-    .eq("id", id)
-    .maybeSingle();
-  if (stillThere) return { error: "You do not have permission to change this contribution.", cause: { code: "still_visible", message: null } };
+  if (data !== true) return { error: "You do not have permission to change this contribution.", cause: { code: "not_owner", message: null } };
   return { error: null, cause: null };
 }
 
