@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     url: appUrl
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: `${APP_NAME} - Understand books through people`,
     description: APP_PROMISE
   },
