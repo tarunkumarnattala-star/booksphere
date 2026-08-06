@@ -20,8 +20,15 @@ grant insert on public.analytics_events to anon;
 -- The table is now writable by unauthenticated callers, so bound what a row can contain.
 -- Without this an anonymous client could push arbitrarily large metadata and turn the
 -- events table into free storage.
+--
+-- `not valid` on purpose. A plain ADD CONSTRAINT validates every existing row, and a single
+-- pre-existing row over either bound makes the statement fail - which in the Supabase SQL
+-- editor rolls back the whole paste, silently taking the grant above with it. That failure
+-- mode cost two rounds of "the migration ran" when nothing had. The point of the constraint
+-- is to bound what anonymous callers can write from here on, and `not valid` enforces that
+-- on every new insert. Old rows predate the anonymous write path and are not the risk.
 alter table public.analytics_events drop constraint if exists analytics_events_shape;
 alter table public.analytics_events add constraint analytics_events_shape check (
   char_length(event_name) between 1 and 80
   and char_length(metadata::text) <= 2000
-);
+) not valid;
