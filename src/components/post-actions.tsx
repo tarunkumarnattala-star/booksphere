@@ -12,16 +12,6 @@ import { supabase } from "@/lib/supabase";
 import { trackEvent } from "@/lib/analytics";
 import { LoginRequiredNotice } from "./login-required-notice";
 
-// TEMPORARY, for launch-eve diagnosis. Reporting, saving, editing and deleting all fail
-// on production while creating a post succeeds, and every theory so far has been wrong
-// because the reason never left the browser. Appending the Postgres code to the visible
-// message is the shortest path to the database's own answer. Remove once the cause is
-// known - a reader should never be shown an error code.
-function withCode(message: string, code?: string | null, detail?: string | null) {
-  if (!code) return message;
-  return detail ? `${message} [${code}] ${detail.slice(0, 90)}` : `${message} [${code}]`;
-}
-
 const awardOptions: AwardType[] = ["Changed My Thinking", "Practical Advice", "Great Summary", "Best Explanation", "Actionable", "Deep Insight"];
 const usefulnessOptions: UsefulnessReactionType[] = ["Helped me understand", "Helped me apply", "Changed my thinking", "Strong counterargument", "Best summary", "Worth reading full book"];
 const editablePostTypes: PostType[] = ["Insight", "Application", "Disagreement", "Summary", "Question", "Connection", "Real-Life Result", "What Did Not Work", "Limitation", "Quote", "Personal Experience"];
@@ -218,7 +208,7 @@ export function PostActions({
     if (result.error) {
       setter(current);
       trackEvent("write_failed", { op: kind, targetId, code: result.code || null, message: result.error.slice(0, 200) });
-      setError(withCode(countError, result.code));
+      setError(countError);
       setSyncingCommunity(false);
       return;
     }
@@ -311,7 +301,7 @@ export function PostActions({
     setReporting(false);
     if (reportError && reportError.code !== "23505") {
       trackEvent("write_failed", { op: "report_post", targetId, code: reportError.code || null, message: reportError.message?.slice(0, 200) || null });
-      setError(withCode("Your report could not be submitted. Please try again.", reportError.code));
+      setError("Your report could not be submitted. Please try again.");
       return;
     }
     setReported(true);
@@ -448,7 +438,7 @@ export function PostActions({
       setDeletingPost(false);
       if (result.error) {
         trackEvent("write_failed", { op: "delete_post", targetId, code: result.cause?.code || null, message: result.cause?.message || null });
-        setError(withCode(result.error, result.cause?.code, result.cause?.message));
+        setError(result.error);
         return;
       }
       setDeleted(true);

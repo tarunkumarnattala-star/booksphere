@@ -126,43 +126,40 @@ a judgement about timing; those two are a dependency on you.
 
 ---
 
-## Delete a post — still broken, workaround available
+## Delete a post — RESOLVED August 6
 
-**Status:** unresolved after four attempts. The button returns Postgres error `42501`.
+Fixed by routing the write through `delete_own_discussion`, a security-definer database
+function (migration `20260811000000`), and confirmed working on production.
 
-**What is known.** Deleting is a soft delete that sets `status = 'removed'`. Creating, editing,
-reporting, saving, following, liking and awarding all work; only this fails. The table grant,
-the ownership policy and execute on the trigger function were all verified `true` in production.
+**The root cause was never identified**, and that is worth stating plainly rather than
+implying it was solved. Four client-side attempts at the update all returned `42501` while
+editing the same row under the same policy succeeded — the only difference being that
+deleting sets `status = 'removed'`. The table grant, the ownership policy and execute on the
+before-update trigger function were each verified `true` in production. Whatever refuses that
+specific write is not visible in the migration files.
 
-**Three fixes that did not work, so nobody repeats them:**
+**Three attempts that failed, so nobody repeats them:**
 
-1. `.select()` after the update — the select policy is `status = 'published'`, so it asked to read
-   back a row it had just hidden from itself.
-2. `count: 'exact'` — looks like it avoids that, but PostgREST computes an exact count by reading
+1. `.select()` after the update — the select policy is `status = 'published'`, so it asked to
+   read back a row it had just hidden from itself.
+2. `count: 'exact'` — appears to avoid that, but PostgREST computes an exact count by reading
    the updated rows. Same wall.
-3. Writing with no return at all — still 42501, which rules out the read being the problem and
-   means Postgres is refusing the write itself.
+3. Writing with no return at all — still `42501`, which ruled out the read entirely and meant
+   Postgres was refusing the write itself.
 
-**What is needed to finish it:** the message text beside the code. `42501` covers both "permission
-denied for table" (a missing grant) and "new row violates row-level security policy" (a WITH CHECK
-refusal), and they need opposite fixes. Failed attempts are recorded in `analytics_events` as
-`write_failed` events with the full message:
+**Why the function is not a loosening of security.** It runs as its owner, so no grant or
+policy on the caller can block it — but ownership is enforced inside: the update matches the
+caller's `auth.uid()` through `profiles`, it can only ever set status to `'removed'`, its
+`search_path` is pinned, and execute is revoked from `public` and `anon`. This keys off the
+session rather than a profile id the browser supplies, so it is stricter than the direct write
+it replaced.
+
+**If the underlying refusal ever matters again** — it would affect any future direct update
+that changes `status` — the diagnosis needs the message text beside the code, which is
+recorded on every failure:
 
 ```sql
-select metadata->>'code', metadata->>'message', created_at
+select metadata->>'op', metadata->>'code', metadata->>'message', created_at
 from public.analytics_events
 where event_name = 'write_failed' order by created_at desc limit 5;
 ```
-
-**What it costs you meanwhile:** a reader who wants a post gone has to ask. One statement removes it:
-
-```sql
-update public.discussion_posts set status = 'removed' where id = '<post id>';
-```
-
-Scope that by **post id**, not by author — a cleanup written by author on August 6 also removed an
-older post from July that was not part of the test set.
-
-**Still to remove before launch:** the temporary diagnostics. `withCode()` in
-`src/components/post-actions.tsx` appends the raw Postgres code to error messages readers can see.
-It is marked TEMPORARY in the source. The `write_failed` telemetry underneath it should stay.
