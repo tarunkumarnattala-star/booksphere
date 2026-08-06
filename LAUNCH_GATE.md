@@ -54,7 +54,7 @@ Every action below is wired to Supabase. `localStorage` is used **only** as a de
 
 | Item | Status | Notes |
 | --- | --- | --- |
-| Schema and migrations applied | VERIFIED | 18 migrations present and applied, including the signup fix, the slug join key, the catalog sync and the moderation policies. |
+| Schema and migrations applied | PARTLY VERIFIED | 19 migration files present. Four were applied and independently verified during the August 5-6 pass: the signup username fix, the slug join key, the catalog sync, and the moderation policies. The earlier fifteen were applied during setup and are assumed rather than re-checked — the tables and columns they define all respond. |
 | Seed data loaded | VERIFIED | 394 books, 7 profiles, 51 discussions, 22 awards, 5 reading paths, 5 editorial picks. The catalog was narrowed to 25 books on August 6 and reversed the same day: a reader who searches for a book and finds nothing is a dead end, which is worse than an empty discussion page. |
 | Public reads work | VERIFIED | `books`, `profiles`, `discussion_posts`, `knowledge_posts`, `reading_paths`, `editorial_picks` all readable anonymously. |
 | Private tables protected | VERIFIED | `saved_books`, `saved_insights`, and `followed_discussions` return 401 to anonymous callers. RLS is doing its job. |
