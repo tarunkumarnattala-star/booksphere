@@ -1,10 +1,21 @@
 "use client";
 
 import { useEffect } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 export default function GlobalError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
     console.error("BookSphere route error", { message: error.message, digest: error.digest });
+    // Record the failure somewhere durable. Until now a production error existed only in
+    // the reader's own console, so a route could break for everyone and leave no trace an
+    // operator could ever see. Routed through analytics_events rather than a new service:
+    // it needs no dependency, no key, and no account, and it surfaces in /admin/analytics
+    // beside everything else. This is visibility, not alerting - nothing pages anyone.
+    trackEvent("client_error", {
+      message: error.message?.slice(0, 300) || "unknown",
+      digest: error.digest || null,
+      path: typeof window !== "undefined" ? window.location.pathname : null
+    });
   }, [error]);
 
   return (
