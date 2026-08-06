@@ -96,8 +96,13 @@ real monitoring service is the right answer and is recorded in `DEFERRED.md`.
 **F-01 — no verified sending domain.** Needs a purchase and DNS records. This is the launch: until
 it clears, an invited reader requests a link that never arrives and concludes the product is broken.
 
-**F-02 — nine write paths never executed.** Needs a signed-in session, which needs F-01 or your own
-address. Twenty minutes of clicking, and I will diff the tables against the database afterwards.
+**F-02 — write paths unproven.** Narrowed on August 6 by diffing every table. Four of the nine
+already have a real row behind them (sign up, comment, like, follow — all written August 5 by the
+`booksphere-qa-probe-tri` account), so the audit's "nine unproven" was too pessimistic. Five remain,
+and two of those have never succeeded even once: **creating a post** (all 51 rows in
+`discussion_posts` are editorial seeds, none written through the composer) and **reporting a post**
+(`reports` is empty — zero rows, ever, despite the moderation chain shipping this week). Details and
+order in `LAUNCH_CHECKLIST.md` step 3.
 
 Everything I built tonight is downstream of these. Analytics will record arrivals from people who
 cannot sign up; social cards will spread links to a product nobody can join.

@@ -41,27 +41,42 @@ address — that works already and proves nothing.
 
 ---
 
-## 3. Walk the nine write paths — 20 minutes
+## 3. Walk the write paths — five actions, not nine
 
-This is F-02, and it needs step 2 done first, or your own address as a stand-in.
+This is F-02, narrowed. The audit said all nine were unproven; a table diff on August 6 showed that
+was too pessimistic. Four already have a real row behind them, written by the
+`booksphere-qa-probe-tri` account on August 5. Skip those.
 
-Sign in and do each of these once, for real:
+**Already proven — nothing to do:**
 
-- [ ] Sign up as a brand-new account
-- [ ] Create a discussion post
-- [ ] Comment on a post
-- [ ] Like a post
-- [ ] Save a book
-- [ ] Follow another reader
-- [ ] Edit your profile
-- [ ] Report a post
-- [ ] Delete your own post
+- [x] Sign up — `profiles`, Aug 5 12:33
+- [x] Comment — `discussion_comments`, Aug 5 14:43
+- [x] Like — `likes`, Aug 5 14:42
+- [x] Follow — `followed_discussions`, Aug 5 14:50
 
-Tell me when you have finished and I will diff every table against the database.
+**Still to walk, in this order:**
 
-**Why this one matters more than it looks:** two of the bugs found today were completely silent —
-the interface showed success while nothing was written. This app reports optimistically. The screen
-is not evidence; the database is.
+- [ ] **Create a discussion post** — never once succeeded. All 51 rows in `discussion_posts` are
+      editorial seeds from the migration; not one was written through the composer. This is the
+      product's core action, and the composer changed tonight (F-07), so the code is both untested
+      and newly edited. Do this one first.
+- [ ] **Report a post** — `reports` is empty. Not stale: **zero rows, ever.** The whole moderation
+      chain shipped this week and has never run end to end. See the note below.
+- [ ] **Save a book** — `saved_insights` last written July 15, three weeks and several schema
+      changes ago. Treat as unproven.
+- [ ] **Edit your profile** — no `created_at` to diff against, so it needs a live check either way.
+- [ ] **Delete your own post** — do this last, on the post you create in step one.
+
+Tell me when you have finished and I will diff every table.
+
+**Why the report path deserves its own paragraph.** It is the only one where failure is not
+recoverable. If posting is broken you find out in an hour and fix it. If reporting is broken, you
+find out the first time something ugly is on the site and there is no way to flag it — in front of
+the exact audience you spent the launch attracting. Test it before anyone else is on there.
+
+**And why this whole step matters more than it looks:** two of the bugs found this week were
+completely silent — the interface showed success while nothing was written. This app reports
+optimistically. The screen is not evidence; the database is.
 
 ---
 
