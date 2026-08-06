@@ -17,8 +17,9 @@ import { LoginRequiredNotice } from "./login-required-notice";
 // because the reason never left the browser. Appending the Postgres code to the visible
 // message is the shortest path to the database's own answer. Remove once the cause is
 // known - a reader should never be shown an error code.
-function withCode(message: string, code?: string | null) {
-  return code ? `${message} [${code}]` : message;
+function withCode(message: string, code?: string | null, detail?: string | null) {
+  if (!code) return message;
+  return detail ? `${message} [${code}] ${detail.slice(0, 90)}` : `${message} [${code}]`;
 }
 
 const awardOptions: AwardType[] = ["Changed My Thinking", "Practical Advice", "Great Summary", "Best Explanation", "Actionable", "Deep Insight"];
@@ -447,7 +448,7 @@ export function PostActions({
       setDeletingPost(false);
       if (result.error) {
         trackEvent("write_failed", { op: "delete_post", targetId, code: result.cause?.code || null, message: result.cause?.message || null });
-        setError(withCode(result.error, result.cause?.code));
+        setError(withCode(result.error, result.cause?.code, result.cause?.message));
         return;
       }
       setDeleted(true);
