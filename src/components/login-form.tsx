@@ -74,8 +74,16 @@ export function LoginForm({ next }: { next?: string }) {
 
   return (
     <div className="rounded-[32px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-8">
-      <p className="caption">Welcome Back</p>
-      <h2 className="title-2 mt-2">Log in to write, follow, and save books.</h2>
+      {/* The landing CTA reads "Join the Private Beta" and lands here. This greeted every
+          arrival with "Welcome Back" and offered only a log in, so the one screen between a
+          stranger and an account told them they were in the wrong place - while the thing
+          that actually matters went unsaid: with magic links, entering an email is how you
+          join. */}
+      <p className="caption">New here or returning</p>
+      <h2 className="title-2 mt-2">Enter your email to join or log in.</h2>
+      <p className="body-copy mt-2 text-[15px] leading-6">
+        No password needed. If this is your first time, your email creates your account.
+      </p>
       {googleAuthEnabled && (
         <>
           <button
