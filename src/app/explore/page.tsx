@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowRight, CheckCircle2, Clock3, Plus, Users } from "lucide-react";
@@ -25,6 +26,9 @@ import { getSupabaseFeedContributions } from "@/lib/contributions";
 import { isSupabaseConfigured } from "@/lib/supabase";
 import { bookCoverData } from "@/lib/book-cover-data";
 
+export const metadata: Metadata = { title: "Explore", description: "Books read through the people applying their ideas." };
+
+
 export const dynamic = "force-dynamic";
 
 export default async function ExplorePage({ searchParams }: { searchParams?: Promise<{ q?: string }> }) {
@@ -46,7 +50,7 @@ export default async function ExplorePage({ searchParams }: { searchParams?: Pro
               </p>
               <div className="mt-5 grid grid-cols-3 divide-x divide-[color:var(--color-hairline)] border-y border-[color:var(--color-hairline)] py-3 sm:hidden">
                 <MobileValueCue icon={<Clock3 size={15} />} text="Ideas fast" />
-                <MobileValueCue icon={<Users size={15} />} text="Reader views" />
+                <MobileValueCue icon={<Users size={15} />} text="Perspectives" />
                 <MobileValueCue icon={<CheckCircle2 size={15} />} text="Worth reading?" />
               </div>
               <div className="mt-6 hidden max-w-3xl gap-2.5 sm:grid sm:grid-cols-3">
@@ -70,7 +74,7 @@ export default async function ExplorePage({ searchParams }: { searchParams?: Pro
             <div className="mb-4 flex items-end justify-between gap-4">
               <div>
                 <p className="caption mb-2">Live reading room</p>
-                <h2 className="text-[22px] font-medium leading-tight tracking-[-0.035em] text-[color:var(--color-text-primary)]">Useful threads people can enter today</h2>
+                <h2 className="text-[22px] font-medium leading-tight tracking-[-0.035em] text-[color:var(--color-text-primary)]">Perspectives you can join today</h2>
               </div>
               <Link href="/feed" className="hidden text-sm font-medium text-[color:var(--color-text-secondary)] transition hover:text-[color:var(--color-text-primary)] sm:inline">
                 View all

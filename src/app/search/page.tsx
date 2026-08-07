@@ -1,8 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { SearchClient } from "@/components/search-client";
 import { findKnowledgeConcept } from "@/lib/concepts";
 import { getSupabaseFeedContributions } from "@/lib/contributions";
 import { getSupabaseKnowledgePosts } from "@/lib/knowledge-posts";
+
+export const metadata: Metadata = { title: "Search", description: "Search books, concepts, questions, or goals." };
+
 
 export default async function SearchPage({ searchParams }: { searchParams?: Promise<{ q?: string; intent?: string }> }) {
   const params = searchParams ? await searchParams : {};

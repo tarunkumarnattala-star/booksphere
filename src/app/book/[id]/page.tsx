@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -29,6 +30,17 @@ export function generateStaticParams() {
 
 function parseSort(value?: string): DiscussionSort {
   return discussionSortOptions.some((option) => option.value === value) ? value as DiscussionSort : "hot";
+}
+
+// The book's own name in the tab, in browser history, and on any link someone shares.
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const book = getBook(id);
+  if (!book) return { title: "Book not found" };
+  return {
+    title: `${book.title} by ${book.author}`,
+    description: `What readers applied, questioned, challenged, and learned from ${book.title}.`
+  };
 }
 
 export default async function BookPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams?: Promise<{ sort?: string; thread?: string }> }) {

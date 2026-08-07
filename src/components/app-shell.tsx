@@ -16,8 +16,17 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <>
+      {/* Keyboard users tabbed through the whole top nav and, on long pages, a grid of book
+          cards before reaching anything they came for (WCAG 2.2 Level A 2.4.1). Visible only
+          when focused, so it costs sighted readers nothing. */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-[color:var(--color-text-primary)] focus:px-5 focus:py-3 focus:text-sm focus:font-medium focus:!text-white"
+      >
+        Skip to content
+      </a>
       <TopNav />
-      <main className="page-enter min-h-dvh pb-[calc(6.5rem+env(safe-area-inset-bottom))] lg:pb-12">{children}</main>
+      <main id="main-content" className="page-enter min-h-dvh pb-[calc(6.5rem+env(safe-area-inset-bottom))] lg:pb-12">{children}</main>
       <footer className="border-t border-black/[0.06] pb-[calc(6rem+env(safe-area-inset-bottom))] lg:pb-0">
         <div className="container-page flex flex-col gap-3 py-6 text-sm text-[color:var(--color-text-secondary)] sm:flex-row sm:items-center sm:justify-between sm:gap-6">
           <p>BookSphere turns books into useful, human perspectives.</p>

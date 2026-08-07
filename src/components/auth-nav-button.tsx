@@ -13,7 +13,7 @@ export function AuthNavButton() {
   const router = useRouter();
   const [signedIn, setSignedIn] = useState(false);
   const [label, setLabel] = useState("Log in");
-  const [profileHref, setProfileHref] = useState("/profile/booksphere-team");
+  const [profileHref, setProfileHref] = useState("/login?next=%2Ffeed");
 
   useEffect(() => {
     let mounted = true;
@@ -34,7 +34,7 @@ export function AuthNavButton() {
       const local = canUseLocalCommunityFallback() ? getLocalProfile() : null;
       setSignedIn(Boolean(local));
       setLabel(local?.name || "Log in");
-      setProfileHref(local ? "/profile/local-reader" : "/profile/booksphere-team");
+      setProfileHref(local ? "/profile/local-reader" : "/login?next=%2Ffeed");
     }
     void refresh();
     window.addEventListener("booksphere-auth-change", refresh);
@@ -51,13 +51,17 @@ export function AuthNavButton() {
     clearLocalProfile();
     setSignedIn(false);
     setLabel("Log in");
-    setProfileHref("/profile/booksphere-team");
+    setProfileHref("/login?next=%2Ffeed");
     router.replace("/explore");
     router.refresh();
   }
 
   if (!signedIn) {
-    const loginHref = pathname === "/login" ? "/login" : `/login?next=${encodeURIComponent(pathname)}`;
+    // Next.js renders its 404 under the internal path /_not-found, so signing in from a
+    // missing page used to hand back a `next` pointing at a route that does not exist -
+    // a reader who hit a dead link and logged in would land on another dead end.
+    const returnable = pathname && !pathname.startsWith("/_") && pathname !== "/login";
+    const loginHref = returnable ? `/login?next=${encodeURIComponent(pathname)}` : "/login";
     return (
       <Link href={loginHref} className="inline-flex min-h-11 items-center rounded-full bg-[color:var(--color-text-primary)] px-4 py-2 text-sm font-medium !text-white transition duration-200 hover:opacity-85">
         Log in

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { DiscussionCard } from "@/components/discussion-card";
 import { EmptyState } from "@/components/empty-state";
@@ -37,6 +38,16 @@ export const dynamicParams = false;
 
 export function generateStaticParams() {
   return genres.map((genre) => ({ slug: genre.slug }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const genre = genres.find((item) => item.slug === slug);
+  if (!genre) return { title: "Genre not found" };
+  return {
+    title: `${genre.name} books`,
+    description: `Books in ${genre.name}, read through what people applied, questioned, and learned.`
+  };
 }
 
 export default async function GenrePage({ params }: { params: Promise<{ slug: string }> }) {

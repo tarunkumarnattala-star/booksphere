@@ -69,7 +69,7 @@ export function LoginForm({ next }: { next?: string }) {
       options: { emailRedirectTo: `${appUrl}${returnPath}` }
     });
     setLoading(false);
-    setMessage(error ? error.message : "Check your email for a magic link.");
+    setMessage(error ? error.message : "Check your email for your sign-in link. It works whether or not you have been here before.");
   }
 
   return (
@@ -109,11 +109,11 @@ export function LoginForm({ next }: { next?: string }) {
         />
         <button disabled={loading} className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-black/10 bg-white px-5 text-sm font-semibold text-[color:var(--color-text-primary)] transition hover:bg-black/[0.035] disabled:opacity-60">
           <Mail size={17} />
-          {loading ? "Sending link..." : "Send login link"}
+          {loading ? "Sending link..." : "Email me a sign-in link"}
         </button>
       </form>
       <p className="subheadline mt-4" role="status" aria-live="polite">
-        {message || (isSupabaseConfigured ? "We will send a secure sign-in link to your email." : canUseLocalCommunityFallback() ? "Beta preview mode: email creates a local test account on this device." : COMMUNITY_UNAVAILABLE_MESSAGE)}
+        {message || (isSupabaseConfigured ? "We will email you a secure link. New readers get an account; returning readers get signed in." : canUseLocalCommunityFallback() ? "Beta preview mode: email creates a local test account on this device." : COMMUNITY_UNAVAILABLE_MESSAGE)}
       </p>
     </div>
   );

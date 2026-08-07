@@ -1,3 +1,7 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = { title: "Privacy", description: "How BookSphere handles your data." };
+
 const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL;
 
 export default function PrivacyPage() {

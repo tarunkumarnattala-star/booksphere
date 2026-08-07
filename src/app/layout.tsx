@@ -8,7 +8,15 @@ const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3016";
 
 export const metadata: Metadata = {
   metadataBase: new URL(appUrl),
-  title: `${APP_NAME} - Book-centered knowledge sharing`,
+  // A template, not a fixed string. Every page but the landing served this one title -
+  // all 394 books, every genre, privacy and terms - so search engines saw hundreds of
+  // identical pages, browser history was unusable, and a link shared in a chat showed the
+  // tagline instead of the book someone meant to send. Pages set their own title now and
+  // this fills the gap for any that do not.
+  title: {
+    default: `${APP_NAME} - Book-centered knowledge sharing`,
+    template: `%s - ${APP_NAME}`
+  },
   description: APP_PROMISE,
   manifest: "/manifest.webmanifest",
   applicationName: APP_NAME,

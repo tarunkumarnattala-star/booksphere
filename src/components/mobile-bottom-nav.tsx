@@ -9,19 +9,23 @@ import { getLocalProfile } from "@/lib/local-session";
 import { supabase } from "@/lib/supabase";
 import { canUseLocalCommunityFallback } from "@/lib/community-runtime";
 
+// Signed out, "Profile" pointed at the editorial account. A stranger tapping the tab that
+// should be theirs landed on BookSphere's own profile, complete with a Follow button, and
+// the tab highlighted as though it were them. Send them to the door instead - /login knows
+// how to return them here afterwards.
 const baseMobileItems = [
   { href: "/explore", label: "Explore", icon: Compass },
   { href: "/genres", label: "Genres", icon: LibraryBig },
   { href: "/feed", label: "Feed", icon: UsersRound },
   { href: "/search", label: "Search", icon: Search },
-  { href: "/profile/booksphere-team", label: "Profile", icon: UserRound }
+  { href: "/login?next=%2Ffeed", label: "Profile", icon: UserRound }
 ];
 
 export function MobileBottomNav() {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [profileHref, setProfileHref] = useState("/profile/booksphere-team");
+  const [profileHref, setProfileHref] = useState("/login?next=%2Ffeed");
 
   useEffect(() => {
     const item = baseMobileItems.find(({ href }) => pathname === href);
@@ -37,12 +41,12 @@ export function MobileBottomNav() {
     async function refreshProfileHref() {
       if (!supabase) {
         const local = canUseLocalCommunityFallback() ? getLocalProfile() : null;
-        if (active) setProfileHref(local ? "/profile/local-reader" : "/profile/booksphere-team");
+        if (active) setProfileHref(local ? "/profile/local-reader" : "/login?next=%2Ffeed");
         return;
       }
       const { data } = await supabase.auth.getUser();
       if (!data.user) {
-        if (active) setProfileHref("/profile/booksphere-team");
+        if (active) setProfileHref("/login?next=%2Ffeed");
         return;
       }
       const { data: profile } = await supabase.from("profiles").select("username").eq("auth_user_id", data.user.id).maybeSingle();

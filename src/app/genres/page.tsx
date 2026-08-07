@@ -1,5 +1,9 @@
+import type { Metadata } from "next";
 import { GenreDirectory } from "@/components/genre-directory";
 import { genres, getBooksForGenre } from "@/lib/data";
+
+export const metadata: Metadata = { title: "Genres", description: "Find the reading room that matches the idea you are chasing." };
+
 
 export default function GenresPage() {
   return (

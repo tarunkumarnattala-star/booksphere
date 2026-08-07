@@ -101,6 +101,9 @@ export function HeroInlineSearch({ books, initialQuery = "" }: { books: Book[]; 
             onKeyUp={(event) => updateQuery(event.currentTarget.value)}
             onKeyDown={handleKeyDown}
             placeholder="Search books, authors, genres, ideas"
+            // A placeholder is not an accessible name - it vanishes on focus, and a screen
+            // reader announced this as an unnamed edit field (WCAG 2.2 AA 4.1.2).
+            aria-label="Search books, authors, genres, and ideas"
             autoComplete="off"
             spellCheck={false}
             className="w-full bg-transparent text-[17px] font-medium tracking-[-0.02em] outline-none placeholder:text-[color:var(--color-text-muted)]"

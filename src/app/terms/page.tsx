@@ -1,3 +1,7 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = { title: "Terms", description: "The terms of using BookSphere." };
+
 const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL;
 
 export default function TermsPage() {
