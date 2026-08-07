@@ -181,3 +181,28 @@ Recorded because the pattern matters more than the individual fixes.
 **The lesson worth keeping.** Three of these were dead for every user, not merely untested, and
 each looked identical from the outside to a feature nobody had tried yet. An empty table is not
 evidence of an unused path. Walk the product as a user before believing any audit, including mine.
+
+---
+
+## The new-reader walk — August 6
+
+Walked production signed out, at phone width (375×812), as a stranger would. Six problems, all
+fixed and verified live. None was reachable by typecheck, lint or build.
+
+| Finding | Why it mattered | Verified |
+| --- | --- | --- |
+| **One title for the whole site** — every page but the landing served `BookSphere - Book-centered knowledge sharing`: all 394 books, every genre, privacy, terms | Search engines saw hundreds of duplicate pages; browser history was unusable; a link pasted into a chat showed the tagline instead of the book | `Atomic Habits by James Clear - BookSphere`, `Psychology books - BookSphere`, per-tab titles |
+| **"Welcome Back" greeted new arrivals** — the landing CTA says *Join the Private Beta* and led to a card offering only a log in | The one screen between a stranger and an account told them they were in the wrong place, and never said that with magic links entering an email *is* joining | "New here or returning" / "Enter your email to join or log in" live |
+| **Profile tab led to the editorial account when signed out** | Tapping the tab that should be yours landed on BookSphere's own profile, Follow button and all, with the tab lit as though it were you | nav now `/login?next=%2Ffeed` |
+| **Sign-in from a 404 returned to `/_not-found`** | One dead link led to another; Next renders 404s under an internal path that was being captured as the return URL | internal paths excluded from `next` |
+| **Four names for one object on `/explore`** — perspective, thread, insight, discussion | The first screen after login, on a product whose whole pitch is conceptual clarity. The earlier pass fixed the book page and missed this one | "Reader views" 0, "Useful threads" 0 |
+| **F-08 + F-09** — hero search had no accessible name; no skip link | Deferred as P2s earlier; both are minutes of work and both shipped | `aria-label` and "Skip to content" present |
+
+**One correction worth recording.** I reported a seventh finding — that search returned no results —
+and it was wrong. I had clicked outside the viewport and set the input value synthetically, so React
+never saw it. Typing with real keys returns the right book. The check that produced the false alarm
+was mine, not the product's.
+
+**What this walk did not cover**, and remains unverified: signing up as a genuinely new account
+(I cannot create accounts), the first-run experience *after* that sign-up, comments, creating a feed
+post, profile editing, and notifications.
