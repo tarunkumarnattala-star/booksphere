@@ -6,7 +6,7 @@ const contentSecurityPolicy = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${isProduction ? "" : " 'unsafe-eval'"}`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://images.unsplash.com https://placehold.co https://covers.openlibrary.org https://books.google.com https://books.googleusercontent.com https://lh3.googleusercontent.com",
+  "img-src 'self' data: blob: https://covers.openlibrary.org https://books.google.com https://books.googleusercontent.com",
   "font-src 'self' data:",
   "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.googleapis.com https://openlibrary.org",
   "object-src 'none'",
@@ -29,15 +29,19 @@ const nextConfig: NextConfig = {
   distDir: process.env.NEXT_DIST_DIR || ".next",
   allowedDevOrigins: ["127.0.0.1"],
   images: {
+    // Only the two hosts covers.ts can actually produce. placehold.co, images.unsplash.com
+    // and lh3.googleusercontent.com were allowlisted and used by nothing - no reference in
+    // src/, no such cover_url in the database, every avatar_url null, Google auth disabled -
+    // and each of them serves arbitrary paths, which made /_next/image an unmetered image
+    // transformation endpoint for anyone on the internet. Verified on production before this
+    // change: three random placehold.co URLs each returned 200 with x-vercel-cache: MISS,
+    // and 15 distinct widths are accepted per source, so every unique URL an attacker
+    // invents is 15 more billable transformations. A host that is not on this list is
+    // refused with 400, so the allowlist works - it was the choice of hosts that did not.
+    //
+    // If Google sign-in is ever enabled and avatars are rendered through next/image, add
+    // lh3.googleusercontent.com back deliberately, with a pathname restriction.
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com"
-      },
-      {
-        protocol: "https",
-        hostname: "placehold.co"
-      },
       {
         protocol: "https",
         hostname: "covers.openlibrary.org"
@@ -49,10 +53,6 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "books.googleusercontent.com"
-      },
-      {
-        protocol: "https",
-        hostname: "lh3.googleusercontent.com"
       }
     ]
   },
