@@ -34,12 +34,16 @@ export function TopNav() {
     async function refreshProfileHref() {
       if (!supabase) {
         const local = canUseLocalCommunityFallback() ? getLocalProfile() : null;
-        if (active) setProfileHref(local ? "/profile/local-reader" : "/profile/booksphere-team");
+        if (active) setProfileHref(local ? "/profile/local-reader" : SIGNED_OUT_PROFILE_HREF);
         return;
       }
       const { data } = await supabase.auth.getUser();
       if (!data.user) {
-        if (active) setProfileHref("/profile/booksphere-team");
+        // Both of these still pointed at the editorial account after the array and the
+        // initial state were fixed, so the server sent the right href and hydration set it
+        // straight back. curl showed a fixed nav; the running page was still broken. The
+        // only check that caught it was reading the live DOM.
+        if (active) setProfileHref(SIGNED_OUT_PROFILE_HREF);
         return;
       }
       const { data: profile } = await supabase.from("profiles").select("username").eq("auth_user_id", data.user.id).maybeSingle();
