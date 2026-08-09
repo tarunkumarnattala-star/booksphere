@@ -7,9 +7,10 @@ import { requireProfile } from "@/lib/auth-client";
 import { supabase } from "@/lib/supabase";
 
 type EventRow = { event_name: string; user_id: string | null; created_at: string };
-type Totals = { accounts: number; posts: number; comments: number; knowledgePosts: number };
+type Totals = { accounts: number | null; posts: number | null; comments: number | null; knowledgePosts: number | null };
 
 const WINDOW_DAYS = 30;
+const EVENT_WINDOW_LIMIT = 5000;
 
 // The onboarding tour is the one flow with enough instrumentation to read as a funnel,
 // and it is the flow most likely to be quietly losing new readers.
@@ -43,7 +44,7 @@ export default function AdminAnalyticsPage() {
       if (!me?.is_moderator) { setState("not-moderator"); return; }
 
       const [eventsResult, accounts, posts, comments, knowledge] = await Promise.all([
-        supabase.from("analytics_events").select("event_name,user_id,created_at").gte("created_at", since(WINDOW_DAYS)).order("created_at", { ascending: false }).limit(5000),
+        supabase.from("analytics_events").select("event_name,user_id,created_at").gte("created_at", since(WINDOW_DAYS)).order("created_at", { ascending: false }).limit(EVENT_WINDOW_LIMIT),
         supabase.from("profiles").select("id", { count: "exact", head: true }),
         supabase.from("discussion_posts").select("id", { count: "exact", head: true }),
         supabase.from("discussion_comments").select("id", { count: "exact", head: true }),
@@ -56,11 +57,16 @@ export default function AdminAnalyticsPage() {
       } else {
         setEvents((eventsResult.data || []) as EventRow[]);
       }
+      // This page says "Counts come from the database, not the interface". `|| 0` turned a
+      // failed count into a confident "0 Discussions", which is the one reading the operator
+      // must not get wrong on launch day. A count we could not take shows as "-".
+      const countOrNull = (result: { count: number | null; error: unknown }) =>
+        (result.error ? null : result.count ?? 0);
       setTotals({
-        accounts: accounts.count || 0,
-        posts: posts.count || 0,
-        comments: comments.count || 0,
-        knowledgePosts: knowledge.count || 0
+        accounts: countOrNull(accounts),
+        posts: countOrNull(posts),
+        comments: countOrNull(comments),
+        knowledgePosts: countOrNull(knowledge)
       });
       setState("ready");
     }
@@ -92,6 +98,12 @@ export default function AdminAnalyticsPage() {
       {state === "signed-out" && (
         <p className="body-copy mt-6">
           Log in with a moderator account to view analytics. <Link className="font-medium underline underline-offset-4" href="/login?next=%2Fadmin%2Fanalytics">Log in</Link>
+        </p>
+      )}
+
+      {state === "ready" && events.length >= EVENT_WINDOW_LIMIT && (
+        <p className="subheadline mt-4">
+          Showing the newest {EVENT_WINDOW_LIMIT} events only. Everything below, including the funnel, is computed from that slice and understates the top of the funnel.
         </p>
       )}
 
@@ -149,7 +161,7 @@ export default function AdminAnalyticsPage() {
               <div className="mt-4 flex items-center gap-3 rounded-[20px] bg-white p-5 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">
                 <BarChart3 size={19} className="text-[color:var(--color-text-muted)]" />
                 <p className="body-copy">
-                  No events in the last {WINDOW_DAYS} days. Events are only recorded for signed-in readers, so this stays empty until people are signing in and using the community features.
+                  No events in the last {WINDOW_DAYS} days. Events record for every visitor, signed in or not, so this staying empty means nobody has opened the site - not that nobody has signed in.
                 </p>
               </div>
             ) : (
@@ -173,11 +185,11 @@ export default function AdminAnalyticsPage() {
   );
 }
 
-function Stat({ label, value, hint }: { label: string; value: number; hint: string }) {
+function Stat({ label, value, hint }: { label: string; value: number | null; hint: string }) {
   return (
     <div className="rounded-[20px] bg-white p-5 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">
       <p className="caption text-[10px]">{label}</p>
-      <p className="mt-2 text-[32px] font-semibold leading-none tracking-[-0.03em] text-[color:var(--color-text-primary)]">{value}</p>
+      <p className="mt-2 text-[32px] font-semibold leading-none tracking-[-0.03em] text-[color:var(--color-text-primary)]">{value === null ? "-" : value}</p>
       <p className="mt-2 text-sm text-[color:var(--color-text-muted)]">{hint}</p>
     </div>
   );

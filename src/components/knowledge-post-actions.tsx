@@ -9,6 +9,7 @@ import {
   deleteSupabaseKnowledgePost,
   getKnowledgePostViewerState,
   knowledgePostTitleFromBody,
+  MIN_KNOWLEDGE_POST_LENGTH,
   toggleSupabaseKnowledgePostLike,
   updateSupabaseKnowledgePost
 } from "@/lib/knowledge-posts";
@@ -95,8 +96,11 @@ export function KnowledgePostActions({ post, onUpdated, onDeleted }: {
 
   async function saveEdit() {
     const cleanBody = draft.body.trim();
-    if (cleanBody.length < 20) {
-      setError("Add enough context for another person to understand the thought.");
+    // The composer and the database both accept 4 characters (20260715061000). Demanding 20
+    // here made every feed post between those bounds permanently uneditable - the same bug
+    // that was fixed for discussion posts in 9fdb42b and missed on this path.
+    if (cleanBody.length < MIN_KNOWLEDGE_POST_LENGTH) {
+      setError(`Write at least ${MIN_KNOWLEDGE_POST_LENGTH} characters.`);
       return;
     }
     const auth = await requireProfile();

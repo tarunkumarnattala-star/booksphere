@@ -99,15 +99,30 @@ export default function SettingsPage() {
       return;
     }
 
-    const { error } = await supabase.from("profiles").update(cleanDraft).eq("id", profileId);
+    // An UPDATE with no .select() returns 204 and error: null whether it changed one row or
+    // zero. If the RLS ownership clause matches nothing - an expired token, a profileId from
+    // a different session - Postgres writes nothing, PostgREST reports no error, this screen
+    // says "saved", and the redirect below lands on a username that does not exist: the
+    // reader is shown a 404 as confirmation that their profile saved. Read the row back and
+    // navigate with what the database actually holds.
+    const { data, error } = await supabase
+      .from("profiles")
+      .update(cleanDraft)
+      .eq("id", profileId)
+      .select("id,username")
+      .maybeSingle();
     setSaving(false);
     if (error) {
       setMessage(error.code === "23505" ? "That username is already taken." : "Your changes could not be saved. Please try again.");
       return;
     }
+    if (!data) {
+      setMessage("Your changes were not saved. Sign in again and retry.");
+      return;
+    }
 
     setDraft(cleanDraft);
-    router.replace(`/profile/${cleanDraft.username}`);
+    router.replace(`/profile/${data.username as string}`);
   }
 
   return (

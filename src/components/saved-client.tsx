@@ -6,7 +6,7 @@ import { BookCard } from "@/components/book-card";
 import { DiscussionCard } from "@/components/discussion-card";
 import { EmptyState } from "@/components/empty-state";
 import { requireProfile } from "@/lib/auth-client";
-import { getSupabaseContributionsByIds } from "@/lib/contributions";
+import { getSupabaseContributionsByIds, localBookForDbBook } from "@/lib/contributions";
 import { books, discussions, getMostSaved, getSavedInsightPosts } from "@/lib/data";
 import { getLocalDiscussions } from "@/lib/local-discussions";
 import { getLocalProfile } from "@/lib/local-session";
@@ -56,8 +56,8 @@ export function SavedClient() {
       }
 
       const [savedBooksResult, savedInsightsResult] = await Promise.all([
-        supabase.from("saved_books").select("book_id,books(title,author)").eq("user_id", auth.profileId).order("created_at", { ascending: false }),
-        supabase.from("saved_insights").select("discussion_post_id").eq("user_id", auth.profileId).order("created_at", { ascending: false })
+        supabase.from("saved_books").select("book_id,books(slug,title,author)").eq("user_id", auth.profileId).order("created_at", { ascending: false }).limit(200),
+        supabase.from("saved_insights").select("discussion_post_id").eq("user_id", auth.profileId).order("created_at", { ascending: false }).limit(200)
       ]);
 
       if (!active) return;
@@ -68,9 +68,14 @@ export function SavedClient() {
         return;
       }
 
+      // Matching on the author string is the exact failure 20260806000000 added books.slug
+      // to eliminate: the catalog says "Peter Thiel and Blake Masters" and the database says
+      // "Peter Thiel" (also Never Split the Difference and Outlive). Every one of those saves
+      // was dropped on the floor here, and with no other saves the page then told the reader
+      // their shelf was empty while the rows sat in the database.
       const localBookIds = (savedBooksResult.data || []).map((row) => {
         const relation = Array.isArray(row.books) ? row.books[0] : row.books;
-        return books.find((book) => book.title === relation?.title && book.author === relation?.author)?.id;
+        return localBookForDbBook(relation as { title: string; slug?: string | null } | null)?.id;
       }).filter((id): id is string => Boolean(id));
       const insightIds = (savedInsightsResult.data || []).map((row) => row.discussion_post_id as string);
       const insights = await getSupabaseContributionsByIds(insightIds);
@@ -116,11 +121,17 @@ export function SavedClient() {
     );
   }
 
+  // On a failed load this used to print the error, then "Your saved shelf is ready" - which
+  // says the opposite - and then a shelf of editorial books under "Books readers save most",
+  // all at once. Say one thing.
+  if (error) {
+    return <p role="alert" className="mt-8 rounded-[20px] bg-[color:var(--color-rose)]/10 p-4 text-sm font-medium text-[color:var(--color-rose)]">{error}</p>;
+  }
+
   const hasPersonalSaves = savedBookIds.length > 0 || savedInsightIds.length > 0;
 
   return (
     <>
-      {error && <p role="alert" className="mt-8 rounded-[20px] bg-[color:var(--color-rose)]/10 p-4 text-sm font-medium text-[color:var(--color-rose)]">{error}</p>}
       {!hasPersonalSaves && <div className="mt-8"><EmptyState title="Your saved shelf is ready" body="Save a book or insight to make this page personal. Your private shelf will appear here." /></div>}
 
       {savedInsights.length > 0 && (

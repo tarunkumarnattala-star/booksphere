@@ -67,7 +67,7 @@ export const reactionLabelByDb: Record<string, UsefulnessReactionType> = Object.
   Object.entries(dbReactionByLabel).map(([label, db]) => [db, label as UsefulnessReactionType])
 ) as Record<string, UsefulnessReactionType>;
 
-function localBookForDbBook(dbBook?: DbBookRef | null) {
+export function localBookForDbBook(dbBook?: ({ title: string; slug?: string | null }) | null) {
   if (!dbBook) return undefined;
   // Resolve back to the catalog by slug. The catalog id is slugify(title) and the
   // database column holds the same value, so the two agree by construction. Matching on
@@ -449,8 +449,15 @@ async function toggleUniqueRow({
 }) {
   if (!supabase) return { error: "Supabase is not configured." };
   if (adding) {
-    const onConflict = table === "likes" ? "user_id,target_type,target_id" : "user_id,discussion_post_id";
-    const { error } = await supabase.from(table).upsert(insert, { onConflict });
+    // saved_insights and followed_discussions have an INSERT policy and a DELETE policy and
+    // no UPDATE policy. .upsert() compiles to INSERT ... ON CONFLICT DO UPDATE, so the
+    // moment a conflict actually happens - a second tab, a double tap, a click before
+    // getUserContributionState has resolved - RLS denies the UPDATE arm and the save fails
+    // with 42501. The row body is identical to the conflict key here, so there is nothing to
+    // update: insert, and treat "already there" as success. This is the same shape as the
+    // reports fix in 05c409f.
+    const { error } = await supabase.from(table).insert(insert);
+    if (error && error.code === "23505") return { error: null, code: null };
     return { error: error?.message || null, code: error?.code || null };
   }
   let query = supabase.from(table).delete();
@@ -584,6 +591,9 @@ export async function updateSupabaseComment(profileId: string, commentId: string
 
 export async function deleteSupabaseComment(profileId: string, commentId: string) {
   if (!supabase) return { error: "Supabase is not configured." };
-  const { error } = await supabase.from("discussion_comments").delete().eq("id", commentId).eq("user_id", profileId);
-  return { error: error ? "We could not delete that comment. Please try again." : null };
+  const { data, error } = await supabase
+    .from("discussion_comments").delete().eq("id", commentId).eq("user_id", profileId).select("id");
+  if (error) return { error: "We could not delete that comment. Please try again." };
+  if (!data?.length) return { error: "You do not have permission to delete that comment." };
+  return { error: null };
 }

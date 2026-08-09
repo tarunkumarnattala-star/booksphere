@@ -15,10 +15,13 @@ type ReportRow = {
   reporter: { name: string; username: string } | null;
 };
 
+// Every report is filed with target_type "discussion_post" (post-actions.tsx), and a
+// discussion post lives at /discussion/<id>. Sending it to /post/<id> - the knowledge-post
+// route - showed the moderator "We could not find this knowledge note" for effectively
+// every row in the queue, so nobody could see what they were being asked to moderate.
 function targetHref(report: ReportRow) {
-  if (report.target_type === "discussion_post" || report.target_type === "knowledge_post") {
-    return `/post/${report.target_id}`;
-  }
+  if (report.target_type === "discussion_post") return `/discussion/${report.target_id}`;
+  if (report.target_type === "knowledge_post") return `/post/${report.target_id}`;
   return null;
 }
 
@@ -76,10 +79,14 @@ export default function AdminReportsPage() {
     if (!window.confirm("Dismiss this report? This removes it from the queue.")) return;
     const previous = reports;
     setReports((current) => current.filter((report) => report.id !== id));
-    const { error: deleteError } = await supabase.from("reports").delete().eq("id", id);
-    if (deleteError) {
+    // A DELETE filtered to zero rows by the moderator policy also returns error: null, so
+    // without reading the row back the queue would look cleared while the report survived.
+    const { data, error: deleteError } = await supabase.from("reports").delete().eq("id", id).select("id");
+    if (deleteError || !data?.length) {
       setReports(previous);
-      setError("The report could not be dismissed. Please try again.");
+      setError(deleteError
+        ? "The report could not be dismissed. Please try again."
+        : "That report was not dismissed. Your account may not have moderator permission.");
     }
   }
 

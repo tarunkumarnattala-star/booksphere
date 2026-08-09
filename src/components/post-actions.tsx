@@ -244,9 +244,12 @@ export function PostActions({
       return;
     }
 
-    const result = adding
-      ? await supabase.from("post_awards").upsert({ user_id: auth.profileId, discussion_post_id: targetId, award_type: type }, { onConflict: "user_id,discussion_post_id,award_type" })
+    // post_awards has no UPDATE policy, so the ON CONFLICT DO UPDATE arm is refused by RLS.
+    // Insert instead and treat a duplicate as the award already being there.
+    const rawResult = adding
+      ? await supabase.from("post_awards").insert({ user_id: auth.profileId, discussion_post_id: targetId, award_type: type })
       : await supabase.from("post_awards").delete().eq("user_id", auth.profileId).eq("discussion_post_id", targetId).eq("award_type", type);
+    const result = rawResult.error && rawResult.error.code === "23505" ? { ...rawResult, error: null } : rawResult;
     setSyncingCommunity(false);
     if (result.error) {
       setSelectedAwards(previous);

@@ -4,12 +4,12 @@ import { useState } from "react";
 import { BookOpen, CheckCircle2, Plus, Send, Sparkles } from "lucide-react";
 import { requireProfile } from "@/lib/auth-client";
 import { canUseLocalCommunityFallback } from "@/lib/community-runtime";
-import { createSupabaseKnowledgePost, knowledgePostTitleFromBody } from "@/lib/knowledge-posts";
+import { createSupabaseKnowledgePost, knowledgePostTitleFromBody, MIN_KNOWLEDGE_POST_LENGTH } from "@/lib/knowledge-posts";
 import type { KnowledgePost } from "@/lib/types";
 import { LOCAL_KNOWLEDGE_POSTS_KEY } from "./knowledge-feed";
 import { LoginRequiredNotice } from "./login-required-notice";
 
-const MIN_POST_LENGTH = 4;
+const MIN_POST_LENGTH = MIN_KNOWLEDGE_POST_LENGTH;
 
 function storeLocalPost(post: KnowledgePost) {
   try {

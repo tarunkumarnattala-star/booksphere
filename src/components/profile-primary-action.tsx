@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Settings } from "lucide-react";
+import { Bookmark, Settings } from "lucide-react";
 import { FollowButton } from "@/components/follow-button";
 import { getLocalProfile } from "@/lib/local-session";
 import { supabase } from "@/lib/supabase";
@@ -40,10 +40,18 @@ export function ProfilePrimaryAction({ profileId, profileUsername }: { profileId
 
   if (isOwner) {
     return (
-      <Link href="/settings" className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-[color:var(--color-text-primary)] px-4 py-2 text-sm font-medium !text-white transition hover:opacity-85">
-        <Settings size={16} />
-        Edit profile
-      </Link>
+      <div className="flex shrink-0 items-center gap-2">
+        {/* Nothing in the app linked to /saved. Every "Save book" and "Save insight" button
+            on the site wrote to a page you could only reach by typing the URL. */}
+        <Link href="/saved" className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-medium text-[color:var(--color-text-primary)] shadow-[var(--shadow-soft)] ring-1 ring-black/[0.04] transition hover:bg-black/[0.035]">
+          <Bookmark size={16} />
+          Saved
+        </Link>
+        <Link href="/settings" className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-[color:var(--color-text-primary)] px-4 py-2 text-sm font-medium !text-white transition hover:opacity-85">
+          <Settings size={16} />
+          Edit profile
+        </Link>
+      </div>
     );
   }
 

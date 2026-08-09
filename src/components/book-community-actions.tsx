@@ -85,9 +85,13 @@ export function BookCommunityActions({ book }: { book: Book }) {
     setSyncing(true);
     setError("");
 
-    const { error: saveError } = nextSaved
-      ? await supabase.from("saved_books").upsert({ user_id: context.profileId, book_id: context.bookId }, { onConflict: "user_id,book_id" })
+    // saved_books has no UPDATE policy, so upsert's ON CONFLICT DO UPDATE arm is refused by
+    // RLS whenever a conflict is real. There is nothing to update - the row is its own key -
+    // so insert and treat 23505 as already-saved.
+    const { error: rawSaveError } = nextSaved
+      ? await supabase.from("saved_books").insert({ user_id: context.profileId, book_id: context.bookId })
       : await supabase.from("saved_books").delete().eq("user_id", context.profileId).eq("book_id", context.bookId);
+    const saveError = rawSaveError && rawSaveError.code === "23505" ? null : rawSaveError;
 
     if (saveError) {
       setSaved(!nextSaved);

@@ -20,7 +20,7 @@ function relativeTime(iso: string) {
 }
 
 export default function NotificationsPage() {
-  const [state, setState] = useState<"loading" | "signed-out" | "unavailable" | "ready">("loading");
+  const [state, setState] = useState<"loading" | "signed-out" | "unavailable" | "error" | "ready">("loading");
   const [items, setItems] = useState<ReplyNotification[]>([]);
   const [seenBefore, setSeenBefore] = useState<string | null>(null);
 
@@ -42,7 +42,13 @@ export default function NotificationsPage() {
       setSeenBefore(getLastSeenAt());
       const replies = await getReplyNotifications(auth.profileId);
       if (cancelled) return;
-      setItems(replies);
+      if (!replies.ok) {
+        // Do not mark seen here. markNotificationsSeen() is a one-way write, so doing it
+        // after a failed read would permanently hide replies that already exist.
+        setState("error");
+        return;
+      }
+      setItems(replies.notifications);
       setState("ready");
       markNotificationsSeen();
     }
@@ -58,6 +64,12 @@ export default function NotificationsPage() {
       {state === "loading" && <p className="body-copy mt-6">Loading...</p>}
 
       {state === "unavailable" && <p className="body-copy mt-6">Replies need the production database connection.</p>}
+
+      {state === "error" && (
+        <p role="alert" className="body-copy mt-6">
+          Your replies could not be loaded just now. Refresh the page to try again - nothing has been marked as read.
+        </p>
+      )}
 
       {state === "signed-out" && (
         <p className="body-copy mt-6">

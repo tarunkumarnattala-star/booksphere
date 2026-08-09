@@ -49,6 +49,12 @@ async function hydrateKnowledgePosts(rows: DbKnowledgePost[]) {
   }));
 }
 
+// The database floor is char_length(trim(body)) between 4 and 2000
+// (20260715061000_allow_short_feed_posts / 20260715061000_align_feed_post_minimum).
+// Both the composer and the edit form read this so they cannot drift apart again - they
+// already had, at 4 and 20, which froze every post written between those bounds.
+export const MIN_KNOWLEDGE_POST_LENGTH = 4;
+
 export function knowledgePostTitleFromBody(body: string) {
   const firstLine = body.split(/\n|(?<=[.!?])\s/)[0].trim();
   return firstLine.length <= 120 ? firstLine : `${firstLine.slice(0, 117).trim()}...`;
@@ -128,8 +134,13 @@ export async function updateSupabaseKnowledgePost(profileId: string, postId: str
 
 export async function deleteSupabaseKnowledgePost(profileId: string, postId: string) {
   if (!supabase) return { error: "Community editing is temporarily unavailable." };
-  const { error } = await supabase.from("knowledge_posts").delete().eq("id", postId).eq("user_id", profileId);
-  return { error: error ? "We could not delete this post. Please try again." : null };
+  // Zero rows deleted is not an error to PostgREST. Without the read-back the author is
+  // shown their post vanishing and redirected to the feed while the post is still public.
+  const { data, error } = await supabase
+    .from("knowledge_posts").delete().eq("id", postId).eq("user_id", profileId).select("id");
+  if (error) return { error: "We could not delete this post. Please try again." };
+  if (!data?.length) return { error: "You do not have permission to delete this post." };
+  return { error: null };
 }
 
 export async function getSupabaseKnowledgePosts(limit = 30) {

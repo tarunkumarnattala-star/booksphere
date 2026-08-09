@@ -26,7 +26,8 @@ export function NotificationBell() {
       const replies = await getReplyNotifications(auth.profileId);
       if (!mounted) return;
       setSignedIn(true);
-      setUnseen(countUnseen(replies));
+      // A failed poll leaves the badge alone rather than clearing it.
+      if (replies.ok) setUnseen(countUnseen(replies.notifications));
     }
 
     const onSeen = () => setUnseen(0);

@@ -53,14 +53,28 @@ export function countUnseen(notifications: ReplyNotification[]) {
   return notifications.filter((item) => item.createdAt > lastSeen).length;
 }
 
-export async function getReplyNotifications(profileId: string, limit = 40): Promise<ReplyNotification[]> {
-  if (!supabase) return [];
+export type ReplyNotificationsResult =
+  | { ok: true; notifications: ReplyNotification[] }
+  | { ok: false; notifications: never[] };
 
+export async function getReplyNotifications(profileId: string, limit = 40): Promise<ReplyNotificationsResult> {
+  if (!supabase) return { ok: false, notifications: [] };
+
+  // Bounded deliberately. These ids are fed straight into .in(...) below, which PostgREST
+  // receives as a query string - a prolific writer would otherwise build a URL long enough
+  // to be rejected by a proxy, and the rejection used to be indistinguishable from an empty
+  // inbox because no .error was ever read.
+  const OWN_ROW_LIMIT = 200;
   const [myPosts, myKnowledgePosts, myComments] = await Promise.all([
-    supabase.from("discussion_posts").select("id,title").eq("user_id", profileId),
-    supabase.from("knowledge_posts").select("id,title").eq("user_id", profileId),
-    supabase.from("discussion_comments").select("id").eq("user_id", profileId)
+    supabase.from("discussion_posts").select("id,title").eq("user_id", profileId).order("created_at", { ascending: false }).limit(OWN_ROW_LIMIT),
+    supabase.from("knowledge_posts").select("id,title").eq("user_id", profileId).order("created_at", { ascending: false }).limit(OWN_ROW_LIMIT),
+    supabase.from("discussion_comments").select("id").eq("user_id", profileId).order("created_at", { ascending: false }).limit(OWN_ROW_LIMIT)
   ]);
+
+  // A failed read must not read as "nobody replied to you". The caller marks the inbox seen
+  // on success, and that write is not reversible: it hides every reply that already existed
+  // from the unread badge, on that device, permanently.
+  if (myPosts.error || myKnowledgePosts.error || myComments.error) return { ok: false, notifications: [] };
 
   const postTitles = new Map<string, string>();
   (myPosts.data || []).forEach((row) => postTitles.set(row.id as string, row.title as string));
@@ -84,9 +98,10 @@ export async function getReplyNotifications(profileId: string, limit = 40): Prom
     queries.push(supabase.from("discussion_comments").select(select).in("parent_comment_id", commentIds).neq("user_id", profileId).order("created_at", { ascending: false }).limit(limit));
   }
 
-  if (!queries.length) return [];
+  if (!queries.length) return { ok: true, notifications: [] };
 
   const results = await Promise.all(queries);
+  if (results.some((result) => result.error)) return { ok: false, notifications: [] };
   const seen = new Set<string>();
   const notifications: ReplyNotification[] = [];
 
@@ -96,7 +111,6 @@ export async function getReplyNotifications(profileId: string, limit = 40): Prom
       seen.add(row.id);
       const author = firstAuthor(row.author);
       const isKnowledge = Boolean(row.knowledge_post_id);
-      const targetId = row.discussion_post_id || row.knowledge_post_id;
       const title = row.discussion_post_id
         ? postTitles.get(row.discussion_post_id)
         : row.knowledge_post_id
@@ -109,12 +123,20 @@ export async function getReplyNotifications(profileId: string, limit = 40): Prom
         createdAt: row.created_at,
         authorName: author?.name || "A reader",
         authorUsername: author?.username || "",
-        href: targetId ? `/post/${targetId}#comments` : "/feed",
+        // /post/<id> is the knowledge-post route. Sending a discussion_post id there
+        // renders "We could not find this knowledge note" - verified on production - so
+        // every reply to a perspective, which is the product's only return path, led to a
+        // dead end. A perspective lives at /discussion/<id>.
+        href: row.discussion_post_id
+          ? `/discussion/${row.discussion_post_id}#comments`
+          : row.knowledge_post_id
+            ? `/post/${row.knowledge_post_id}#comments`
+            : "/feed",
         context: title || (isKnowledge ? "your feed post" : "your perspective"),
         kind: row.parent_comment_id && commentIds.includes(row.parent_comment_id) ? "reply_to_comment" : "reply_to_post"
       });
     });
   });
 
-  return notifications.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1)).slice(0, limit);
+  return { ok: true, notifications: notifications.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1)).slice(0, limit) };
 }
