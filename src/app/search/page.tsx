@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { SearchClient } from "@/components/search-client";
 import { findKnowledgeConcept } from "@/lib/concepts";
 import { getSupabaseFeedContributions } from "@/lib/contributions";
 import { getSupabaseKnowledgePosts } from "@/lib/knowledge-posts";
 
-export const metadata: Metadata = { title: "Search", description: "Search books, concepts, questions, or goals." };
+export const metadata: Metadata = pageMetadata({
+  title: "Search",
+  description: "Search books, concepts, questions, or goals.",
+  path: "/search"
+});
 
 
 export default async function SearchPage({ searchParams }: { searchParams?: Promise<{ q?: string; intent?: string }> }) {

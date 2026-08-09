@@ -8,8 +8,29 @@ import {
   type ProfileConnection
 } from "@/lib/profile-data";
 import { initials } from "@/lib/utils";
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+  searchParams
+}: {
+  params: Promise<{ username: string }>;
+  searchParams: Promise<{ view?: string }>;
+}): Promise<Metadata> {
+  const [{ username }, query] = await Promise.all([params, searchParams]);
+  const view = query.view === "following" ? "Following" : "Followers";
+  const fallback = getProfile(username);
+  const name = fallback?.name || `@${username}`;
+  return pageMetadata({
+    title: `${name} — ${view}`,
+    description: `Readers connected to ${name} on BookSphere.`,
+    path: `/profile/${username}/connections`,
+    noIndex: true
+  });
+}
 
 type ConnectionView = "followers" | "following";
 

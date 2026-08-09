@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { LoginForm } from "@/components/login-form";
 
-export const metadata: Metadata = { title: "Log in or join", description: "Join BookSphere to write, follow, and save books." };
+export const metadata: Metadata = pageMetadata({
+  title: "Log in or join",
+  description: "Join BookSphere to write, follow, and save books.",
+  path: "/login",
+  noIndex: true
+});
 
 
 export default async function LoginPage({ searchParams }: { searchParams: Promise<{ next?: string }> }) {

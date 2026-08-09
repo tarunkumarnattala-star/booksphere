@@ -9,7 +9,7 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: "*",
         allow: "/",
         // Account and moderation surfaces have no business in a search index.
-        disallow: ["/admin/", "/login", "/settings", "/saved", "/api/"]
+        disallow: ["/admin/", "/login", "/settings", "/saved", "/notifications", "/create", "/api/"]
       }
     ],
     sitemap: `${baseUrl}/sitemap.xml`

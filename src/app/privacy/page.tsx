@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = { title: "Privacy", description: "How BookSphere handles your data." };
+export const metadata: Metadata = pageMetadata({
+  title: "Privacy",
+  description: "How BookSphere handles your data.",
+  path: "/privacy"
+});
 
 const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL;
 

@@ -11,17 +11,23 @@ import { getLocalProfile } from "@/lib/local-session";
 import { supabase } from "@/lib/supabase";
 import { canUseLocalCommunityFallback } from "@/lib/community-runtime";
 
+// Signed out, "Profile" pointed at the editorial account. That was fixed in the mobile
+// bottom nav on August 6 and missed here, so on any viewport at lg and above a stranger
+// tapping the tab that should be theirs still landed on BookSphere's own profile, Follow
+// button and all, with the tab lit as though it were them. Same bug, same day, one surface.
 const navItems = [
   { href: "/explore", label: "Explore" },
   { href: "/genres", label: "Genres" },
   { href: "/feed", label: "Feed" },
   { href: "/search", label: "Search" },
-  { href: "/profile/booksphere-team", label: "Profile" }
+  { href: "/login?next=%2Ffeed", label: "Profile" }
 ];
+
+const SIGNED_OUT_PROFILE_HREF = "/login?next=%2Ffeed";
 
 export function TopNav() {
   const pathname = usePathname();
-  const [profileHref, setProfileHref] = useState("/profile/booksphere-team");
+  const [profileHref, setProfileHref] = useState(SIGNED_OUT_PROFILE_HREF);
 
   useEffect(() => {
     let active = true;

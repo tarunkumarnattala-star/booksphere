@@ -5,6 +5,8 @@ import { BookCover } from "@/components/book-cover";
 import { bookCoverData } from "@/lib/book-cover-data";
 import { GenrePill } from "@/components/genre-pill";
 import { readingPaths, getPathBooks, getReadingPath } from "@/lib/data";
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 
 // The catalog is the complete set of valid params, so anything else is genuinely not a
 // page. Declaring that lets Next answer with a real 404 at the routing layer; calling
@@ -14,6 +16,19 @@ export const dynamicParams = false;
 
 export function generateStaticParams() {
   return readingPaths.map((path) => ({ slug: path.slug }));
+}
+
+// These five URLs are in the sitemap and are the most shareable thing on the site after a
+// book, and every one of them was serving the site-wide title and the site-wide social card.
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const path = getReadingPath(slug);
+  if (!path) return pageMetadata({ title: "Reading path not found", noIndex: true });
+  return pageMetadata({
+    title: `${path.title} reading path`,
+    description: path.description,
+    path: `/path/${path.slug}`
+  });
 }
 
 export default async function ReadingPathPage({ params }: { params: Promise<{ slug: string }> }) {

@@ -1,4 +1,13 @@
+import type { Metadata } from "next";
 import { SavedClient } from "@/components/saved-client";
+import { pageMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = pageMetadata({
+  title: "Saved",
+  description: "The explanations, applications, questions, and books you kept.",
+  path: "/saved",
+  noIndex: true
+});
 
 export default function SavedPage() {
   return (

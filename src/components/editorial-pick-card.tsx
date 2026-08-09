@@ -17,7 +17,7 @@ export function EditorialPickCard({ pick, post }: { pick: EditorialPick; post: D
         <h3 className="headline mt-2 line-clamp-2 text-[color:var(--color-text-primary)]">{pick.title}</h3>
         <p className="footnote mt-2 line-clamp-3">{pick.description}</p>
         <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-[color:var(--color-text-primary)]">
-          Open thread <ArrowUpRight size={14} />
+          Open perspective <ArrowUpRight size={14} />
         </span>
       </div>
     </Link>

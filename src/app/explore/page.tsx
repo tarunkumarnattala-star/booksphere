@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowRight, CheckCircle2, Clock3, Plus, Users } from "lucide-react";
@@ -26,7 +27,11 @@ import { getSupabaseFeedContributions } from "@/lib/contributions";
 import { isSupabaseConfigured } from "@/lib/supabase";
 import { bookCoverData } from "@/lib/book-cover-data";
 
-export const metadata: Metadata = { title: "Explore", description: "Books read through the people applying their ideas." };
+export const metadata: Metadata = pageMetadata({
+  title: "Explore",
+  description: "Books read through the people applying their ideas.",
+  path: "/explore"
+});
 
 
 export const dynamic = "force-dynamic";

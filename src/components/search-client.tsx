@@ -444,7 +444,7 @@ function DiscussionSearchResultCard({ result, featured = false }: { result: Know
       <div className="mt-5 flex flex-wrap items-center gap-2 text-sm font-medium text-[color:var(--color-text-secondary)]">
         <SearchPreviewActions kind="discussion" targetId={result.discussion.id} likes={result.discussion.likes} saves={result.discussion.saves} />
         <span className="inline-flex items-center gap-1"><MessageCircle size={16} /> {result.discussion.comments} comments</span>
-        <Link href={result.destinationUrl} className="inline-flex min-h-10 items-center gap-1 px-1 text-[color:var(--color-text-primary)]">Open thread <ArrowUpRight size={15} /></Link>
+        <Link href={result.destinationUrl} className="inline-flex min-h-10 items-center gap-1 px-1 text-[color:var(--color-text-primary)]">Open perspective <ArrowUpRight size={15} /></Link>
       </div>
     </article>
   );

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -29,10 +30,11 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   if (!post) notFound();
   const book = getBook(post.bookId);
   const author = post.authorName || "a reader";
-  return {
+  return pageMetadata({
     title: `${post.title} — ${book ? book.title : "BookSphere"}`,
-    description: `${author} on ${book ? book.title : "a book"}: ${post.body.slice(0, 155)}`
-  };
+    description: `${author} on ${book ? book.title : "a book"}: ${post.body.slice(0, 155)}`,
+    path: `/discussion/${id}`
+  });
 }
 
 export default async function DiscussionPage({ params }: { params: Promise<{ id: string }> }) {

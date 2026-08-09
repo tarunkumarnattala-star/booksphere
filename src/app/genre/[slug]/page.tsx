@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { notFound } from "next/navigation";
 import { DiscussionCard } from "@/components/discussion-card";
 import { EmptyState } from "@/components/empty-state";
@@ -43,11 +44,12 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const genre = genres.find((item) => item.slug === slug);
-  if (!genre) return { title: "Genre not found" };
-  return {
+  if (!genre) return pageMetadata({ title: "Genre not found", noIndex: true });
+  return pageMetadata({
     title: `${genre.name} books`,
-    description: `Books in ${genre.name}, read through what people applied, questioned, and learned.`
-  };
+    description: `Books in ${genre.name}, read through what people applied, questioned, and learned.`,
+    path: `/genre/${genre.slug}`
+  });
 }
 
 export default async function GenrePage({ params }: { params: Promise<{ slug: string }> }) {

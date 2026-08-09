@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { CreateDiscussionForm } from "@/components/create-discussion-form";
 import { books, getBook } from "@/lib/data";
 import type { PostType } from "@/lib/types";
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 
 const POST_TYPES: PostType[] = ["Insight", "Question", "Application", "Disagreement", "Quote", "Summary", "Personal Experience"];
 
@@ -13,6 +15,18 @@ export const dynamicParams = false;
 
 export function generateStaticParams() {
   return books.map((book) => ({ id: book.id }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const book = getBook(id);
+  if (!book) return pageMetadata({ title: "Book not found", noIndex: true });
+  return pageMetadata({
+    title: `Share a perspective on ${book.title}`,
+    description: `Write what you applied, questioned, challenged, or learned from ${book.title}.`,
+    path: `/book/${book.id}/create-discussion`,
+    noIndex: true
+  });
 }
 
 export default async function CreateBookDiscussionPage({

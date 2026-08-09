@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { FeedComposer } from "@/components/feed-composer";
 import { KnowledgeFeed } from "@/components/knowledge-feed";
 import { knowledgePosts } from "@/lib/data";
 import { getSupabaseKnowledgePosts } from "@/lib/knowledge-posts";
 
-export const metadata: Metadata = { title: "Feed", description: "Ideas shaped by real life, from readers." };
+export const metadata: Metadata = pageMetadata({
+  title: "Feed",
+  description: "Ideas shaped by real life, from readers.",
+  path: "/feed"
+});
 
 
 export const dynamic = "force-dynamic";

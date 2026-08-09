@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -36,11 +37,12 @@ function parseSort(value?: string): DiscussionSort {
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const book = getBook(id);
-  if (!book) return { title: "Book not found" };
-  return {
+  if (!book) return pageMetadata({ title: "Book not found", noIndex: true });
+  return pageMetadata({
     title: `${book.title} by ${book.author}`,
-    description: `What readers applied, questioned, challenged, and learned from ${book.title}.`
-  };
+    description: `What readers applied, questioned, challenged, and learned from ${book.title}.`,
+    path: `/book/${book.id}`
+  });
 }
 
 export default async function BookPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams?: Promise<{ sort?: string; thread?: string }> }) {

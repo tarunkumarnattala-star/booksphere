@@ -17,6 +17,8 @@ import { getCanonicalProfileBundle } from "@/lib/profile-data";
 import type { Book, DiscussionPost, KnowledgePost } from "@/lib/types";
 import { formatCount, initials } from "@/lib/utils";
 import { bookCoverData } from "@/lib/book-cover-data";
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 
 type ProfileContribution =
   | { kind: "discussion"; item: DiscussionPost }
@@ -26,6 +28,18 @@ export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
   return profiles.map((profile) => ({ username: profile.username }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ username: string }> }): Promise<Metadata> {
+  const { username } = await params;
+  const bundle = await getCanonicalProfileBundle(username);
+  const profile = bundle?.profile || getProfile(username);
+  if (!profile) return pageMetadata({ title: "Reader not found", noIndex: true });
+  return pageMetadata({
+    title: `${profile.name} (@${profile.username})`,
+    description: profile.bio?.trim() || `What ${profile.name} has applied, questioned, and learned from books.`,
+    path: `/profile/${profile.username}`
+  });
 }
 
 export default async function ProfilePage({ params }: { params: Promise<{ username: string }> }) {

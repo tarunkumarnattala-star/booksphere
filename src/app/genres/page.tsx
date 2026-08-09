@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { GenreDirectory } from "@/components/genre-directory";
 import { genres, getBooksForGenre } from "@/lib/data";
 
-export const metadata: Metadata = { title: "Genres", description: "Find the reading room that matches the idea you are chasing." };
+export const metadata: Metadata = pageMetadata({
+  title: "Genres",
+  description: "Find the reading room that matches the idea you are chasing.",
+  path: "/genres"
+});
 
 
 export default function GenresPage() {
