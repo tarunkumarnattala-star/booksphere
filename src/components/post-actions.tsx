@@ -309,7 +309,11 @@ export function PostActions({
     }
     setReported(true);
     setReportOpen(false);
-    trackEvent("post_reported", { targetId, reason: reportReason });
+    // The reason stays out of analytics_events. It is already in `reports`, where a
+    // moderator can delete it - but nothing can delete an analytics row (no DELETE grant on
+    // that table for any role), so a copy here would outlive the report it duplicates, and
+    // it is also mirrored into the reporter's own localStorage under booksphere.analytics.
+    trackEvent("post_reported", { targetId });
   }
 
   async function toggleUsefulness(type: UsefulnessReactionType) {
