@@ -33,7 +33,11 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   return pageMetadata({
     title: `${post.title} — ${book ? book.title : "BookSphere"}`,
     description: `${author} on ${book ? book.title : "a book"}: ${post.body.slice(0, 155)}`,
-    path: `/discussion/${id}`
+    path: `/discussion/${id}`,
+    // Named rather than inherited from the segment's opengraph-image file, so the card
+    // cannot be lost to metadata merge order the way the book cards just were.
+    image: `/discussion/${id}/opengraph-image`,
+    imageAlt: "A reader perspective on BookSphere"
   });
 }
 

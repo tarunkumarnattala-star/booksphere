@@ -29,18 +29,41 @@ type PageMetadataInput = {
   path?: string;
   /** Account and moderation surfaces that should never be indexed. */
   noIndex?: boolean;
+  /**
+   * Route of the card image. Defaults to the site card.
+   *
+   * Declared explicitly rather than left to inheritance. Next attaches a file-convention
+   * `opengraph-image` automatically only while a page has no `openGraph` of its own -
+   * the moment this helper set one, every book page and reading path lost its card. That
+   * shipped to production and was caught by reading the deployed HTML, not by the build.
+   * Setting the image here means the card never depends on merge order again.
+   */
+  image?: string;
+  imageAlt?: string;
 };
+
+const SITE_CARD = "/opengraph-image";
+const SITE_CARD_ALT = "BookSphere — understand books through the people who lived their ideas";
 
 export function pageMetadata({
   title,
   absoluteTitle,
   description,
   path,
-  noIndex
+  noIndex,
+  image,
+  imageAlt
 }: PageMetadataInput): Metadata {
   const resolvedDescription = description || APP_PROMISE;
   const socialTitle = absoluteTitle || (title ? `${title} - ${APP_NAME}` : SITE_SOCIAL_TITLE);
   const url = path || "/";
+  const cardUrl = image || SITE_CARD;
+  const card = {
+    url: cardUrl,
+    width: 1200,
+    height: 630,
+    alt: imageAlt || SITE_CARD_ALT
+  };
 
   return {
     title: absoluteTitle ? { absolute: absoluteTitle } : title,
@@ -51,12 +74,14 @@ export function pageMetadata({
       siteName: APP_NAME,
       title: socialTitle,
       description: resolvedDescription,
-      url
+      url,
+      images: [card]
     },
     twitter: {
       card: "summary_large_image",
       title: socialTitle,
-      description: resolvedDescription
+      description: resolvedDescription,
+      images: [cardUrl]
     },
     robots: noIndex ? { index: false, follow: false } : { index: true, follow: true }
   };
