@@ -921,7 +921,7 @@ const starterTemplates = [
 
 // Reader-facing versions of the starter prompts. The seed bodies above are written
 // in the voice of a starter account, so only the framing questions are reused here.
-// An empty book page is the product's weakest moment: "share the first insight" asks
+// An empty book page is the product's weakest moment: "share the first perspective" asks
 // for a blank page, while a specific question is something a reader can answer.
 export function starterPromptsForBook(book: Book): Array<{ postType: PostType; title: string; hint: string }> {
   return [
@@ -988,7 +988,7 @@ export const discussions: DiscussionPost[] = books.slice(0, 30).flatMap((book, i
 
 export const perspectiveClusters: PerspectiveCluster[] = [
   { key: "applied", name: "Applied It", explanation: "Specific ways readers used this book in work, study, relationships, health, or daily life.", postTypes: ["Application", "Real-Life Result"], reactionHint: "Helped me apply" },
-  { key: "insight", name: "Biggest Insight", explanation: "The ideas readers found most clarifying, memorable, or useful.", postTypes: ["Insight"], reactionHint: "Changed my thinking" },
+  { key: "insight", name: "Biggest Perspective", explanation: "The ideas readers found most clarifying, memorable, or useful.", postTypes: ["Insight"], reactionHint: "Changed my thinking" },
   { key: "did-not-work", name: "What Did Not Work", explanation: "Attempts that failed, conditions where the advice broke down, and what readers changed afterward.", postTypes: ["What Did Not Work", "Limitation"], reactionHint: "Strong counterargument" },
   { key: "disagreed", name: "Disagreed", explanation: "Respectful challenges to a book claim, chapter, concept, or community perspective.", postTypes: ["Disagreement"], reactionHint: "Strong counterargument" },
   { key: "summary", name: "Best Summary", explanation: "Reader explanations judged especially clear and useful by the community.", postTypes: ["Summary"], reactionHint: "Best summary" },
@@ -1365,19 +1365,19 @@ const uniqueEditorialDiscussionPosts = discussions.filter((post, index, allPosts
 export const editorialPicks: EditorialPick[] = uniqueEditorialDiscussionPosts.slice(0, 5).map((post, index) => ({
   id: "editorial-" + post.id,
   title: [
-    "A practical thread about turning ideas into behavior",
+    "A practical perspective on turning ideas into behavior",
     "A sharper way to discuss money and identity",
     "A useful question about focus in real life",
     "A founder-minded conversation worth saving",
-    "A psychology thread with unusually clear framing"
+    "A psychology perspective with unusually clear framing"
   ][index] || post.title,
   description: [
     "A good example of how BookSphere turns a book into a decision someone can use today.",
-    "This thread keeps the conversation about money human instead of mechanical.",
+    "This perspective keeps money human instead of mechanical.",
     "Readers are using this one to compare what focus actually looks like in a normal week.",
-    "A concise discussion for builders who want more than startup slogans.",
+    "A concise perspective for builders who want more than startup slogans.",
     "Strong starter material for learning how thoughtful disagreement can improve a book."
-  ][index] || "A high-signal discussion selected by BookSphere Team.",
+  ][index] || "A high-signal perspective selected by BookSphere Team.",
   targetType: "discussion_post",
   targetId: post.id,
   weekStart: "2026-06-29",
@@ -1573,23 +1573,35 @@ export function getRecentlyAdded(genre?: string, max = 10) {
   );
 }
 
+// On a product with no readers yet every one of these counts is zero, and the first screen
+// rendered "0 reader insights" twelve times before a visitor had read a sentence. A zero is
+// not neutral - it is an argument against joining, repeated. So a count is shown only once
+// it is real, and until then the line carries the reason to read the book instead. Nothing
+// here invents activity: it either reports a true number or says something true about the
+// book.
+function bookReasonLine(book: Book) {
+  const reason = book.bestForTags[0];
+  if (reason) return `Best for ${reason.toLowerCase()}`;
+  return book.mostDiscussedThemes[0] || book.genres[0] || "Worth reading";
+}
+
 export function getBookActivityLine(book: Book, signal: DiscoveryShelf["signal"] = "discussions") {
-  if (signal === "editorial") return book.editorialStatus === "verified" ? "Knowledge guide" : "Reader discussion";
-  if (signal === "insights") return `💡 ${book.insightCount} reader insights`;
-  if (signal === "saves") return `❤️ ${book.saveCount} saves`;
+  if (signal === "editorial") return book.editorialStatus === "verified" ? "Knowledge guide" : bookReasonLine(book);
+  if (signal === "insights") return book.insightCount > 0 ? `💡 ${book.insightCount} reader perspectives` : bookReasonLine(book);
+  if (signal === "saves") return book.saveCount > 0 ? `❤️ ${book.saveCount} saves` : bookReasonLine(book);
   if (signal === "recommendations") {
     const percent = getRecommendationPercent(book);
     return percent ? `👍 ${percent}% would recommend` : "New recommendation data";
   }
   if (signal === "new") return `Added ${new Date(book.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}`;
-  return `🔥 ${book.discussionCount} active discussions`;
+  return book.discussionCount > 0 ? `🔥 ${book.discussionCount} active perspectives` : bookReasonLine(book);
 }
 
 export function getBookShelfBadge(book: Book, fallback = "BookSphere Pick") {
   if (book.isEditorsPick) return "Editor’s Pick";
   if (book.isBeginnerEssential) return "Beginner Essential";
   if (book.isHiddenGem) return "Hidden Gem";
-  if (book.isTrendingSeed) return "Active Discussion";
+  if (book.isTrendingSeed) return "Active Perspective";
   return fallback;
 }
 
@@ -1605,7 +1617,7 @@ export function getHomeDiscoveryShelves(): DiscoveryShelf[] {
     },
     {
       key: "trending-discussions",
-      title: "Discussion Starters",
+      title: "Perspective Starters",
       subtitle: "Editorial prompts ready for the first reader perspectives.",
       books: getTrendingDiscussions(),
       badge: "Starter Prompt",

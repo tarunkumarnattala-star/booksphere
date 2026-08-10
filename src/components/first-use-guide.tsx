@@ -24,12 +24,12 @@ const steps: Record<Exclude<GuideStage, "welcome" | "action">, { count: string; 
   explore: {
     count: "1 of 4",
     title: "Explore what readers found useful.",
-    body: "Start with practical ideas, perspectives, and discussions worth opening."
+    body: "Start with practical ideas and perspectives worth opening."
   },
   genres: {
     count: "2 of 4",
     title: "Browse focused reading rooms.",
-    body: "Choose a topic to find its strongest books and reader insights."
+    body: "Choose a topic to find its strongest books and reader perspectives."
   },
   feed: {
     count: "3 of 4",

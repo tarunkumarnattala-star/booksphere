@@ -69,7 +69,7 @@ export function GenreDirectory({
                   <BookCover key={book.id} book={bookCoverData(book)} className={`${index === 0 ? "w-20" : "w-16"} rounded-[12px]`} />
                 ))}
               </div>
-              <p className="body-copy mt-5 text-[15px] leading-6">{genreDescriptions[genre.name] || "A focused shelf for thoughtful book discussions."}</p>
+              <p className="body-copy mt-5 text-[15px] leading-6">{genreDescriptions[genre.name] || "A focused shelf for thoughtful book perspectives."}</p>
               <p className="footnote mt-5">{verifiedPreviews} source-reviewed {verifiedPreviews === 1 ? "preview" : "previews"}</p>
             </Link>
           );
@@ -90,7 +90,7 @@ export function GenreDirectory({
             <p className="caption">Knowledge Search</p>
             <h3 className="title-3 mt-3">Search by the idea you want to understand.</h3>
             <p className="body-copy mt-4 text-[15px] leading-6">
-              Move from a problem to books, discussions, reading paths, and useful reader insights.
+              Move from a problem to books, reading paths, and useful reader perspectives.
             </p>
           </div>
           <div className="mt-6 flex items-center justify-between rounded-[22px] bg-black/[0.035] px-4 py-3">
