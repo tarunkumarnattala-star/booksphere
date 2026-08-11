@@ -12,6 +12,7 @@ export function HeroInlineSearch({ books, initialQuery = "" }: { books: Book[]; 
   const [query, setQuery] = useState(initialQuery);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const lastSyncedRef = useRef(initialQuery);
   const hasQuery = query.trim().length > 0;
   const results = useMemo(
     () => searchBooks(query, { books, includeGlobalFallback: true, limit: 8, minQueryLength: 1 }),
@@ -19,6 +20,7 @@ export function HeroInlineSearch({ books, initialQuery = "" }: { books: Book[]; 
   );
 
   function updateQuery(nextQuery: string) {
+    lastSyncedRef.current = nextQuery;
     setQuery(nextQuery);
     setSelectedIndex(0);
     const url = new URL(window.location.href);
@@ -30,13 +32,21 @@ export function HeroInlineSearch({ books, initialQuery = "" }: { books: Book[]; 
     window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
   }
 
+  // The poll stays: it is what catches an autofill or password-manager write that fires no
+  // input event, and a synthetic value change that React never sees has already produced one
+  // false alarm on this project. What it should not do is depend on `query` - that tore down
+  // and rebuilt three listeners and a timer on every keystroke - or wake eight times a
+  // second on the first screen after login, which is measurable battery on a phone. The last
+  // value lives in a ref instead, so the effect runs once, and the interval is a backstop for
+  // the events above rather than the primary path.
   useEffect(() => {
     const input = inputRef.current;
     if (!input) return;
 
     const syncFromDom = () => {
       const nextQuery = input.value;
-      if (nextQuery !== query) {
+      if (nextQuery !== lastSyncedRef.current) {
+        lastSyncedRef.current = nextQuery;
         setQuery(nextQuery);
         setSelectedIndex(0);
       }
@@ -45,7 +55,7 @@ export function HeroInlineSearch({ books, initialQuery = "" }: { books: Book[]; 
     input.addEventListener("input", syncFromDom);
     input.addEventListener("keyup", syncFromDom);
     input.addEventListener("search", syncFromDom);
-    const interval = window.setInterval(syncFromDom, 120);
+    const interval = window.setInterval(syncFromDom, 500);
 
     return () => {
       input.removeEventListener("input", syncFromDom);
@@ -53,7 +63,7 @@ export function HeroInlineSearch({ books, initialQuery = "" }: { books: Book[]; 
       input.removeEventListener("search", syncFromDom);
       window.clearInterval(interval);
     };
-  }, [query]);
+  }, []);
 
   function openBook(bookId: string) {
     router.push(`/book/${bookId}`);
