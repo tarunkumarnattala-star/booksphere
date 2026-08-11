@@ -97,6 +97,8 @@ export function SearchPreviewActions({
     if (result.error) {
       setter(current);
       setError(action === "like" ? "That like could not be saved." : "That post could not be saved.");
+    } else if (action === "save") {
+      window.dispatchEvent(new Event("booksphere-saved-change"));
     }
     setSyncing(false);
   }

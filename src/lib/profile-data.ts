@@ -78,11 +78,15 @@ export async function getCanonicalProfileBundle(username: string): Promise<Canon
     supabase.from("follows").select("id", { count: "exact", head: true }).eq("follower_id", profileRow.id)
   ]);
 
-  if (postsResult.error) return null;
-  const postRows = (postsResult.data || []) as DbContribution[];
+  // A failure on the contributions query used to null the whole bundle. The caller then
+  // falls back to the static catalog, which has no row for any real signed-up reader, and
+  // called notFound() - so one hiccup on a secondary query turned a real profile into a 404
+  // even though the profile lookup itself had already succeeded. The profile is what was
+  // asked for; a sub-query that failed means an empty section, not a missing person.
+  const postRows = (postsResult.error ? [] : postsResult.data || []) as DbContribution[];
   const bookIds = [...new Set(postRows.map((post) => post.book_id))];
   const { data: dbBooks } = bookIds.length
-    ? await supabase.from("books").select("id,title,author").in("id", bookIds)
+    ? await supabase.from("books").select("id,slug,title,author").in("id", bookIds)
     : { data: [] };
   const dbBooksById = Object.fromEntries(((dbBooks || []) as Array<{ id: string; title: string; author: string }>).map((book) => [book.id, book]));
   const contributions = await hydrateContributions(postRows, dbBooksById);
@@ -144,8 +148,8 @@ export async function getCanonicalProfileConnections(username: string): Promise<
       .order("created_at", { ascending: false })
   ]);
 
-  if (followerRows.error || followingRows.error) return null;
-
+  // Same reasoning as the bundle above: the profile resolved, so do not turn a follows
+  // query failure into "this reader does not exist".
   const followerIds = (followerRows.data || []).map((row) => row.follower_id as string);
   const followingIds = (followingRows.data || []).map((row) => row.following_id as string);
   const connectionIds = [...new Set([...followerIds, ...followingIds])];
@@ -153,7 +157,9 @@ export async function getCanonicalProfileConnections(username: string): Promise<
     ? await supabase.from("profiles").select("id,name,username,bio").in("id", connectionIds)
     : { data: [], error: null };
 
-  if (connectionsError) return null;
+  if (connectionsError) {
+    return { profile: toProfileConnection(profileRow), followers: [], following: [] };
+  }
 
   const connectionsById = new Map(
     (connectionRows || []).map((row) => [row.id as string, toProfileConnection(row)])

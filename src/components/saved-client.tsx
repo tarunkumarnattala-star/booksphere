@@ -5,20 +5,33 @@ import { useEffect, useMemo, useState } from "react";
 import { BookCard } from "@/components/book-card";
 import { DiscussionCard } from "@/components/discussion-card";
 import { EmptyState } from "@/components/empty-state";
+import { KnowledgeNoteCard } from "@/components/knowledge-note-card";
 import { requireProfile } from "@/lib/auth-client";
 import { getSupabaseContributionsByIds, localBookForDbBook } from "@/lib/contributions";
+import { getSupabaseKnowledgePostsByIds } from "@/lib/knowledge-posts";
 import { books, discussions, getMostSaved, getSavedInsightPosts } from "@/lib/data";
 import { getLocalDiscussions } from "@/lib/local-discussions";
 import { getLocalProfile } from "@/lib/local-session";
 import { getLocalItems } from "@/lib/local-store";
 import { supabase } from "@/lib/supabase";
-import type { Book, DiscussionPost } from "@/lib/types";
+import type { Book, DiscussionPost, KnowledgePost } from "@/lib/types";
 import { canUseLocalCommunityFallback } from "@/lib/community-runtime";
+
+// Any localStorage key changing in another tab fires `storage` here, and trackEvent writes
+// booksphere.analytics on every like, save, share and report. So a like in a second tab
+// used to blank this whole page to "Loading your saved shelf..." and refetch it.
+const WATCHED_STORAGE_KEYS = new Set([
+  "booksphere.savedBooks",
+  "booksphere.savedInsights",
+  "booksphere.savedKnowledgePosts",
+  "booksphere.localDiscussions"
+]);
 
 export function SavedClient() {
   const [savedBookIds, setSavedBookIds] = useState<string[]>([]);
   const [savedInsightIds, setSavedInsightIds] = useState<string[]>([]);
   const [remoteInsights, setRemoteInsights] = useState<DiscussionPost[]>([]);
+  const [savedNotes, setSavedNotes] = useState<KnowledgePost[]>([]);
   const [localPosts, setLocalPosts] = useState<DiscussionPost[]>([]);
   const [loading, setLoading] = useState(Boolean(supabase));
   const [signedIn, setSignedIn] = useState<boolean | null>(null);
@@ -26,8 +39,14 @@ export function SavedClient() {
 
   useEffect(() => {
     let active = true;
+    // `active` only flips on unmount, so two overlapping refreshes could land out of order
+    // and the slower, older one would win. A run token settles that.
+    let latestRun = 0;
+    let hasLoadedOnce = false;
 
     async function refresh() {
+      const run = ++latestRun;
+      const stale = () => !active || run !== latestRun;
       if (!supabase) {
         queueMicrotask(() => {
           if (!active) return;
@@ -45,26 +64,35 @@ export function SavedClient() {
         return;
       }
 
-      setLoading(true);
+      // Only the first load blanks the page. A refetch triggered by another tab used to
+      // replace the whole shelf with "Loading your saved shelf..." for the length of four
+      // queries.
+      if (!hasLoadedOnce) setLoading(true);
+      // setError was never cleared anywhere in this file, and the error branch returns
+      // before everything else, so one transient failure left the reader looking at a red
+      // box for the rest of the session no matter how many successful refetches followed.
+      setError("");
       const auth = await requireProfile();
+      if (stale()) return;
       if (!auth.ok) {
-        if (active) {
-          setSignedIn(false);
-          setLoading(false);
-        }
+        setSignedIn(false);
+        setLoading(false);
+        hasLoadedOnce = true;
         return;
       }
 
-      const [savedBooksResult, savedInsightsResult] = await Promise.all([
+      const [savedBooksResult, savedInsightsResult, savedNotesResult] = await Promise.all([
         supabase.from("saved_books").select("book_id,books(slug,title,author)").eq("user_id", auth.profileId).order("created_at", { ascending: false }).limit(200),
-        supabase.from("saved_insights").select("discussion_post_id").eq("user_id", auth.profileId).order("created_at", { ascending: false }).limit(200)
+        supabase.from("saved_insights").select("discussion_post_id").eq("user_id", auth.profileId).order("created_at", { ascending: false }).limit(200),
+        supabase.from("saved_knowledge_posts").select("knowledge_post_id").eq("user_id", auth.profileId).order("created_at", { ascending: false }).limit(200)
       ]);
 
-      if (!active) return;
-      if (savedBooksResult.error || savedInsightsResult.error) {
+      if (stale()) return;
+      if (savedBooksResult.error || savedInsightsResult.error || savedNotesResult.error) {
         setError("Your saved shelf could not be loaded. Please refresh and try again.");
         setSignedIn(true);
         setLoading(false);
+        hasLoadedOnce = true;
         return;
       }
 
@@ -78,24 +106,40 @@ export function SavedClient() {
         return localBookForDbBook(relation as { title: string; slug?: string | null } | null)?.id;
       }).filter((id): id is string => Boolean(id));
       const insightIds = (savedInsightsResult.data || []).map((row) => row.discussion_post_id as string);
-      const insights = await getSupabaseContributionsByIds(insightIds);
-      if (!active) return;
+      const noteIds = (savedNotesResult.data || []).map((row) => row.knowledge_post_id as string);
+      const [insights, notes] = await Promise.all([
+        getSupabaseContributionsByIds(insightIds),
+        getSupabaseKnowledgePostsByIds(noteIds)
+      ]);
+      if (stale()) return;
       setSavedBookIds(localBookIds);
       setSavedInsightIds(insightIds);
       setRemoteInsights(insights);
+      setSavedNotes(notes);
       setSignedIn(true);
       setLoading(false);
+      hasLoadedOnce = true;
+    }
+
+    function onStorage(event: Event) {
+      const key = (event as StorageEvent).key;
+      if (key && !WATCHED_STORAGE_KEYS.has(key)) return;
+      void refresh();
     }
 
     void refresh();
     window.addEventListener("booksphere-local-store-change", refresh);
     window.addEventListener("booksphere-local-discussions-change", refresh);
-    window.addEventListener("storage", refresh);
+    // Unsaving from this very page deletes the row and updated only the button, so the card
+    // stayed on the shelf reading "Save Insight" until a reload.
+    window.addEventListener("booksphere-saved-change", refresh);
+    window.addEventListener("storage", onStorage);
     return () => {
       active = false;
       window.removeEventListener("booksphere-local-store-change", refresh);
       window.removeEventListener("booksphere-local-discussions-change", refresh);
-      window.removeEventListener("storage", refresh);
+      window.removeEventListener("booksphere-saved-change", refresh);
+      window.removeEventListener("storage", onStorage);
     };
   }, []);
 
@@ -128,7 +172,7 @@ export function SavedClient() {
     return <p role="alert" className="mt-8 rounded-[20px] bg-[color:var(--color-rose)]/10 p-4 text-sm font-medium text-[color:var(--color-rose)]">{error}</p>;
   }
 
-  const hasPersonalSaves = savedBookIds.length > 0 || savedInsightIds.length > 0;
+  const hasPersonalSaves = savedBookIds.length > 0 || savedInsightIds.length > 0 || savedNotes.length > 0;
 
   return (
     <>
@@ -138,6 +182,13 @@ export function SavedClient() {
         <section className="mt-14">
           <h2 className="title-2 mb-5">My Saved Insights</h2>
           <div className="grid gap-5 lg:grid-cols-2">{savedInsights.map((post) => <DiscussionCard key={post.id} post={post} showBook compact />)}</div>
+        </section>
+      )}
+
+      {savedNotes.length > 0 && (
+        <section className="mt-14">
+          <h2 className="title-2 mb-5">My Saved Posts</h2>
+          <div className="grid gap-5 lg:grid-cols-2">{savedNotes.map((post) => <KnowledgeNoteCard key={post.id} post={post} />)}</div>
         </section>
       )}
 

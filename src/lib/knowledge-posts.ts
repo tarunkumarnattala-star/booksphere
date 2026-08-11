@@ -166,6 +166,24 @@ export async function getSupabaseKnowledgePostsByUser(userId: string, limit = 50
   return hydrateKnowledgePosts(data as DbKnowledgePost[]);
 }
 
+// /saved queried saved_books and saved_insights only, so a reader who saved a feed post
+// wrote a real row into saved_knowledge_posts and then never saw it anywhere. The button
+// said "Saved" and the shelf denied it existed.
+export async function getSupabaseKnowledgePostsByIds(ids: string[]) {
+  if (!supabase || ids.length === 0) return [] as KnowledgePost[];
+  const { data, error } = await supabase
+    .from("knowledge_posts")
+    .select(knowledgePostSelect)
+    .in("id", ids.slice(0, 200));
+  if (error || !data?.length) return [];
+  const posts = await hydrateKnowledgePosts(data as DbKnowledgePost[]);
+  const byId = new Map(posts.map((post) => [post.id, post]));
+  return ids.flatMap((id) => {
+    const post = byId.get(id);
+    return post ? [post] : [];
+  });
+}
+
 export async function getSupabaseKnowledgePost(id: string) {
   if (!supabase) return null;
   const { data, error } = await supabase
