@@ -8,7 +8,7 @@ import { AwardType, DiscussionAward, DiscussionPost, PostType, UsefulnessReactio
 import { requireProfile } from "@/lib/auth-client";
 import { dbReactionByLabel, deleteSupabaseContribution, getUserContributionState, toggleSupabaseFollowDiscussion, toggleSupabaseLike, toggleSupabaseSaveInsight, updateSupabaseContribution } from "@/lib/contributions";
 import { canUseLocalCommunityFallback, COMMUNITY_UNAVAILABLE_MESSAGE } from "@/lib/community-runtime";
-import { hasLocalItem, toggleLocalItem } from "@/lib/local-store";
+import { announceSavedChange, hasLocalItem, toggleLocalItem } from "@/lib/local-store";
 import { supabase } from "@/lib/supabase";
 import { trackEvent } from "@/lib/analytics";
 import { LoginRequiredNotice } from "./login-required-notice";
@@ -96,15 +96,12 @@ export function PostActions({
     if (supabase) return;
     if (!canUseLocalCommunityFallback()) return;
     queueMicrotask(() => {
-      const localLiked = hasLocalItem("booksphere.likedPosts", targetId);
-      const localSaved = hasLocalItem("booksphere.savedInsights", targetId);
-      const localFollowing = hasLocalItem("booksphere.followedDiscussions", targetId);
-      setLiked(localLiked);
-      setPersistedLiked(localLiked);
-      setSaved(localSaved);
-      setPersistedSaved(localSaved);
-      setFollowing(localFollowing);
-      setPersistedFollowing(localFollowing);
+      // persisted* deliberately stays false here. In the offline preview the totals come
+      // from the static catalog and never contained a locally stored like, so a local like
+      // really is one the displayed number does not know about.
+      setLiked(hasLocalItem("booksphere.likedPosts", targetId));
+      setSaved(hasLocalItem("booksphere.savedInsights", targetId));
+      setFollowing(hasLocalItem("booksphere.followedDiscussions", targetId));
       setReported(hasLocalItem("booksphere.reportedPosts", targetId));
       try {
         setSelectedAwards(JSON.parse(window.localStorage.getItem(`booksphere.awards.${targetId}`) || "[]") as AwardType[]);
@@ -164,30 +161,54 @@ export function PostActions({
   // requireProfile() plus getUserContributionState is four round trips. The buttons are
   // clickable for the whole of it, and a click inside that window used to be overwritten by
   // the pre-click snapshot arriving late - the heart emptied for a like that had succeeded.
-  const actedRef = useRef(false);
+  // One flag per action: a Save inside that window must not also abandon the like and follow
+  // state, which is what a single shared flag did.
+  const actedRef = useRef({ like: false, save: false, follow: false });
+  const usefulnessInFlight = useRef(false);
 
   useEffect(() => {
     if (!supabase || !targetId) return;
     const activeTargetId = targetId;
     let cancelled = false;
-    actedRef.current = false;
+    actedRef.current = { like: false, save: false, follow: false };
     async function loadUserState() {
       const auth = await requireProfile();
       if (!auth.ok) return;
       const state = await getUserContributionState(auth.profileId, activeTargetId);
-      if (cancelled || actedRef.current) return;
-      setLiked(state.liked);
-      setPersistedLiked(state.liked);
-      setSaved(state.saved);
-      setPersistedSaved(state.saved);
-      setFollowing(state.following);
-      setPersistedFollowing(state.following);
+      if (cancelled) return;
+      if (!actedRef.current.like) {
+        setLiked(state.liked);
+        setPersistedLiked(state.liked);
+      }
+      if (!actedRef.current.save) {
+        setSaved(state.saved);
+        setPersistedSaved(state.saved);
+      }
+      if (!actedRef.current.follow) {
+        setFollowing(state.following);
+        setPersistedFollowing(state.following);
+      }
     }
     void loadUserState();
     return () => {
       cancelled = true;
     };
   }, [targetId]);
+
+  // router.refresh() re-renders the server tree and hands this component new totals while
+  // the client state survives. Those totals already reflect whatever the reader has done, so
+  // the delta has to reset to zero - otherwise a like counted once by the server was counted
+  // again here, which is the whole bug this baseline exists to stop. FollowButton calls
+  // router.refresh() and sits on the same card, so this is reachable on every card.
+  const totalsKey = `${likes}|${saves}|${follows}`;
+  const lastTotalsRef = useRef(totalsKey);
+  useEffect(() => {
+    if (lastTotalsRef.current === totalsKey) return;
+    lastTotalsRef.current = totalsKey;
+    setPersistedLiked(liked);
+    setPersistedSaved(saved);
+    setPersistedFollowing(following);
+  }, [totalsKey, liked, saved, following]);
 
   async function requireAction(callback: () => void) {
     const auth = await requireProfile();
@@ -213,7 +234,7 @@ export function PostActions({
 
     const next = !current;
     if (syncingCommunity) return;
-    actedRef.current = true;
+    actedRef.current[kind] = true;
     setSyncingCommunity(true);
     setter(next);
     setError("");
@@ -249,7 +270,7 @@ export function PostActions({
     trackEvent(kind === "like" ? "contribution_liked" : kind === "save" ? "contribution_saved" : "discussion_followed", { targetId, active: next });
     // /saved renders exactly these rows. Unsaving from that page left the card sitting on
     // the shelf under "My Saved Insights", reading "Save Insight", until a reload.
-    if (kind === "save") window.dispatchEvent(new Event("booksphere-saved-change"));
+    if (kind === "save") announceSavedChange();
     setSyncingCommunity(false);
   }
 
@@ -354,11 +375,23 @@ export function PostActions({
   }
 
   async function toggleUsefulness(type: UsefulnessReactionType) {
-    // toggleAward has had this guard since it was written; this one did not. Two chips
-    // tapped in quick succession both captured the same `previous` array, so the second
-    // write's payload was computed from a pre-first-tap value and the first chip's
-    // highlight vanished while its row sat in the database.
-    if (!targetId || syncingCommunity) return;
+    // This had no guard at all: two chips tapped in quick succession both computed their
+    // payload from the same pre-first-tap array, so one chip's highlight vanished while its
+    // row sat in the database. It gets its own latch rather than sharing syncingCommunity -
+    // a shared lock would silently swallow a chip tap while a like was in flight, on chips
+    // that have no disabled state to show for it, and a ref latches synchronously where a
+    // state flag is still stale for the whole of requireProfile().
+    if (!targetId || usefulnessInFlight.current) return;
+    usefulnessInFlight.current = true;
+    try {
+      await runToggleUsefulness(type);
+    } finally {
+      usefulnessInFlight.current = false;
+    }
+  }
+
+  async function runToggleUsefulness(type: UsefulnessReactionType) {
+    if (!targetId) return;
     const auth = await requireProfile();
     if (!auth.ok) {
       setNotice(auth.message);
@@ -373,12 +406,10 @@ export function PostActions({
     const revert = () => setSelectedUsefulness((current) => adding
       ? current.filter((item) => item !== type)
       : current.includes(type) ? current : [...current, type]);
-    setSyncingCommunity(true);
     setSelectedUsefulness(next);
     setError("");
 
     if (!supabase) {
-      setSyncingCommunity(false);
       if (!canUseLocalCommunityFallback()) {
         revert();
         setError(COMMUNITY_UNAVAILABLE_MESSAGE);
@@ -406,7 +437,6 @@ export function PostActions({
           .eq("target_id", targetId)
           .eq("reaction_type", dbType);
 
-    setSyncingCommunity(false);
     if (result.error) {
       revert();
       setError("That reaction could not be saved. Please try again.");

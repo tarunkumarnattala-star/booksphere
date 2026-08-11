@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BookOpen, CheckCircle2, Plus, Send, Sparkles } from "lucide-react";
 import { requireProfile } from "@/lib/auth-client";
 import { supabase } from "@/lib/supabase";
@@ -38,6 +38,7 @@ export function FeedComposer({
   const [error, setError] = useState("");
   const [published, setPublished] = useState(false);
   const [publishing, setPublishing] = useState(false);
+  const publishingRef = useRef(false);
   // The bubble read a hardcoded "N" for everyone - the founder's own initial, shown to every
   // reader in the box that is supposed to be theirs. Same family as the bug where every
   // perspective displayed the house account's name. getSession reads the stored session, so
@@ -58,19 +59,30 @@ export function FeedComposer({
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (publishing) return;
+    // The whole body runs inside the latch, not just the write. requireProfile is two
+    // network round trips and the Share button stayed enabled for all of it, so two taps
+    // published the same thought twice: knowledge_posts has no unique constraint and the
+    // community rate-limit trigger does not cover that table. The finally is what keeps a
+    // throw in requireProfile from leaving the button dead until a reload.
+    if (publishingRef.current) return;
+    publishingRef.current = true;
+    setPublishing(true);
+    try {
+      await runSubmit();
+    } finally {
+      publishingRef.current = false;
+      setPublishing(false);
+    }
+  }
+
+  async function runSubmit() {
     const cleanThought = thought.trim();
     if (cleanThought.length < MIN_POST_LENGTH) {
       setError("Write at least 4 characters before sharing.");
       return;
     }
-    // requireProfile is two network round trips, and the Share button stayed enabled for all
-    // of it. Two taps published the same thought twice: knowledge_posts has no unique
-    // constraint and the community rate-limit trigger does not cover that table.
-    setPublishing(true);
     const auth = await requireProfile();
     if (!auth.ok) {
-      setPublishing(false);
       setNotice(auth.message);
       return;
     }
@@ -122,8 +134,6 @@ export function FeedComposer({
       window.setTimeout(() => setPublished(false), 1000);
     } catch {
       setError("We could not publish this thought. Check your connection and try again.");
-    } finally {
-      setPublishing(false);
     }
   }
 

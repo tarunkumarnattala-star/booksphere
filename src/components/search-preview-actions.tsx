@@ -6,7 +6,7 @@ import { requireProfile } from "@/lib/auth-client";
 import { canUseLocalCommunityFallback, COMMUNITY_UNAVAILABLE_MESSAGE } from "@/lib/community-runtime";
 import { getUserContributionState, toggleSupabaseLike, toggleSupabaseSaveInsight } from "@/lib/contributions";
 import { getKnowledgePostViewerState, toggleSupabaseKnowledgePostLike, toggleSupabaseKnowledgePostSave } from "@/lib/knowledge-posts";
-import { hasLocalItem, toggleLocalItem } from "@/lib/local-store";
+import { announceSavedChange, hasLocalItem, toggleLocalItem } from "@/lib/local-store";
 import { supabase } from "@/lib/supabase";
 import { LoginRequiredNotice } from "./login-required-notice";
 
@@ -98,7 +98,7 @@ export function SearchPreviewActions({
       setter(current);
       setError(action === "like" ? "That like could not be saved." : "That post could not be saved.");
     } else if (action === "save") {
-      window.dispatchEvent(new Event("booksphere-saved-change"));
+      announceSavedChange();
     }
     setSyncing(false);
   }

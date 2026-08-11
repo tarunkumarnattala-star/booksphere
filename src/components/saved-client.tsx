@@ -12,7 +12,7 @@ import { getSupabaseKnowledgePostsByIds } from "@/lib/knowledge-posts";
 import { books, discussions, getMostSaved, getSavedInsightPosts } from "@/lib/data";
 import { getLocalDiscussions } from "@/lib/local-discussions";
 import { getLocalProfile } from "@/lib/local-session";
-import { getLocalItems } from "@/lib/local-store";
+import { getLocalItems, SAVED_CHANGE_KEY } from "@/lib/local-store";
 import { supabase } from "@/lib/supabase";
 import type { Book, DiscussionPost, KnowledgePost } from "@/lib/types";
 import { canUseLocalCommunityFallback } from "@/lib/community-runtime";
@@ -24,7 +24,8 @@ const WATCHED_STORAGE_KEYS = new Set([
   "booksphere.savedBooks",
   "booksphere.savedInsights",
   "booksphere.savedKnowledgePosts",
-  "booksphere.localDiscussions"
+  "booksphere.localDiscussions",
+  SAVED_CHANGE_KEY
 ]);
 
 export function SavedClient() {
