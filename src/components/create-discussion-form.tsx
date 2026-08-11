@@ -47,6 +47,11 @@ const MIN_BODY_LENGTH = 20;
 
 export function CreateDiscussionForm({ book, initialPostType = "Insight", initialTitle = "" }: { book: Book; initialPostType?: PostType; initialTitle?: string }) {
   const [submitted, setSubmitted] = useState(false);
+  // This is the product's core action and it had no double-submit guard at all: the button
+  // was never disabled, and requireProfile() plus the insert is several seconds on a phone,
+  // which is exactly when someone presses again. The rate-limit trigger allows 10 posts an
+  // hour, so a second press published a second identical perspective.
+  const [publishing, setPublishing] = useState(false);
   const [createdPostId, setCreatedPostId] = useState("");
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
@@ -77,6 +82,16 @@ export function CreateDiscussionForm({ book, initialPostType = "Insight", initia
 
   async function submit(event: React.FormEvent) {
     event.preventDefault();
+    if (publishing || submitted) return;
+    setPublishing(true);
+    try {
+      await runSubmit();
+    } finally {
+      setPublishing(false);
+    }
+  }
+
+  async function runSubmit() {
     const auth = await requireProfile();
     if (!auth.ok) {
       setNotice(auth.message);
@@ -86,7 +101,7 @@ export function CreateDiscussionForm({ book, initialPostType = "Insight", initia
     // (title >= 4, body >= 20). Keep them in step: a looser form would let the
     // post fail at the database with a far less helpful message.
     if (form.title.trim().length < MIN_TITLE_LENGTH) {
-      setError(`Give the thread a title of at least ${MIN_TITLE_LENGTH} characters.`);
+      setError(`Give your perspective a title of at least ${MIN_TITLE_LENGTH} characters.`);
       return;
     }
     if (form.body.trim().length < MIN_BODY_LENGTH) {
@@ -139,7 +154,7 @@ export function CreateDiscussionForm({ book, initialPostType = "Insight", initia
     return (
       <div className="rounded-[32px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">
         <CheckCircle2 className="text-[color:var(--color-green)]" />
-        <h2 className="title-2 mt-4">Insight published</h2>
+        <h2 className="title-2 mt-4">Perspective published</h2>
         <p className="body-copy mt-2 text-[15px] leading-6">
           Your perspective is now attached to this book so other readers can learn from the idea, application, question, or disagreement you shared.
         </p>
@@ -153,7 +168,7 @@ export function CreateDiscussionForm({ book, initialPostType = "Insight", initia
   return (
     <form onSubmit={submit} className="rounded-[32px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-8">
       <div className="mb-6">
-        <p className="caption">Share Insight</p>
+        <p className="caption">New perspective</p>
         <h1 className="title-1 mt-2">Share a perspective on {book.title}.</h1>
         <p className="body-copy mt-4 max-w-2xl text-[16px]">BookSphere is not a blank comment box. Add the idea, reference, application, or disagreement that would help another reader understand the book better.</p>
       </div>
@@ -272,8 +287,8 @@ export function CreateDiscussionForm({ book, initialPostType = "Insight", initia
         </label>
         {error && <p role="alert" className="rounded-[16px] bg-[color:var(--color-rose)]/10 px-4 py-3 text-sm font-medium text-[color:var(--color-rose)]">{error}</p>}
         {notice && <LoginRequiredNotice message={notice} onDismiss={() => setNotice("")} />}
-        <button className="min-h-11 rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-medium !text-white transition hover:opacity-85">
-          Submit discussion
+        <button disabled={publishing} className="min-h-11 rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-medium !text-white transition hover:opacity-85 disabled:cursor-not-allowed disabled:opacity-45">
+          {publishing ? "Publishing" : "Publish perspective"}
         </button>
       </div>
     </form>

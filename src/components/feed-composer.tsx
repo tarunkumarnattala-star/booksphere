@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BookOpen, CheckCircle2, Plus, Send, Sparkles } from "lucide-react";
 import { requireProfile } from "@/lib/auth-client";
+import { supabase } from "@/lib/supabase";
 import { canUseLocalCommunityFallback } from "@/lib/community-runtime";
 import { createSupabaseKnowledgePost, knowledgePostTitleFromBody, MIN_KNOWLEDGE_POST_LENGTH } from "@/lib/knowledge-posts";
 import type { KnowledgePost } from "@/lib/types";
@@ -37,21 +38,43 @@ export function FeedComposer({
   const [error, setError] = useState("");
   const [published, setPublished] = useState(false);
   const [publishing, setPublishing] = useState(false);
+  // The bubble read a hardcoded "N" for everyone - the founder's own initial, shown to every
+  // reader in the box that is supposed to be theirs. Same family as the bug where every
+  // perspective displayed the house account's name. getSession reads the stored session, so
+  // this costs no network call.
+  const [initial, setInitial] = useState("");
+
+  useEffect(() => {
+    if (!supabase) return;
+    let active = true;
+    void supabase.auth.getSession().then(({ data }) => {
+      const user = data.session?.user;
+      if (!active || !user) return;
+      const source = (user.user_metadata?.name as string | undefined)?.trim() || user.email || "";
+      if (source) setInitial(source.trim().charAt(0).toUpperCase());
+    });
+    return () => { active = false; };
+  }, []);
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (publishing) return;
     const cleanThought = thought.trim();
     if (cleanThought.length < MIN_POST_LENGTH) {
       setError("Write at least 4 characters before sharing.");
       return;
     }
+    // requireProfile is two network round trips, and the Share button stayed enabled for all
+    // of it. Two taps published the same thought twice: knowledge_posts has no unique
+    // constraint and the community rate-limit trigger does not cover that table.
+    setPublishing(true);
     const auth = await requireProfile();
     if (!auth.ok) {
+      setPublishing(false);
       setNotice(auth.message);
       return;
     }
 
-    setPublishing(true);
     setError("");
     const draft: KnowledgePost = {
       id: `local-knowledge-${crypto.randomUUID()}`,
@@ -84,7 +107,11 @@ export function FeedComposer({
         post = result.post;
       }
 
-      storeLocalPost(post);
+      // Only the offline preview reads this store. Writing the real server row into it as
+      // well left a copy that nothing pruned on delete, and /post/<id> falls back to it when
+      // the server has no row - so a deleted post came back, in full, with Edit and Delete
+      // buttons, for the one person who deleted it.
+      if (auth.local || canUseLocalCommunityFallback()) storeLocalPost(post);
       window.dispatchEvent(new CustomEvent("booksphere:knowledge-post-created", { detail: post }));
       onPublished?.(post);
       setThought("");
@@ -104,7 +131,7 @@ export function FeedComposer({
     <form data-onboarding="feed-composer" onSubmit={submit} className={`rounded-[26px] bg-white shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] ${compact ? "p-4" : "p-4 md:p-5"}`}>
       <div className="flex gap-3">
         <div className="grid size-10 shrink-0 place-items-center rounded-full bg-[color:var(--color-text-primary)] text-sm font-semibold text-white">
-          {compact ? <Sparkles size={17} /> : "N"}
+          {compact || !initial ? <Sparkles size={17} /> : initial}
         </div>
         <div className="min-w-0 flex-1">
           {compact && initialTopic && <p className="caption mb-2 text-[10px]">About {initialTopic}</p>}

@@ -10,6 +10,7 @@ import { LOCAL_KNOWLEDGE_POSTS_KEY } from "./knowledge-feed";
 import { KnowledgePostActions } from "./knowledge-post-actions";
 import { KnowledgePost } from "@/lib/types";
 import { authorProfileFor, getBook } from "@/lib/data";
+import { canUseLocalCommunityFallback } from "@/lib/community-runtime";
 import { getSupabaseKnowledgePost } from "@/lib/knowledge-posts";
 
 function initialsFor(name: string) {
@@ -18,6 +19,10 @@ function initialsFor(name: string) {
 
 export function LocalKnowledgePostPage({ id, initialPost }: { id: string; initialPost?: KnowledgePost }) {
   const [post, setPost] = useState<KnowledgePost | null | undefined>(initialPost);
+  // Deleting used to set post to null, which rendered "We could not find this knowledge
+  // note - it may have been removed, or the link may be incomplete" at the author who had
+  // just removed it on purpose. A deliberate delete is not a broken link.
+  const [deleted, setDeleted] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -27,15 +32,21 @@ export function LocalKnowledgePostPage({ id, initialPost }: { id: string; initia
         if (!cancelled) setPost(initialPost);
         return;
       }
-      try {
-        const posts = JSON.parse(window.localStorage.getItem(LOCAL_KNOWLEDGE_POSTS_KEY) || "[]") as KnowledgePost[];
-        const localPost = posts.find((item) => item.id === id);
-        if (localPost) {
-          if (!cancelled) setPost(localPost);
-          return;
+      // Only consult the offline preview store when there is no database behind the app.
+      // With Supabase configured this branch preferred a stale local copy over the server,
+      // which is how a deleted post reappeared here: the server correctly had nothing, and
+      // the reader who had just deleted it was shown it again, editable.
+      if (canUseLocalCommunityFallback()) {
+        try {
+          const posts = JSON.parse(window.localStorage.getItem(LOCAL_KNOWLEDGE_POSTS_KEY) || "[]") as KnowledgePost[];
+          const localPost = posts.find((item) => item.id === id);
+          if (localPost) {
+            if (!cancelled) setPost(localPost);
+            return;
+          }
+        } catch {
+          // A damaged local preview should not prevent a production lookup.
         }
-      } catch {
-        // A damaged local preview should not prevent a production lookup.
       }
 
       const remotePost = await getSupabaseKnowledgePost(id);
@@ -47,6 +58,22 @@ export function LocalKnowledgePostPage({ id, initialPost }: { id: string; initia
       cancelled = true;
     };
   }, [id, initialPost]);
+
+  if (deleted) {
+    return (
+      <div className="editorial-page max-w-3xl">
+        <BackToFeedButton />
+        <div className="rounded-[30px] bg-white p-8 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">
+          <p className="caption">Removed</p>
+          <h1 className="title-1 mt-2">Your post has been deleted.</h1>
+          <p className="body-copy mt-4">
+            It is no longer on your feed or your profile.{" "}
+            <Link href="/feed" className="underline underline-offset-4">Back to the feed</Link>
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   if (post === undefined) {
     return (
@@ -115,7 +142,7 @@ export function LocalKnowledgePostPage({ id, initialPost }: { id: string; initia
             </p>
           )}
 
-          <KnowledgePostActions post={post} onUpdated={setPost} onDeleted={() => setPost(null)} />
+          <KnowledgePostActions post={post} onUpdated={setPost} onDeleted={() => setDeleted(true)} />
         </article>
 
         <CommentThread
