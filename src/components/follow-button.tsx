@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { UserCheck, UserPlus } from "lucide-react";
 import { requireProfile } from "@/lib/auth-client";
 import { hasLocalItem, toggleLocalItem } from "@/lib/local-store";
@@ -9,11 +10,17 @@ import { LoginRequiredNotice } from "./login-required-notice";
 import { canUseLocalCommunityFallback } from "@/lib/community-runtime";
 
 export function FollowButton({ initial = false, profileUsername, compact = false }: { initial?: boolean; profileUsername?: string; compact?: boolean }) {
+  const router = useRouter();
   const [following, setFollowing] = useState(initial);
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
   const [syncing, setSyncing] = useState(false);
   const [isSelf, setIsSelf] = useState(false);
+  // `disabled={syncing}` only takes effect after requireProfile() resolves, which is two
+  // network calls away. Two taps inside that window both passed, both computed the same
+  // next value, and the later response could leave the button reading "Follow" while the
+  // row existed. A ref latches synchronously; state cannot.
+  const inFlight = useRef(false);
 
   useEffect(() => {
     if (!profileUsername) return;
@@ -39,6 +46,16 @@ export function FollowButton({ initial = false, profileUsername, compact = false
   }, [profileUsername]);
 
   async function toggleFollow() {
+    if (inFlight.current) return;
+    inFlight.current = true;
+    try {
+      await runToggleFollow();
+    } finally {
+      inFlight.current = false;
+    }
+  }
+
+  async function runToggleFollow() {
     const auth = await requireProfile();
     if (!auth.ok) {
       setNotice(auth.message);
@@ -81,8 +98,14 @@ export function FollowButton({ initial = false, profileUsername, compact = false
     if (followError) {
       setFollowing(!nextFollowing);
       setError("We could not update your following list. Please try again.");
+      setSyncing(false);
+      return;
     }
     setSyncing(false);
+    // Both surfaces that show a follower number are server-rendered and force-dynamic, and
+    // nothing here told them anything had changed: pressing Follow flipped the button and
+    // left "Followers 12" reading 12, on the same screen, indefinitely.
+    router.refresh();
   }
 
   if (isSelf) return null;

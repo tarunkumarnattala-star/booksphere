@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Award, Bookmark, Flag, Heart, MessageCircle, Pencil, PlusCircle, Share2, Trash2 } from "lucide-react";
@@ -16,6 +16,13 @@ import { LoginRequiredNotice } from "./login-required-notice";
 const awardOptions: AwardType[] = ["Changed My Thinking", "Practical Advice", "Great Summary", "Best Explanation", "Actionable", "Deep Insight"];
 const usefulnessOptions: UsefulnessReactionType[] = ["Helped me understand", "Helped me apply", "Changed my thinking", "Strong counterargument", "Best summary", "Worth reading full book"];
 const editablePostTypes: PostType[] = ["Insight", "Application", "Disagreement", "Summary", "Question", "Connection", "Real-Life Result", "What Did Not Work", "Limitation", "Quote", "Personal Experience"];
+
+// The totals passed in already include the viewer's own row, so only the change made in
+// this session should move the number.
+function visibleCount(total: number, selected: boolean, persisted: boolean) {
+  if (selected === persisted) return total;
+  return Math.max(0, total + (selected ? 1 : -1));
+}
 
 export function PostActions({
   post,
@@ -44,6 +51,16 @@ export function PostActions({
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
   const [following, setFollowing] = useState(false);
+  // The counts handed to this component are unfiltered totals - `likes` is a count(*) over
+  // the likes table, and saves/follows come from discussion_engagement_counts, a view that
+  // sees every row. The viewer's own like is therefore ALREADY in them. Rendering
+  // `likes + (liked ? 1 : 0)` counted it a second time, so a perspective you had already
+  // liked read one higher than the same card's own "{post.likes}" two lines above it, and
+  // unliking left the number one too high until a reload. Track what the server actually
+  // had and render the difference, which is what knowledge-post-actions already does.
+  const [persistedLiked, setPersistedLiked] = useState(false);
+  const [persistedSaved, setPersistedSaved] = useState(false);
+  const [persistedFollowing, setPersistedFollowing] = useState(false);
   const [reported, setReported] = useState(false);
   const [deleted, setDeleted] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -79,9 +96,15 @@ export function PostActions({
     if (supabase) return;
     if (!canUseLocalCommunityFallback()) return;
     queueMicrotask(() => {
-      setLiked(hasLocalItem("booksphere.likedPosts", targetId));
-      setSaved(hasLocalItem("booksphere.savedInsights", targetId));
-      setFollowing(hasLocalItem("booksphere.followedDiscussions", targetId));
+      const localLiked = hasLocalItem("booksphere.likedPosts", targetId);
+      const localSaved = hasLocalItem("booksphere.savedInsights", targetId);
+      const localFollowing = hasLocalItem("booksphere.followedDiscussions", targetId);
+      setLiked(localLiked);
+      setPersistedLiked(localLiked);
+      setSaved(localSaved);
+      setPersistedSaved(localSaved);
+      setFollowing(localFollowing);
+      setPersistedFollowing(localFollowing);
       setReported(hasLocalItem("booksphere.reportedPosts", targetId));
       try {
         setSelectedAwards(JSON.parse(window.localStorage.getItem(`booksphere.awards.${targetId}`) || "[]") as AwardType[]);
@@ -138,18 +161,27 @@ export function PostActions({
     };
   }, [post]);
 
+  // requireProfile() plus getUserContributionState is four round trips. The buttons are
+  // clickable for the whole of it, and a click inside that window used to be overwritten by
+  // the pre-click snapshot arriving late - the heart emptied for a like that had succeeded.
+  const actedRef = useRef(false);
+
   useEffect(() => {
     if (!supabase || !targetId) return;
     const activeTargetId = targetId;
     let cancelled = false;
+    actedRef.current = false;
     async function loadUserState() {
       const auth = await requireProfile();
       if (!auth.ok) return;
       const state = await getUserContributionState(auth.profileId, activeTargetId);
-      if (cancelled) return;
+      if (cancelled || actedRef.current) return;
       setLiked(state.liked);
+      setPersistedLiked(state.liked);
       setSaved(state.saved);
+      setPersistedSaved(state.saved);
       setFollowing(state.following);
+      setPersistedFollowing(state.following);
     }
     void loadUserState();
     return () => {
@@ -181,6 +213,7 @@ export function PostActions({
 
     const next = !current;
     if (syncingCommunity) return;
+    actedRef.current = true;
     setSyncingCommunity(true);
     setter(next);
     setError("");
@@ -214,6 +247,9 @@ export function PostActions({
       return;
     }
     trackEvent(kind === "like" ? "contribution_liked" : kind === "save" ? "contribution_saved" : "discussion_followed", { targetId, active: next });
+    // /saved renders exactly these rows. Unsaving from that page left the card sitting on
+    // the shelf under "My Saved Insights", reading "Save Insight", until a reload.
+    if (kind === "save") window.dispatchEvent(new Event("booksphere-saved-change"));
     setSyncingCommunity(false);
   }
 
@@ -318,25 +354,38 @@ export function PostActions({
   }
 
   async function toggleUsefulness(type: UsefulnessReactionType) {
-    if (!targetId) return;
+    // toggleAward has had this guard since it was written; this one did not. Two chips
+    // tapped in quick succession both captured the same `previous` array, so the second
+    // write's payload was computed from a pre-first-tap value and the first chip's
+    // highlight vanished while its row sat in the database.
+    if (!targetId || syncingCommunity) return;
     const auth = await requireProfile();
     if (!auth.ok) {
       setNotice(auth.message);
       return;
     }
     const adding = !selectedUsefulness.includes(type);
-    const previous = selectedUsefulness;
-    const next = adding ? [...previous, type] : previous.filter((item) => item !== type);
+    const next = adding
+      ? [...selectedUsefulness, type]
+      : selectedUsefulness.filter((item) => item !== type);
+    // Revert functionally rather than to a captured snapshot, so a failure here undoes only
+    // this chip instead of discarding whatever else succeeded meanwhile.
+    const revert = () => setSelectedUsefulness((current) => adding
+      ? current.filter((item) => item !== type)
+      : current.includes(type) ? current : [...current, type]);
+    setSyncingCommunity(true);
     setSelectedUsefulness(next);
     setError("");
 
     if (!supabase) {
+      setSyncingCommunity(false);
       if (!canUseLocalCommunityFallback()) {
-        setSelectedUsefulness(previous);
+        revert();
         setError(COMMUNITY_UNAVAILABLE_MESSAGE);
         return;
       }
       window.localStorage.setItem(`booksphere.usefulness.${targetId}`, JSON.stringify(next));
+      setPersistedUsefulness(next);
       trackEvent(adding ? "usefulness_reaction_added" : "usefulness_reaction_removed", { targetId, reactionType: type });
       return;
     }
@@ -357,12 +406,15 @@ export function PostActions({
           .eq("target_id", targetId)
           .eq("reaction_type", dbType);
 
+    setSyncingCommunity(false);
     if (result.error) {
-      setSelectedUsefulness(previous);
+      revert();
       setError("That reaction could not be saved. Please try again.");
       return;
     }
-    setPersistedUsefulness(next);
+    setPersistedUsefulness((current) => adding
+      ? current.includes(type) ? current : [...current, type]
+      : current.filter((item) => item !== type));
     trackEvent(adding ? "useful_reaction_added" : "useful_reaction_removed", { targetId, reactionType: dbType });
   }
 
@@ -499,7 +551,7 @@ export function PostActions({
           className="flex min-h-11 items-center gap-2 rounded-full bg-black/[0.035] px-3 py-2 transition hover:bg-black/[0.06]"
         >
           <Heart size={16} className={liked ? "fill-[color:var(--color-rose)] text-[color:var(--color-rose)]" : ""} />
-          {likes + (liked ? 1 : 0)}
+          {visibleCount(likes, liked, persistedLiked)}
         </button>
         <button type="button" onClick={openComments} className="flex min-h-11 items-center gap-2 rounded-full bg-black/[0.035] px-3 py-2 transition hover:bg-black/[0.06]" aria-label="Jump to comments">
           <MessageCircle size={16} /> {comments}
@@ -511,7 +563,7 @@ export function PostActions({
           aria-label="Save this insight"
           className="flex min-h-11 items-center gap-2 rounded-full bg-black/[0.035] px-3 py-2 transition hover:bg-black/[0.06]"
         >
-          <Bookmark size={16} className={saved ? "fill-[color:var(--color-text-primary)] text-[color:var(--color-text-primary)]" : ""} /> {saved ? "Saved" : "Save Insight"} {saved || saves ? `· ${saves + (saved ? 1 : 0)}` : ""}
+          <Bookmark size={16} className={saved ? "fill-[color:var(--color-text-primary)] text-[color:var(--color-text-primary)]" : ""} /> {saved ? "Saved" : "Save Insight"} {saved || saves ? `· ${visibleCount(saves, saved, persistedSaved)}` : ""}
         </button>
         <button
           type="button"
@@ -520,7 +572,7 @@ export function PostActions({
           aria-label="Follow this discussion thread"
           className="flex min-h-11 items-center gap-2 rounded-full bg-black/[0.035] px-3 py-2 transition hover:bg-black/[0.06]"
         >
-          <PlusCircle size={16} /> {following ? "Following thread" : "Follow thread"} {following || follows ? `· ${follows + (following ? 1 : 0)}` : ""}
+          <PlusCircle size={16} /> {following ? "Following thread" : "Follow thread"} {following || follows ? `· ${visibleCount(follows, following, persistedFollowing)}` : ""}
         </button>
         <button
           type="button"

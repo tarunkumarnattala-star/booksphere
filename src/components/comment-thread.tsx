@@ -246,23 +246,38 @@ export function CommentThread({
     }
     const alreadyLiked = likedCommentIds.includes(commentId);
     setLikedCommentIds((current) => alreadyLiked ? current.filter((id) => id !== commentId) : [...current, commentId]);
+    // The effect below rebuilds likedCommentIds from comment.viewerLiked every time
+    // `comments` changes, and posting, editing or deleting any comment changes it. Without
+    // writing the new value onto the row, a like made in this session was silently undone -
+    // the heart emptied and the count dropped back - while the row stayed in the database.
+    markCommentLiked(commentId, !alreadyLiked);
     if (supabase) {
       const result = alreadyLiked
         ? await supabase.from("likes").delete().eq("user_id", auth.profileId).eq("target_type", "discussion_comment").eq("target_id", commentId)
         : await supabase.from("likes").upsert({ user_id: auth.profileId, target_type: "discussion_comment", target_id: commentId }, { onConflict: "user_id,target_type,target_id" });
       if (result.error) {
         setLikedCommentIds((current) => alreadyLiked ? [...current, commentId] : current.filter((id) => id !== commentId));
+        markCommentLiked(commentId, alreadyLiked);
         setError("We could not save your like. Please try again.");
       }
       return;
     }
     if (!canUseLocalCommunityFallback()) {
       setLikedCommentIds((current) => alreadyLiked ? [...current, commentId] : current.filter((id) => id !== commentId));
+      markCommentLiked(commentId, alreadyLiked);
       setError(COMMUNITY_UNAVAILABLE_MESSAGE);
       return;
     }
     const liked = toggleLocalItem("booksphere.likedComments", commentId);
     setLikedCommentIds((current) => liked ? [...current, commentId] : current.filter((id) => id !== commentId));
+    markCommentLiked(commentId, liked);
+  }
+
+  function markCommentLiked(commentId: string, liked: boolean) {
+    setComments((current) => current.map((comment) => {
+      if (comment.id !== commentId || Boolean(comment.viewerLiked) === liked) return comment;
+      return { ...comment, viewerLiked: liked, likes: Math.max(0, comment.likes + (liked ? 1 : -1)) };
+    }));
   }
 
   useEffect(() => {
