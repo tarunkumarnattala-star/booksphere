@@ -19,6 +19,10 @@ import { LoginRequiredNotice } from "./login-required-notice";
 
 type ThreadRow = { comment: ContributionComment; depth: number };
 
+// Kept for the offline preview, which has no database to read. These are NOT content: their
+// ids are `<postId>-1`, which is not a uuid, so replying to one sends parent_comment_id
+// `<postId>-1` into a uuid column and the insert fails with 22P02 every time. They are a
+// prototype placeholder from before there was a database.
 function starterComments(postId: string): ContributionComment[] {
   return [
     { id: `${postId}-1`, userId: "team", name: "BookSphere Team", body: "What is the smallest real-life example that would prove this idea useful?", likes: 12, createdAt: "2026-06-25" },
@@ -74,12 +78,20 @@ export function CommentThread({
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
   const [likedCommentIds, setLikedCommentIds] = useState<string[]>([]);
+  // These were the INITIAL state in every mode, including production. Measured on a direct
+  // load of a perspective permalink, signed out: the thread showed "BookSphere Team · 12"
+  // and "Community Starter · 8" - two comments that do not exist in the database, with like
+  // counts that correspond to nothing - for more than twenty seconds before the real (empty)
+  // result replaced them, while the card directly above read 0 comments. That is fabricated
+  // engagement on the product's core artifact, a contradiction on one screen, and it is what
+  // anyone opening a shared link sees for most of their visit. A thread that has not loaded
+  // yet should say so.
   const fallbackComments = useMemo(
-    () => targetType === "discussion_post" ? starterComments(postId) : [],
+    () => !supabase && targetType === "discussion_post" ? starterComments(postId) : [],
     [postId, targetType]
   );
   const [comments, setComments] = useState<ContributionComment[]>(fallbackComments);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(Boolean(supabase));
 
   useEffect(() => {
     let cancelled = false;
