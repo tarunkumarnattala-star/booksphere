@@ -116,6 +116,13 @@ export async function getReplyNotifications(profileId: string, limit = 40): Prom
         : row.knowledge_post_id
           ? knowledgeTitles.get(row.knowledge_post_id)
           : undefined;
+      // postTitles and knowledgeTitles only hold the reader's OWN writing, so a reply to a
+      // comment they left on someone else's post had no title and fell through to "your
+      // perspective" - crediting a stranger's post to the reader on their own inbox.
+      const isReplyToOwnComment = Boolean(row.parent_comment_id && commentIds.includes(row.parent_comment_id));
+      const fallbackContext = isReplyToOwnComment
+        ? "a discussion you commented on"
+        : isKnowledge ? "your feed post" : "your perspective";
 
       notifications.push({
         id: row.id,
@@ -132,8 +139,8 @@ export async function getReplyNotifications(profileId: string, limit = 40): Prom
           : row.knowledge_post_id
             ? `/post/${row.knowledge_post_id}#comments`
             : "/feed",
-        context: title || (isKnowledge ? "your feed post" : "your perspective"),
-        kind: row.parent_comment_id && commentIds.includes(row.parent_comment_id) ? "reply_to_comment" : "reply_to_post"
+        context: title || fallbackContext,
+        kind: isReplyToOwnComment ? "reply_to_comment" : "reply_to_post"
       });
     });
   });

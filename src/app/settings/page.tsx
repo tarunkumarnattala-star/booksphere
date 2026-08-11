@@ -122,6 +122,12 @@ export default function SettingsPage() {
     }
 
     setDraft(cleanDraft);
+    // Every nav resolves the Profile tab to /profile/<username> once, on mount, and only
+    // recomputes it on this event or a Supabase auth-state change. Changing your username
+    // fires neither, so the tab kept pointing at the name you no longer have and answered
+    // "Reader not found" - the same shape as the delete-then-Profile bug, on a screen whose
+    // whole purpose is changing that value.
+    window.dispatchEvent(new Event("booksphere-auth-change"));
     router.replace(`/profile/${data.username as string}`);
   }
 

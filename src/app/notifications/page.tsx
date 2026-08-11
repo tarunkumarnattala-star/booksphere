@@ -40,6 +40,12 @@ export default function NotificationsPage() {
       // Capture the previous mark before clearing it, so replies that arrived since
       // the last visit stay visually distinct while reading this page.
       setSeenBefore(getLastSeenAt());
+      // Stamp "seen" at the moment the read starts, not the moment it finishes. This read
+      // is up to six queries; a reply that arrives during it is not in the list about to be
+      // rendered, but would be older than a now() stamp - so countUnseen would never count
+      // it and it would never carry the New ring. The write is one-way, so that reply
+      // would be invisible on this device forever.
+      const readStartedAt = new Date().toISOString();
       const replies = await getReplyNotifications(auth.profileId);
       if (cancelled) return;
       if (!replies.ok) {
@@ -50,7 +56,7 @@ export default function NotificationsPage() {
       }
       setItems(replies.notifications);
       setState("ready");
-      markNotificationsSeen();
+      markNotificationsSeen(readStartedAt);
     }
     void load();
     return () => { cancelled = true; };
