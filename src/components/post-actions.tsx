@@ -547,7 +547,7 @@ export function PostActions({
           type="button"
           disabled={syncingCommunity}
           onClick={() => toggleCommunityAction("like", liked, setLiked, "We could not save your like. Please try again.")}
-          aria-label="Like this post"
+          aria-label="Like this perspective"
           className="flex min-h-11 items-center gap-2 rounded-full bg-black/[0.035] px-3 py-2 transition hover:bg-black/[0.06]"
         >
           <Heart size={16} className={liked ? "fill-[color:var(--color-rose)] text-[color:var(--color-rose)]" : ""} />
@@ -560,24 +560,24 @@ export function PostActions({
           type="button"
           disabled={syncingCommunity}
           onClick={() => toggleCommunityAction("save", saved, setSaved, "We could not save this insight.")}
-          aria-label="Save this insight"
+          aria-label="Save this perspective"
           className="flex min-h-11 items-center gap-2 rounded-full bg-black/[0.035] px-3 py-2 transition hover:bg-black/[0.06]"
         >
-          <Bookmark size={16} className={saved ? "fill-[color:var(--color-text-primary)] text-[color:var(--color-text-primary)]" : ""} /> {saved ? "Saved" : "Save Insight"} {saved || saves ? `· ${visibleCount(saves, saved, persistedSaved)}` : ""}
+          <Bookmark size={16} className={saved ? "fill-[color:var(--color-text-primary)] text-[color:var(--color-text-primary)]" : ""} /> {saved ? "Saved" : "Save"} {saved || saves ? `· ${visibleCount(saves, saved, persistedSaved)}` : ""}
         </button>
         <button
           type="button"
           disabled={syncingCommunity}
           onClick={() => toggleCommunityAction("follow", following, setFollowing, "We could not follow this discussion. Please try again.")}
-          aria-label="Follow this discussion thread"
+          aria-label="Follow replies to this perspective"
           className="flex min-h-11 items-center gap-2 rounded-full bg-black/[0.035] px-3 py-2 transition hover:bg-black/[0.06]"
         >
-          <PlusCircle size={16} /> {following ? "Following thread" : "Follow thread"} {following || follows ? `· ${visibleCount(follows, following, persistedFollowing)}` : ""}
+          <PlusCircle size={16} /> {following ? "Following replies" : "Follow replies"} {following || follows ? `· ${visibleCount(follows, following, persistedFollowing)}` : ""}
         </button>
         <button
           type="button"
           onClick={() => requireAction(() => setOpenPicker((value) => value === "usefulness" ? null : "usefulness"))}
-          aria-label="Mark why this post was useful"
+          aria-label="Mark why this perspective was useful"
           aria-expanded={openPicker === "usefulness"}
           className={`flex min-h-11 items-center gap-2 rounded-full px-3 py-2 transition ${openPicker === "usefulness" ? "bg-[color:var(--color-text-primary)] !text-white" : "bg-black/[0.035] hover:bg-black/[0.06]"}`}
         >
@@ -586,13 +586,13 @@ export function PostActions({
         <button
           type="button"
           onClick={() => requireAction(() => setOpenPicker((value) => value === "award" ? null : "award"))}
-          aria-label="Award this insight"
+          aria-label="Award this perspective"
           aria-expanded={openPicker === "award"}
           className={`flex min-h-11 items-center gap-2 rounded-full px-3 py-2 transition ${openPicker === "award" ? "bg-[color:var(--color-text-primary)] !text-white" : "bg-black/[0.035] hover:bg-black/[0.06]"}`}
         >
           <Award size={16} /> Award
         </button>
-        <button type="button" onClick={sharePost} className="flex min-h-11 items-center gap-2 rounded-full bg-black/[0.035] px-3 py-2 transition hover:bg-black/[0.06]" aria-label="Share this post">
+        <button type="button" onClick={sharePost} className="flex min-h-11 items-center gap-2 rounded-full bg-black/[0.035] px-3 py-2 transition hover:bg-black/[0.06]" aria-label="Share this perspective">
           <Share2 size={16} /> {copied ? "Copied" : "Share"}
         </button>
         <button
@@ -601,7 +601,7 @@ export function PostActions({
             if (!reported) setReportOpen((value) => !value);
           })}
           disabled={reported || reporting}
-          aria-label="Report this post"
+          aria-label="Report this perspective"
           className="flex min-h-11 items-center gap-2 rounded-full bg-black/[0.035] px-3 py-2 transition hover:bg-black/[0.06]"
         >
           <Flag size={16} /> {reported ? "Reported" : "Report"}
@@ -628,7 +628,7 @@ export function PostActions({
       </div>
 
       {reportOpen && !reported && (
-        <div className="mt-3 rounded-[20px] bg-black/[0.025] p-4" role="group" aria-label="Report this contribution">
+        <div className="mt-3 rounded-[20px] bg-black/[0.025] p-4" role="group" aria-label="Report this perspective">
           <label className="grid gap-2 text-sm font-medium">
             Why should this be reviewed?
             <select value={reportReason} onChange={(event) => setReportReason(event.target.value)} className="min-h-11 rounded-[16px] bg-white px-4 py-3 outline-none ring-1 ring-black/[0.05] focus:ring-black/20">

@@ -160,7 +160,7 @@ export function SavedClient() {
   if (signedIn === false) {
     return (
       <div className="mt-8">
-        <EmptyState title="Log in to open your saved shelf" body="Saved books and insights are private to your account and stay available across devices after you sign in." action={<Link href="/login" className="rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-medium !text-white">Log in</Link>} />
+        <EmptyState title="Log in to open your saved shelf" body="Saved books and perspectives are private to your account and stay available across devices after you sign in." action={<Link href="/login" className="rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-medium !text-white">Log in</Link>} />
       </div>
     );
   }
@@ -176,11 +176,11 @@ export function SavedClient() {
 
   return (
     <>
-      {!hasPersonalSaves && <div className="mt-8"><EmptyState title="Your saved shelf is ready" body="Save a book or insight to make this page personal. Your private shelf will appear here." /></div>}
+      {!hasPersonalSaves && <div className="mt-8"><EmptyState title="Your saved shelf is ready" body="Save a book or a perspective to make this page personal. Your private shelf will appear here." /></div>}
 
       {savedInsights.length > 0 && (
         <section className="mt-14">
-          <h2 className="title-2 mb-5">My Saved Insights</h2>
+          <h2 className="title-2 mb-5">My Saved Perspectives</h2>
           <div className="grid gap-5 lg:grid-cols-2">{savedInsights.map((post) => <DiscussionCard key={post.id} post={post} showBook compact />)}</div>
         </section>
       )}
