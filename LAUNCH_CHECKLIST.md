@@ -41,44 +41,26 @@ address — that works already and proves nothing.
 
 ---
 
-## 3. Walk the write paths — five actions, not nine
+## 3. ~~Walk the write paths~~ — DONE, verified 11 August
 
-This is F-02, narrowed. The audit said all nine were unproven; a table diff on August 6 showed that
-was too pessimistic. Four already have a real row behind them, written by the
-`booksphere-qa-probe-tri` account on August 5. Skip those.
+Every one of them now has a database row behind it, confirmed by query rather than by the screen:
 
-**Already proven — nothing to do:**
+| Path | Evidence |
+| --- | --- |
+| Create a perspective | a real row, written through the composer — the first ever |
+| Delete | that row carries `status = 'removed'` |
+| Save a book | `saved_books` +1 |
+| Save an insight | `saved_insights` +1 |
+| Report a post | `reports` +1 — the table had been empty since the project began |
 
-- [x] Sign up — `profiles`, Aug 5 12:33
-- [x] Comment — `discussion_comments`, Aug 5 14:43
-- [x] Like — `likes`, Aug 5 14:42
-- [x] Follow — `followed_discussions`, Aug 5 14:50
+`has_column_privilege('authenticated','profiles','is_moderator','UPDATE')` returns **false**, so the
+privilege-escalation hole is closed by measurement rather than by inference.
 
-**Still to walk, in this order:**
+**Still unverified: editing your profile.** `profiles` has no `updated_at` readable from outside, so
+it cannot be checked the same way. It is the one path in this list still taken on trust.
 
-- [ ] **Create a discussion post** — never once succeeded. All 51 rows in `discussion_posts` are
-      editorial seeds from the migration; not one was written through the composer. This is the
-      product's core action, and the composer changed tonight (F-07), so the code is both untested
-      and newly edited. Do this one first.
-- [ ] **Report a post** — `reports` is empty. Not stale: **zero rows, ever.** The whole moderation
-      chain shipped this week and has never run end to end. See the note below.
-- [ ] **Save a book** — `saved_insights` last written July 15, three weeks and several schema
-      changes ago. Treat as unproven.
-- [ ] **Edit your profile** — no `created_at` to diff against, so it needs a live check either way.
-- [ ] **Delete your own post** — do this last, on the post you create in step one.
-
-Tell me when you have finished and I will diff every table.
-
-**Why the report path deserves its own paragraph.** It is the only one where failure is not
-recoverable. If posting is broken you find out in an hour and fix it. If reporting is broken, you
-find out the first time something ugly is on the site and there is no way to flag it — in front of
-the exact audience you spent the launch attracting. Test it before anyone else is on there.
-
-**And why this whole step matters more than it looks:** two of the bugs found this week were
-completely silent — the interface showed success while nothing was written. This app reports
-optimistically. The screen is not evidence; the database is.
-
----
+**Housekeeping:** the test report is sitting in `/admin/reports`. Dismiss it before launch so the
+first real report is not the second row in the queue.
 
 ## 4. Set a Vercel spend limit — 5 minutes
 
