@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Award, Bookmark, Flag, Heart, MessageCircle, Pencil, PlusCircle, Share2, Trash2 } from "lucide-react";
 import { AwardType, DiscussionAward, DiscussionPost, PostType, UsefulnessReaction, UsefulnessReactionType } from "@/lib/types";
@@ -449,6 +450,18 @@ export function PostActions({
         return;
       }
       setDeleted(true);
+      // Deleting used to leave the reader stranded: the card became one line of text on a
+      // page whose subject no longer exists, with nothing to click. In a list the parent
+      // removes the card, which is right - but on a perspective's own page there is nothing
+      // left to be on, so take them back to the book it belonged to. Every product that
+      // handles this well returns you to where the thing lived rather than leaving you
+      // looking at its absence.
+      if (onDelete) {
+        onDelete();
+        router.refresh();
+        return;
+      }
+      router.replace(post?.bookId ? `/book/${post.bookId}` : "/explore");
       router.refresh();
       return;
     }
@@ -464,7 +477,16 @@ export function PostActions({
     trackEvent("post_deleted", { targetId, demo: true });
   }
 
-  if (deleted) return <p className="mt-4 text-sm font-medium text-[color:var(--muted)]">Contribution deleted.</p>;
+  if (deleted) {
+    return (
+      <p className="mt-4 text-sm font-medium text-[color:var(--color-text-secondary)]">
+        Contribution deleted.{" "}
+        <Link href={post?.bookId ? `/book/${post.bookId}` : "/explore"} className="underline underline-offset-4">
+          Back to {post?.bookId ? "the book" : "Explore"}
+        </Link>
+      </p>
+    );
+  }
 
   return (
     <div>

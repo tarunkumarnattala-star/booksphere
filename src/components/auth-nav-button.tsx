@@ -19,8 +19,20 @@ export function AuthNavButton() {
     let mounted = true;
     async function refresh() {
       if (supabase) {
+        // getSession reads the stored session; getUser makes a network call that can come
+        // back empty for a moment during a router.refresh() or a token refresh. Treating
+        // that as signed-out flipped the header to "Log in" for a signed-in reader.
+        const { data: sessionData } = await supabase.auth.getSession();
+        if (!mounted) return;
+        if (!sessionData.session) {
+          setSignedIn(false);
+          setLabel("Log in");
+          setProfileHref("/login?next=%2Ffeed");
+          return;
+        }
         const { data } = await supabase.auth.getUser();
         if (!mounted) return;
+        if (!data.user) return;
         setSignedIn(Boolean(data.user));
         setLabel(data.user?.email?.split("@")[0] || "Profile");
         if (data.user) {

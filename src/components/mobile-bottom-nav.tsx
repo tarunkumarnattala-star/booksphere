@@ -44,11 +44,22 @@ export function MobileBottomNav() {
         if (active) setProfileHref(local ? "/profile/local-reader" : "/login?next=%2Ffeed");
         return;
       }
-      const { data } = await supabase.auth.getUser();
-      if (!data.user) {
+      // getSession reads the locally stored session; getUser makes a network call that can
+      // come back empty for a moment - during a router.refresh(), a token refresh, or a
+      // flaky connection. Trusting it downgraded a signed-in reader's Profile tab to a login
+      // link, so tapping the tab that should be theirs took them to a sign-in page while
+      // they were signed in. Explore kept working because it is a static href, which is
+      // exactly how it presented: "some tabs work, Profile does not, a refresh fixes it".
+      //
+      // A transient failure now leaves the existing link alone. Only a definitive absence of
+      // a session sends anyone to the door.
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (!sessionData.session) {
         if (active) setProfileHref("/login?next=%2Ffeed");
         return;
       }
+      const { data } = await supabase.auth.getUser();
+      if (!data.user) return;
       const { data: profile } = await supabase.from("profiles").select("username").eq("auth_user_id", data.user.id).maybeSingle();
       if (active && profile?.username) setProfileHref(`/profile/${profile.username}`);
     }
