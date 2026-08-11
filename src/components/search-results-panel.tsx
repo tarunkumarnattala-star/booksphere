@@ -21,16 +21,27 @@ export function SearchResultsPanel({
   selectedIndex = 0
 }: SearchResultsPanelProps) {
   const trimmedQuery = query.trim();
+  const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL;
+  const suggestHref = supportEmail
+    ? `mailto:${supportEmail}?subject=${encodeURIComponent("Book suggestion for BookSphere")}&body=${encodeURIComponent(`Please add: ${trimmedQuery}`)}`
+    : null;
 
   if (!isOpen || !trimmedQuery) return null;
 
+  const selectedBookId = results[selectedIndex]?.book.id;
   const insideResults = contextGenre ? results.filter((result) => result.inCurrentGenre) : results;
   const outsideResults = contextGenre ? results.filter((result) => !result.inCurrentGenre) : [];
 
+  // Both groups were rendered with a fresh local index compared against one shared
+  // selectedIndex, so with an "outside this genre" group present, index 0 highlighted the
+  // first row of BOTH groups, and any arrow-key position past the inside group highlighted a
+  // row that was not the one Enter opens. An index offset would only be right if `results`
+  // happened to be ordered inside-group-first, which nothing guarantees - the caller indexes
+  // the unpartitioned array. Match on identity instead, which is correct under any ordering.
   function renderResults(items: BookSearchResult[]) {
     return (
       <div className="space-y-2">
-        {items.map((result, index) => {
+        {items.map((result) => {
           const { book } = result;
           const label = result.isGlobalFallback
             ? `Found outside ${contextGenre || "this genre"}`
@@ -43,7 +54,7 @@ export function SearchResultsPanel({
               onMouseDown={(event) => event.preventDefault()}
               onClick={() => onSelectBook(book.id)}
               className={`group grid w-full min-h-11 grid-cols-[52px_1fr] gap-3 rounded-[18px] p-2 text-left transition sm:grid-cols-[58px_1fr_auto] ${
-                index === selectedIndex ? "bg-black/[0.055]" : "hover:bg-black/[0.035]"
+                book.id === selectedBookId ? "bg-black/[0.055]" : "hover:bg-black/[0.035]"
               }`}
             >
               <BookCover book={book} className="!rounded-[12px]" />
@@ -105,12 +116,17 @@ export function SearchResultsPanel({
             <p className="mt-2 max-w-xl text-sm leading-6 text-[color:var(--color-text-secondary)]">
               BookSphere is starting with a focused knowledge library. We are working hard to bring more books, perspectives, and reading paths into the app.
             </p>
-            <button
-              type="button"
-              className="mt-4 rounded-full bg-[color:var(--color-text-primary)] px-4 py-2.5 text-sm font-medium !text-white transition hover:opacity-85"
-            >
-              Suggest this book
-            </button>
+            {/* This was a <button> with no onClick, no form and no handler - the only control
+                in the one state where a reader has told us what is missing, and pressing it
+                did nothing. It now actually sends the suggestion, carrying what they typed. */}
+            {suggestHref && (
+              <a
+                href={suggestHref}
+                className="mt-4 inline-flex rounded-full bg-[color:var(--color-text-primary)] px-4 py-2.5 text-sm font-medium !text-white transition hover:opacity-85"
+              >
+                Suggest this book
+              </a>
+            )}
           </div>
         )}
       </div>

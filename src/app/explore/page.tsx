@@ -42,6 +42,11 @@ export default async function ExplorePage({ searchParams }: { searchParams?: Pro
   const persistedPosts = await getSupabaseFeedContributions(10);
   const trendingPosts = isSupabaseConfigured ? persistedPosts : getTrendingDiscussionPosts(10);
   const editorialPicks = getEditorialDiscussionPicks(5);
+  // LiveThreadCard returns null when the catalog cannot resolve post.bookId, and the empty
+  // state was gated on the count BEFORE that filter - so four unresolvable posts rendered a
+  // heading, a "View all" link and an empty box with no explanation. Filter once, then drive
+  // both the list and the empty state off the same array.
+  const liveThreadPosts = trendingPosts.filter((post) => Boolean(getBook(post.bookId)));
   return (
     <div className="mx-auto max-w-[1560px]">
       <section className="container-page pb-3 pt-7 md:pb-4 md:pt-9 lg:pb-3 lg:pt-10">
@@ -86,10 +91,10 @@ export default async function ExplorePage({ searchParams }: { searchParams?: Pro
               </Link>
             </div>
             <div className="grid gap-2.5">
-              {trendingPosts.slice(0, 4).map((post, index) => (
+              {liveThreadPosts.slice(0, 4).map((post, index) => (
                 <LiveThreadCard key={post.id} post={post} priority={index === 0} />
               ))}
-              {!trendingPosts.length && (
+              {!liveThreadPosts.length && (
                 <p className="rounded-[20px] bg-black/[0.025] px-4 py-6 text-sm font-medium leading-6 text-[color:var(--color-text-secondary)]">
                   The reading room is ready. New community discussions will appear here as readers contribute.
                 </p>
@@ -196,7 +201,10 @@ function LiveThreadCard({ post, priority = false }: { post: DiscussionPost; prio
 
   return (
     <Link
-      href={`/book/${book.id}#discussions`}
+      // The card names a specific perspective. Sending it to /book/<id>#discussions opened
+      // whichever post the book page defaults to, so the reader arrived at a thread that was
+      // not the one they tapped. The perspective has its own address.
+      href={`/discussion/${post.id}`}
       className="group flex min-w-0 items-center gap-3 rounded-[20px] p-2.5 transition hover:bg-black/[0.025]"
     >
       <BookCover book={bookCoverData(book)} priority={priority} className="w-[52px] shrink-0 rounded-[11px] shadow-[0_10px_24px_rgba(0,0,0,0.10)]" />

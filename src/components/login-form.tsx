@@ -8,9 +8,21 @@ import { createLocalProfile } from "@/lib/local-session";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 import { canUseLocalCommunityFallback, COMMUNITY_UNAVAILABLE_MESSAGE } from "@/lib/community-runtime";
 
+// Prefix checks miss what a URL parser accepts: `/\evil.com` and `/<tab>/evil.com` both
+// resolve to https://evil.com/ under WHATWG parsing. Neither is exploitable today - the two
+// production sinks concatenate onto a fixed origin - but that is one refactor away from
+// being an open redirect, and parsing costs nothing. Anything that leaves the sentinel
+// origin, or lands back on /login, goes to /explore.
 function safeReturnPath(next?: string) {
-  if (!next || !next.startsWith("/") || next.startsWith("//") || next.startsWith("/login")) return "/explore";
-  return next;
+  if (!next || !next.startsWith("/")) return "/explore";
+  try {
+    const parsed = new URL(next, "https://booksphere.invalid");
+    if (parsed.origin !== "https://booksphere.invalid") return "/explore";
+    if (parsed.pathname.startsWith("/login")) return "/explore";
+    return `${parsed.pathname}${parsed.search}${parsed.hash}`;
+  } catch {
+    return "/explore";
+  }
 }
 
 // The Google button is hidden until the provider is actually enabled in Supabase

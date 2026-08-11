@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CheckCircle2, Lightbulb } from "lucide-react";
 import { Book, PostType } from "@/lib/types";
 import { requireProfile } from "@/lib/auth-client";
@@ -45,6 +45,16 @@ const contextTags = ["Work", "Leadership", "Study", "Finance", "Relationships", 
 const MIN_TITLE_LENGTH = 4;
 const MIN_BODY_LENGTH = 20;
 
+// A stranger can reach this form from six CTAs on the book page with no session check, and
+// requireProfile() only runs on submit. So the sequence was: write two hundred words, press
+// publish, get a "log in" notice, follow it, come back in a fresh page load - and the draft
+// was gone, because it lived only in React state. That is the highest-effort contribution
+// the product wants, discarded at the last step, on the action that has never once produced
+// a row. The draft now survives the round trip.
+function draftKey(bookId: string) {
+  return `booksphere.perspectiveDraft.${bookId}`;
+}
+
 export function CreateDiscussionForm({ book, initialPostType = "Insight", initialTitle = "" }: { book: Book; initialPostType?: PostType; initialTitle?: string }) {
   const [submitted, setSubmitted] = useState(false);
   // This is the product's core action and it had no double-submit guard at all: the button
@@ -53,6 +63,7 @@ export function CreateDiscussionForm({ book, initialPostType = "Insight", initia
   // hour, so a second press published a second identical perspective.
   const [publishing, setPublishing] = useState(false);
   const [createdPostId, setCreatedPostId] = useState("");
+  const [restored, setRestored] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [form, setForm] = useState({
@@ -66,6 +77,41 @@ export function CreateDiscussionForm({ book, initialPostType = "Insight", initia
     whatFailed: "",
     wouldChange: ""
   });
+  // Restore after mount rather than in the initial state: this component is server-rendered
+  // and reading localStorage during render is a hydration mismatch.
+  useEffect(() => {
+    // queueMicrotask because the lint rule forbids setState directly inside an effect, which
+    // is the pattern the rest of this codebase already uses for exactly this.
+    queueMicrotask(() => {
+      try {
+        const stored = window.localStorage.getItem(draftKey(book.id));
+        if (!stored) return;
+        const parsed = JSON.parse(stored) as Partial<typeof form>;
+        if (!parsed || typeof parsed !== "object") return;
+        setForm((current) => ({ ...current, ...parsed, postType: (parsed.postType as PostType) || current.postType }));
+        setRestored(true);
+      } catch {
+        window.localStorage.removeItem(draftKey(book.id));
+      }
+    });
+  }, [book.id]);
+
+  function rememberDraft() {
+    try {
+      window.localStorage.setItem(draftKey(book.id), JSON.stringify(form));
+    } catch {
+      // A full storage quota must not stop someone publishing.
+    }
+  }
+
+  function forgetDraft() {
+    try {
+      window.localStorage.removeItem(draftKey(book.id));
+    } catch {
+      // Nothing to do; the draft is stale either way.
+    }
+  }
+
   const activePrompt = promptByType[form.postType];
   const bodyCount = useMemo(() => form.body.trim().length, [form.body]);
   const isApplicationLike = form.postType === "Application" || form.postType === "Real-Life Result" || form.postType === "What Did Not Work";
@@ -94,6 +140,7 @@ export function CreateDiscussionForm({ book, initialPostType = "Insight", initia
   async function runSubmit() {
     const auth = await requireProfile();
     if (!auth.ok) {
+      rememberDraft();
       setNotice(auth.message);
       return;
     }
@@ -141,9 +188,11 @@ export function CreateDiscussionForm({ book, initialPostType = "Insight", initia
       // the reason died in the browser. Record the cause so a report of "it would not post"
       // can be answered from /admin/analytics instead of guessed at.
       trackEvent("write_failed", { op: "create_post", bookId: book.id, code: result.cause?.code || null, message: result.cause?.message || null });
+      rememberDraft();
       setError(result.error || "We could not publish your perspective. Your draft has been preserved.");
       return;
     }
+    forgetDraft();
     const post = result.post;
     setCreatedPostId(post.id);
     trackEvent(form.postType === "Application" ? "application_created" : "perspective_created", { bookId: book.id, postType: form.postType });
@@ -171,6 +220,11 @@ export function CreateDiscussionForm({ book, initialPostType = "Insight", initia
         <p className="caption">New perspective</p>
         <h1 className="title-1 mt-2">Share a perspective on {book.title}.</h1>
         <p className="body-copy mt-4 max-w-2xl text-[16px]">BookSphere is not a blank comment box. Add the idea, reference, application, or disagreement that would help another reader understand the book better.</p>
+        {restored && (
+          <p role="status" className="mt-4 rounded-[16px] bg-black/[0.03] px-4 py-3 text-sm font-medium text-[color:var(--color-text-secondary)]">
+            We kept the draft you started here.
+          </p>
+        )}
       </div>
 
       <div className="mb-6 rounded-[24px] bg-[#f7f2e8] p-5">

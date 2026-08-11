@@ -4,6 +4,7 @@ import { FeedComposer } from "@/components/feed-composer";
 import { KnowledgeFeed } from "@/components/knowledge-feed";
 import { knowledgePosts } from "@/lib/data";
 import { getSupabaseKnowledgePosts } from "@/lib/knowledge-posts";
+import { isSupabaseConfigured } from "@/lib/supabase";
 
 export const metadata: Metadata = pageMetadata({
   title: "Feed",
@@ -17,8 +18,13 @@ export const dynamic = "force-dynamic";
 export default async function FeedPage({ searchParams }: { searchParams?: Promise<{ topic?: string }> }) {
   const params = searchParams ? await searchParams : {};
   const initialTopic = params.topic?.trim().slice(0, 80) || "";
+  // The three editorial seeds share ids with their database rows, so the dedupe hides this
+  // today - but past 24 live posts the database copies fall outside getSupabaseKnowledgePosts
+  // and the seed copies re-enter at the bottom carrying likes: 0, comments: 0 and no author,
+  // contradicting the same post's counts on /post/[id]. search-client already branches on
+  // isSupabaseConfigured; this now matches it.
   const persistedPosts = await getSupabaseKnowledgePosts(24);
-  const posts = [...persistedPosts, ...knowledgePosts].filter(
+  const posts = (isSupabaseConfigured ? persistedPosts : [...persistedPosts, ...knowledgePosts]).filter(
     (post, index, all) => all.findIndex((item) => item.id === post.id) === index
   );
 

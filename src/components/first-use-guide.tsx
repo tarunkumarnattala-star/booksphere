@@ -7,6 +7,7 @@ import { trackEvent } from "@/lib/analytics";
 
 const COMPLETED_KEY = "booksphere.onboarding.v2.completed";
 const ACTIVE_KEY = "booksphere.onboarding.v2.active";
+const SHOWN_EVENT_KEY = "booksphere.onboarding.v2.shownLogged";
 const START_EVENT = "booksphere:onboarding:start";
 
 type GuideStage = "welcome" | "explore" | "genres" | "feed" | "search" | "action";
@@ -93,7 +94,14 @@ export function FirstUseGuide() {
       const timer = window.setTimeout(() => {
         setStage("welcome");
         setVisible(true);
-        trackEvent("onboarding_shown", { path: pathname });
+        // This effect depends on [pathname], so every eligible route change while the guide
+        // was neither completed nor active re-armed the timer and fired again. Home ->
+        // Explore -> Genres logged three "shown" events for one visitor, inflating the top
+        // of the only funnel /admin/analytics has.
+        if (!window.sessionStorage.getItem(SHOWN_EVENT_KEY)) {
+          window.sessionStorage.setItem(SHOWN_EVENT_KEY, "1");
+          trackEvent("onboarding_shown", { path: pathname });
+        }
       }, 700);
       return () => {
         window.clearTimeout(timer);

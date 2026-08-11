@@ -17,10 +17,17 @@ export default async function SearchPage({ searchParams }: { searchParams?: Prom
   const params = searchParams ? await searchParams : {};
   const adding = params?.intent === "add";
   const focusedConcept = findKnowledgeConcept(params?.q || "");
-  const [persistedDiscussions, persistedKnowledgePosts] = await Promise.all([
-    getSupabaseFeedContributions(100),
-    getSupabaseKnowledgePosts(100)
-  ]);
+  // With no query SearchClient renders the default state and reads neither of these, yet 100
+  // discussions and 100 feed posts - full bodies, up to 10,000 characters each - were fetched
+  // and serialised into the RSC payload on every load, plus twelve .in(...) fan-out queries
+  // behind them. /search is a top-level nav item and a signed-out entry point.
+  const hasQuery = Boolean((params?.q || "").trim());
+  const [persistedDiscussions, persistedKnowledgePosts] = hasQuery
+    ? await Promise.all([
+        getSupabaseFeedContributions(100),
+        getSupabaseKnowledgePosts(100)
+      ])
+    : [[], []];
 
   return (
     <div className={`editorial-page max-w-[1440px] ${focusedConcept ? "pt-6 md:pt-9" : ""}`}>
@@ -36,7 +43,7 @@ export default async function SearchPage({ searchParams }: { searchParams?: Prom
       {adding && !focusedConcept && (
         <div className="mt-6 rounded-[24px] bg-white p-4 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">
           <p className="text-sm font-medium leading-6 text-[color:var(--color-text-secondary)]">
-            Open a book result and use <span className="font-semibold text-[color:var(--color-text-primary)]">Share Insight</span> to publish a structured knowledge pill.
+            Open a book result and use <span className="font-semibold text-[color:var(--color-text-primary)]">Share a perspective</span> to publish it with context.
           </p>
           <Link href="/genres" className="mt-3 inline-flex text-sm font-medium text-[color:var(--color-text-primary)] transition hover:opacity-70">
             Browse by genre instead

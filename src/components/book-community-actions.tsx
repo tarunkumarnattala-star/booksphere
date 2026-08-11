@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Bookmark, ThumbsDown, ThumbsUp } from "lucide-react";
 import { Book } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
 import { requireProfile } from "@/lib/auth-client";
 import { resolveDbBook } from "@/lib/contributions";
-import { hasLocalItem, toggleLocalItem } from "@/lib/local-store";
+import { announceSavedChange, hasLocalItem, toggleLocalItem } from "@/lib/local-store";
 import { trackEvent } from "@/lib/analytics";
 import { LoginRequiredNotice } from "./login-required-notice";
 import { canUseLocalCommunityFallback } from "@/lib/community-runtime";
@@ -18,6 +18,7 @@ export function BookCommunityActions({ book }: { book: Book }) {
   const [syncing, setSyncing] = useState(false);
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
+  const actionInFlight = useRef(false);
 
   useEffect(() => {
     if (!supabase) {
@@ -68,6 +69,21 @@ export function BookCommunityActions({ book }: { book: Book }) {
   }
 
   async function toggleSaved() {
+    // The guard used to be set after getSupabaseContext(), which is auth.getUser() plus up to
+    // three queries, and disabled={syncing} was live for the whole of it. Two taps both read
+    // saved === false, both incremented optimistically and both inserted; the second returns
+    // 23505, which is deliberately treated as success - so the button read "Saved · N+2" over
+    // a single row until a reload. A ref latches synchronously; state does not.
+    if (actionInFlight.current) return;
+    actionInFlight.current = true;
+    try {
+      await runToggleSaved();
+    } finally {
+      actionInFlight.current = false;
+    }
+  }
+
+  async function runToggleSaved() {
     const nextSaved = !saved;
     const context = await getSupabaseContext();
     if (!context) return;
@@ -97,11 +113,23 @@ export function BookCommunityActions({ book }: { book: Book }) {
       setSaved(!nextSaved);
       setSaveCount((count) => count + (nextSaved ? -1 : 1));
       setError("We could not update your saved books. Please try again.");
+    } else {
+      announceSavedChange();
     }
     setSyncing(false);
   }
 
   async function chooseRecommendation(value: "yes" | "no") {
+    if (actionInFlight.current) return;
+    actionInFlight.current = true;
+    try {
+      await runChooseRecommendation(value);
+    } finally {
+      actionInFlight.current = false;
+    }
+  }
+
+  async function runChooseRecommendation(value: "yes" | "no") {
     const previous = recommendation;
     const context = await getSupabaseContext();
     if (!context) return;

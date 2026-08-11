@@ -13,9 +13,13 @@ export function BookCover({ book, priority = false, className = "" }: { book: Bo
   const fallbackUrl = useMemo(() => book.coverUrl || null, [book.coverUrl]);
   const [coverUrl, setCoverUrl] = useState<string | null>(fallbackUrl);
   const [failed, setFailed] = useState(false);
+  const [lookupFailed, setLookupFailed] = useState(false);
 
   useEffect(() => {
-    if (fallbackUrl || failed) return;
+    // `fallbackUrl || failed` meant a stored cover that 404s never reached the API fallback:
+    // onError set `failed`, and this effect then refused to look anything up. Retry once the
+    // stored URL is known bad, and stop only when the lookup itself has already failed.
+    if ((coverUrl && !failed) || lookupFailed) return;
 
     const controller = new AbortController();
     const params = new URLSearchParams({
@@ -28,12 +32,26 @@ export function BookCover({ book, priority = false, className = "" }: { book: Bo
       .then((response) => response.ok ? response.json() : null)
       .then((data) => {
         const resolved = data?.coverUrl || getOpenLibraryCoverUrl(book.isbn);
-        if (resolved) setCoverUrl(resolved);
+        // Nothing set `failed` when the API answered {coverUrl: null} or the fetch threw, so
+        // the animate-pulse placeholder and its sr-only "Loading cover" ran for the life of
+        // the page for any book both providers miss. A cover we cannot find is a finished
+        // state, not a loading one: show the title.
+        if (resolved) {
+          setCoverUrl(resolved);
+          setFailed(false);
+        } else {
+          setLookupFailed(true);
+          setFailed(true);
+        }
       })
-      .catch(() => undefined);
+      .catch((cause) => {
+        if (cause?.name === "AbortError") return;
+        setLookupFailed(true);
+        setFailed(true);
+      });
 
     return () => controller.abort();
-  }, [book.author, book.isbn, book.title, failed, fallbackUrl]);
+  }, [book.author, book.isbn, book.title, coverUrl, failed, lookupFailed]);
 
   if (coverUrl && !failed) {
     return (
