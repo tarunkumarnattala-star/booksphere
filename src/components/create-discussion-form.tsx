@@ -219,7 +219,7 @@ export function CreateDiscussionForm({ book, initialPostType = "Insight", initia
       <div className="mb-6">
         <p className="caption">New perspective</p>
         <h1 className="title-1 mt-2">Share a perspective on {book.title}.</h1>
-        <p className="body-copy mt-4 max-w-2xl text-[16px]">BookSphere is not a blank comment box. Add the idea, reference, application, or disagreement that would help another reader understand the book better.</p>
+        <p className="body-copy mt-4 max-w-2xl text-[16px]">BookSphere is not a blank text box. Add the idea, reference, application, or disagreement that would help another reader understand the book better.</p>
         {restored && (
           <p role="status" className="mt-4 rounded-[16px] bg-black/[0.03] px-4 py-3 text-sm font-medium text-[color:var(--color-text-secondary)]">
             We kept the draft you started here.
@@ -239,7 +239,7 @@ export function CreateDiscussionForm({ book, initialPostType = "Insight", initia
 
       <div className="grid gap-4">
         <label className="grid gap-2 text-sm font-medium">
-          Post type
+          Perspective type
           <select
             value={form.postType}
             onChange={(event) => setForm({ ...form, postType: event.target.value as PostType })}
