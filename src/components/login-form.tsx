@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { Mail } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
@@ -30,6 +30,18 @@ function safeReturnPath(next?: string) {
 // user a dead button: Supabase returns "provider is not enabled" and sign-in fails.
 // When Google is turned on, set NEXT_PUBLIC_GOOGLE_AUTH_ENABLED=true in Vercel and
 // redeploy (NEXT_PUBLIC_* values are inlined at build time).
+
+// Google refuses OAuth inside embedded browsers and answers 403 disallowed_useragent, so a
+// tester who taps an invite link inside WhatsApp, Instagram or LinkedIn gets a Google error
+// page instead of this product. Invites for this beta are sent by message, which makes the
+// in-app browser the most likely first surface, not an edge case. Detect it and say so
+// plainly rather than letting Google deliver the bad news.
+function isInAppBrowser() {
+  if (typeof navigator === "undefined") return false;
+  const ua = navigator.userAgent || "";
+  return /FBAN|FBAV|Instagram|LinkedInApp|Line\/|MicroMessenger|Snapchat|Pinterest|Twitter|; wv\)/i.test(ua);
+}
+
 const googleAuthEnabled = process.env.NEXT_PUBLIC_GOOGLE_AUTH_ENABLED === "true";
 
 export function LoginForm({ next }: { next?: string }) {
@@ -39,6 +51,21 @@ export function LoginForm({ next }: { next?: string }) {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  // useSyncExternalStore rather than an effect: the server has no user agent, so the server
+  // snapshot is false and the client snapshot is the real answer, with no setState during an
+  // effect and no hydration mismatch.
+  const inApp = useSyncExternalStore(() => () => {}, isInAppBrowser, () => false);
+  const [copied, setCopied] = useState(false);
+
+  async function copyLink() {
+    try {
+      await navigator.clipboard.writeText(`${appUrl || "https://booksphere-iota.vercel.app"}/login`);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch {
+      setCopied(false);
+    }
+  }
 
   async function signInWithGoogle() {
     if (!supabase) {
@@ -96,6 +123,23 @@ export function LoginForm({ next }: { next?: string }) {
       <p className="body-copy mt-2 text-[15px] leading-6">
         No password needed. If this is your first time, your email creates your account.
       </p>
+      {googleAuthEnabled && inApp && (
+        <div className="mt-6 rounded-[16px] bg-black/[0.045] p-4">
+          <p className="text-sm font-semibold text-[color:var(--color-text-primary)]">Open this in your browser first</p>
+          <p className="body-copy mt-1 text-[14px] leading-6">
+            Google will not complete sign-in inside an app&apos;s built-in browser. Tap the menu in the
+            corner of this window and choose &ldquo;Open in browser&rdquo;, or copy the link and paste
+            it into Safari or Chrome.
+          </p>
+          <button
+            type="button"
+            onClick={copyLink}
+            className="mt-3 inline-flex min-h-11 items-center rounded-full border border-black/10 bg-white px-4 text-sm font-semibold"
+          >
+            {copied ? "Link copied" : "Copy the link"}
+          </button>
+        </div>
+      )}
       {googleAuthEnabled && (
         <>
           <button

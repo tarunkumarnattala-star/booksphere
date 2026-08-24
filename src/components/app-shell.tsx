@@ -34,6 +34,15 @@ export function AppShell({ children }: { children: ReactNode }) {
             <Link href="/explore#about-booksphere" className="transition hover:text-[color:var(--color-text-primary)]">About</Link>
             <Link href="/privacy" className="transition hover:text-[color:var(--color-text-primary)]">Privacy</Link>
             <Link href="/terms" className="transition hover:text-[color:var(--color-text-primary)]">Terms</Link>
+            {/* Twenty invited testers have no way to tell the founder something is broken
+                except by remembering an address that appears only on an error screen. The
+                subject line is prefilled so a reply lands sorted rather than in a pile. */}
+            <a
+              href="mailto:booksphere.support@gmail.com?subject=BookSphere%20feedback"
+              className="transition hover:text-[color:var(--color-text-primary)]"
+            >
+              Send feedback
+            </a>
           </nav>
         </div>
       </footer>
