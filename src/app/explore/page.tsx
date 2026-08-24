@@ -151,7 +151,7 @@ export default async function ExplorePage({ searchParams }: { searchParams?: Pro
             />
             <ProductAnswer
               question="Do I need an account?"
-              answer="You can explore books and perspectives without one. An account is needed when you want to post, comment, save, or follow."
+              answer="You can explore books and perspectives without one. An account is needed when you want to write a perspective, reply, save, or follow."
             />
           </div>
         </div>

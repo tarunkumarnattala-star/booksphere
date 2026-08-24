@@ -113,9 +113,9 @@ export default function AdminAnalyticsPage() {
 
           <section className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <Stat label="Accounts" value={totals.accounts} hint="lifetime" />
-            <Stat label="Discussions" value={totals.posts} hint="lifetime" />
-            <Stat label="Comments" value={totals.comments} hint="lifetime" />
-            <Stat label="Feed notes" value={totals.knowledgePosts} hint="lifetime" />
+            <Stat label="Book perspectives" value={totals.posts} hint="lifetime" />
+            <Stat label="Replies" value={totals.comments} hint="lifetime" />
+            <Stat label="Feed perspectives" value={totals.knowledgePosts} hint="lifetime" />
           </section>
 
           <section className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

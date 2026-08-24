@@ -31,7 +31,7 @@ export function ProfileOwnerCard({ profileId }: { profileId: string }) {
           </p>
         </div>
         <div className="grid gap-2 text-sm font-medium text-[color:var(--color-text-secondary)] sm:grid-cols-3 md:min-w-[420px]">
-          {["Add 3 shaped books", "Save one insight", "Start one discussion"].map((item) => (
+          {["Add 3 shaped books", "Save one insight", "Write one perspective"].map((item) => (
             <span key={item} className="inline-flex items-center gap-2 rounded-full bg-black/[0.025] px-3 py-2">
               <CheckCircle2 size={16} className="text-[color:var(--color-accent)]" />
               {item}

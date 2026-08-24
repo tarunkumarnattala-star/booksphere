@@ -159,7 +159,7 @@ export default async function BookPage({ params, searchParams }: { params: Promi
           </div>
           <div className="flex flex-wrap items-center gap-3">
             <a href="#discussions" className="text-sm font-medium text-[color:var(--color-text-primary)] transition hover:opacity-70">
-              Open discussions
+              Open perspectives
             </a>
             <Link href={`/book/${book.id}/create-discussion?type=Question`} className="inline-flex min-h-10 items-center rounded-full bg-black/[0.04] px-4 text-sm font-medium text-[color:var(--color-text-primary)] transition hover:bg-black/[0.07]">
               Ask a question
@@ -247,8 +247,8 @@ export default async function BookPage({ params, searchParams }: { params: Promi
           </div>
           {selectedPost ? <CommentThread postId={selectedPost.id} mode={selectedPost.postType === "Question" ? "answers" : "comments"} /> : (
             <EmptyState
-              title="Comments open after the first post"
-              body="BookSphere keeps comments attached to specific perspectives so replies stay focused and useful."
+              title="Replies open once a perspective is selected"
+              body="Replies stay attached to a specific perspective, so a conversation is always about one idea rather than the whole book."
             />
           )}
         </div>

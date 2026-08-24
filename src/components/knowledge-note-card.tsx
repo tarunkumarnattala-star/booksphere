@@ -83,7 +83,7 @@ export function KnowledgeNoteCard({ post, featured = false }: { post: KnowledgeP
       <div className="mt-5 flex items-center gap-5 border-t border-[color:var(--color-hairline)] pt-4 text-sm font-medium text-[color:var(--color-text-secondary)]">
         <Link href={`/post/${post.id}`} onClick={rememberPosition} className="inline-flex min-h-10 items-center gap-1.5 rounded-full px-2 transition hover:bg-black/[0.035] hover:text-[color:var(--color-text-primary)]" aria-label={`${post.likes} likes`}><Heart size={15} /> {post.likes}</Link>
         <Link href={`/post/${post.id}#comments`} onClick={rememberPosition} className="inline-flex min-h-10 items-center gap-1.5 rounded-full px-2 transition hover:bg-black/[0.035] hover:text-[color:var(--color-text-primary)]" aria-label={`${post.comments} comments`}><MessageCircle size={15} /> {post.comments}</Link>
-        <Link href={`/post/${post.id}`} onClick={rememberPosition} className="ml-auto inline-flex min-h-10 items-center rounded-full px-2 text-xs transition hover:bg-black/[0.035] hover:text-[color:var(--color-text-primary)]">Open post</Link>
+        <Link href={`/post/${post.id}`} onClick={rememberPosition} className="ml-auto inline-flex min-h-10 items-center rounded-full px-2 text-xs transition hover:bg-black/[0.035] hover:text-[color:var(--color-text-primary)]">Open perspective</Link>
       </div>
     </article>
   );

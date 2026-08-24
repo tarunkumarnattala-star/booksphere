@@ -218,7 +218,7 @@ function KnowledgeResults({
       {!results.concept && (
         <SearchResultGroup
           title="Ideas and perspectives"
-          subtitle="Reader experiences and book discussions connected to what you searched."
+          subtitle="Reader experiences and perspectives connected to what you searched."
           isEmpty={!results.discussions.length && !results.knowledgePosts.length}
         >
           <div className="grid gap-4 lg:grid-cols-2">
@@ -308,7 +308,7 @@ function KnowledgePostSearchResultCard({ result }: { result: KnowledgePostResult
       <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-medium text-[color:var(--color-text-secondary)]">
         <SearchPreviewActions kind="knowledge" targetId={result.post.id} likes={result.post.likes} />
         <span className="px-1">{result.post.comments} comments</span>
-        <Link href={result.destinationUrl} className="ml-auto inline-flex min-h-10 items-center gap-1 px-1 text-[color:var(--color-text-primary)]">Open post <ArrowUpRight size={14} /></Link>
+        <Link href={result.destinationUrl} className="ml-auto inline-flex min-h-10 items-center gap-1 px-1 text-[color:var(--color-text-primary)]">Open perspective <ArrowUpRight size={14} /></Link>
       </div>
     </article>
   );
@@ -500,7 +500,7 @@ function ReadersAlsoContinuedWith({ books: continuedBooks }: { books: KnowledgeB
 function RelatedSearches({ searches, onSelect }: { searches: string[]; onSelect: (query: string) => void }) {
   return (
     <section>
-      <SectionIntro eyebrow="Related searches" title="Try another doorway" subtitle="Useful searches that often lead to stronger books, paths, and discussions." />
+      <SectionIntro eyebrow="Related searches" title="Try another doorway" subtitle="Useful searches that often lead to stronger books, paths, and perspectives." />
       <div className="mt-6 flex flex-wrap gap-3">
         {searches.map((search) => (
           <button key={search} type="button" onClick={() => onSelect(search)} className="rounded-full bg-white px-5 py-3 text-sm font-medium text-[color:var(--color-text-secondary)] shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-black/[0.04] transition hover:text-[color:var(--color-text-primary)]">

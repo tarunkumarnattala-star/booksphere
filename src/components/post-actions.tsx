@@ -468,7 +468,7 @@ export function PostActions({
     const url = targetId ? `${window.location.origin}${window.location.pathname}#${targetId}` : window.location.href;
     try {
       if (navigator.share) {
-        await navigator.share({ title: "BookSphere discussion", url });
+        await navigator.share({ title: "BookSphere perspective", url });
       } else {
         await navigator.clipboard.writeText(url);
         setCopied(true);
@@ -513,7 +513,7 @@ export function PostActions({
 
   async function deleteContribution() {
     if (!targetId) return;
-    const confirmed = window.confirm("Delete this contribution? It will disappear from BookSphere pages, search, saved insights, and followed discussions. This cannot be undone from the app.");
+    const confirmed = window.confirm("Delete this perspective? It will disappear from BookSphere pages, search, saved perspectives, and anything following it. This cannot be undone from the app.");
     if (!confirmed) return;
     const auth = await requireProfile();
     if (!auth.ok) {
@@ -598,7 +598,7 @@ export function PostActions({
         <button
           type="button"
           disabled={syncingCommunity}
-          onClick={() => toggleCommunityAction("follow", following, setFollowing, "We could not follow this discussion. Please try again.")}
+          onClick={() => toggleCommunityAction("follow", following, setFollowing, "We could not follow this perspective. Please try again.")}
           aria-label="Follow replies to this perspective"
           className="flex min-h-11 items-center gap-2 rounded-full bg-black/[0.035] px-3 py-2 transition hover:bg-black/[0.06]"
         >

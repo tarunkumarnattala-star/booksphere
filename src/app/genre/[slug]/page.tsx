@@ -19,7 +19,7 @@ const genreSubtitles: Record<string, string> = {
   Investing: "Timeless investing books discussed through patience, risk, and judgment.",
   Communication: "Books for better conversations, persuasion, writing, and disagreement.",
   Psychology: "Books that help people understand behavior, motivation, bias, and emotion.",
-  Startups: "Founder, product, growth, and early-company books with practical reader insight.",
+  Startups: "Founder, product, growth, and early-company books with practical reader perspectives.",
   Productivity: "Books about focus, time, systems, and doing meaningful work.",
   Health: "Books for energy, longevity, sleep, movement, and mental resilience.",
   Philosophy: "Books that help readers examine values, meaning, ethics, and attention.",

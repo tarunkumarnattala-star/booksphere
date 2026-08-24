@@ -2,7 +2,7 @@
 
 import { Search } from "lucide-react";
 
-export function SearchBar({ value, onChange, placeholder = "Search books, genres, people, discussions" }: { value: string; onChange: (value: string) => void; placeholder?: string }) {
+export function SearchBar({ value, onChange, placeholder = "Search books, genres, people, perspectives" }: { value: string; onChange: (value: string) => void; placeholder?: string }) {
   return (
     <div className="sticky top-20 z-20">
       <div className="relative">

@@ -19,7 +19,7 @@ export default function GenresPage() {
           Find the reading room that matches the idea you are chasing.
         </h1>
         <p className="body-copy mt-5 max-w-2xl">
-          Genres are not filing cabinets here. They are focused discussion rooms built around books, questions, applications, and reader insight.
+          Genres are not filing cabinets here. They are focused discussion rooms built around books, questions, applications, and reader perspectives.
         </p>
       </section>
       <GenreDirectory genres={genres} booksByGenre={getBooksForGenre} heading="All Genres" subtitle="Choose a shelf to see top books, rising books, and the best insights inside it." />

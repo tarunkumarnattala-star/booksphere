@@ -158,7 +158,7 @@ export function CommentThread({
       const result = await createSupabaseComment(auth.profileId, postId, text.trim(), parentId, targetType);
       if (result.error || !result.comment) {
         setComments((current) => current.filter((comment) => comment.id !== optimistic.id));
-        setError(result.error || "We could not post your comment. Your text is still here.");
+        setError(result.error || "We could not save your reply. Your text is still here.");
         return false;
       }
       setComments((current) => [result.comment!, ...current.filter((comment) => comment.id !== optimistic.id)]);
@@ -222,7 +222,7 @@ export function CommentThread({
   }
 
   async function deleteComment(commentId: string) {
-    if (!window.confirm("Delete this comment? This cannot be undone.")) return;
+    if (!window.confirm("Delete this reply? This cannot be undone.")) return;
     const auth = await requireProfile();
     if (!auth.ok) {
       setNotice(auth.message);
@@ -307,20 +307,20 @@ export function CommentThread({
   return (
     <section id="comments" className="scroll-mt-24 rounded-[28px] bg-white p-4 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] sm:p-5">
       <div className="flex items-center justify-between gap-4">
-        <h3 className="title-3">{mode === "answers" ? "Answers" : "Comments"}</h3>
+        <h3 className="title-3">{mode === "answers" ? "Answers" : "Replies"}</h3>
         <div className="rounded-full bg-black/[0.035] p-1 text-xs font-medium">
           <button type="button" aria-pressed={sort === "top"} onClick={() => setSort("top")} className={`min-h-11 rounded-full px-3 py-1.5 ${sort === "top" ? "bg-[color:var(--color-text-primary)] !text-white" : "text-[color:var(--color-text-secondary)]"}`}>Top</button>
           <button type="button" aria-pressed={sort === "new"} onClick={() => setSort("new")} className={`min-h-11 rounded-full px-3 py-1.5 ${sort === "new" ? "bg-[color:var(--color-text-primary)] !text-white" : "text-[color:var(--color-text-secondary)]"}`}>New</button>
         </div>
       </div>
       <div className="mt-4 grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]">
-        <input maxLength={4000} value={body} onChange={(event) => setBody(event.target.value)} placeholder={mode === "answers" ? "Write a clear answer..." : "Add a useful response..."} aria-label={mode === "answers" ? "Write an answer" : "Write a comment"} className="min-h-11 min-w-0 flex-1 rounded-full bg-black/[0.035] px-4 py-3 text-base font-medium outline-none ring-1 ring-transparent focus:ring-black/20" />
-        <button type="button" disabled={body.trim().length < 3} onClick={submitTopLevel} className="min-h-11 rounded-full bg-[color:var(--color-text-primary)] px-4 py-3 text-sm font-medium !text-white disabled:cursor-not-allowed disabled:opacity-35">{mode === "answers" ? "Answer" : "Post"}</button>
+        <input maxLength={4000} value={body} onChange={(event) => setBody(event.target.value)} placeholder={mode === "answers" ? "Write a clear answer..." : "Add a useful response..."} aria-label={mode === "answers" ? "Write an answer" : "Write a reply"} className="min-h-11 min-w-0 flex-1 rounded-full bg-black/[0.035] px-4 py-3 text-base font-medium outline-none ring-1 ring-transparent focus:ring-black/20" />
+        <button type="button" disabled={body.trim().length < 3} onClick={submitTopLevel} className="min-h-11 rounded-full bg-[color:var(--color-text-primary)] px-4 py-3 text-sm font-medium !text-white disabled:cursor-not-allowed disabled:opacity-35">{mode === "answers" ? "Answer" : "Reply"}</button>
       </div>
       {notice && <LoginRequiredNotice message={notice} onDismiss={() => setNotice("")} />}
       {error && <p role="alert" className="mt-3 rounded-[16px] bg-[color:var(--color-rose)]/10 px-4 py-3 text-sm font-medium text-[color:var(--color-rose)]">{error}</p>}
       <div className="mt-5 space-y-3">
-        {loading && <p className="text-sm font-medium text-[color:var(--color-text-secondary)]">Loading comments...</p>}
+        {loading && <p className="text-sm font-medium text-[color:var(--color-text-secondary)]">Loading replies...</p>}
         {!loading && comments.length === 0 && <p className="text-sm font-medium text-[color:var(--color-text-secondary)]">{mode === "answers" ? "No answers yet. Add a clear explanation, example, or source." : "No comments yet. Add a specific response to make the thread more useful."}</p>}
         {threadRows.map(({ comment, depth }) => (
           <article
@@ -336,22 +336,22 @@ export function CommentThread({
                 </p>
               </div>
               <div className="flex shrink-0 items-center gap-0.5">
-                <button type="button" onClick={() => toggleCommentLike(comment.id)} aria-label="Like this comment" className="flex min-h-9 min-w-9 items-center justify-center gap-1 rounded-full text-xs font-medium text-[color:var(--color-text-secondary)] hover:bg-black/[0.035]">
+                <button type="button" onClick={() => toggleCommentLike(comment.id)} aria-label="Like this reply" className="flex min-h-9 min-w-9 items-center justify-center gap-1 rounded-full text-xs font-medium text-[color:var(--color-text-secondary)] hover:bg-black/[0.035]">
                   <Heart size={14} className={likedCommentIds.includes(comment.id) ? "fill-[color:var(--color-rose)] text-[color:var(--color-rose)]" : ""} />
                   {visibleLikeCount(comment)}
                 </button>
                 {comment.canEdit && (
-                  <button type="button" onClick={() => { setEditingId(comment.id); setEditBody(comment.body); setReplyingTo(null); }} className="grid size-9 place-items-center rounded-full text-[color:var(--color-text-secondary)] hover:bg-black/[0.035]" aria-label="Edit your comment"><Pencil size={14} /></button>
+                  <button type="button" onClick={() => { setEditingId(comment.id); setEditBody(comment.body); setReplyingTo(null); }} className="grid size-9 place-items-center rounded-full text-[color:var(--color-text-secondary)] hover:bg-black/[0.035]" aria-label="Edit your reply"><Pencil size={14} /></button>
                 )}
                 {comment.canDelete && (
-                  <button type="button" onClick={() => deleteComment(comment.id)} className="grid size-9 place-items-center rounded-full text-[color:var(--color-rose)] hover:bg-[color:var(--color-rose)]/10" aria-label="Delete your comment"><Trash2 size={14} /></button>
+                  <button type="button" onClick={() => deleteComment(comment.id)} className="grid size-9 place-items-center rounded-full text-[color:var(--color-rose)] hover:bg-[color:var(--color-rose)]/10" aria-label="Delete your reply"><Trash2 size={14} /></button>
                 )}
               </div>
             </div>
 
             {editingId === comment.id ? (
               <div className="mt-2 grid gap-2">
-                <textarea maxLength={4000} rows={3} value={editBody} onChange={(event) => setEditBody(event.target.value)} aria-label="Edit comment" className="w-full rounded-[14px] bg-black/[0.035] px-3 py-2 text-sm leading-6 outline-none ring-1 ring-transparent focus:ring-black/20" />
+                <textarea maxLength={4000} rows={3} value={editBody} onChange={(event) => setEditBody(event.target.value)} aria-label="Edit reply" className="w-full rounded-[14px] bg-black/[0.035] px-3 py-2 text-sm leading-6 outline-none ring-1 ring-transparent focus:ring-black/20" />
                 <div className="flex gap-2">
                   <button type="button" disabled={editBody.trim().length < 3} onClick={() => saveEdit(comment.id)} className="min-h-9 rounded-full bg-[color:var(--color-text-primary)] px-4 text-xs font-medium !text-white disabled:cursor-not-allowed disabled:opacity-35">Save</button>
                   <button type="button" onClick={() => setEditingId(null)} className="min-h-9 rounded-full bg-black/[0.035] px-4 text-xs font-medium">Cancel</button>
