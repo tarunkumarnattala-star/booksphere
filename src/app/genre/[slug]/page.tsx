@@ -111,7 +111,7 @@ export default async function GenrePage({ params }: { params: Promise<{ slug: st
         <div className="mb-5 px-4 md:px-6 lg:px-8">
           <p className="caption mb-2">Reader Notes</p>
           <h2 className="title-2">Questions readers are opening in {genre.name}</h2>
-          <p className="subheadline mt-2">Threads where readers apply, challenge, and explain the ideas behind these books.</p>
+          <p className="subheadline mt-2">Where readers apply, challenge, and explain the ideas behind these books.</p>
         </div>
         <div className="shelf-scroll flex gap-5 overflow-x-auto px-4 pb-4 md:px-6 lg:px-8">
           {insightPosts.length ? insightPosts.slice(0, 10).map((post) => (
@@ -120,7 +120,7 @@ export default async function GenrePage({ params }: { params: Promise<{ slug: st
             </div>
           )) : (
             <div className="w-full">
-              <EmptyState title="No genre discussions yet" body={`The ${genre.name} shelf is ready. Starter discussions will appear here as readers share useful perspectives.`} />
+              <EmptyState title="No perspectives here yet" body={`The ${genre.name} shelf is ready. Perspectives appear here as readers share what they applied, questioned, or changed.`} />
             </div>
           )}
         </div>

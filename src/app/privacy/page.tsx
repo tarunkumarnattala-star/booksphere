@@ -16,7 +16,7 @@ export default function PrivacyPage() {
       <h1 className="large-title">Privacy.</h1>
       <p className="body-copy mt-6">BookSphere collects the account, profile, and community content you choose to provide so the service can operate. It also records limited product events needed to understand reliability and improve the experience.</p>
       <div className="mt-10 grid gap-8">
-        <section><h2 className="title-3">What we store</h2><p className="body-copy mt-3">Your email and sign-in identity, public profile details, posts, comments, reactions, follows, reports, saved books, saved insights, followed discussions, and basic product events. Saved books, saved insights, followed discussions, reading status, reports, and account analytics are not shown publicly.</p></section>
+        <section><h2 className="title-3">What we store</h2><p className="body-copy mt-3">Your email and sign-in identity, public profile details, perspectives, replies, reactions, follows, reports, saved books, saved perspectives, and basic product events. Saved books, saved perspectives, what you follow, reading status, reports, and account analytics are not shown publicly.</p></section>
         <section><h2 className="title-3">How we use it</h2><p className="body-copy mt-3">We use this information to provide your account, publish the contributions you submit, personalize your saved activity, prevent abuse, respond to reports, and understand whether BookSphere is working correctly.</p></section>
         {/* All three processors are named. Resend receives every reader's email address on
             every sign-in link, which is the most identifying thing BookSphere holds, and it
