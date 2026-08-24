@@ -31,9 +31,9 @@ const faqs = [
       "Something you learned, tried, changed, or questioned in real life. A book can add context, but it is never required."
   },
   {
-    question: "What does joining the private beta mean?",
+    question: "What do I get when I sign in?",
     answer:
-      "You get early access to the working product and help shape it with direct feedback. The first group is intentionally limited to 100 readers."
+      "The full product: 394 books, the perspectives readers have written on them, concept search, and reading paths. It is early and deliberately small, so what you write shapes what this becomes. There is no waiting list and nothing to pay."
   }
 ];
 
@@ -71,10 +71,13 @@ function Brand() {
   );
 }
 
-function BetaLink({ quiet = false }: { quiet?: boolean }) {
+// "Join the Private Beta" promised gated exclusivity - a passcode, a queue, an approval -
+// and none of it exists: the link goes straight to sign-in. It also sold the waiting room
+// instead of the product. The button now names what is actually on the other side of it.
+function BetaLink({ quiet = false, label = "See what happened next" }: { quiet?: boolean; label?: string }) {
   return (
     <Link className={quiet ? styles.quietBeta : styles.betaLink} href={betaHref}>
-      Join the Private Beta
+      {label}
       <ArrowRight aria-hidden="true" size={17} strokeWidth={1.8} />
     </Link>
   );
@@ -91,7 +94,7 @@ export function LandingPage() {
           <a href="#knowledge">Knowledge</a>
           <a href="#faq">FAQ</a>
         </nav>
-        <BetaLink quiet />
+        <BetaLink quiet label="Start reading" />
       </header>
 
       <main>
@@ -103,7 +106,7 @@ export function LandingPage() {
             <span>Change</span>
           </div>
           <div className={styles.heroContent}>
-            <p className={styles.heroEyebrow}>Private beta · First 100 readers</p>
+            <p className={styles.heroEyebrow}>Early access · Built with its first readers</p>
             <h1 id="landing-title">
               Understand books through the people who lived their ideas.
             </h1>
@@ -263,8 +266,8 @@ export function LandingPage() {
         <section className={styles.final}>
           <div data-landing-reveal>
             <UsersRound aria-hidden="true" size={28} strokeWidth={1.3} />
-            <p className={styles.kicker}>Help shape BookSphere</p>
-            <h2>Join the first 100 readers.</h2>
+            <p className={styles.kicker}>Start here</p>
+            <h2>Find out what happened when someone tried it.</h2>
             <p>
               Read what matters. Share what happened. Help build a better way to
               learn from books and from one another.
@@ -276,7 +279,7 @@ export function LandingPage() {
 
       <footer className={styles.footer}>
         <Brand />
-        <p>BookSphere · Private beta</p>
+        <p>BookSphere · Early access</p>
         <nav aria-label="Legal">
           <Link href="/privacy">Privacy</Link>
           <Link href="/terms">Terms</Link>
