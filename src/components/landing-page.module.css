@@ -26,7 +26,7 @@
   min-height: 86px;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  color: #f9f7ec;
+  color: var(--ink);
   transform: translateX(-50%);
 }
 
@@ -78,9 +78,9 @@
   width: max-content;
   min-height: 52px;
   padding: 0 24px;
-  border: 1px solid rgba(255, 255, 255, 0.56);
+  border: 1px solid rgba(18, 23, 19, 0.22);
   border-radius: 4px;
-  color: #fff;
+  color: var(--ink);
   font-size: 11px;
   font-weight: 620;
   letter-spacing: 0.12em;
@@ -91,15 +91,29 @@
 .quietBeta {
   min-height: 40px;
   padding: 0 16px;
-  border-color: rgba(255, 255, 255, 0.34);
+  border-color: rgba(18, 23, 19, 0.16);
   font-size: 10px;
 }
 
 .quietBeta:hover,
 .betaLink:hover {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  transform: translateY(-2px);
+}
+
+/* The closing panel is still deep green, so its button keeps the cream treatment the
+   hero used to need. */
+.final .betaLink {
+  border-color: rgba(255, 255, 255, 0.56);
+  color: #fff;
+}
+
+.final .betaLink:hover {
+  border-color: #f7f4e7;
   background: #f7f4e7;
   color: var(--ink);
-  transform: translateY(-2px);
 }
 
 .hero {
@@ -108,62 +122,9 @@
   min-height: 100svh;
   place-items: center;
   overflow: hidden;
-  background: var(--green-deep);
-  color: #f9f7ec;
-  text-align: center;
-}
-
-.heroScene {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  overflow: hidden;
-  opacity: 0.23;
-  pointer-events: none;
-}
-
-.heroScene::before,
-.heroScene::after {
-  position: absolute;
-  z-index: 2;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: rgba(247, 245, 233, 0.32);
-  content: "";
-}
-
-.heroScene::before {
-  top: 23%;
-}
-
-.heroScene::after {
-  bottom: 19%;
-}
-
-.heroScene span {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-right: 1px solid rgba(247, 245, 233, 0.24);
-  color: transparent;
-  font-size: clamp(72px, 10vw, 170px);
-  font-weight: 280;
-  line-height: 1;
-  text-transform: uppercase;
-  -webkit-text-stroke: 1px rgba(247, 245, 233, 0.52);
-  writing-mode: vertical-rl;
-  animation: sceneDrift 12s ease-in-out infinite alternate;
-}
-
-.heroScene span:nth-child(2),
-.heroScene span:nth-child(4) {
-  animation-direction: alternate-reverse;
-}
-
-.heroScene span:last-child {
-  border-right: 0;
+  background: var(--paper);
+  color: var(--ink);
+  text-align: left;
 }
 
 .heroContent {
@@ -182,36 +143,96 @@
 }
 
 .heroEyebrow {
-  color: rgba(249, 247, 236, 0.7);
+  color: var(--muted);
 }
 
 .hero h1 {
-  max-width: 1100px;
-  margin: 34px auto 0;
-  font-size: clamp(54px, 7vw, 112px);
-  font-weight: 310;
-  letter-spacing: 0;
-  line-height: 0.98;
-  text-wrap: balance;
+  max-width: 19ch;
+  margin: 30px 0 0;
+  font-size: clamp(44px, 6.2vw, 92px);
+  font-weight: 290;
+  letter-spacing: -0.022em;
+  line-height: 1.02;
+  text-wrap: pretty;
+}
+
+/* The excerpt and the explanation sit side by side on a wide screen and stack on a
+   phone, where the quote has already used most of the first view. */
+.heroSplit {
+  display: grid;
+  margin-top: 44px;
+  gap: 52px;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+}
+
+.heroExcerpt {
+  margin: 0;
+  color: #4a504b;
+  font-size: clamp(15px, 1.15vw, 17px);
+  line-height: 1.66;
+}
+
+.heroAside {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.heroLead {
+  margin: 0;
+  font-size: clamp(17px, 1.35vw, 20px);
+  letter-spacing: -0.012em;
+  line-height: 1.5;
+}
+
+.heroFine {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13.5px;
+}
+
+@media (max-width: 860px) {
+  .heroSplit {
+    margin-top: 32px;
+    gap: 26px;
+    grid-template-columns: 1fr;
+  }
+
+  .heroAside {
+    order: -1;
+  }
+
+  .heroExcerpt {
+    padding-top: 22px;
+    border-top: 1px solid rgba(18, 23, 19, 0.09);
+  }
 }
 
 .heroCopy {
-  max-width: 610px;
-  margin: 30px auto 0;
-  color: rgba(249, 247, 236, 0.72);
-  font-size: clamp(16px, 1.45vw, 20px);
-  line-height: 1.55;
-  text-wrap: balance;
+  max-width: 44ch;
+  margin: 0;
+  color: var(--muted);
+  font-size: clamp(15px, 1.2vw, 16.5px);
+  line-height: 1.6;
+  text-wrap: pretty;
 }
 
 .hero .betaLink {
-  margin: 38px auto 0;
-  background: #f7f4e7;
-  color: var(--ink);
+  /* The old hero was centred, so the button centred itself. This one is a two-column
+     read, and the button belongs at the left edge of the column it argues from. */
+  margin: 6px 0 0;
+  /* Cream on paper was nearly invisible once the hero stopped being deep green. The one
+     action on the page should read as the one action on the page. */
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
 }
 
 .hero .betaLink:hover {
-  background: #fff;
+  background: #000;
+  color: var(--paper);
 }
 
 .scrollCue {
@@ -222,7 +243,7 @@
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  color: rgba(249, 247, 236, 0.58);
+  color: rgba(18, 23, 19, 0.5);
   font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -694,15 +715,6 @@
   transform: translateY(0);
 }
 
-@keyframes sceneDrift {
-  from {
-    transform: translateY(-2.5%);
-  }
-  to {
-    transform: translateY(2.5%);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .heroScene span,
   .page [data-landing-reveal] {
@@ -751,7 +763,10 @@
   .nav {
     width: calc(100% - 28px);
     min-height: 70px;
-    grid-template-columns: 1fr;
+    /* Room for the action again. It was a single column because the old hero carried a
+       large centred button above the fold; this hero opens with a quote, so the nav is
+       the only action a phone can reach without scrolling. */
+    grid-template-columns: 1fr auto;
   }
 
   .brand {
@@ -764,7 +779,9 @@
   }
 
   .quietBeta {
-    display: none;
+    min-height: 44px;
+    padding: 0 14px;
+    font-size: 10px;
   }
 
   .hero {

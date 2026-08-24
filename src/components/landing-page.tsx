@@ -98,23 +98,37 @@ export function LandingPage() {
       </header>
 
       <main>
+        {/* The hero shows a perspective instead of describing one. A visitor's real
+            question is not what the product is - it is what they would be reading, and
+            what they would be expected to write. Both are answered here by one actual
+            perspective from the shelf, at display size, before anything is claimed.
+            The quote is a real published row, not a sample. */}
         <section className={styles.hero} aria-labelledby="landing-title">
-          <div className={styles.heroScene} aria-hidden="true">
-            <span>Read</span>
-            <span>Question</span>
-            <span>Apply</span>
-            <span>Change</span>
-          </div>
           <div className={styles.heroContent}>
-            <p className={styles.heroEyebrow}>Early access · Built with its first readers</p>
+            <p className={styles.heroEyebrow}>One reader · The Hard Thing About Hard Things</p>
             <h1 id="landing-title">
-              Understand books through the people who lived their ideas.
+              &ldquo;The value here is that it refuses to give you a formula.&rdquo;
             </h1>
-            <p className={styles.heroCopy}>
-              Every book gives advice. Almost none of them tell you what happened when
-              someone actually tried it. That part is here.
-            </p>
-            <BetaLink />
+            <div className={styles.heroSplit}>
+              <p className={styles.heroExcerpt}>
+                Horowitz says directly that there is no recipe for the hard things, and then
+                spends the book on situations where every option is bad. Layoffs, demoting a
+                loyal friend, telling the truth to people who will leave because of it. That
+                structure is the argument.
+              </p>
+              <div className={styles.heroAside}>
+                <p className={styles.heroLead}>
+                  That is a perspective. Not a rating, not a summary — one person answering
+                  one specific question about one book.
+                </p>
+                <p className={styles.heroCopy}>
+                  BookSphere collects them across 394 books: what people applied, where the
+                  advice broke, and what they would tell you before you spend a month on it.
+                </p>
+                <BetaLink />
+                <p className={styles.heroFine}>394 books · no waiting list · nothing to pay</p>
+              </div>
+            </div>
           </div>
           <a className={styles.scrollCue} href="#why">
             Discover BookSphere
