@@ -111,8 +111,8 @@ export function LandingPage() {
               Understand books through the people who lived their ideas.
             </h1>
             <p className={styles.heroCopy}>
-              Go beyond the takeaway. See what people applied, questioned, changed,
-              and learned.
+              Every book gives advice. Almost none of them tell you what happened when
+              someone actually tried it. That part is here.
             </p>
             <BetaLink />
           </div>
@@ -269,8 +269,8 @@ export function LandingPage() {
             <p className={styles.kicker}>Start here</p>
             <h2>Find out what happened when someone tried it.</h2>
             <p>
-              Read what matters. Share what happened. Help build a better way to
-              learn from books and from one another.
+              394 books, read through what people applied, questioned, and abandoned.
+              It is early, and the first readers shape what this becomes.
             </p>
             <BetaLink />
           </div>
