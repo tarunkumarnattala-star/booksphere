@@ -89,7 +89,7 @@ export default async function BookPage({ params, searchParams }: { params: Promi
             {book.bestForTags.slice(0, 3).map((tag) => <span key={tag} className="rounded-full bg-black/[0.035] px-2.5 py-1 text-xs font-medium text-[color:var(--color-text-secondary)] sm:text-sm">{tag}</span>)}
           </div>
           <p className="text-xs font-medium text-[color:var(--color-text-muted)] sm:text-right">
-            {book.publicationLabel}{preview ? ` · ${preview.fullBookDecision.timeCommitment}` : ""} · {posts.length} {posts.length === 1 ? "perspective" : "perspectives"}
+            {book.publicationLabel}{preview ? ` · ${preview.fullBookDecision.timeCommitment}` : ""}{posts.length > 0 ? ` · ${posts.length} ${posts.length === 1 ? "perspective" : "perspectives"}` : ""}
           </p>
         </div>
 

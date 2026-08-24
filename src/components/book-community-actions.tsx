@@ -166,7 +166,7 @@ export function BookCommunityActions({ book }: { book: Book }) {
           className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-semibold !text-white transition duration-200 hover:opacity-85 disabled:opacity-55 sm:w-auto"
         >
           <Bookmark size={17} className={saved ? "fill-white" : ""} />
-          {saved ? "Saved" : "Save Book"} · {saveCount}
+          {saved ? "Saved" : "Save Book"}{saveCount > 0 ? ` · ${saveCount}` : ""}
         </button>
         <div className="flex w-full rounded-full bg-white p-1 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.04] sm:w-auto">
           <button
