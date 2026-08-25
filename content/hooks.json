@@ -4,40 +4,40 @@
     "why_it_is_separate": "Hook formats move in weeks. Book ideas do not. Keeping hooks in their own file means chasing a trend is a five-minute edit rather than a code change, and nobody has to touch the generator to try a new angle.",
     "rules_from_research": [
       "5-8 words. Audiences scroll 3-4 posts per second and the first frame has under 50ms to work.",
-      "Lead with the reader's stake, not the book's title. 'You remembered the wrong half' beats 'Most people finish X and remember the wrong half.'",
-      "A specific number or outcome beats a general claim.",
-      "Open a gap the viewer needs closed - a contradiction, a cost, a named mistake.",
-      "Avoid 'N tips for X'. It gives nobody a reason to reach slide 2."
+      "Promise a payoff, do not just open a riddle. 'You remembered the wrong half' is intriguing and gives nobody a reason to swipe; a stated number tells them exactly what they get.",
+      "A number alone is not enough - '5 lessons from X' is what every account posts. The number needs a twist that makes it specific: what survives a real week, what no summary mentions, what people get wrong.",
+      "Lead with the reader's stake, not the book's title.",
+      "Whatever the hook promises, the carousel must deliver. A hook promising five things and delivering one is worse than no hook."
     ],
     "placeholders": "{title} and {author} are replaced. A hook with no placeholder is used as-is, which is usually stronger.",
     "how_to_use_a_trend": "When a format is working on your feed, add it here as another entry for the right pillar. The generator rotates through whatever is in the list, so a new hook is live on the next run."
   },
-
   "understand": [
-    "You remembered the wrong half.",
-    "{title} is not about what you think.",
-    "The famous part is the boring part.",
-    "Everyone quotes chapter one. The argument is later.",
-    "Most summaries drop the useful half."
+    "The one idea from {title} that matters most",
+    "What {title} actually argues, in 60 seconds",
+    "{title}: the useful half, not the famous half",
+    "The part of {title} every summary drops"
   ],
-
   "quote": [
-    "One line. Then the hard part.",
-    "This line is quoted constantly. Rarely finished.",
-    "The quote is easy. Living it is not.",
-    "Everyone posts this. Almost nobody tests it."
+    "One line from {title}, and why it holds",
+    "The most quoted line in {title} — tested",
+    "This line gets posted constantly. Here is the catch."
   ],
-
   "argument": [
+    "The argument inside {title} nobody resolves",
     "Two readers. Same chapter. Opposite decisions.",
-    "This book contradicts itself. On purpose.",
-    "The advice works. Until it doesn't.",
-    "Both readings are right. That's the problem."
+    "Where {title} stops being true"
   ],
-
   "notable": [
-    "Recommended constantly. Rarely finished.",
-    "The recommendation is not the result.",
-    "Everyone cites it. Few have used it."
+    "Why {title} keeps getting recommended",
+    "The most recommended book you have not finished",
+    "Recommended constantly. Rarely finished. Here is what is in it."
+  ],
+  "list": [
+    "5 ideas from {title} that survive a real week",
+    "4 things {title} teaches that no summary mentions",
+    "5 things I wish I knew before reading {title}",
+    "The 5 ideas from {title} people actually use",
+    "5 lines from {title} worth more than the summary"
   ]
 }

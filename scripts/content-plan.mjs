@@ -62,6 +62,37 @@ const BOOKS = source.books.filter((b) => b.title && b.core_idea);
 
 const PILLARS = [
   {
+    id: "list",
+    name: "The numbered takeaways",
+    // The hook promises a count, so the carousel delivers exactly that count - one slide
+    // each, numbered, no filler. A hook promising five things and delivering one idea is
+    // worse than no hook, and that is what the earlier version did.
+    needs: (b) => Array.isArray(b.takeaways) && b.takeaways.length >= 4,
+    build: (b, hook) => {
+      const items = b.takeaways.slice(0, 5);
+      // Make the promised number match what is actually here rather than the other way round.
+      const headline = hook.replace(/\b[45]\b/, String(items.length));
+      return {
+        hookLine: headline,
+        slides: [
+          { kind: "hook", eyebrow: `${items.length} takeaways`, title: headline, footer: `${b.title} · ${b.author}` },
+          ...items.map((text, n) => ({
+            kind: "apply",
+            eyebrow: `${n + 1} of ${items.length}`,
+            title: text,
+            footer: b.title
+          })),
+          { kind: "ask", eyebrow: "Your turn", title: "Which of these have you actually used?", body: "And which one did not survive contact with a real week?", footer: b.title }
+        ],
+        caption:
+          `${headline}\n\n` +
+          items.map((t, n) => `${n + 1}. ${t}`).join("\n\n") +
+          `\n\n${b.title} — ${b.author}\n\n` +
+          `Which of these have you actually used? And which one did not survive contact with a real week?`
+      };
+    }
+  },
+  {
     id: "understand",
     name: "Understand a famous book quickly",
     needs: (b) => b.core_idea && b.misses && b.apply,

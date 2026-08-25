@@ -10,11 +10,11 @@
       "misses": "What typical summaries flatten. Feeds Pillar H.",
       "apply": "One realistic action someone could take today. Feeds Pillar D.",
       "notable": "A documented public reference by a well-known person. OMIT ENTIRELY rather than guess.",
-      "verify": "What a human must confirm before this is published."
+      "verify": "What a human must confirm before this is published.",
+      "takeaways": "Four to six things a reader can actually use. Feeds the numbered-list pillar, where the hook promises a count and every slide has to deliver one of them. Written by hand: a numbered promise the carousel does not keep is worse than no hook at all."
     },
     "rule": "If you cannot name where a claim comes from, delete the claim. An empty field costs nothing; an invented one costs the account."
   },
-
   "books": [
     {
       "title": "Atomic Habits",
@@ -24,7 +24,14 @@
       "tension": "Discipline or environment? The book argues that willpower is the least reliable input, which is uncomfortable if you believe effort is the point.",
       "misses": "Most summaries reduce it to 1% better every day. The more useful half is the argument that identity precedes behaviour: you act like the person you already believe you are.",
       "apply": "Take one habit you keep failing at and change one physical thing about where it happens. Move the object closer, or move the obstacle further away.",
-      "verify": "Quote is widely printed and appears in the book's opening chapters. Confirm wording against your copy before posting."
+      "verify": "Quote is widely printed and appears in the book's opening chapters. Confirm wording against your copy before posting.",
+      "takeaways": [
+        "Make it obvious. Put the cue where you will trip over it, not where it is tidy.",
+        "Shrink the first move until it is embarrassing. Two minutes, not twenty.",
+        "Never miss twice. One skipped day is noise; two is the start of a new pattern.",
+        "Change the room before you change the resolve. Distance does the work willpower cannot.",
+        "Decide who you are becoming, then let each action cast a vote for that person."
+      ]
     },
     {
       "title": "The Psychology of Money",
@@ -34,7 +41,14 @@
       "tension": "Save aggressively or live now? The book refuses to resolve it, arguing that the right answer depends on what you are actually optimising for.",
       "misses": "Summaries lift the compounding chapter and drop the one about luck and risk, which is the part that changes how you judge other people's outcomes.",
       "apply": "Write down the last financial decision you made and name whether it was skill or timing. Most people cannot tell, which is the point.",
-      "verify": "Quote appears in the introduction. Confirm wording."
+      "verify": "Quote appears in the introduction. Confirm wording.",
+      "takeaways": [
+        "Nobody is crazy. Every financial decision makes sense given the life that produced it.",
+        "Luck and risk are the same force seen from opposite ends. Judge process, not outcome.",
+        "Enough is a number you set. Without it, every gain resets the target.",
+        "Wealth is what you do not see: the cars unbought, the upgrades declined.",
+        "Room for error is not pessimism. It is what lets you stay in the game long enough to compound."
+      ]
     },
     {
       "title": "Man's Search for Meaning",
@@ -45,7 +59,14 @@
       "tension": "The memoir is what people remember; the clinical second half is where the argument actually lives, and it resists the self-help framing the book usually gets.",
       "misses": "It is quoted as inspiration and read as a survival story, but it is a clinical argument about a therapeutic method.",
       "apply": "Name one situation you cannot currently change, and one thing about your response to it that you can.",
-      "verify": "Translation-dependent. Check your edition's wording before printing it on a card."
+      "verify": "Translation-dependent. Check your edition's wording before printing it on a card.",
+      "takeaways": [
+        "Meaning is found rather than assigned. It is discovered in a situation, not chosen in the abstract.",
+        "There are three routes: what you make, who you love, and the stance you take toward unavoidable suffering.",
+        "The last freedom is the choice of response, and it survives conditions that take everything else.",
+        "A why makes a how bearable. Without one, comfort does not compensate.",
+        "Chasing happiness directly tends to lose it. It arrives as a by-product of something pursued for its own sake."
+      ]
     },
     {
       "title": "The Hard Thing About Hard Things",
@@ -55,7 +76,14 @@
       "tension": "Most business books present decisions with a right answer that was obvious in retrospect. This one argues the hard part is precisely that no such answer exists.",
       "misses": "Read as war stories, but the structure is the argument: the book spends its length on situations where all options are bad because that is the claim.",
       "apply": "Take a decision you have been postponing and write out the least-bad option rather than the right one.",
-      "verify": "Quote is from the book. Confirm wording."
+      "verify": "Quote is from the book. Confirm wording.",
+      "takeaways": [
+        "There are no silver bullets. Most progress comes from lead bullets fired for a long time.",
+        "Tell people the truth about the situation. They already suspect it.",
+        "Take care of the people, the product and the profits, in that order.",
+        "The hardest decisions have no good option. Choose the least bad one and own it.",
+        "There is no formula for the hard things. Anyone selling one has not run anything hard."
+      ]
     },
     {
       "title": "Deep Work",
@@ -65,7 +93,14 @@
       "tension": "Focus or flexibility? The book takes a hard position that a great deal of modern work is shallow by design, which does not survive contact with every job.",
       "misses": "Summaries take the productivity advice and skip the economic argument about why the skill is becoming scarce.",
       "apply": "Block ninety minutes tomorrow with the phone in another room and notice how long it takes before you want it.",
-      "verify": "Quote appears in the book. Confirm wording."
+      "verify": "Quote appears in the book. Confirm wording.",
+      "takeaways": [
+        "Depth is trainable, not a personality trait. Concentration improves the way endurance does.",
+        "Schedule shallow work into a box rather than letting it fill the gaps.",
+        "Boredom is practice. If you reach for the phone in every queue, focus has nowhere to grow.",
+        "Quit a tool for thirty days and only reinstate it if its absence actually cost you something.",
+        "Ritual beats motivation: same place, same hours, same start, no negotiation."
+      ]
     },
     {
       "title": "Thinking, Fast and Slow",
@@ -75,7 +110,14 @@
       "tension": "Knowing about a bias does very little to prevent it. The book is unusually honest that awareness is not a cure.",
       "misses": "It is used as a list of biases to name in arguments. Kahneman's own point is that you will not catch your own in real time.",
       "apply": "Next time you feel certain, ask what evidence would change your mind. If nothing would, the certainty is not about the evidence.",
-      "verify": "Quote is the focusing illusion, widely printed. Confirm wording."
+      "verify": "Quote is the focusing illusion, widely printed. Confirm wording.",
+      "takeaways": [
+        "Confidence is a feeling produced by coherence, not by evidence. They come apart constantly.",
+        "What you can recall easily feels more common than it is. Vividness is not frequency.",
+        "You judge a whole experience by its peak and its end, not by its average.",
+        "Losses land about twice as hard as equivalent gains, which explains most reluctance.",
+        "Knowing a bias does not disarm it. Build the check into the process, not the moment."
+      ]
     },
     {
       "title": "Sapiens",
@@ -96,7 +138,14 @@
       "tension": "The argument for monopoly as a goal is genuinely contested, and the book knows it.",
       "misses": "Read as a startup playbook. It is closer to a philosophy of what counts as progress.",
       "apply": "Answer the question in the quote honestly, in writing. Most people find they do not have an answer.",
-      "verify": "This is the book's central interview question. Confirm wording."
+      "verify": "This is the book's central interview question. Confirm wording.",
+      "takeaways": [
+        "Going from nothing to something beats copying what already works.",
+        "Competition is often evidence you are not doing anything new.",
+        "Ask what important truth very few people agree with you on, and answer it in writing.",
+        "Start by monopolising a small market you can actually own, then widen.",
+        "Sales and distribution decide outcomes far more than founders who love the product want to believe."
+      ]
     },
     {
       "title": "Never Split the Difference",
@@ -106,7 +155,14 @@
       "tension": "Tactics learned from hostage negotiation can read as manipulation in ordinary relationships, and the book's own framing does not fully resolve that.",
       "misses": "The tactical labels get repeated. The underlying claim - that people need to feel heard before they can move - is the part that generalises.",
       "apply": "In the next disagreement, say what you think the other person wants before saying what you want.",
-      "verify": "Quote is from the book. Confirm wording."
+      "verify": "Quote is from the book. Confirm wording.",
+      "takeaways": [
+        "Say what you think the other person wants before you say what you want.",
+        "Label the emotion out loud. Naming it lowers it.",
+        "\"No\" is the start of a negotiation, not the end of one.",
+        "Get to \"that's right\" — agreement is meaningless until they feel understood.",
+        "Never be so certain of what you want that you would refuse something better."
+      ]
     },
     {
       "title": "Mindset",
@@ -116,7 +172,14 @@
       "tension": "The idea has been diluted into praise-the-effort advice, and Dweck herself has publicly pushed back on that reading.",
       "misses": "A growth mindset is not optimism about outcomes. It is a claim about what you do after a specific failure.",
       "apply": "Recall your last failure and note whether your explanation was about capacity or about method.",
-      "verify": "Quote is from the book. Dweck's later comments on misapplication are publicly documented - confirm before citing them."
+      "verify": "Quote is from the book. Dweck's later comments on misapplication are publicly documented - confirm before citing them.",
+      "takeaways": [
+        "The question is not whether you failed. It is what you conclude about yourself when you do.",
+        "Praise the method, not the talent. Talent praise teaches people to avoid hard things.",
+        "\"Not yet\" is a different sentence from \"not able\", and it changes what happens next.",
+        "Effort without a change in strategy is not growth mindset. It is repetition.",
+        "Choosing tasks you might fail at is the actual behaviour. The belief on its own does nothing."
+      ]
     },
     {
       "title": "The Intelligent Investor",
@@ -168,7 +231,14 @@
       "tension": "Easy to state, and largely unavailable to people whose work is assigned rather than chosen.",
       "misses": "Read as a productivity system. The harder argument is about the social cost of declining things.",
       "apply": "Decline one thing this week and say plainly that you are declining it, rather than going quiet.",
-      "verify": "Quote is from the book. Confirm wording."
+      "verify": "Quote is from the book. Confirm wording.",
+      "takeaways": [
+        "If you do not prioritise your life, someone else will.",
+        "Almost everything is noise. Treat opportunities as costs, not as gains.",
+        "A slow yes beats a fast one. Buy time before committing.",
+        "Say the decline plainly. Going quiet is worse than saying no.",
+        "Protect the asset. The person doing the work is the thing that breaks first."
+      ]
     },
     {
       "title": "Outliers",
