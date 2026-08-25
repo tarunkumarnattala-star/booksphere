@@ -98,35 +98,57 @@ export function LandingPage() {
       </header>
 
       <main>
-        {/* The hero shows a perspective instead of describing one. A visitor's real
-            question is not what the product is - it is what they would be reading, and
-            what they would be expected to write. Both are answered here by one actual
-            perspective from the shelf, at display size, before anything is claimed.
-            The quote is a real published row, not a sample. */}
+        {/* Order matters more than cleverness here. The previous hero opened with a
+            perspective at display size and left a stranger to work out what the site was
+            from the small print beside it - showing before telling only works when the
+            visitor already knows what category they are in. So: what it is, what it is
+            not, then the proof. */}
         <section className={styles.hero} aria-labelledby="landing-title">
           <div className={styles.heroContent}>
-            <p className={styles.heroEyebrow}>One reader · The Hard Thing About Hard Things</p>
+            <p className={styles.heroEyebrow}>Early access · 394 books</p>
             <h1 id="landing-title">
-              &ldquo;The value here is that it refuses to give you a formula.&rdquo;
+              Know whether the advice works before you read the book.
             </h1>
-            <div className={styles.heroSplit}>
-              <p className={styles.heroExcerpt}>
-                Horowitz says directly that there is no recipe for the hard things, and then
-                spends the book on situations where every option is bad. Layoffs, demoting a
-                loyal friend, telling the truth to people who will leave because of it. That
-                structure is the argument.
-              </p>
-              <div className={styles.heroAside}>
-                <p className={styles.heroLead}>
-                  That is a perspective. Not a rating, not a summary — one person answering
-                  one specific question about one book.
+            <p className={styles.heroLead}>
+              BookSphere collects what happened when readers actually used a book&rsquo;s
+              ideas — what they applied, where it failed, and what they would tell you first.
+            </p>
+
+            <div className={styles.heroCompare} aria-label="How BookSphere differs">
+              <div>
+                <p className={styles.compareLabel}>Ratings</p>
+                <p className={styles.compareText}>Tell you whether people liked it.</p>
+              </div>
+              <div>
+                <p className={styles.compareLabel}>Summaries</p>
+                <p className={styles.compareText}>Tell you what the author said.</p>
+              </div>
+              <div className={styles.compareOwn}>
+                <p className={styles.compareLabel}>BookSphere</p>
+                <p className={styles.compareText}>Tells you what happened when someone tried it.</p>
+              </div>
+            </div>
+
+            <div className={styles.heroActions}>
+              <BetaLink />
+              <p className={styles.heroFine}>Free · no waiting list · sign in with Google</p>
+            </div>
+
+            <div className={styles.heroProof}>
+              <p className={styles.proofLabel}>This is what one looks like</p>
+              <div className={styles.proofCard}>
+                <div className={styles.proofMeta}>
+                  <span className={styles.proofType}>Insight</span>
+                  <span>The Hard Thing About Hard Things</span>
+                </div>
+                <p className={styles.proofTitle}>
+                  &ldquo;The value here is that it refuses to give you a formula.&rdquo;
                 </p>
-                <p className={styles.heroCopy}>
-                  BookSphere collects them across 394 books: what people applied, where the
-                  advice broke, and what they would tell you before you spend a month on it.
+                <p className={styles.proofBody}>
+                  Horowitz says directly that there is no recipe for the hard things, and then
+                  spends the book on situations where every option is bad. Layoffs, demoting a
+                  loyal friend, telling the truth to people who will leave because of it.
                 </p>
-                <BetaLink />
-                <p className={styles.heroFine}>394 books · no waiting list · nothing to pay</p>
               </div>
             </div>
           </div>
