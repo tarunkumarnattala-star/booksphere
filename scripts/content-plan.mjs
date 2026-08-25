@@ -36,6 +36,22 @@ const ORIGIN = argOf("origin", "http://localhost:3016");
 const OUT = argOf("out", "content-plan");
 
 const source = JSON.parse(readFileSync("content/book-knowledge.json", "utf8"));
+const HOOKS = JSON.parse(readFileSync("content/hooks.json", "utf8"));
+
+// A first slide has under 50 milliseconds and about five to eight words to earn a stop.
+// The previous hooks ran ten to fourteen words and led with the book's title - which asks
+// a stranger to care about the book before they have been given a reason to.
+const hookCursor = new Map();
+function hookFor(pillarId, book) {
+  const list = HOOKS[pillarId] || [];
+  if (!list.length) return `${book.title} — ${book.author}`;
+  // Count per pillar, not per post. The global index moved in lockstep with the four-pillar
+  // rotation, so every quote post drew hook 1 and three posts in twelve were identical.
+  const n = hookCursor.get(pillarId) || 0;
+  hookCursor.set(pillarId, n + 1);
+  const line = list[n % list.length];
+  return line.replace(/\{title\}/g, book.title).replace(/\{author\}/g, book.author);
+}
 const BOOKS = source.books.filter((b) => b.title && b.core_idea);
 
 // ---------------------------------------------------------------- pillars
@@ -49,10 +65,10 @@ const PILLARS = [
     id: "understand",
     name: "Understand a famous book quickly",
     needs: (b) => b.core_idea && b.misses && b.apply,
-    build: (b) => ({
-      hookLine: `Most people finish ${b.title} and remember the wrong half.`,
+    build: (b, hook) => ({
+      hookLine: hook,
       slides: [
-        { kind: "hook", eyebrow: "One idea first", title: `Most people finish ${b.title} and remember the wrong half.`, footer: `${b.title} · ${b.author}` },
+        { kind: "hook", eyebrow: "One idea first", title: hook, footer: `${b.title} · ${b.author}` },
         { kind: "idea", eyebrow: "What it actually argues", title: b.core_idea, footer: b.title },
         { kind: "idea", eyebrow: "What summaries flatten", title: b.misses, footer: b.title },
         { kind: "apply", eyebrow: "Try it this week", title: b.apply, footer: b.title },
@@ -70,10 +86,11 @@ const PILLARS = [
     id: "quote",
     name: "The line worth keeping",
     needs: (b) => b.quote && b.tension,
-    build: (b) => ({
-      hookLine: b.quote,
+    build: (b, hook) => ({
+      hookLine: hook,
       slides: [
-        { kind: "quote", eyebrow: "One line", title: b.quote, attribution: `${b.author} · ${b.title}`, footer: b.quote_note ? "Note on the quote in the caption" : "" },
+        { kind: "hook", eyebrow: "One line", title: hook, footer: `${b.title} · ${b.author}` },
+        { kind: "quote", eyebrow: "The line", title: b.quote, attribution: `${b.author} · ${b.title}`, footer: b.quote_note ? "Note on the quote in the caption" : "" },
         { kind: "idea", eyebrow: "Why it lands", title: b.core_idea, footer: b.title },
         { kind: "tension", eyebrow: "And where it gets harder", title: b.tension, footer: b.title },
         { kind: "ask", eyebrow: "Your turn", title: "Does that hold up in your experience, or not?", body: "The disagreement is more useful than the agreement.", footer: b.title }
@@ -90,10 +107,10 @@ const PILLARS = [
     id: "argument",
     name: "The argument inside the book",
     needs: (b) => b.tension && b.core_idea,
-    build: (b) => ({
-      hookLine: `Two people can finish ${b.title} and act in opposite directions.`,
+    build: (b, hook) => ({
+      hookLine: hook,
       slides: [
-        { kind: "hook", eyebrow: "The argument inside it", title: `Two people can finish ${b.title} and act in opposite directions.`, footer: `${b.title} · ${b.author}` },
+        { kind: "hook", eyebrow: "The argument inside it", title: hook, footer: `${b.title} · ${b.author}` },
         { kind: "tension", eyebrow: "The tension", title: b.tension, footer: b.title },
         { kind: "idea", eyebrow: "What the book claims", title: b.core_idea, footer: b.title },
         { kind: "ask", eyebrow: "Your turn", title: "Which side of that have you actually lived?", body: "Both readings are defensible. That is what makes it worth discussing.", footer: b.title }
@@ -111,10 +128,10 @@ const PILLARS = [
     // Only runs where a documented public reference exists in the source file. There is no
     // fallback that invents one.
     needs: (b) => Boolean(b.notable),
-    build: (b) => ({
-      hookLine: `Why ${b.title} keeps getting recommended by people who read for a living.`,
+    build: (b, hook) => ({
+      hookLine: hook,
       slides: [
-        { kind: "hook", eyebrow: "Widely recommended", title: `Why ${b.title} keeps getting recommended by people who read for a living.`, footer: `${b.title} · ${b.author}` },
+        { kind: "hook", eyebrow: "Widely recommended", title: hook, footer: `${b.title} · ${b.author}` },
         { kind: "idea", eyebrow: "The public reference", title: b.notable, footer: "Verify before posting" },
         { kind: "idea", eyebrow: "What is actually in it", title: b.core_idea, footer: b.title },
         { kind: "ask", eyebrow: "Your turn", title: "Recommendations are not results. Did it work for you?", footer: b.title }
@@ -181,7 +198,7 @@ const verifications = [];
 
 for (let i = 0; i < schedule.length; i += 1) {
   const { pillar, book } = schedule[i];
-  const piece = pillar.build(book);
+  const piece = pillar.build(book, hookFor(pillar.id, book));
   const id = String(i + 1).padStart(2, "0");
   const dir = join("cards", `post-${id}`);
   mkdirSync(join(OUT, dir), { recursive: true });

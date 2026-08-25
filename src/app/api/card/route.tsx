@@ -46,17 +46,27 @@ export async function GET(request: NextRequest) {
   const dim = dark ? "rgba(244,244,242,0.62)" : SOFT;
 
   const len = title.length;
-  const titleSize = isQuote
-    ? len > 150
-      ? 54
-      : len > 90
-        ? 64
-        : 76
-    : len > 120
-      ? 56
-      : len > 74
-        ? 66
-        : 78;
+  // A hook is five to eight words and has to work as a pattern interrupt at thumbnail
+  // size, so it gets its own much larger scale. Sizing it like body copy is what made the
+  // first frame scrollable past.
+  const isHook = kind === "hook";
+  const titleSize = isHook
+    ? len > 64
+      ? 96
+      : len > 40
+        ? 116
+        : 134
+    : isQuote
+      ? len > 150
+        ? 54
+        : len > 90
+          ? 64
+          : 76
+      : len > 120
+        ? 56
+        : len > 74
+          ? 66
+          : 78;
 
   // Safe zone: platform controls sit over the bottom of a story, so pad harder there.
   const padY = story ? 150 : 76;
@@ -115,8 +125,8 @@ export async function GET(request: NextRequest) {
               display: "flex",
               color: fg,
               fontSize: titleSize,
-              fontWeight: isQuote ? 300 : 400,
-              lineHeight: isQuote ? 1.16 : 1.08,
+              fontWeight: isHook ? 500 : isQuote ? 300 : 400,
+              lineHeight: isHook ? 0.98 : isQuote ? 1.16 : 1.08,
               letterSpacing: "-0.03em"
             }}
           >

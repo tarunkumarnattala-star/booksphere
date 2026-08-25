@@ -1,0 +1,43 @@
+{
+  "_README": {
+    "purpose": "Hook lines for the first slide of every carousel. Edit this file weekly; it is the one part of the system that goes stale fastest.",
+    "why_it_is_separate": "Hook formats move in weeks. Book ideas do not. Keeping hooks in their own file means chasing a trend is a five-minute edit rather than a code change, and nobody has to touch the generator to try a new angle.",
+    "rules_from_research": [
+      "5-8 words. Audiences scroll 3-4 posts per second and the first frame has under 50ms to work.",
+      "Lead with the reader's stake, not the book's title. 'You remembered the wrong half' beats 'Most people finish X and remember the wrong half.'",
+      "A specific number or outcome beats a general claim.",
+      "Open a gap the viewer needs closed - a contradiction, a cost, a named mistake.",
+      "Avoid 'N tips for X'. It gives nobody a reason to reach slide 2."
+    ],
+    "placeholders": "{title} and {author} are replaced. A hook with no placeholder is used as-is, which is usually stronger.",
+    "how_to_use_a_trend": "When a format is working on your feed, add it here as another entry for the right pillar. The generator rotates through whatever is in the list, so a new hook is live on the next run."
+  },
+
+  "understand": [
+    "You remembered the wrong half.",
+    "{title} is not about what you think.",
+    "The famous part is the boring part.",
+    "Everyone quotes chapter one. The argument is later.",
+    "Most summaries drop the useful half."
+  ],
+
+  "quote": [
+    "One line. Then the hard part.",
+    "This line is quoted constantly. Rarely finished.",
+    "The quote is easy. Living it is not.",
+    "Everyone posts this. Almost nobody tests it."
+  ],
+
+  "argument": [
+    "Two readers. Same chapter. Opposite decisions.",
+    "This book contradicts itself. On purpose.",
+    "The advice works. Until it doesn't.",
+    "Both readings are right. That's the problem."
+  ],
+
+  "notable": [
+    "Recommended constantly. Rarely finished.",
+    "The recommendation is not the result.",
+    "Everyone cites it. Few have used it."
+  ]
+}
