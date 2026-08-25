@@ -62,11 +62,19 @@ const ADVICE_GENRES = new Set([
 
 const isAdvice = (b) => (b.genres || []).some((g) => ADVICE_GENRES.has(g));
 
+// 381 of the 394 catalog descriptions are the generated fallback - "X by Y is a business
+// title with reader perspectives, questions, and applications gathered around it" - which
+// is a sentence about BookSphere, not about the book. Any format that quotes the
+// description needs a real one, or the post says nothing. A run reached day 30 with that
+// template as its entire caption before this existed.
+const GENERIC = /is an? .*title with reader perspectives/i;
+const hasRealDescription = (b) => Boolean(b.description) && !GENERIC.test(b.description);
+
 const FORMATS = [
   {
     id: "problem",
     tag: "The problem",
-    suits: isAdvice,
+    suits: (b) => isAdvice(b) && hasRealDescription(b),
     // Names a situation before naming a book. Someone recognises themselves first.
     // Speaks from the book's own material rather than asserting a fixed claim. The first
     // version hardcoded a habits argument and attached it to whatever book came up, which
@@ -85,7 +93,7 @@ const FORMATS = [
   {
     id: "idea",
     tag: "One idea",
-    suits: () => true,
+    suits: hasRealDescription,
     // The useful half of a book, in plain language, with the application attached.
     build: (b) => ({
       title: trimTo(firstSentence(b.description) || b.title, 108),
@@ -153,11 +161,15 @@ function addDays(iso, n) {
 
 // Spread the books so the same title does not recur inside a week, and only offer a
 // format a book it actually fits.
-function pickFor(books, format, i) {
+function pickFor(books, format, i, used) {
   const eligible = books.filter(format.suits);
-  const pool = eligible.length >= 12 ? eligible : books;
-  const stride = Math.max(1, Math.floor(pool.length / Math.max(DAYS, 1)));
-  return pool[(i * stride + (i % 7)) % pool.length];
+  const pool = eligible.length ? eligible : books;
+  const fresh = pool.filter((b) => !used.has(b.title));
+  const from = fresh.length ? fresh : pool;
+  const stride = Math.max(1, Math.floor(from.length / Math.max(DAYS, 1)));
+  const chosen = from[(i * stride + (i % 7)) % from.length];
+  used.add(chosen.title);
+  return chosen;
 }
 
 // ---------------------------------------------------------------- run
@@ -170,10 +182,36 @@ if (books.length < 10) {
 
 mkdirSync(join(OUT, "cards"), { recursive: true });
 
-const plan = [];
+// Schedule by what the catalog can actually support rather than by strict rotation. Only
+// twelve books carry a real description, so the two formats that quote one are used at
+// most twelve times and the rest of the run goes to the two that work from a title. A
+// rigid rotation would have repeated those twelve books three times each and called it a
+// month of content.
+const descriptionFormats = FORMATS.filter((f) => ["problem", "idea"].includes(f.id));
+const titleFormats = FORMATS.filter((f) => ["limit", "ask"].includes(f.id));
+const descriptionCapacity = books.filter(hasRealDescription).length;
+
+const schedule = [];
 for (let i = 0; i < DAYS; i += 1) {
-  const format = FORMATS[i % FORMATS.length];
-  const book = pickFor(books, format, i);
+  // Spread the description posts evenly through the run instead of front-loading them.
+  const share = descriptionCapacity / DAYS;
+  const wantDescription = Math.floor((i + 1) * share) > Math.floor(i * share);
+  const pool = wantDescription && descriptionCapacity ? descriptionFormats : titleFormats;
+  schedule.push(pool[i % pool.length]);
+}
+
+const plan = [];
+const used = new Set();
+for (let i = 0; i < DAYS; i += 1) {
+  // If the description pool is exhausted, fall back to a format that works from a title
+  // rather than running the same book twice. A repeat four days apart in the same format
+  // is the kind of thing a follower notices and an automation does not.
+  let format = schedule[i];
+  if (!books.some((b) => format.suits(b) && !used.has(b.title))) {
+    const fallback = titleFormats.find((f) => books.some((b) => f.suits(b) && !used.has(b.title)));
+    if (fallback) format = fallback;
+  }
+  const book = pickFor(books, format, i, used);
   const piece = format.build(book);
   const day = String(i + 1).padStart(2, "0");
 
