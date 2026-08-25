@@ -1,25 +1,27 @@
 #!/usr/bin/env node
 /**
- * Generates a run of pre-launch social posts from the BookSphere catalog.
+ * Builds BookSphere carousels from hand-curated source material.
  *
- *   node scripts/content-plan.mjs --days 30 --start 2026-09-01
+ *   npm run dev                       (the card renderer runs on the dev server)
+ *   node scripts/content-plan.mjs --posts 12 --start 2026-09-01
  *
  * Writes to content-plan/:
- *   plan.json          every post, machine-readable
- *   captions.md        every caption, ready to copy
- *   cards/day-01.png   the image for each post
+ *   plan.json           every post, machine-readable, matching the ops data model
+ *   captions.md         captions and slide copy, ready to review
+ *   VERIFY.md           every factual claim that needs a human before publishing
+ *   cards/post-01/      one PNG per slide
  *
- * Cards are rendered by /api/card on a running dev server (npm run dev), not by an image
- * model. Text is the whole content of these posts and image models still mangle text.
+ * Source material is content/book-knowledge.json, written by hand. Nothing factual is
+ * generated here - quotes, notable references and the claims about what a book argues all
+ * come from that file, because a model produces invented endorsements fluently and one
+ * fabricated "Bill Gates called this his favourite book" costs more trust than a month of
+ * posts earns.
  *
- * Nothing here invents a reader experience. BookSphere has no outside contributors yet, so
- * a post either states an idea from a book, or asks the audience a question. The question
- * posts are the point: they are the same question the product asks, so an answer in the
- * comments is a perspective worth inviting in. The content engine and the supply engine
- * are deliberately the same machine.
+ * Every post follows the retention structure in the strategy: recognition, open loop,
+ * payoff, application or second perspective, reflection prompt.
  */
 
-import { writeFileSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 
 const args = process.argv.slice(2);
@@ -28,129 +30,109 @@ const argOf = (name, fallback) => {
   return i >= 0 && args[i + 1] ? args[i + 1] : fallback;
 };
 
-const DAYS = Number(argOf("days", "30"));
+const POSTS = Number(argOf("posts", "12"));
 const START = argOf("start", new Date().toISOString().slice(0, 10));
 const ORIGIN = argOf("origin", "http://localhost:3016");
 const OUT = argOf("out", "content-plan");
 
-// ---------------------------------------------------------------- catalog
+const source = JSON.parse(readFileSync("content/book-knowledge.json", "utf8"));
+const BOOKS = source.books.filter((b) => b.title && b.core_idea);
 
-// Read the catalog from /api/catalog rather than parsing data.ts. The first version used a
-// regular expression on that file and produced books called "green" by "gold" - it had
-// matched the colour-tone arrays and reported 269 confident results. A JSON endpoint cannot
-// be misread that way.
-async function loadBooks() {
-  const res = await fetch(`${ORIGIN}/api/catalog`);
-  if (!res.ok) throw new Error(`catalog fetch failed: HTTP ${res.status}`);
-  const data = await res.json();
-  return (data.books || []).filter((b) => b.title && b.author);
-}
-
-// ---------------------------------------------------------------- formats
+// ---------------------------------------------------------------- pillars
 //
-// Four formats, rotating. Each answers a different reason someone follows an account:
-// recognition, usefulness, disagreement, and being asked what they think.
+// Each builds a carousel. Every slide has to carry value on its own, so none of them is a
+// title card or a logo - the strategy is explicit that a slide repeating the previous one
+// in different words is a wasted slide.
 
-// Genres where a book is making a claim you could act on. Biography, history and science
-// are excluded on purpose: "where does this stop working" is a real question about advice
-// and a nonsense question about the Wright brothers, and the first run generated exactly
-// that card before this existed.
-const ADVICE_GENRES = new Set([
-  "Personal Growth", "Productivity", "Business", "Career", "Communication",
-  "Psychology", "Health", "Finance", "Investing", "Leadership", "Startups", "Relationships"
-]);
-
-const isAdvice = (b) => (b.genres || []).some((g) => ADVICE_GENRES.has(g));
-
-// 381 of the 394 catalog descriptions are the generated fallback - "X by Y is a business
-// title with reader perspectives, questions, and applications gathered around it" - which
-// is a sentence about BookSphere, not about the book. Any format that quotes the
-// description needs a real one, or the post says nothing. A run reached day 30 with that
-// template as its entire caption before this existed.
-const GENERIC = /is an? .*title with reader perspectives/i;
-const hasRealDescription = (b) => Boolean(b.description) && !GENERIC.test(b.description);
-
-const FORMATS = [
+const PILLARS = [
   {
-    id: "problem",
-    tag: "The problem",
-    suits: (b) => isAdvice(b) && hasRealDescription(b),
-    // Names a situation before naming a book. Someone recognises themselves first.
-    // Speaks from the book's own material rather than asserting a fixed claim. The first
-    // version hardcoded a habits argument and attached it to whatever book came up, which
-    // would have put words in an author's mouth on a public account.
+    id: "understand",
+    name: "Understand a famous book quickly",
+    needs: (b) => b.core_idea && b.misses && b.apply,
     build: (b) => ({
-      title: `If this is the problem, this is the book.`,
-      body: trimTo(b.whyMatters || b.description, 190),
+      hookLine: `Most people finish ${b.title} and remember the wrong half.`,
+      slides: [
+        { kind: "hook", eyebrow: "One idea first", title: `Most people finish ${b.title} and remember the wrong half.`, footer: `${b.title} · ${b.author}` },
+        { kind: "idea", eyebrow: "What it actually argues", title: b.core_idea, footer: b.title },
+        { kind: "idea", eyebrow: "What summaries flatten", title: b.misses, footer: b.title },
+        { kind: "apply", eyebrow: "Try it this week", title: b.apply, footer: b.title },
+        { kind: "ask", eyebrow: "Your turn", title: "If you have read it — what did you actually do differently?", body: "Not what you underlined. What changed.", footer: b.title }
+      ],
       caption:
         `${b.title} — ${b.author}\n\n` +
-        `${trimTo(b.whyMatters || b.description, 320)}\n\n` +
-        `Worth reading only if that is a problem you actually have. Most book recommendations ` +
-        `skip that part.\n\n` +
-        `Is it? And did it help?`
+        `${b.core_idea}\n\n` +
+        `The part most summaries drop: ${lowerFirst(b.misses)}\n\n` +
+        `One thing to try: ${lowerFirst(b.apply)}\n\n` +
+        `If you have read it — what did you actually do differently? Not what you underlined. What changed.`
     })
   },
   {
-    id: "idea",
-    tag: "One idea",
-    suits: hasRealDescription,
-    // The useful half of a book, in plain language, with the application attached.
+    id: "quote",
+    name: "The line worth keeping",
+    needs: (b) => b.quote && b.tension,
     build: (b) => ({
-      title: trimTo(firstSentence(b.description) || b.title, 108),
-      body: `From ${b.title}.`,
+      hookLine: b.quote,
+      slides: [
+        { kind: "quote", eyebrow: "One line", title: b.quote, attribution: `${b.author} · ${b.title}`, footer: b.quote_note ? "Note on the quote in the caption" : "" },
+        { kind: "idea", eyebrow: "Why it lands", title: b.core_idea, footer: b.title },
+        { kind: "tension", eyebrow: "And where it gets harder", title: b.tension, footer: b.title },
+        { kind: "ask", eyebrow: "Your turn", title: "Does that hold up in your experience, or not?", body: "The disagreement is more useful than the agreement.", footer: b.title }
+      ],
+      caption:
+        `"${b.quote}"\n— ${b.author}, ${b.title}\n\n` +
+        `${b.core_idea}\n\n` +
+        `Where it gets harder: ${lowerFirst(b.tension)}\n\n` +
+        (b.quote_note ? `A note on the quote: ${b.quote_note}\n\n` : "") +
+        `Does it hold up in your experience? The disagreement is more useful than the agreement.`
+    })
+  },
+  {
+    id: "argument",
+    name: "The argument inside the book",
+    needs: (b) => b.tension && b.core_idea,
+    build: (b) => ({
+      hookLine: `Two people can finish ${b.title} and act in opposite directions.`,
+      slides: [
+        { kind: "hook", eyebrow: "The argument inside it", title: `Two people can finish ${b.title} and act in opposite directions.`, footer: `${b.title} · ${b.author}` },
+        { kind: "tension", eyebrow: "The tension", title: b.tension, footer: b.title },
+        { kind: "idea", eyebrow: "What the book claims", title: b.core_idea, footer: b.title },
+        { kind: "ask", eyebrow: "Your turn", title: "Which side of that have you actually lived?", body: "Both readings are defensible. That is what makes it worth discussing.", footer: b.title }
+      ],
       caption:
         `${b.title} — ${b.author}\n\n` +
-        `${trimTo(b.description, 320)}\n\n` +
-        `The useful test is not whether you agree. It is whether you can name the situation ` +
-        `where you would actually use it this week.\n\n` +
-        `If you have read it: what did you actually do differently?`
+        `${b.tension}\n\n` +
+        `The book's own position: ${lowerFirst(b.core_idea)}\n\n` +
+        `Which side of that have you actually lived? Both readings are defensible, which is exactly why it is worth discussing.`
     })
   },
   {
-    id: "limit",
-    tag: "Where it breaks",
-    suits: isAdvice,
-    // The differentiator. Almost nobody posts the limits of a popular book.
+    id: "notable",
+    name: "A notable reader's perspective",
+    // Only runs where a documented public reference exists in the source file. There is no
+    // fallback that invents one.
+    needs: (b) => Boolean(b.notable),
     build: (b) => ({
-      title: `Where does ${trimTo(b.title, 44)} stop working?`,
-      body: `Every book is written from one person's conditions. The useful question is which of those conditions you do not share.`,
+      hookLine: `Why ${b.title} keeps getting recommended by people who read for a living.`,
+      slides: [
+        { kind: "hook", eyebrow: "Widely recommended", title: `Why ${b.title} keeps getting recommended by people who read for a living.`, footer: `${b.title} · ${b.author}` },
+        { kind: "idea", eyebrow: "The public reference", title: b.notable, footer: "Verify before posting" },
+        { kind: "idea", eyebrow: "What is actually in it", title: b.core_idea, footer: b.title },
+        { kind: "ask", eyebrow: "Your turn", title: "Recommendations are not results. Did it work for you?", footer: b.title }
+      ],
       caption:
-        `Every popular book gets recommended as if it works everywhere.\n\n` +
-        `${b.title} was written out of a specific set of conditions — a particular job, a particular decade, ` +
-        `a particular kind of life. Some of those you share. Some you do not.\n\n` +
-        `The advice fails at exactly the point where they diverge, and almost nobody writes that part down.\n\n` +
-        `If you have read it: where did it stop working for you?`
-    })
-  },
-  {
-    id: "ask",
-    tag: "Asking, honestly",
-    suits: isAdvice,
-    // The wedge, asked rather than claimed. Answers here are the product's supply.
-    build: (b) => ({
-      title: `Has anyone actually tried this for a month?`,
-      body: `${b.title} is recommended constantly. Recommendations are not results.`,
-      caption:
-        `Genuine question, not a rhetorical one.\n\n` +
-        `${b.title} gets recommended constantly. What I almost never see is someone saying ` +
-        `what happened when they ran it for a month — what they changed, what they dropped, ` +
-        `what turned out to be harder than the book made it sound.\n\n` +
-        `If that is you, I would rather read your version than another summary.\n\n` +
-        `What happened?`
+        `${b.title} — ${b.author}\n\n` +
+        `${b.notable}\n\n` +
+        `What is actually in it: ${lowerFirst(b.core_idea)}\n\n` +
+        `Recommendations are not results, though. If you read it — did anything change?`
     })
   }
 ];
 
 // ---------------------------------------------------------------- helpers
 
-function firstSentence(text = "") {
-  const m = text.match(/^[^.!?]{20,140}[.!?]/);
-  return m ? m[0].trim() : "";
-}
-
-function trimTo(text = "", n) {
-  const t = text.trim();
-  return t.length <= n ? t : `${t.slice(0, n - 1).trimEnd()}…`;
+function lowerFirst(text = "") {
+  const t = (text || "").trim();
+  return t ? t[0].toLowerCase() + t.slice(1) : t;
 }
 
 function addDays(iso, n) {
@@ -159,113 +141,126 @@ function addDays(iso, n) {
   return d.toISOString().slice(0, 10);
 }
 
-// Spread the books so the same title does not recur inside a week, and only offer a
-// format a book it actually fits.
-function pickFor(books, format, i, used) {
-  const eligible = books.filter(format.suits);
-  const pool = eligible.length ? eligible : books;
-  const fresh = pool.filter((b) => !used.has(b.title));
-  const from = fresh.length ? fresh : pool;
-  const stride = Math.max(1, Math.floor(from.length / Math.max(DAYS, 1)));
-  const chosen = from[(i * stride + (i % 7)) % from.length];
-  used.add(chosen.title);
-  return chosen;
+function slideUrl(slide, i, total) {
+  const params = new URLSearchParams({
+    kind: slide.kind,
+    eyebrow: slide.eyebrow || "",
+    title: slide.title || "",
+    body: slide.body || "",
+    attribution: slide.attribution || "",
+    footer: slide.footer || "",
+    index: String(i + 1),
+    total: String(total)
+  });
+  return `${ORIGIN}/api/card?${params.toString()}`;
 }
 
-// ---------------------------------------------------------------- run
+// ---------------------------------------------------------------- schedule
 
-const books = await loadBooks();
-if (books.length < 10) {
-  console.error(`Only ${books.length} books returned from ${ORIGIN}/api/catalog — is "npm run dev" running?`);
-  process.exit(1);
+const schedule = [];
+const usedByPillar = new Map();
+for (let i = 0; i < POSTS; i += 1) {
+  const pillar = PILLARS[i % PILLARS.length];
+  const eligible = BOOKS.filter(pillar.needs);
+  if (!eligible.length) continue;
+  const used = usedByPillar.get(pillar.id) || new Set();
+  const fresh = eligible.filter((b) => !used.has(b.title));
+  const pool = fresh.length ? fresh : eligible;
+  const book = pool[i % pool.length];
+  used.add(book.title);
+  usedByPillar.set(pillar.id, used);
+  schedule.push({ pillar, book });
 }
+
+// ---------------------------------------------------------------- build
 
 mkdirSync(join(OUT, "cards"), { recursive: true });
 
-// Schedule by what the catalog can actually support rather than by strict rotation. Only
-// twelve books carry a real description, so the two formats that quote one are used at
-// most twelve times and the rest of the run goes to the two that work from a title. A
-// rigid rotation would have repeated those twelve books three times each and called it a
-// month of content.
-const descriptionFormats = FORMATS.filter((f) => ["problem", "idea"].includes(f.id));
-const titleFormats = FORMATS.filter((f) => ["limit", "ask"].includes(f.id));
-const descriptionCapacity = books.filter(hasRealDescription).length;
-
-const schedule = [];
-for (let i = 0; i < DAYS; i += 1) {
-  // Spread the description posts evenly through the run instead of front-loading them.
-  const share = descriptionCapacity / DAYS;
-  const wantDescription = Math.floor((i + 1) * share) > Math.floor(i * share);
-  const pool = wantDescription && descriptionCapacity ? descriptionFormats : titleFormats;
-  schedule.push(pool[i % pool.length]);
-}
-
 const plan = [];
-const used = new Set();
-for (let i = 0; i < DAYS; i += 1) {
-  // If the description pool is exhausted, fall back to a format that works from a title
-  // rather than running the same book twice. A repeat four days apart in the same format
-  // is the kind of thing a follower notices and an automation does not.
-  let format = schedule[i];
-  if (!books.some((b) => format.suits(b) && !used.has(b.title))) {
-    const fallback = titleFormats.find((f) => books.some((b) => f.suits(b) && !used.has(b.title)));
-    if (fallback) format = fallback;
-  }
-  const book = pickFor(books, format, i, used);
-  const piece = format.build(book);
-  const day = String(i + 1).padStart(2, "0");
+const verifications = [];
 
-  const params = new URLSearchParams({
-    layout: format.id,
-    tag: format.tag,
-    title: piece.title,
-    body: piece.body,
-    book: book.title,
-    author: book.author
-  });
+for (let i = 0; i < schedule.length; i += 1) {
+  const { pillar, book } = schedule[i];
+  const piece = pillar.build(book);
+  const id = String(i + 1).padStart(2, "0");
+  const dir = join("cards", `post-${id}`);
+  mkdirSync(join(OUT, dir), { recursive: true });
+
+  const slides = piece.slides.map((slide, n) => ({
+    n: n + 1,
+    kind: slide.kind,
+    copy: slide.title,
+    file: join(dir, `slide-${n + 1}.png`),
+    url: slideUrl(slide, n, piece.slides.length)
+  }));
 
   plan.push({
-    day: i + 1,
+    id: `BS-${id}`,
     date: addDays(START, i),
-    format: format.id,
+    pillar: pillar.id,
+    pillarName: pillar.name,
     book: `${book.title} — ${book.author}`,
-    card: `cards/day-${day}.png`,
-    cardUrl: `${ORIGIN}/api/card?${params.toString()}`,
-    caption: piece.caption
+    format: `carousel · ${slides.length} slides`,
+    hook: piece.hookLine,
+    slides,
+    caption: piece.caption,
+    status: "Idea"
   });
+
+  if (book.verify) {
+    verifications.push({ id: `BS-${id}`, book: book.title, check: book.verify, notable: book.notable || null });
+  }
 }
 
 writeFileSync(join(OUT, "plan.json"), JSON.stringify(plan, null, 2));
 
-const md = plan
-  .map(
-    (p) =>
-      `## Day ${p.day} · ${p.date} · ${p.format}\n\n` +
-      `**Book:** ${p.book}\n\n` +
-      `**Image:** \`${p.card}\`\n\n` +
-      `${p.caption}\n`
-  )
-  .join("\n---\n\n");
-writeFileSync(join(OUT, "captions.md"), `# BookSphere content plan\n\n${md}`);
+writeFileSync(
+  join(OUT, "captions.md"),
+  `# BookSphere carousels\n\n` +
+    plan
+      .map(
+        (p) =>
+          `## ${p.id} · ${p.date} · ${p.pillarName}\n\n` +
+          `**Book:** ${p.book}\n\n**Format:** ${p.format}\n\n### Slides\n\n` +
+          p.slides.map((s) => `${s.n}. *(${s.kind})* ${s.copy}`).join("\n") +
+          `\n\n### Caption\n\n${p.caption}\n`
+      )
+      .join("\n---\n\n")
+);
 
-// Fetch the cards last, so a dev server that is not running costs you the images but not
-// the plan.
+writeFileSync(
+  join(OUT, "VERIFY.md"),
+  `# Check these before publishing\n\n` +
+    `Every factual claim below came from hand-written source material rather than from ` +
+    `generation — but a human still confirms it. One invented quotation or endorsement ` +
+    `costs more trust than a month of posts earns.\n\n` +
+    verifications
+      .map(
+        (v) =>
+          `- **${v.id} · ${v.book}**\n  - ${v.check}` +
+          (v.notable ? `\n  - Public reference used on a slide: ${v.notable}` : "")
+      )
+      .join("\n\n") +
+    `\n`
+);
+
 let ok = 0;
 let failed = 0;
-for (const p of plan) {
-  try {
-    const res = await fetch(p.cardUrl);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const buf = Buffer.from(await res.arrayBuffer());
-    writeFileSync(join(OUT, p.card), buf);
-    ok += 1;
-  } catch (error) {
-    failed += 1;
-    if (failed === 1) {
-      console.error(`  card render failed (${error.message}) — is "npm run dev" running on ${ORIGIN}?`);
+for (const post of plan) {
+  for (const slide of post.slides) {
+    try {
+      const res = await fetch(slide.url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      writeFileSync(join(OUT, slide.file), Buffer.from(await res.arrayBuffer()));
+      ok += 1;
+    } catch (error) {
+      failed += 1;
+      if (failed === 1) {
+        console.error(`  slide render failed (${error.message}) — is "npm run dev" running on ${ORIGIN}?`);
+      }
     }
   }
 }
 
-console.log(`${OUT}/plan.json and captions.md written — ${plan.length} posts`);
-console.log(`cards rendered: ${ok}${failed ? `, failed: ${failed}` : ""}`);
+console.log(`${OUT}/ — ${plan.length} carousels, ${ok} slides rendered${failed ? `, ${failed} failed` : ""}`);
+console.log(`${verifications.length} posts carry a claim to verify — see ${OUT}/VERIFY.md`);

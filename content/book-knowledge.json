@@ -1,0 +1,185 @@
+{
+  "_README": {
+    "purpose": "Hand-curated source material for BookSphere content. Nothing in this file is generated.",
+    "why_it_is_hand_written": "The strategy forbids fabricated quotations and invented endorsements, and a language model will produce both fluently and confidently. 'Bill Gates called this his favourite book' is the exact shape of a sentence that gets invented. So quotes and notable references are written by hand, and each carries a verify field that the generator prints as a pre-publish checklist.",
+    "fields": {
+      "quote": "A short line from the book. Kept brief on purpose - fair use, not an excerpt.",
+      "quote_note": "Anything that changes how the quote should be presented, e.g. a translation or an author quoting someone else.",
+      "core_idea": "The one idea worth understanding first, in plain language. Original phrasing, never the publisher's copy.",
+      "tension": "The argument inside the book - the thing reasonable people land on differently. Feeds Pillar F.",
+      "misses": "What typical summaries flatten. Feeds Pillar H.",
+      "apply": "One realistic action someone could take today. Feeds Pillar D.",
+      "notable": "A documented public reference by a well-known person. OMIT ENTIRELY rather than guess.",
+      "verify": "What a human must confirm before this is published."
+    },
+    "rule": "If you cannot name where a claim comes from, delete the claim. An empty field costs nothing; an invented one costs the account."
+  },
+
+  "books": [
+    {
+      "title": "Atomic Habits",
+      "author": "James Clear",
+      "quote": "You do not rise to the level of your goals. You fall to the level of your systems.",
+      "core_idea": "Behaviour follows design more reliably than it follows intention. The lever is the environment and the size of the first step, not the strength of the commitment.",
+      "tension": "Discipline or environment? The book argues that willpower is the least reliable input, which is uncomfortable if you believe effort is the point.",
+      "misses": "Most summaries reduce it to 1% better every day. The more useful half is the argument that identity precedes behaviour: you act like the person you already believe you are.",
+      "apply": "Take one habit you keep failing at and change one physical thing about where it happens. Move the object closer, or move the obstacle further away.",
+      "verify": "Quote is widely printed and appears in the book's opening chapters. Confirm wording against your copy before posting."
+    },
+    {
+      "title": "The Psychology of Money",
+      "author": "Morgan Housel",
+      "quote": "Doing well with money has a little to do with how smart you are and a lot to do with how you behave.",
+      "core_idea": "Financial outcomes are driven by behaviour under uncertainty, not by intelligence or technical skill. Two people with the same information routinely get opposite results.",
+      "tension": "Save aggressively or live now? The book refuses to resolve it, arguing that the right answer depends on what you are actually optimising for.",
+      "misses": "Summaries lift the compounding chapter and drop the one about luck and risk, which is the part that changes how you judge other people's outcomes.",
+      "apply": "Write down the last financial decision you made and name whether it was skill or timing. Most people cannot tell, which is the point.",
+      "verify": "Quote appears in the introduction. Confirm wording."
+    },
+    {
+      "title": "Man's Search for Meaning",
+      "author": "Viktor E. Frankl",
+      "quote": "When we are no longer able to change a situation, we are challenged to change ourselves.",
+      "quote_note": "Translated from German - wording differs between editions. Say 'in one translation' if quoting precisely matters.",
+      "core_idea": "Meaning is found rather than assigned, and can be found in work, in love, or in the attitude taken toward unavoidable suffering.",
+      "tension": "The memoir is what people remember; the clinical second half is where the argument actually lives, and it resists the self-help framing the book usually gets.",
+      "misses": "It is quoted as inspiration and read as a survival story, but it is a clinical argument about a therapeutic method.",
+      "apply": "Name one situation you cannot currently change, and one thing about your response to it that you can.",
+      "verify": "Translation-dependent. Check your edition's wording before printing it on a card."
+    },
+    {
+      "title": "The Hard Thing About Hard Things",
+      "author": "Ben Horowitz",
+      "quote": "There are no silver bullets, only lead bullets.",
+      "core_idea": "The decisions that matter most are the ones where every option is bad, and there is no framework that makes them not bad.",
+      "tension": "Most business books present decisions with a right answer that was obvious in retrospect. This one argues the hard part is precisely that no such answer exists.",
+      "misses": "Read as war stories, but the structure is the argument: the book spends its length on situations where all options are bad because that is the claim.",
+      "apply": "Take a decision you have been postponing and write out the least-bad option rather than the right one.",
+      "verify": "Quote is from the book. Confirm wording."
+    },
+    {
+      "title": "Deep Work",
+      "author": "Cal Newport",
+      "quote": "Clarity about what matters provides clarity about what does not.",
+      "core_idea": "Sustained, distraction-free concentration is both increasingly rare and increasingly valuable, and it is a trainable capacity rather than a personality trait.",
+      "tension": "Focus or flexibility? The book takes a hard position that a great deal of modern work is shallow by design, which does not survive contact with every job.",
+      "misses": "Summaries take the productivity advice and skip the economic argument about why the skill is becoming scarce.",
+      "apply": "Block ninety minutes tomorrow with the phone in another room and notice how long it takes before you want it.",
+      "verify": "Quote appears in the book. Confirm wording."
+    },
+    {
+      "title": "Thinking, Fast and Slow",
+      "author": "Daniel Kahneman",
+      "quote": "Nothing in life is as important as you think it is while you are thinking about it.",
+      "core_idea": "Two systems drive thought: one fast, automatic and confident; one slow, effortful and lazy. Most errors come from the fast one being trusted for work it cannot do.",
+      "tension": "Knowing about a bias does very little to prevent it. The book is unusually honest that awareness is not a cure.",
+      "misses": "It is used as a list of biases to name in arguments. Kahneman's own point is that you will not catch your own in real time.",
+      "apply": "Next time you feel certain, ask what evidence would change your mind. If nothing would, the certainty is not about the evidence.",
+      "verify": "Quote is the focusing illusion, widely printed. Confirm wording."
+    },
+    {
+      "title": "Sapiens",
+      "author": "Yuval Noah Harari",
+      "quote": "Fiction has enabled us not merely to imagine things, but to do so collectively.",
+      "core_idea": "Large-scale human cooperation runs on shared imagined orders - money, nations, companies, rights - that exist because enough people act as if they do.",
+      "tension": "The book is strongest as narrative and weakest where it compresses contested history into a clean line. That is exactly what makes it readable.",
+      "misses": "The cognitive revolution chapter gets quoted; the argument about agriculture as a trap is the more provocative claim.",
+      "apply": "Pick something you treat as objectively real at work - a title, a target, a process - and ask what holds it up.",
+      "notable": "Included on Barack Obama's published summer reading list, and publicly recommended by Bill Gates on his blog.",
+      "verify": "Both references are documented publicly. Confirm the specific year and wording before citing."
+    },
+    {
+      "title": "Zero to One",
+      "author": "Peter Thiel",
+      "quote": "What important truth do very few people agree with you on?",
+      "core_idea": "Real progress comes from going from nothing to something, not from copying what works. Competition is often evidence that you are not doing anything new.",
+      "tension": "The argument for monopoly as a goal is genuinely contested, and the book knows it.",
+      "misses": "Read as a startup playbook. It is closer to a philosophy of what counts as progress.",
+      "apply": "Answer the question in the quote honestly, in writing. Most people find they do not have an answer.",
+      "verify": "This is the book's central interview question. Confirm wording."
+    },
+    {
+      "title": "Never Split the Difference",
+      "author": "Chris Voss",
+      "quote": "Never be so sure of what you want that you wouldn't take something better.",
+      "core_idea": "Negotiation is emotional information-gathering, not logical trading. Understanding what the other person actually needs beats arguing for what you want.",
+      "tension": "Tactics learned from hostage negotiation can read as manipulation in ordinary relationships, and the book's own framing does not fully resolve that.",
+      "misses": "The tactical labels get repeated. The underlying claim - that people need to feel heard before they can move - is the part that generalises.",
+      "apply": "In the next disagreement, say what you think the other person wants before saying what you want.",
+      "verify": "Quote is from the book. Confirm wording."
+    },
+    {
+      "title": "Mindset",
+      "author": "Carol S. Dweck",
+      "quote": "Becoming is better than being.",
+      "core_idea": "Whether people treat ability as fixed or developable changes what they do after failing, which over time changes what they become capable of.",
+      "tension": "The idea has been diluted into praise-the-effort advice, and Dweck herself has publicly pushed back on that reading.",
+      "misses": "A growth mindset is not optimism about outcomes. It is a claim about what you do after a specific failure.",
+      "apply": "Recall your last failure and note whether your explanation was about capacity or about method.",
+      "verify": "Quote is from the book. Dweck's later comments on misapplication are publicly documented - confirm before citing them."
+    },
+    {
+      "title": "The Intelligent Investor",
+      "author": "Benjamin Graham",
+      "quote": "The investor's chief problem, and even his worst enemy, is likely to be himself.",
+      "core_idea": "Investing is the discipline of paying less than something is worth and refusing to be moved by price movements that carry no information.",
+      "tension": "Value discipline is simple to state and extremely hard to hold through a decade when it underperforms.",
+      "misses": "The formulas date badly. The chapters on the investor's temperament do not.",
+      "apply": "Write down what would make you sell something you own before you need to decide it.",
+      "notable": "Warren Buffett has repeatedly and publicly described it as the best book on investing ever written, and has cited chapters 8 and 20 specifically.",
+      "verify": "Buffett's recommendation is extensively documented in Berkshire letters and interviews. Confirm the exact phrasing you attribute to him."
+    },
+    {
+      "title": "Meditations",
+      "author": "Marcus Aurelius",
+      "quote": "You have power over your mind, not outside events. Realize this, and you will find strength.",
+      "quote_note": "Heavily translation-dependent, and this rendering is disputed by some scholars. Attribute to a translation, or choose a passage from the edition you own.",
+      "core_idea": "A private notebook of a working ruler reminding himself, repeatedly, of the same few things - which is itself the lesson about how principles are held.",
+      "tension": "It is read as calm wisdom; it is closer to a man arguing with himself because the argument keeps needing to be had again.",
+      "misses": "Quote pages flatten it into serenity. The repetition is the substance.",
+      "apply": "Write the same instruction to yourself three days running and notice whether you needed to.",
+      "verify": "Check the translation. This particular rendering is contested - safest to quote your own edition."
+    },
+    {
+      "title": "Good to Great",
+      "author": "Jim Collins",
+      "quote": "Good is the enemy of great.",
+      "core_idea": "Sustained excellence came less from dramatic strategy than from disciplined people, disciplined thought and disciplined action, applied over long periods.",
+      "tension": "Several of the companies studied later struggled badly, which is either a fatal problem for the method or the most interesting thing about it.",
+      "misses": "The famous concepts get repeated without the survivorship critique, which is the more useful discussion.",
+      "apply": "Name one thing your team is good at that is preventing it from being excellent at something else.",
+      "verify": "Quote is the book's opening line. The later performance of the studied companies is publicly documented - confirm specifics before citing."
+    },
+    {
+      "title": "Start with Why",
+      "author": "Simon Sinek",
+      "quote": "People don't buy what you do; they buy why you do it.",
+      "core_idea": "Organisations that can state their purpose plainly communicate from the inside out, and that ordering changes what people remember.",
+      "tension": "The claim is stated far more confidently than the evidence supports, which is worth saying out loud when recommending it.",
+      "misses": "It is treated as a marketing formula. It is closer to a claim about clarity of belief.",
+      "apply": "Write your work's why in one sentence without using the words quality, innovative or customer-focused.",
+      "verify": "Quote is the book's central line. Confirm wording."
+    },
+    {
+      "title": "Essentialism",
+      "author": "Greg McKeown",
+      "quote": "If you don't prioritize your life, someone else will.",
+      "core_idea": "The disciplined pursuit of less: deciding deliberately where to spend effort, and treating most opportunities as costs rather than gains.",
+      "tension": "Easy to state, and largely unavailable to people whose work is assigned rather than chosen.",
+      "misses": "Read as a productivity system. The harder argument is about the social cost of declining things.",
+      "apply": "Decline one thing this week and say plainly that you are declining it, rather than going quiet.",
+      "verify": "Quote is from the book. Confirm wording."
+    },
+    {
+      "title": "Outliers",
+      "author": "Malcolm Gladwell",
+      "quote": "Practice isn't the thing you do once you're good. It's the thing you do that makes you good.",
+      "core_idea": "Exceptional success is far more dependent on timing, culture, and accumulated advantage than the stories we tell about individuals allow.",
+      "tension": "The ten-thousand-hours claim has been substantially contested by the researcher whose work it drew on.",
+      "misses": "The hours figure travelled; the argument about birth dates, timing and inherited advantage is the more durable part.",
+      "apply": "Take a success you attribute to your own effort and list three conditions you did not create.",
+      "notable": "Anders Ericsson, whose research the ten-thousand-hour idea draws on, publicly disputed the popularised version.",
+      "verify": "Ericsson's disagreement is documented in his own writing. Confirm before citing him."
+    }
+  ]
+}
