@@ -3,16 +3,15 @@ import type { NextRequest } from "next/server";
 
 // Carousel slides for BookSphere's organic content, rendered from markup by next/og.
 //
-// Monochrome on purpose: the content strategy specifies black, white, charcoal and soft
-// grey, with colour rare and intentional. The product's green belongs to the product; an
-// editorial account that teaches before it sells should not look like an ad for one.
+// Monochrome except for one green, which belongs to the book. The book is the subject of
+// every slide, so it is the only thing that gets colour - on the opening slide it is the
+// largest thing on the frame, not a credit line under the headline.
 //
-// Rendered rather than model-generated because text IS the content here - a claim, a quote,
-// an author's name - and image models still mangle text. Markup gives exact letters and a
-// slide that looks identical on day 1 and day 60.
+// Rendered rather than model-generated because text IS the content here, and image models
+// still mangle letters. Markup gives exact type and a slide identical on day 1 and day 60.
 //
-// GET /api/card?kind=hook&eyebrow=...&title=...&body=...&footer=...&index=1&total=5
-// kinds: hook | idea | quote | tension | apply | ask
+// GET /api/card?kind=idea&num=01&title=...&body=...&index=2&total=7
+// kinds: hook (dark, stacked headline) | idea | quote | tension | line (dark, closing)
 // ratio: portrait (1080x1350, default) | story (1080x1920)
 
 export const runtime = "edge";
@@ -21,9 +20,6 @@ const INK = "#0d0d0d";
 const PAPER = "#f4f4f2";
 const CHARCOAL = "#1c1c1c";
 const SOFT = "#8a8a86";
-// The one place colour is allowed. The strategy says colour should be rare and
-// intentional, and the book is the thing every slide is about - so the book gets it and
-// nothing else does. It also ties the feed back to the product without naming it.
 const GREEN_ON_DARK = "#9acfb1";
 const GREEN_ON_LIGHT = "#1d5c45";
 
@@ -33,10 +29,13 @@ export async function GET(request: NextRequest) {
   const eyebrow = q.get("eyebrow") || "";
   const title = q.get("title") || "";
   const body = q.get("body") || "";
-  const footer = q.get("footer") || "";
-  const attribution = q.get("attribution") || "";
+  const num = q.get("num") || "";
   const book = q.get("book") || "";
   const bookAuthor = q.get("bookAuthor") || "";
+  // The opening slide sets the headline as three stacked lines so the book can be the
+  // biggest thing on the frame: pre / BOOK / post.
+  const pre = q.get("pre") || "";
+  const post = q.get("post") || "";
   const index = Number(q.get("index") || "0");
   const total = Number(q.get("total") || "0");
   const story = q.get("ratio") === "story";
@@ -44,38 +43,35 @@ export async function GET(request: NextRequest) {
   const width = 1080;
   const height = story ? 1920 : 1350;
 
-  // A quote slide is the one place the type should dominate; everything else keeps a
-  // steadier hierarchy so a carousel does not shout on every frame.
   const isQuote = kind === "quote";
-  const dark = kind === "hook" || isQuote;
+  const isHook = kind === "hook";
+  const isLine = kind === "line";
+  const dark = isHook || isQuote || isLine;
   const bg = dark ? INK : PAPER;
   const fg = dark ? PAPER : CHARCOAL;
   const dim = dark ? "rgba(244,244,242,0.62)" : SOFT;
+  const green = dark ? GREEN_ON_DARK : GREEN_ON_LIGHT;
 
   const len = title.length;
-  // A hook is five to eight words and has to work as a pattern interrupt at thumbnail
-  // size, so it gets its own much larger scale. Sizing it like body copy is what made the
-  // first frame scrollable past.
-  const isHook = kind === "hook";
-  const titleSize = isHook
+  const titleSize = isLine
     ? len > 64
-      ? 96
-      : len > 40
-        ? 116
-        : 134
+      ? 92
+      : 112
     : isQuote
-      ? len > 150
-        ? 54
-        : len > 90
-          ? 64
-          : 76
-      : len > 120
-        ? 56
-        : len > 74
-          ? 66
-          : 78;
+      ? len > 120
+        ? 60
+        : 74
+      : len > 96
+        ? 62
+        : len > 60
+          ? 72
+          : 84;
 
-  // Safe zone: platform controls sit over the bottom of a story, so pad harder there.
+  // The book on the opening slide scales to fill the width it is given. It is the point of
+  // the frame, so it never drops below the size of the words around it.
+  const bookLen = book.length;
+  const bookSize = bookLen > 26 ? 88 : bookLen > 18 ? 106 : bookLen > 12 ? 124 : 140;
+
   const padY = story ? 150 : 76;
 
   return new ImageResponse(
@@ -94,11 +90,12 @@ export async function GET(request: NextRequest) {
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
           <div style={{ display: "flex", flexDirection: "column" }}>
-            {book ? (
+            {/* On the opening slide the book lives in the headline, so it is not repeated here. */}
+            {book && !pre ? (
               <div
                 style={{
                   display: "flex",
-                  color: dark ? GREEN_ON_DARK : GREEN_ON_LIGHT,
+                  color: green,
                   fontSize: 34,
                   fontWeight: 600,
                   letterSpacing: "-0.01em"
@@ -107,12 +104,12 @@ export async function GET(request: NextRequest) {
                 {book}
               </div>
             ) : null}
-            {bookAuthor ? (
+            {bookAuthor && !pre ? (
               <div style={{ display: "flex", marginTop: 6, color: dim, fontSize: 24 }}>
                 {bookAuthor}
               </div>
             ) : null}
-            {!book && eyebrow ? (
+            {(!book || pre) && eyebrow ? (
               <div
                 style={{
                   display: "flex",
@@ -135,53 +132,95 @@ export async function GET(request: NextRequest) {
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" }}>
-          {isQuote ? (
-            <div
-              style={{
-                display: "flex",
-                color: dim,
-                fontSize: 96,
-                lineHeight: 0.6,
-                marginBottom: 18
-              }}
-            >
-              &ldquo;
+          {pre ? (
+            // Stacked headline. The book is a full line of its own, in green, at display size.
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <div style={{ display: "flex", color: dim, fontSize: 58, letterSpacing: "-0.02em" }}>
+                {pre}
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  marginTop: 8,
+                  marginBottom: 8,
+                  color: green,
+                  fontSize: bookSize,
+                  fontWeight: 600,
+                  lineHeight: 0.98,
+                  letterSpacing: "-0.04em"
+                }}
+              >
+                {book}
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  color: fg,
+                  fontSize: 58,
+                  fontWeight: 500,
+                  lineHeight: 1.12,
+                  letterSpacing: "-0.02em",
+                  maxWidth: 840
+                }}
+              >
+                {post}
+              </div>
             </div>
-          ) : null}
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              {num ? (
+                <div
+                  style={{
+                    display: "flex",
+                    marginBottom: 22,
+                    color: green,
+                    fontSize: 30,
+                    fontWeight: 600,
+                    letterSpacing: "0.16em"
+                  }}
+                >
+                  {num}
+                </div>
+              ) : null}
 
-          <div
-            style={{
-              display: "flex",
-              color: fg,
-              fontSize: titleSize,
-              fontWeight: isHook ? 500 : isQuote ? 300 : 400,
-              lineHeight: isHook ? 0.98 : isQuote ? 1.16 : 1.08,
-              letterSpacing: "-0.03em"
-            }}
-          >
-            {title}
-          </div>
+              {isQuote ? (
+                <div style={{ display: "flex", color: dim, fontSize: 92, lineHeight: 0.6, marginBottom: 18 }}>
+                  &ldquo;
+                </div>
+              ) : null}
 
-          {attribution ? (
-            <div style={{ display: "flex", marginTop: 26, color: dim, fontSize: 26 }}>
-              {attribution}
+              <div
+                style={{
+                  display: "flex",
+                  color: fg,
+                  fontSize: titleSize,
+                  fontWeight: isLine ? 500 : isQuote ? 300 : 500,
+                  lineHeight: isLine ? 1.0 : 1.08,
+                  letterSpacing: "-0.035em",
+                  maxWidth: 900
+                }}
+              >
+                {title}
+              </div>
+
+              {/* One short line, never a paragraph. Set large enough to read as a statement. */}
+              {body ? (
+                <div
+                  style={{
+                    display: "flex",
+                    marginTop: 34,
+                    color: dark ? "rgba(244,244,242,0.72)" : "#55554f",
+                    fontSize: 38,
+                    lineHeight: 1.42,
+                    letterSpacing: "-0.015em",
+                    maxWidth: 880
+                  }}
+                >
+                  {body}
+                </div>
+              ) : null}
             </div>
-          ) : null}
-
-          {body ? (
-            <div
-              style={{
-                display: "flex",
-                marginTop: 30,
-                color: dark ? "rgba(244,244,242,0.74)" : "#4a4a48",
-                fontSize: 30,
-                lineHeight: 1.48,
-                maxWidth: 860
-              }}
-            >
-              {body}
-            </div>
-          ) : null}
+          )}
         </div>
 
         <div
@@ -203,7 +242,7 @@ export async function GET(request: NextRequest) {
               textTransform: "uppercase"
             }}
           >
-            {book && eyebrow ? eyebrow : footer}
+            {pre ? "" : eyebrow}
           </div>
           <div style={{ display: "flex", color: dim, fontSize: 22, letterSpacing: "0.14em" }}>
             BOOKSPHERE
