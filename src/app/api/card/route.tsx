@@ -21,6 +21,11 @@ const INK = "#0d0d0d";
 const PAPER = "#f4f4f2";
 const CHARCOAL = "#1c1c1c";
 const SOFT = "#8a8a86";
+// The one place colour is allowed. The strategy says colour should be rare and
+// intentional, and the book is the thing every slide is about - so the book gets it and
+// nothing else does. It also ties the feed back to the product without naming it.
+const GREEN_ON_DARK = "#9acfb1";
+const GREEN_ON_LIGHT = "#1d5c45";
 
 export async function GET(request: NextRequest) {
   const q = request.nextUrl.searchParams;
@@ -30,6 +35,8 @@ export async function GET(request: NextRequest) {
   const body = q.get("body") || "";
   const footer = q.get("footer") || "";
   const attribution = q.get("attribution") || "";
+  const book = q.get("book") || "";
+  const bookAuthor = q.get("bookAuthor") || "";
   const index = Number(q.get("index") || "0");
   const total = Number(q.get("total") || "0");
   const story = q.get("ratio") === "story";
@@ -86,17 +93,39 @@ export async function GET(request: NextRequest) {
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-          <div
-            style={{
-              display: "flex",
-              color: dim,
-              fontSize: 22,
-              fontWeight: 600,
-              letterSpacing: "0.2em",
-              textTransform: "uppercase"
-            }}
-          >
-            {eyebrow}
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            {book ? (
+              <div
+                style={{
+                  display: "flex",
+                  color: dark ? GREEN_ON_DARK : GREEN_ON_LIGHT,
+                  fontSize: 34,
+                  fontWeight: 600,
+                  letterSpacing: "-0.01em"
+                }}
+              >
+                {book}
+              </div>
+            ) : null}
+            {bookAuthor ? (
+              <div style={{ display: "flex", marginTop: 6, color: dim, fontSize: 24 }}>
+                {bookAuthor}
+              </div>
+            ) : null}
+            {!book && eyebrow ? (
+              <div
+                style={{
+                  display: "flex",
+                  color: dim,
+                  fontSize: 22,
+                  fontWeight: 600,
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase"
+                }}
+              >
+                {eyebrow}
+              </div>
+            ) : null}
           </div>
           {total > 1 ? (
             <div style={{ display: "flex", color: dim, fontSize: 22, letterSpacing: "0.08em" }}>
@@ -164,7 +193,18 @@ export async function GET(request: NextRequest) {
             paddingTop: 26
           }}
         >
-          <div style={{ display: "flex", color: dim, fontSize: 24 }}>{footer}</div>
+          <div
+            style={{
+              display: "flex",
+              color: dim,
+              fontSize: 22,
+              fontWeight: 600,
+              letterSpacing: "0.2em",
+              textTransform: "uppercase"
+            }}
+          >
+            {book && eyebrow ? eyebrow : footer}
+          </div>
           <div style={{ display: "flex", color: dim, fontSize: 22, letterSpacing: "0.14em" }}>
             BOOKSPHERE
           </div>
