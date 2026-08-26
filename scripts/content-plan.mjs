@@ -82,11 +82,15 @@ const PILLARS = [
             title: text,
             footer: b.title
           })),
+          ...(b.non_obvious
+            ? [{ kind: "tension", eyebrow: "What almost nobody mentions", title: b.non_obvious, footer: b.title }]
+            : []),
           { kind: "ask", eyebrow: "Your turn", title: "Which of these have you actually used?", body: "And which one did not survive contact with a real week?", footer: b.title }
         ],
         caption:
           `${headline}\n\n` +
           items.map((t, n) => `${n + 1}. ${t}`).join("\n\n") +
+          (b.non_obvious ? `\n\nAnd the part almost nobody mentions: ${lowerFirst(b.non_obvious)}` : "") +
           `\n\n${b.title} — ${b.author}\n\n` +
           `Which of these have you actually used? And which one did not survive contact with a real week?`
       };
@@ -102,6 +106,9 @@ const PILLARS = [
         { kind: "hook", eyebrow: "One idea first", title: hook, footer: `${b.title} · ${b.author}` },
         { kind: "idea", eyebrow: "What it actually argues", title: b.core_idea, footer: b.title },
         { kind: "idea", eyebrow: "What summaries flatten", title: b.misses, footer: b.title },
+        ...(b.non_obvious
+          ? [{ kind: "tension", eyebrow: "What almost nobody mentions", title: b.non_obvious, footer: b.title }]
+          : []),
         { kind: "apply", eyebrow: "Try it this week", title: b.apply, footer: b.title },
         { kind: "ask", eyebrow: "Your turn", title: "If you have read it — what did you actually do differently?", body: "Not what you underlined. What changed.", footer: b.title }
       ],
@@ -109,6 +116,7 @@ const PILLARS = [
         `${b.title} — ${b.author}\n\n` +
         `${b.core_idea}\n\n` +
         `The part most summaries drop: ${lowerFirst(b.misses)}\n\n` +
+        (b.non_obvious ? `What almost nobody mentions: ${lowerFirst(b.non_obvious)}\n\n` : "") +
         `One thing to try: ${lowerFirst(b.apply)}\n\n` +
         `If you have read it — what did you actually do differently? Not what you underlined. What changed.`
     })
@@ -121,15 +129,19 @@ const PILLARS = [
       hookLine: hook,
       slides: [
         { kind: "hook", eyebrow: "One line", title: hook, footer: `${b.title} · ${b.author}` },
-        { kind: "quote", eyebrow: "The line", title: b.quote, attribution: `${b.author} · ${b.title}`, footer: b.quote_note ? "Note on the quote in the caption" : "" },
+        { kind: "quote", eyebrow: "The line", title: b.quote, attribution: `${b.author} · ${b.title}`, footer: b.title },
         { kind: "idea", eyebrow: "Why it lands", title: b.core_idea, footer: b.title },
         { kind: "tension", eyebrow: "And where it gets harder", title: b.tension, footer: b.title },
+        ...(b.non_obvious
+          ? [{ kind: "idea", eyebrow: "What almost nobody mentions", title: b.non_obvious, footer: b.title }]
+          : []),
         { kind: "ask", eyebrow: "Your turn", title: "Does that hold up in your experience, or not?", body: "The disagreement is more useful than the agreement.", footer: b.title }
       ],
       caption:
         `"${b.quote}"\n— ${b.author}, ${b.title}\n\n` +
         `${b.core_idea}\n\n` +
         `Where it gets harder: ${lowerFirst(b.tension)}\n\n` +
+        (b.non_obvious ? `What almost nobody mentions: ${lowerFirst(b.non_obvious)}\n\n` : "") +
         (b.quote_note ? `A note on the quote: ${b.quote_note}\n\n` : "") +
         `Does it hold up in your experience? The disagreement is more useful than the agreement.`
     })
@@ -144,12 +156,16 @@ const PILLARS = [
         { kind: "hook", eyebrow: "The argument inside it", title: hook, footer: `${b.title} · ${b.author}` },
         { kind: "tension", eyebrow: "The tension", title: b.tension, footer: b.title },
         { kind: "idea", eyebrow: "What the book claims", title: b.core_idea, footer: b.title },
+        ...(b.non_obvious
+          ? [{ kind: "tension", eyebrow: "What almost nobody mentions", title: b.non_obvious, footer: b.title }]
+          : []),
         { kind: "ask", eyebrow: "Your turn", title: "Which side of that have you actually lived?", body: "Both readings are defensible. That is what makes it worth discussing.", footer: b.title }
       ],
       caption:
         `${b.title} — ${b.author}\n\n` +
         `${b.tension}\n\n` +
         `The book's own position: ${lowerFirst(b.core_idea)}\n\n` +
+        (b.non_obvious ? `What almost nobody mentions: ${lowerFirst(b.non_obvious)}\n\n` : "") +
         `Which side of that have you actually lived? Both readings are defensible, which is exactly why it is worth discussing.`
     })
   },
@@ -163,14 +179,21 @@ const PILLARS = [
       hookLine: hook,
       slides: [
         { kind: "hook", eyebrow: "Widely recommended", title: hook, footer: `${b.title} · ${b.author}` },
-        { kind: "idea", eyebrow: "The public reference", title: b.notable, footer: "Verify before posting" },
+        { kind: "idea", eyebrow: "The public reference", title: b.notable, footer: b.title },
         { kind: "idea", eyebrow: "What is actually in it", title: b.core_idea, footer: b.title },
+        ...(b.non_obvious
+          ? [{ kind: "tension", eyebrow: "What almost nobody mentions", title: b.non_obvious, footer: b.title }]
+          : []),
+        ...(b.misses
+          ? [{ kind: "idea", eyebrow: "What summaries flatten", title: b.misses, footer: b.title }]
+          : []),
         { kind: "ask", eyebrow: "Your turn", title: "Recommendations are not results. Did it work for you?", footer: b.title }
       ],
       caption:
         `${b.title} — ${b.author}\n\n` +
         `${b.notable}\n\n` +
         `What is actually in it: ${lowerFirst(b.core_idea)}\n\n` +
+        (b.non_obvious ? `And the part almost nobody mentions: ${lowerFirst(b.non_obvious)}\n\n` : "") +
         `Recommendations are not results, though. If you read it — did anything change?`
     })
   }
@@ -255,8 +278,14 @@ for (let i = 0; i < schedule.length; i += 1) {
     status: "Idea"
   });
 
-  if (book.verify) {
-    verifications.push({ id: `BS-${id}`, book: book.title, check: book.verify, notable: book.notable || null });
+  if (book.verify || book.non_obvious_verify) {
+    verifications.push({
+      id: `BS-${id}`,
+      book: book.title,
+      check: book.verify || null,
+      nonObvious: book.non_obvious_verify || null,
+      notable: book.notable || null
+    });
   }
 }
 
@@ -285,8 +314,10 @@ writeFileSync(
     verifications
       .map(
         (v) =>
-          `- **${v.id} · ${v.book}**\n  - ${v.check}` +
-          (v.notable ? `\n  - Public reference used on a slide: ${v.notable}` : "")
+          `- **${v.id} · ${v.book}**` +
+          (v.check ? `\n  - Quote: ${v.check}` : "") +
+          (v.nonObvious ? `\n  - The "almost nobody mentions" slide: ${v.nonObvious}` : "") +
+          (v.notable ? `\n  - Public reference on a slide: ${v.notable}` : "")
       )
       .join("\n\n") +
     `\n`

@@ -11,7 +11,9 @@
       "apply": "One realistic action someone could take today. Feeds Pillar D.",
       "notable": "A documented public reference by a well-known person. OMIT ENTIRELY rather than guess.",
       "verify": "What a human must confirm before this is published.",
-      "takeaways": "Four to six things a reader can actually use. Feeds the numbered-list pillar, where the hook promises a count and every slide has to deliver one of them. Written by hand: a numbered promise the carousel does not keep is worse than no hook at all."
+      "takeaways": "Four to six things a reader can actually use. Feeds the numbered-list pillar, where the hook promises a count and every slide has to deliver one of them. Written by hand: a numbered promise the carousel does not keep is worse than no hook at all.",
+      "non_obvious": "The thing that is NOT in every summary - a second-order reading, the book's own history, or the author's later position. This is the field that decides whether a post is worth following: everything else is available on fifty other accounts.",
+      "non_obvious_verify": "Whether this is a documented fact or your interpretation. Interpretations must be presented as such; facts must be confirmed. This distinction is what keeps a strong claim from becoming a false one."
     },
     "rule": "If you cannot name where a claim comes from, delete the claim. An empty field costs nothing; an invented one costs the account."
   },
@@ -31,7 +33,9 @@
         "Never miss twice. One skipped day is noise; two is the start of a new pattern.",
         "Change the room before you change the resolve. Distance does the work willpower cannot.",
         "Decide who you are becoming, then let each action cast a vote for that person."
-      ]
+      ],
+      "non_obvious": "The four laws are built for habits you want to start. They invert awkwardly for habits you need to stop, where almost all the work is environmental and almost none is behavioural. Most people fail at the second problem while reading advice written for the first.",
+      "non_obvious_verify": "This is a reading of the book's structure, not a quotation. Present it as your view."
     },
     {
       "title": "The Psychology of Money",
@@ -48,7 +52,9 @@
         "Enough is a number you set. Without it, every gain resets the target.",
         "Wealth is what you do not see: the cars unbought, the upgrades declined.",
         "Room for error is not pessimism. It is what lets you stay in the game long enough to compound."
-      ]
+      ],
+      "non_obvious": "Housel describes his own money as deliberately boring — a paid-off house and index funds — inside the book. The most interesting financial writer of the decade argues for the least interesting portfolio, and that is the argument rather than a footnote.",
+      "non_obvious_verify": "Housel describes his own holdings in the chapter on his own investing. Confirm against your copy."
     },
     {
       "title": "Man's Search for Meaning",
@@ -66,7 +72,9 @@
         "The last freedom is the choice of response, and it survives conditions that take everything else.",
         "A why makes a how bearable. Without one, comfort does not compensate.",
         "Chasing happiness directly tends to lose it. It arrives as a by-product of something pursued for its own sake."
-      ]
+      ],
+      "non_obvious": "Frankl wrote it in nine days and intended to publish it anonymously. The book that has sold in the tens of millions was meant to carry no name at all — which sits oddly beside how it is now sold.",
+      "non_obvious_verify": "Frankl describes the writing and his intent to publish anonymously in later editions' prefaces. Confirm against your edition."
     },
     {
       "title": "The Hard Thing About Hard Things",
@@ -83,7 +91,9 @@
         "Take care of the people, the product and the profits, in that order.",
         "The hardest decisions have no good option. Choose the least bad one and own it.",
         "There is no formula for the hard things. Anyone selling one has not run anything hard."
-      ]
+      ],
+      "non_obvious": "Horowitz spends the book on decisions where every option is bad, and refuses to supply a framework — in a genre whose entire commercial promise is supplying one. The absence is the argument, and it is why the book does not summarise well.",
+      "non_obvious_verify": "A reading of the book's structure. Present as interpretation."
     },
     {
       "title": "Deep Work",
@@ -100,7 +110,9 @@
         "Boredom is practice. If you reach for the phone in every queue, focus has nowhere to grow.",
         "Quit a tool for thirty days and only reinstate it if its absence actually cost you something.",
         "Ritual beats motivation: same place, same hours, same start, no negotiation."
-      ]
+      ],
+      "non_obvious": "The claim is economic, not moral. Newport is not saying focus is virtuous; he is saying that as knowledge work automates, sustained concentration becomes scarce and therefore expensive. Read as self-improvement, the book loses its actual thesis.",
+      "non_obvious_verify": "A reading of the book's opening argument. Present as interpretation."
     },
     {
       "title": "Thinking, Fast and Slow",
@@ -117,7 +129,9 @@
         "You judge a whole experience by its peak and its end, not by its average.",
         "Losses land about twice as hard as equivalent gains, which explains most reluctance.",
         "Knowing a bias does not disarm it. Build the check into the process, not the moment."
-      ]
+      ],
+      "non_obvious": "Kahneman later published an open letter conceding that the priming research in one chapter did not survive replication. A book about overconfidence contained overconfident claims, and its author said so in public. Almost no summary mentions it.",
+      "non_obvious_verify": "Kahneman's 2017 open letter on priming replication is public. Confirm the year and wording before citing."
     },
     {
       "title": "Sapiens",
@@ -145,7 +159,9 @@
         "Ask what important truth very few people agree with you on, and answer it in writing.",
         "Start by monopolising a small market you can actually own, then widen.",
         "Sales and distribution decide outcomes far more than founders who love the product want to believe."
-      ]
+      ],
+      "non_obvious": "It began as one student's lecture notes from a Stanford class, and that student became the co-author. Its certainty is classroom certainty — a set of positions argued to be argued with, not conclusions from a career of testing them.",
+      "non_obvious_verify": "The book's origin as Blake Masters' class notes is publicly documented and stated by both authors. Confirm before framing it as criticism."
     },
     {
       "title": "Never Split the Difference",
@@ -162,7 +178,9 @@
         "\"No\" is the start of a negotiation, not the end of one.",
         "Get to \"that's right\" — agreement is meaningless until they feel understood.",
         "Never be so certain of what you want that you would refuse something better."
-      ]
+      ],
+      "non_obvious": "The title is the thesis, aimed squarely at compromise. Voss argues splitting the difference is how both sides lose while feeling reasonable — which makes the book an attack on the most socially rewarded negotiating instinct there is.",
+      "non_obvious_verify": "A reading of the book's central argument. Present as interpretation."
     },
     {
       "title": "Mindset",
@@ -179,7 +197,9 @@
         "\"Not yet\" is a different sentence from \"not able\", and it changes what happens next.",
         "Effort without a change in strategy is not growth mindset. It is repetition.",
         "Choosing tasks you might fail at is the actual behaviour. The belief on its own does nothing."
-      ]
+      ],
+      "non_obvious": "Dweck has publicly warned about what she calls a false growth mindset: praising effort while changing nothing about how work is assigned or judged. The most popular application of her idea is one she has argued against.",
+      "non_obvious_verify": "Dweck's comments on false growth mindset appear in interviews and later writing. Confirm before quoting."
     },
     {
       "title": "The Intelligent Investor",
@@ -190,7 +210,9 @@
       "misses": "The formulas date badly. The chapters on the investor's temperament do not.",
       "apply": "Write down what would make you sell something you own before you need to decide it.",
       "notable": "Warren Buffett has repeatedly and publicly described it as the best book on investing ever written, and has cited chapters 8 and 20 specifically.",
-      "verify": "Buffett's recommendation is extensively documented in Berkshire letters and interviews. Confirm the exact phrasing you attribute to him."
+      "verify": "Buffett's recommendation is extensively documented in Berkshire letters and interviews. Confirm the exact phrasing you attribute to him.",
+      "non_obvious": "Buffett names two chapters — 8 and 20 — and effectively ignores the rest. Chapter 8 is a parable about a business partner who quotes you a price every single day and is usually wrong. That is the whole book: the market is a service, not an authority. The formulas dated badly; the temperament chapters did not.",
+      "non_obvious_verify": "Buffett's specific praise for chapters 8 and 20 appears in his Berkshire letters and the preface to later editions. Confirm the exact framing before quoting him."
     },
     {
       "title": "Meditations",
@@ -238,7 +260,9 @@
         "A slow yes beats a fast one. Buy time before committing.",
         "Say the decline plainly. Going quiet is worse than saying no.",
         "Protect the asset. The person doing the work is the thing that breaks first."
-      ]
+      ],
+      "non_obvious": "The hard part is not choosing; it is that declining things has a social cost the book largely does not price. Advice to say no is written for people whose no is accepted, which is a narrower group than the audience.",
+      "non_obvious_verify": "A critique, not a claim about the text. Present as your view."
     },
     {
       "title": "Outliers",
