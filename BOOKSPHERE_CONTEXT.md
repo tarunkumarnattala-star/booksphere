@@ -1,10 +1,10 @@
 # BookSphere — Full Context
 
-*For a content-strategy automation. Written 24 August 2026. Every number here was queried from the
+*For a content-strategy automation. Written 24 August 2026, stage line corrected 26 August 2026. Every number here was queried from the
 live database or the running site, not estimated. Where something is not yet true, it says so.*
 
 **Production:** https://booksphere-iota.vercel.app
-**Stage:** private beta, invite-only, Google sign-in. No public launch.
+**Stage:** early access. Free, no waiting list, Google sign-in. The invite-only framing was removed from the landing page on 25 August 2026 — anything written against it is stale.
 
 ---
 
