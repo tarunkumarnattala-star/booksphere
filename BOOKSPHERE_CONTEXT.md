@@ -6,14 +6,16 @@ live database or the running site, not estimated. Where something is not yet tru
 **Production:** https://booksphere-iota.vercel.app
 **Stage:** early access. Free, no waiting list, Google sign-in. The invite-only framing was removed from the landing page on 25 August 2026 — anything written against it is stale.
 
+
+> **Framing correction, 14 September 2026.** Earlier drafts leaned on books *failing* readers. That was wrong. BookSphere is about understanding a book in every direction — advantages, disadvantages, questions, debates and confusions. Failure is one perspective type among eleven, not the thesis.
+
 ---
 
 ## 1. What the product is
 
-**BookSphere organises what happened when real people used a book's ideas.**
+**BookSphere organises what real readers made of a book.**
 
-Not reviews of books. Not summaries of books. Accounts of application — what someone tried, what
-happened, where it broke, and what they would tell the next person.
+Not reviews of books. Not summaries of books. Reader understanding, in every direction — the ideas someone took, how they applied them, what changed in their work, money, relationships or thinking, what still confuses them, and where they disagree.
 
 The unit of content is a **perspective**: one reader's account, attached to one book, answering one
 specific question. The whole product exists to get perspectives written and read.
@@ -91,9 +93,7 @@ The distribution of the 50 editorial perspectives is lopsided and worth correcti
 Disagreement 6, Question 5**, and nothing at all in the four types that carry the product's actual
 promise — Real-Life Result, What Did Not Work, Application, Personal Experience.
 
-**That gap is the single most useful thing an automation could address.** The product claims to be
-about what happened when people used ideas, and every example on the site is a reflection about an
-idea instead.
+**That gap is the single most useful thing an automation could address.** The product is a mix — advantages, disadvantages, questions, debates, confusions — and right now every example is a reflection, with nothing showing what an idea did for someone's work or life.
 
 ## 5. What good looks like — the editorial standard already set
 
@@ -193,7 +193,7 @@ Every route carries its own title and social card, so any URL is safe to share d
 
 Not whether the software works — it does, and it has been audited hard.
 
-**Will strangers write 200 honest words about a book that failed them?**
+**Will strangers write 200 honest words about how they understood a book?**
 
 Two people have signed up and neither wrote. Any content strategy should be judged against that
 question: does this piece of content make someone more likely to write a perspective? If not, it is
@@ -201,9 +201,7 @@ decoration.
 
 The highest-leverage content gaps, in order:
 
-1. **Perspectives in the four "what happened" types** — the product's promise has zero examples of
-   its own central claim.
+1. **Range.** Every perspective so far is an insight, question or disagreement — none shows what an idea did for someone's work, money, relationships or thinking.
 2. **The 349 books with nothing on them** — but seeding all of them would be fake breadth. Better:
    deep coverage of 20 books people actually argue about.
-3. **Distribution content** that finds people who have already publicly said a book's advice did not
-   work for them. They have written the first perspective in their head already.
+3. **Distribution content** that finds people who have already written about a book in public — an essay, a long review, a thread, whether praising, applying or arguing with it. They have written the first perspective already.
