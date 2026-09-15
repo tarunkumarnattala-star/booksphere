@@ -1,0 +1,202 @@
+{
+  "Dare to Lead": [
+    ["use", "Application", "What happened when you used clear is kind in a conversation you had been avoiding?", "The conversation, and the response"],
+    ["use", "Personal Experience", "How did rumbling with vulnerability change a hard moment on your team?", "The moment, and what shifted"],
+    ["see", "Insight", "Which idea from Dare to Lead changed what you think courageous leadership looks like?", "What you believed before"],
+    ["see", "Summary", "How would you explain the BRAVING elements of trust using a working relationship?", "In plain words"],
+    ["ask", "Question", "How do you show vulnerability as a leader without losing people's confidence?", "Where the line feels risky"],
+    ["ask", "Question", "How do you live into your values when the company's incentives point the other way?", "Your situation"],
+    ["argue", "Disagreement", "Does the book's language of vulnerability fit every workplace culture?", "Your view"],
+    ["argue", "Limitation", "Which parts of the approach need time and trust that busy teams rarely have?", "The part, and the constraint"]
+  ],
+  "Leaders Eat Last": [
+    ["use", "Application", "What did you do to build a circle of safety on your team, and what changed?", "The action, and the response"],
+    ["use", "Personal Experience", "When did a leader putting their people first change how you worked?", "The leader, and the difference"],
+    ["see", "Insight", "Which idea from Leaders Eat Last changed how you think about trust at work?", "What you believed before"],
+    ["see", "Summary", "How would you explain the book's case against leading through numbers alone?", "In plain words"],
+    ["ask", "Question", "How do you protect your team when the pressure comes from above you?", "Your situation"],
+    ["ask", "Question", "How literally should we take the book's explanations about brain chemicals?", "Where you are unsure"],
+    ["argue", "Disagreement", "Does the book simplify biology to make a leadership point?", "Your view"],
+    ["argue", "Limitation", "Which military lessons in the book are hard to carry into ordinary companies?", "The lesson, and why"]
+  ],
+  "Extreme Ownership": [
+    ["use", "Application", "What changed when you took full ownership of a problem that wasn't entirely yours?", "The problem, and the result"],
+    ["use", "Real-Life Result", "What happened when you used prioritise and execute during a crisis?", "The crisis, and the order you chose"],
+    ["see", "Insight", "Which idea from Extreme Ownership changed how you think about blame?", "What you did before"],
+    ["see", "Summary", "How would you explain discipline equals freedom to someone who resists structure?", "In plain words"],
+    ["ask", "Question", "How do you practise extreme ownership without taking on everyone else's responsibilities?", "Where the line is"],
+    ["ask", "Question", "How do you lead up the chain when your boss doesn't share the mindset?", "Your situation"],
+    ["argue", "Disagreement", "Does no bad teams, only bad leaders ignore real constraints leaders can't control?", "Your view"],
+    ["argue", "Limitation", "Which combat lessons translate poorly to creative or knowledge work?", "The lesson, and why"]
+  ],
+  "The Let Them Theory": [
+    ["use", "Application", "Where did you practise letting someone do what they were going to do anyway, and what changed?", "The situation, and how you felt after"],
+    ["use", "Personal Experience", "How did the book change how you respond when someone disappoints you?", "The moment, and your response"],
+    ["see", "Insight", "Which idea from The Let Them Theory changed how you think about control?", "What you tried to control before"],
+    ["see", "Summary", "How would you explain the difference between letting them and letting me?", "In plain words"],
+    ["ask", "Question", "How do you let people be themselves without ignoring behaviour that affects you?", "Where the line is"],
+    ["ask", "Question", "How does the idea work with family members you can't easily step away from?", "Your situation"],
+    ["argue", "Disagreement", "Can letting them slide into avoiding honest conversations?", "Your view"],
+    ["argue", "Limitation", "Which situations call for more than the theory offers?", "The situation, and what it needs"]
+  ],
+  "The Anxious Generation": [
+    ["use", "Application", "What did you change about phones or social media at home or school after reading this book?", "The change, and how it went"],
+    ["use", "Personal Experience", "How does Haidt's account of a phone-based childhood compare with your own experience?", "Where it matches, and where it doesn't"],
+    ["see", "Insight", "Which argument from The Anxious Generation changed how you see young people's mental health?", "What you believed before"],
+    ["see", "Summary", "How would you explain the four norms Haidt proposes to a parent or teacher?", "In plain words"],
+    ["ask", "Question", "How do families follow these norms when most other children already have smartphones?", "Your situation"],
+    ["ask", "Question", "How should we give children more real-world independence in places that don't feel safe?", "Your community"],
+    ["argue", "Disagreement", "Is the evidence that social media causes the rise in anxiety as strong as Haidt argues?", "What you have read"],
+    ["argue", "Limitation", "Which young people might the book's solutions help least?", "Who, and why"]
+  ],
+  "The Next Conversation": [
+    ["use", "Application", "Which technique from The Next Conversation did you use in a tense talk, and how did it go?", "The technique, and the result"],
+    ["use", "Personal Experience", "How did the book change what you do in the moment before you respond to criticism?", "What you do now"],
+    ["see", "Insight", "Which idea from the book changed how you think about arguing?", "What you believed before"],
+    ["see", "Summary", "How would you explain the book's approach to someone who always needs to win?", "In plain words"],
+    ["ask", "Question", "How do you stay calm when the other person is deliberately provoking you?", "The situation"],
+    ["ask", "Question", "How do these techniques work in writing, such as email and messages?", "Where you use them"],
+    ["argue", "Disagreement", "Can a focus on controlled delivery make conversations feel managed rather than honest?", "Your view"],
+    ["argue", "Limitation", "Which conversations need more than good technique to go well?", "An example"]
+  ],
+  "Everything Is Tuberculosis": [
+    ["use", "Personal Experience", "How did learning that a curable disease still kills so many people change how you see global health?", "What you understood before"],
+    ["use", "Application", "Did the book lead you to do anything, such as learning, giving, or talking about TB?", "What you did, and why"],
+    ["see", "Insight", "Which part of Green's history of tuberculosis surprised you most?", "The part, and why"],
+    ["see", "Summary", "How would you explain why tuberculosis is as much about inequality as about bacteria?", "In plain words"],
+    ["ask", "Question", "Why has it been so hard to get existing treatments to the people who need them?", "The barrier you want explained"],
+    ["ask", "Question", "How did Henry's story shape the way you read the rest of the book?", "Your reading"],
+    ["argue", "Disagreement", "Does the book's personal storytelling help or hide the scale of the problem?", "Your view"],
+    ["argue", "Limitation", "What would you want to know about solutions that the book leaves open?", "The gap you noticed"]
+  ],
+  "The Coming Wave": [
+    ["use", "Personal Experience", "How did The Coming Wave change how you think about AI and biotechnology in your own field?", "Your field, and the shift"],
+    ["use", "Application", "Has the book changed what you pay attention to in technology news or policy?", "What you watch now"],
+    ["see", "Insight", "Which idea from Suleyman changed how you think about containing powerful technology?", "What you believed before"],
+    ["see", "Summary", "How would you explain the containment problem to someone who thinks technology can simply be regulated?", "In plain words"],
+    ["ask", "Question", "Is containment realistic when many countries and companies are racing ahead?", "Where you are unsure"],
+    ["ask", "Question", "What does the narrow path between catastrophe and dystopia look like in practice?", "Your reading"],
+    ["argue", "Disagreement", "Does an AI company founder writing about AI risk give readers a balanced picture?", "Your view"],
+    ["argue", "Limitation", "Which proposals in the book feel hardest to turn into real policy?", "The proposal, and why"]
+  ],
+  "Co-Intelligence": [
+    ["use", "Application", "Which of Mollick's four rules changed how you use AI at work, and what happened?", "The rule, and the task"],
+    ["use", "Real-Life Result", "What happened when you invited AI to the table for a task you would normally do alone?", "The task, and the result"],
+    ["see", "Insight", "Which idea from Co-Intelligence changed how you think about working with AI?", "What you believed before"],
+    ["see", "Summary", "How would you explain the jagged frontier to a colleague who either trusts AI fully or not at all?", "In plain words"],
+    ["ask", "Question", "How do you stay the human in the loop without checking everything so closely it saves no time?", "Your workflow"],
+    ["ask", "Question", "Is it better to work as a centaur or a cyborg, and does it depend on the task?", "The tasks you have in mind"],
+    ["argue", "Disagreement", "Does treating AI like a person help, or does it encourage misplaced trust?", "Your view"],
+    ["argue", "Limitation", "Which parts of the book have already dated as AI tools have changed?", "The part, and what changed"]
+  ],
+  "Nexus": [
+    ["use", "Personal Experience", "How did Nexus change how you think about the information you consume every day?", "What you notice now"],
+    ["use", "Application", "Has the book changed how you judge sources, feeds, or institutions you rely on?", "The change, and an example"],
+    ["see", "Insight", "Which argument in Nexus changed how you think about truth and order?", "What you believed before"],
+    ["see", "Summary", "How would you explain Harari's case against the naive view of information?", "In plain words"],
+    ["ask", "Question", "What would strong self-correcting mechanisms look like for AI systems?", "Your ideas or doubts"],
+    ["ask", "Question", "Is Harari right that AI is an agent rather than a tool, and what follows if so?", "Your reading"],
+    ["argue", "Disagreement", "Which of Harari's historical comparisons do you find least convincing?", "The comparison, and why"],
+    ["argue", "Limitation", "Does the book diagnose more than it offers in practical answers?", "What you wanted more of"]
+  ],
+  "The Alignment Problem": [
+    ["use", "Personal Experience", "How did The Alignment Problem change how you see automated decisions that affect your life?", "The decision, and the shift"],
+    ["use", "Application", "Has the book changed how you build, buy, or question models at work?", "What you do differently"],
+    ["see", "Insight", "Which story in the book made the gap between what we want and what we specify click for you?", "The story, and what it showed"],
+    ["see", "Summary", "How would you explain reward hacking to someone who has never trained a model?", "In plain words"],
+    ["ask", "Question", "Why can't the competing definitions of fairness all be satisfied at once?", "Where it is unclear for you"],
+    ["ask", "Question", "Can learning from human behaviour align systems when humans themselves are inconsistent?", "Your reasoning"],
+    ["argue", "Disagreement", "Is alignment mainly a technical problem, or a political one the book underplays?", "Your view"],
+    ["argue", "Limitation", "Which parts of the book need updating after the rise of large language models?", "The part, and what changed"]
+  ],
+  "The Age of AI": [
+    ["use", "Personal Experience", "How did The Age of AI change how you think about AI's effect on human understanding?", "The shift, in your words"],
+    ["use", "Application", "Has the book changed how you think about AI in your organisation or country?", "The question it raised"],
+    ["see", "Insight", "Which example, such as AlphaZero or the discovery of a new antibiotic, changed how you see AI?", "The example, and why"],
+    ["see", "Summary", "How would you explain the authors' concern that AI may change how humans reason?", "In plain words"],
+    ["ask", "Question", "How should societies decide what AI may do in security and defence?", "Where you are unsure"],
+    ["ask", "Question", "What happens to human identity when machines reach conclusions we can't follow?", "Your reading"],
+    ["argue", "Disagreement", "Does the book speak more from the view of states and elites than ordinary people?", "Your view"],
+    ["argue", "Limitation", "Which of the book's predictions already look different a few years later?", "The prediction, and what happened"]
+  ],
+  "Life 3.0": [
+    ["use", "Personal Experience", "How did Life 3.0 change how you think about the long-term future of AI?", "What you believed before"],
+    ["use", "Application", "Did the book change your career thinking or what you choose to learn?", "The choice, and why"],
+    ["see", "Insight", "Which of Tegmark's future scenarios stayed with you, and why?", "The scenario, and your reaction"],
+    ["see", "Summary", "How would you explain the difference between Life 1.0, 2.0, and 3.0?", "In plain words"],
+    ["ask", "Question", "Which questions about AI goals and consciousness do you think matter most right now?", "The question, and why"],
+    ["ask", "Question", "How seriously should we take the opening story about the Omega team?", "Your reading"],
+    ["argue", "Disagreement", "Does the book focus on distant scenarios at the expense of present-day harms?", "Your view"],
+    ["argue", "Limitation", "Which parts of the book feel speculative in ways that are hard to act on?", "The part, and why"]
+  ],
+  "Superintelligence": [
+    ["use", "Personal Experience", "How did Superintelligence change how you think about the risks of advanced AI?", "What you believed before"],
+    ["use", "Application", "Has the book shaped any choice you made about work, study, or giving?", "The choice, and your reasoning"],
+    ["see", "Insight", "Which argument from Bostrom was hardest to shake off after reading?", "The argument, and why"],
+    ["see", "Summary", "How would you explain the orthogonality thesis to someone who assumes smart means benevolent?", "In plain words"],
+    ["ask", "Question", "What is instrumental convergence, and why does it worry researchers?", "Where you want it explained"],
+    ["ask", "Question", "How should readers weigh arguments about systems that don't exist yet?", "Where you are unsure"],
+    ["argue", "Disagreement", "Do the book's scenarios rest on assumptions that recent AI progress calls into question?", "The assumption, and your view"],
+    ["argue", "Limitation", "Is the book's style too abstract for readers to judge its claims?", "Your experience reading it"]
+  ],
+  "Algorithms to Live By": [
+    ["use", "Application", "Where did you use the 37 percent rule or explore versus exploit on a real decision?", "The decision, and what you chose"],
+    ["use", "Real-Life Result", "What changed when you applied caching or scheduling ideas to your home or work?", "The idea, and the result"],
+    ["see", "Insight", "Which algorithm from the book changed how you think about an everyday problem?", "The problem, and the new view"],
+    ["see", "Summary", "How would you explain overfitting using a decision from ordinary life?", "In plain words"],
+    ["ask", "Question", "How do you apply optimal stopping when you don't know how many options there will be?", "The situation"],
+    ["ask", "Question", "When does thinking like a computer help a decision, and when does it get in the way?", "An example either way"],
+    ["argue", "Disagreement", "Do tidy algorithmic answers ignore the emotional side of choices like dating or housing?", "Your view"],
+    ["argue", "Limitation", "Which ideas in the book are more fun to know than useful to apply?", "The idea, and why"]
+  ],
+  "Weapons of Math Destruction": [
+    ["use", "Personal Experience", "Have you been affected by a scoring model like the ones O'Neil describes, and how?", "The system, and what happened"],
+    ["use", "Application", "Has the book changed how you build, choose, or question models at work?", "What you do differently"],
+    ["see", "Insight", "Which example from the book changed how you see algorithms in hiring, lending, or policing?", "The example, and the shift"],
+    ["see", "Summary", "How would you explain what makes a model a weapon of math destruction?", "Opacity, scale, and damage, in plain words"],
+    ["ask", "Question", "How can people challenge automated decisions they can't see inside?", "The decision you have in mind"],
+    ["ask", "Question", "Is a biased model worse than the biased human decision it replaced?", "Your reasoning"],
+    ["argue", "Disagreement", "Does the book understate how models can reduce unfairness when designed well?", "Your view, and an example"],
+    ["argue", "Limitation", "Which examples in the book have changed since it was published in 2016?", "The example, and what changed"]
+  ],
+  "The Innovators": [
+    ["use", "Application", "How did the book's case for collaboration change how you work with others?", "The team, and the change"],
+    ["use", "Personal Experience", "Which innovator's story changed how you think about your own work or field?", "The person, and the shift"],
+    ["see", "Insight", "What did the book change about how you see the lone genius myth?", "What you believed before"],
+    ["see", "Summary", "How would you explain Ada Lovelace's idea of poetical science?", "In plain words"],
+    ["ask", "Question", "What made some teams in the book so much more creative than others?", "The team that stood out"],
+    ["ask", "Question", "Which lessons from the digital revolution apply to AI today?", "The lesson, and your reasoning"],
+    ["argue", "Disagreement", "Does the book give some pioneers too much credit and others too little?", "Who, and why"],
+    ["argue", "Limitation", "What does a history focused on inventors leave out about how technology spread?", "The gap you noticed"]
+  ],
+  "Chip War": [
+    ["use", "Personal Experience", "How did Chip War change how you see the devices and news around you?", "What you notice now"],
+    ["use", "Application", "Has the book changed how you think about supply chains or investing in your field?", "The change, and why"],
+    ["see", "Insight", "What surprised you most about how concentrated chip manufacturing is?", "What you assumed before"],
+    ["see", "Summary", "How would you explain why Taiwan and a few companies matter so much to the world economy?", "In plain words"],
+    ["ask", "Question", "Can countries realistically rebuild chip manufacturing at home, and at what cost?", "Where you are unsure"],
+    ["ask", "Question", "How do export controls on chips change the balance between the US and China?", "Your reading"],
+    ["argue", "Disagreement", "Does the book tell the story mainly from an American strategic point of view?", "Your view"],
+    ["argue", "Limitation", "Which parts of the story have moved on since the book was published?", "What has changed"]
+  ],
+  "The Code Breaker": [
+    ["use", "Personal Experience", "How did The Code Breaker change how you think about gene editing and its future?", "What you believed before"],
+    ["use", "Application", "Did the book change how you think about science careers, competition, or collaboration?", "The change, and why"],
+    ["see", "Insight", "Which part of the CRISPR story surprised you most?", "The part, and why"],
+    ["see", "Summary", "How would you explain how CRISPR works to someone with no biology background?", "In plain words"],
+    ["ask", "Question", "Where should the line be between treating disease and enhancing people?", "Your reasoning"],
+    ["ask", "Question", "How should scientists respond when someone like He Jiankui breaks the rules?", "What you think should happen"],
+    ["argue", "Disagreement", "Does the book centre Doudna in a story that belongs to many scientists?", "Your view"],
+    ["argue", "Limitation", "Which ethical questions does the book raise without really settling?", "The question, and what is missing"]
+  ],
+  "The Worlds I See": [
+    ["use", "Personal Experience", "Which part of Fei-Fei Li's journey changed how you think about your own path?", "The part, and what it changed"],
+    ["use", "Application", "Did the book change how you think about human-centred AI in your work?", "What you do differently"],
+    ["see", "Insight", "What surprised you about how ImageNet came about?", "What you assumed before"],
+    ["see", "Summary", "How would you explain why better data mattered so much to modern AI?", "In plain words"],
+    ["ask", "Question", "How do you keep doing ambitious work while caring for family, as she did?", "Your situation"],
+    ["ask", "Question", "What does human-centred AI mean in practice for companies building it?", "Where you are unsure"],
+    ["argue", "Disagreement", "Does the memoir give enough attention to the harms of the systems ImageNet helped enable?", "Your view"],
+    ["argue", "Limitation", "Which parts of her story are hard to learn from without her opportunities?", "The part, and why"]
+  ]
+}

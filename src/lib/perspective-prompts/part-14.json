@@ -1,0 +1,202 @@
+{
+  "Justice": [
+    ["use", "Personal Experience", "How did Justice change how you reason through a moral choice in your own life?", "The choice, and the framework you used"],
+    ["use", "Application", "Did Sandel's book change how you argue about politics or fairness with others?", "The conversation, and the change"],
+    ["see", "Insight", "Which case in Justice made a moral theory click for you?", "The case, and the theory"],
+    ["see", "Summary", "How would you explain the difference between utilitarian, libertarian, and Aristotelian views of justice?", "In plain words"],
+    ["ask", "Question", "Which moral dilemma in the book do you still not know how to answer?", "The dilemma, and where you are stuck"],
+    ["ask", "Question", "Should markets decide what things are worth, or are some things beyond price?", "An example"],
+    ["argue", "Disagreement", "Is Sandel's case for the common good persuasive against liberal neutrality?", "Your view"],
+    ["argue", "Limitation", "Does the book lean on American examples that don't translate elsewhere?", "Your context"]
+  ],
+  "The Courage to Be Disliked": [
+    ["use", "Application", "What changed when you practised separating your tasks from other people's tasks?", "The situation, and the difference"],
+    ["use", "Personal Experience", "When did you choose to be disliked rather than live for approval, and how did it go?", "The moment, and the result"],
+    ["see", "Insight", "Which idea from Adlerian psychology in the book changed how you see your past?", "What you believed before"],
+    ["see", "Summary", "How would you explain the book's claim that all problems are interpersonal relationship problems?", "In plain words"],
+    ["ask", "Question", "How do you accept the book's rejection of trauma as a cause without dismissing real pain?", "Where you feel the tension"],
+    ["ask", "Question", "What does a horizontal relationship without praise or rebuke look like at work or home?", "Your situation"],
+    ["argue", "Disagreement", "Does the book put too much responsibility on individuals for how they feel?", "Your view"],
+    ["argue", "Limitation", "Did the dialogue format help you understand the ideas, or get in the way?", "Your experience"]
+  ],
+  "The Age of Surveillance Capitalism": [
+    ["use", "Personal Experience", "How did Zuboff's book change how you think about the apps and devices you use?", "What you notice now"],
+    ["use", "Application", "What did you change about your digital habits or privacy settings after reading it?", "The change, and why"],
+    ["see", "Insight", "Which idea from Zuboff changed how you see technology companies?", "What you believed before"],
+    ["see", "Summary", "How would you explain behavioural surplus to a friend?", "In plain words"],
+    ["ask", "Question", "Can individuals push back meaningfully, or does this need laws?", "Where you are unsure"],
+    ["ask", "Question", "How does AI change the picture Zuboff describes?", "Your reading"],
+    ["argue", "Disagreement", "Does the book overstate how well companies can actually predict and shape behaviour?", "Your view"],
+    ["argue", "Limitation", "Was the book's length and style worth it for the argument it makes?", "Your experience"]
+  ],
+  "Thinking in Systems": [
+    ["use", "Application", "Where did you find a leverage point in a system you work in, and what happened?", "The system, and the lever"],
+    ["use", "Personal Experience", "Which system trap did you recognise in your organisation or life?", "The trap, and how it shows up"],
+    ["see", "Insight", "Which idea from Meadows changed how you see problems that keep coming back?", "What you believed before"],
+    ["see", "Summary", "How would you explain stocks, flows, and feedback loops using something everyday?", "In plain words"],
+    ["ask", "Question", "How do you act on a system you can only see part of?", "The system you are in"],
+    ["ask", "Question", "Why do the strongest leverage points, like goals and paradigms, feel hardest to move?", "Your reasoning"],
+    ["argue", "Disagreement", "Can systems thinking become an excuse for not acting on anything specific?", "Your view"],
+    ["argue", "Limitation", "Which parts of the book are easier to understand than to use?", "The part, and the gap"]
+  ],
+  "Basic Economics": [
+    ["use", "Application", "Where have you started thinking beyond stage one, as Sowell urges, before judging a policy?", "The policy, and the later effects"],
+    ["use", "Personal Experience", "How did Basic Economics change how you think about prices?", "What you believed before"],
+    ["see", "Insight", "Which example from Sowell changed your view on a policy question?", "The example, and the shift"],
+    ["see", "Summary", "How would you explain why price controls often cause shortages?", "In plain words"],
+    ["ask", "Question", "When are markets not enough, and how do you tell?", "The case you have in mind"],
+    ["ask", "Question", "How should a reader balance Sowell's view with economists who disagree?", "Your approach"],
+    ["argue", "Disagreement", "Does the book present contested policy questions as simpler than they are?", "Your view"],
+    ["argue", "Limitation", "What does an economics book without data or charts gain and lose?", "Your view"]
+  ],
+  "How the World Really Works": [
+    ["use", "Personal Experience", "How did Smil's book change how you think about energy and modern life?", "What you believed before"],
+    ["use", "Application", "Has the book changed how you judge climate or energy claims in the news?", "What you check now"],
+    ["see", "Insight", "Which of Smil's four pillars of modern civilisation surprised you most?", "The material, and why"],
+    ["see", "Summary", "How would you explain why food production depends so heavily on fossil fuels?", "In plain words"],
+    ["ask", "Question", "How realistic are fast decarbonisation targets given Smil's numbers?", "Where you are unsure"],
+    ["ask", "Question", "How should individuals act on a book that says change will be slow?", "Your reasoning"],
+    ["argue", "Disagreement", "Is Smil too pessimistic about how quickly technology can change?", "Your view"],
+    ["argue", "Limitation", "Does the book's realism leave readers with enough sense of what to do?", "What you wanted more of"]
+  ],
+  "Good Strategy Bad Strategy": [
+    ["use", "Application", "What happened when you rewrote a plan as a diagnosis, a guiding policy, and coherent actions?", "The plan, and what changed"],
+    ["use", "Personal Experience", "Where have you seen bad strategy dressed up as goals and slogans?", "The example, and the tell"],
+    ["see", "Insight", "Which idea from Rumelt changed what you think a strategy is?", "What you believed before"],
+    ["see", "Summary", "How would you explain the kernel of good strategy to a team with a vague plan?", "In plain words"],
+    ["ask", "Question", "How do you make an honest diagnosis when leaders don't want to hear it?", "Your situation"],
+    ["ask", "Question", "How does the kernel apply to a small team or a personal career?", "Your context"],
+    ["argue", "Disagreement", "Is Rumelt too hard on ambitious goals and inspirational visions?", "Your view"],
+    ["argue", "Limitation", "Which of Rumelt's cases are easier to judge in hindsight than at the time?", "The case, and why"]
+  ],
+  "The Personal MBA": [
+    ["use", "Application", "Which mental model from The Personal MBA changed a business or career decision?", "The model, and the decision"],
+    ["use", "Personal Experience", "Did the book change whether you think a formal MBA is worth it for you?", "Your reasoning"],
+    ["see", "Insight", "Which idea from Kaufman made business feel simpler to you?", "What was unclear before"],
+    ["see", "Summary", "How would you explain the five parts every business needs?", "In plain words"],
+    ["ask", "Question", "How do you go deeper on a topic after the book's brief overview?", "The topic, and your plan"],
+    ["ask", "Question", "Which concepts matter most for someone starting a very small business?", "Your situation"],
+    ["argue", "Disagreement", "Can a broad overview replace the depth and network of a real MBA?", "Your view"],
+    ["argue", "Limitation", "Which sections feel too short to act on?", "The section"]
+  ],
+  "Start with Why": [
+    ["use", "Application", "What happened when you explained your work starting with why instead of what?", "The pitch, and the response"],
+    ["use", "Personal Experience", "Did Start with Why help you find your own why, and what is it?", "Your why, in a sentence"],
+    ["see", "Insight", "Which idea from Sinek changed how you think about inspiring people?", "What you believed before"],
+    ["see", "Summary", "How would you explain the golden circle with a company you know?", "In plain words"],
+    ["ask", "Question", "How do you find a genuine why for a business that sells something ordinary?", "The business"],
+    ["ask", "Question", "How do you keep a why from becoming just a marketing line?", "Where it slips"],
+    ["argue", "Disagreement", "Does the book's use of brain science to explain the golden circle hold up?", "What you have read"],
+    ["argue", "Limitation", "Does the Apple example carry more of the argument than it should?", "Your view"]
+  ],
+  "The Infinite Game": [
+    ["use", "Application", "What changed when you started treating a rival as a worthy rival rather than an enemy?", "The rival, and the shift"],
+    ["use", "Personal Experience", "How did thinking in infinite terms change a decision in your career or company?", "The decision, and the reasoning"],
+    ["see", "Insight", "Which idea from The Infinite Game changed how you think about winning?", "What you believed before"],
+    ["see", "Summary", "How would you explain a just cause to a team focused on quarterly targets?", "In plain words"],
+    ["ask", "Question", "How do you play an infinite game inside a company that plays a finite one?", "Your situation"],
+    ["ask", "Question", "When does existential flexibility become simply changing direction too often?", "Where the line is"],
+    ["argue", "Disagreement", "Does the book undervalue finite goals that keep a business alive?", "Your view"],
+    ["argue", "Limitation", "Which examples in the book are clearer in hindsight than they were at the time?", "The example, and why"]
+  ],
+  "Radical Candor": [
+    ["use", "Application", "What happened when you gave feedback that combined caring personally with challenging directly?", "The feedback, and the response"],
+    ["use", "Real-Life Result", "How did asking for criticism first change feedback on your team?", "What you asked, and what followed"],
+    ["see", "Insight", "Which quadrant of Radical Candor did you realise you fall into most often?", "The quadrant, and an example"],
+    ["see", "Summary", "How would you explain ruinous empathy to a manager who avoids hard conversations?", "In plain words"],
+    ["ask", "Question", "How do you practise radical candour across cultures with different feedback norms?", "Your team"],
+    ["ask", "Question", "How do you give candid feedback upward to your own boss?", "Your situation"],
+    ["argue", "Disagreement", "Has radical candour been used as cover for being harsh?", "Your view, and an example"],
+    ["argue", "Limitation", "Which workplaces make the approach risky for the person giving feedback?", "The workplace, and why"]
+  ],
+  "The Five Dysfunctions of a Team": [
+    ["use", "Application", "Which of the five dysfunctions did you work on with a team, and what changed?", "The dysfunction, and the change"],
+    ["use", "Personal Experience", "Where have you seen fear of conflict quietly hurt a team's results?", "The team, and what happened"],
+    ["see", "Insight", "Which idea from Lencioni changed how you think about trust on a team?", "What you believed before"],
+    ["see", "Summary", "How would you explain why the dysfunctions build on each other like a pyramid?", "In plain words"],
+    ["ask", "Question", "How do you build vulnerability-based trust when people have been burned before?", "Your team"],
+    ["ask", "Question", "How do you hold peers accountable when you aren't their manager?", "Your situation"],
+    ["argue", "Disagreement", "Is the fable format a strength of the book or a simplification?", "Your view"],
+    ["argue", "Limitation", "Which team problems don't fit neatly into the five dysfunctions?", "An example"]
+  ],
+  "Multipliers": [
+    ["use", "Application", "What did you change to lead more like a multiplier, and how did people respond?", "The change, and the response"],
+    ["use", "Personal Experience", "When did you realise you were being an accidental diminisher?", "The moment, and what you did"],
+    ["see", "Insight", "Which idea from Wiseman changed how you think about getting the best from people?", "What you believed before"],
+    ["see", "Summary", "How would you explain the difference between a multiplier and a diminisher?", "With an example"],
+    ["ask", "Question", "How do you multiply people's thinking when deadlines push you to just give answers?", "Your situation"],
+    ["ask", "Question", "How do you work for a diminisher without shrinking yourself?", "Your situation"],
+    ["argue", "Disagreement", "Does the book overstate how much more capable people become under multipliers?", "Your view"],
+    ["argue", "Limitation", "Which multiplier practices are hard in crises or with very new team members?", "The practice, and why"]
+  ],
+  "Turn the Ship Around!": [
+    ["use", "Application", "What happened when you asked your team to say I intend to instead of asking permission?", "The change, and what followed"],
+    ["use", "Personal Experience", "How did giving control to others change how you lead?", "The situation, and the result"],
+    ["see", "Insight", "Which idea from Marquet changed how you think about leader-follower structures?", "What you believed before"],
+    ["see", "Summary", "How would you explain the leader-leader model and its pillars of control, competence, and clarity?", "In plain words"],
+    ["ask", "Question", "How do you give control when people lack the competence to use it yet?", "Your team"],
+    ["ask", "Question", "How do you move toward leader-leader in an organisation built on command?", "Your organisation"],
+    ["argue", "Disagreement", "Does one submarine's turnaround prove the model works broadly?", "Your view"],
+    ["argue", "Limitation", "Which parts of naval leadership translate poorly to other settings?", "The part, and why"]
+  ],
+  "No Rules Rules": [
+    ["use", "Application", "Which Netflix practice, like context not control, did you try, and what happened?", "The practice, and the result"],
+    ["use", "Personal Experience", "How did the keeper test change how you think about teams and hiring?", "Your view now"],
+    ["see", "Insight", "Which idea from No Rules Rules changed how you think about talent density?", "What you believed before"],
+    ["see", "Summary", "How would you explain why Netflix removed controls like vacation and expense policies?", "In plain words"],
+    ["ask", "Question", "How much of the Netflix culture works outside a fast-growing, high-paying company?", "Your company"],
+    ["ask", "Question", "How do you build candour before removing rules?", "Where to start"],
+    ["argue", "Disagreement", "Does the keeper test create more fear than performance?", "Your view"],
+    ["argue", "Limitation", "Which practices would fit poorly in regulated or safety-critical work?", "The practice, and why"]
+  ],
+  "The Culture Map": [
+    ["use", "Application", "Which of Meyer's eight scales helped you work better with someone from another culture?", "The scale, and the situation"],
+    ["use", "Real-Life Result", "What changed when you adjusted how you gave negative feedback across cultures?", "The adjustment, and the response"],
+    ["see", "Insight", "Which scale from The Culture Map explained a misunderstanding you had experienced?", "The misunderstanding, and the scale"],
+    ["see", "Summary", "How would you explain the difference between low-context and high-context communication?", "With an example"],
+    ["ask", "Question", "How do you avoid stereotyping while still using cultural scales?", "Where the line is"],
+    ["ask", "Question", "How do you lead a team whose members sit at opposite ends of a scale?", "Your team"],
+    ["argue", "Disagreement", "Do national scales hide too much variation within countries?", "Your view"],
+    ["argue", "Limitation", "How has remote work changed the patterns the book describes?", "What you have noticed"]
+  ],
+  "Working Backwards": [
+    ["use", "Application", "What happened when you wrote a press release and FAQ before building something?", "The project, and what the document revealed"],
+    ["use", "Real-Life Result", "What changed when your team replaced slides with written narratives?", "The meeting, and the difference"],
+    ["see", "Insight", "Which Amazon mechanism from the book changed how you think about decision-making?", "The mechanism, and the shift"],
+    ["see", "Summary", "How would you explain a single-threaded leader to a team juggling many projects?", "In plain words"],
+    ["ask", "Question", "Which Amazon practices work at a small company, and which need Amazon's scale?", "Your company"],
+    ["ask", "Question", "How do you choose the right input metrics rather than output metrics?", "The goal you are tracking"],
+    ["argue", "Disagreement", "Does the book leave out the costs of Amazon's culture for its people?", "Your view"],
+    ["argue", "Limitation", "Which practices depend on leaders committed to them from the top?", "The practice, and why"]
+  ],
+  "Build": [
+    ["use", "Application", "Which of Fadell's lessons on building products did you use, and how?", "The lesson, and the product"],
+    ["use", "Personal Experience", "How did Build change how you think about your own career moves?", "The move, and the reasoning"],
+    ["see", "Insight", "Which story from the iPod, iPhone, or Nest years changed how you see product work?", "The story, and why"],
+    ["see", "Summary", "How would you explain Fadell's view of storytelling in product development?", "In plain words"],
+    ["ask", "Question", "How do you push for quality without becoming impossible to work with?", "Where the line is"],
+    ["ask", "Question", "Which advice suits hardware more than software, and why?", "The advice"],
+    ["argue", "Disagreement", "Is Fadell's demanding style a model to copy or a caution?", "Your view"],
+    ["argue", "Limitation", "Which lessons depend on having worked at Apple-level companies?", "The lesson, and the gap"]
+  ],
+  "Company of One": [
+    ["use", "Application", "What did you decide not to grow after reading Company of One, and why?", "The decision, and the result"],
+    ["use", "Personal Experience", "How did the book change how you define success for your business or career?", "What you measured before"],
+    ["see", "Insight", "Which idea from Paul Jarvis changed how you think about growth?", "What you believed before"],
+    ["see", "Summary", "How would you explain the case for staying small on purpose?", "In plain words"],
+    ["ask", "Question", "How do you stay small without becoming fragile if a big client leaves?", "Your situation"],
+    ["ask", "Question", "When does a company of one need to hire after all?", "The trigger you are watching"],
+    ["argue", "Disagreement", "Does the book understate the benefits of scale?", "Your view"],
+    ["argue", "Limitation", "Which businesses can't realistically stay a company of one?", "The business type, and why"]
+  ],
+  "The E-Myth Revisited": [
+    ["use", "Application", "What system did you build to work on your business rather than in it?", "The system, and what it freed up"],
+    ["use", "Real-Life Result", "What happened when you documented a process so someone else could run it?", "The process, and the result"],
+    ["see", "Insight", "Which idea from Gerber changed how you see yourself as a business owner?", "What you believed before"],
+    ["see", "Summary", "How would you explain the technician, manager, and entrepreneur roles?", "In plain words"],
+    ["ask", "Question", "How do you systematise a business built on personal craft?", "Your business"],
+    ["ask", "Question", "When is it too early to build a franchise-style prototype?", "Where you are now"],
+    ["argue", "Disagreement", "Does treating every business like a franchise drain the craft out of it?", "Your view"],
+    ["argue", "Limitation", "Which parts of the book feel repetitive or dated?", "The part"]
+  ]
+}

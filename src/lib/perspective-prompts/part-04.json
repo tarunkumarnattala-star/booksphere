@@ -1,0 +1,202 @@
+{
+  "Drive": [
+    ["use", "Application", "What did you change about how you motivate yourself or a team after reading Drive?", "The change, and how people responded"],
+    ["use", "Real-Life Result", "What happened when you gave someone more autonomy over how, when, or with whom they worked?", "The situation, and the result"],
+    ["see", "Insight", "Which idea from Drive changed how you think about rewards and bonuses?", "What you believed before"],
+    ["see", "Summary", "How would you explain autonomy, mastery, and purpose using your own job?", "In plain words"],
+    ["ask", "Question", "How do you use Drive's ideas in a workplace built on targets and incentives?", "Your workplace"],
+    ["ask", "Question", "Which tasks still suit if-then rewards, and how do you tell them apart?", "An example you are unsure about"],
+    ["argue", "Disagreement", "Does Drive underplay how much money matters to people who don't have enough of it?", "Your view"],
+    ["argue", "Limitation", "Which of the book's workplace examples feel hard to copy in ordinary companies?", "The example, and why"]
+  ],
+  "The Mom Test": [
+    ["use", "Application", "What did you learn when you asked about someone's past behaviour instead of pitching your idea?", "The conversation, and what surfaced"],
+    ["use", "Real-Life Result", "How did The Mom Test change a product or business decision you made?", "The decision, and what you heard"],
+    ["see", "Insight", "Which rule from The Mom Test changed how you listen to customers?", "What you did before"],
+    ["see", "Summary", "How would you explain why compliments are worthless in customer conversations?", "In plain words"],
+    ["ask", "Question", "How do you get honest answers when people already know what you are building?", "The situation"],
+    ["ask", "Question", "How many conversations are enough before you trust what you are hearing?", "Where you are now"],
+    ["argue", "Disagreement", "Can customer conversations mislead you about truly new products people can't yet imagine?", "Your view"],
+    ["argue", "Limitation", "Which parts of the approach are hard to use in enterprise sales or regulated markets?", "The setting, and why"]
+  ],
+  "Traction": [
+    ["use", "Application", "Which traction channels did you test with the Bullseye framework, and what did you find?", "The channels, and the one that worked"],
+    ["use", "Real-Life Result", "What happened when you spent half your time on traction before the product felt finished?", "The trade-off, and the result"],
+    ["see", "Insight", "Which idea from Traction changed how you think about distribution?", "What you assumed before"],
+    ["see", "Summary", "How would you explain the Bullseye framework to a founder who only uses one channel?", "In plain words"],
+    ["ask", "Question", "How long should you test a channel before deciding it isn't right for you?", "The channel you are testing"],
+    ["ask", "Question", "Which of the nineteen channels have changed the most since the book was written?", "The channel, and what shifted"],
+    ["argue", "Disagreement", "Does the book make distribution sound more systematic than it is in practice?", "Your view"],
+    ["argue", "Limitation", "Which channels in the book suit venture-backed startups more than small businesses?", "The channel, and the gap"]
+  ],
+  "Inspired": [
+    ["use", "Application", "What changed in how your team works after reading about product discovery in Inspired?", "The practice, and the difference"],
+    ["use", "Real-Life Result", "What happened when you tested value and usability risk before building?", "The test, and what it saved"],
+    ["see", "Insight", "Which idea from Inspired changed what you think a product manager is for?", "What you believed before"],
+    ["see", "Summary", "How would you explain the difference between product discovery and delivery?", "With an example"],
+    ["ask", "Question", "How do you move toward empowered product teams in a company run by roadmaps and requests?", "Your company"],
+    ["ask", "Question", "How much discovery is enough before a team should commit to building?", "Where you are torn"],
+    ["argue", "Disagreement", "Does Inspired describe an ideal that most companies can't realistically reach?", "Your view"],
+    ["argue", "Limitation", "Which parts of the book assume a large, well-resourced technology company?", "The part, and your context"]
+  ],
+  "Hooked": [
+    ["use", "Application", "Where did you apply the Hook model to a product, and what happened to usage?", "The product, and the step you changed"],
+    ["use", "Personal Experience", "Which product hooked you, and could you see the trigger, action, reward, and investment?", "The product, and the loop"],
+    ["see", "Insight", "Which idea from Hooked changed how you see the apps you use every day?", "What you notice now"],
+    ["see", "Summary", "How would you explain variable rewards to someone designing their first app?", "In plain words"],
+    ["ask", "Question", "How do you design for habit without crossing into manipulation?", "Where the line is for you"],
+    ["ask", "Question", "How useful is the manipulation matrix when making real product decisions?", "A decision you faced"],
+    ["argue", "Disagreement", "Has the Hook model done more harm than good given how products have used it?", "Your view"],
+    ["argue", "Limitation", "Which kinds of products does the Hook model fit poorly?", "The product type, and why"]
+  ],
+  "The Hard Thing About Hard Things": [
+    ["use", "Application", "Which hard decision did Horowitz's book help you make, and how did you handle it?", "The decision, and what you did"],
+    ["use", "Personal Experience", "When did you have to act as a wartime rather than a peacetime leader?", "The moment, and what changed"],
+    ["see", "Insight", "What did the book's refusal to offer formulas teach you about leadership?", "What you expected instead"],
+    ["see", "Summary", "How would you explain the struggle to someone starting their first company?", "In plain words"],
+    ["ask", "Question", "How do you manage your own psychology when every option is bad?", "The situation"],
+    ["ask", "Question", "How much of Horowitz's advice applies to managers who aren't CEOs?", "Your role"],
+    ["argue", "Disagreement", "Does the book romanticise the struggle in ways that excuse poor decisions?", "Your view"],
+    ["argue", "Limitation", "Which lessons depend on the dot-com and venture world Horowitz lived through?", "The lesson, and the context"]
+  ],
+  "Founders at Work": [
+    ["use", "Application", "Which founder's early story changed how you approach your own work?", "The founder, and what you took"],
+    ["use", "Personal Experience", "What did reading these interviews change about how you handle the early, uncertain stage?", "The stage, and the change"],
+    ["see", "Insight", "What pattern did you notice across the founders' early days?", "The pattern, and why it matters"],
+    ["see", "Summary", "Which interview would you point a new founder to first, and why?", "The interview, in brief"],
+    ["ask", "Question", "How much can you learn from founder stories told years after the outcome was known?", "Where you are unsure"],
+    ["ask", "Question", "Which lessons from early internet companies still apply today?", "The lesson, and your reasoning"],
+    ["argue", "Disagreement", "Does the book leave out the many founders who did everything right and still lost?", "Your view"],
+    ["argue", "Limitation", "Which parts of starting a company then look very different now?", "The part, and what changed"]
+  ],
+  "Blitzscaling": [
+    ["use", "Application", "When did you choose speed over efficiency on purpose, and what did it cost or gain?", "The choice, and the result"],
+    ["use", "Personal Experience", "Which stage of scale have you lived through, and what changed as the team grew?", "The stage, and what broke or held"],
+    ["see", "Insight", "Which idea from Blitzscaling changed how you think about growth?", "What you believed before"],
+    ["see", "Summary", "How would you explain the stages from family to nation to someone at a small startup?", "In plain words"],
+    ["ask", "Question", "How do you know a market is a winner-take-most market before committing to blitzscale?", "The market you are thinking of"],
+    ["ask", "Question", "Which counterintuitive rules in the book would you actually follow?", "The rule, and why"],
+    ["argue", "Disagreement", "Has blitzscaling encouraged reckless growth that hurt companies and people?", "An example, and your view"],
+    ["argue", "Limitation", "Which companies and markets does blitzscaling not apply to?", "The kind, and why"]
+  ],
+  "Venture Deals": [
+    ["use", "Application", "Which term did Venture Deals help you understand or negotiate in a real round?", "The term, and what you did"],
+    ["use", "Personal Experience", "How did separating economics from control change how you read a term sheet?", "What you focused on"],
+    ["see", "Insight", "Which part of Venture Deals made fundraising feel less mysterious?", "What was unclear before"],
+    ["see", "Summary", "How would you explain liquidation preference to a first-time founder?", "In plain words"],
+    ["ask", "Question", "Which terms are worth negotiating hard, and which should you let go?", "The round you have in mind"],
+    ["ask", "Question", "How has the book's advice aged as funding markets have changed?", "What you are unsure about"],
+    ["argue", "Disagreement", "Does a book written by investors give founders a balanced view of the deal?", "Your view"],
+    ["argue", "Limitation", "Which parts of the book assume a US venture market?", "Your market, and the gap"]
+  ],
+  "Obviously Awesome": [
+    ["use", "Application", "What changed after you worked through Dunford's positioning steps for a product?", "The product, and the new positioning"],
+    ["use", "Real-Life Result", "What happened when you repositioned against competitive alternatives rather than competitors?", "The change, and the response"],
+    ["see", "Insight", "Which idea from Obviously Awesome changed how you think about positioning?", "What you believed before"],
+    ["see", "Summary", "How would you explain why market category matters to how customers judge a product?", "With an example"],
+    ["ask", "Question", "How do you choose between an existing category and creating a new one?", "The product you have in mind"],
+    ["ask", "Question", "How often should positioning be revisited as a product and market change?", "Your situation"],
+    ["argue", "Disagreement", "Is positioning as decisive as the book suggests, or is product quality doing more work?", "Your view"],
+    ["argue", "Limitation", "Which parts of the method fit business software better than consumer products?", "The part, and why"]
+  ],
+  "Getting Things Done": [
+    ["use", "Application", "What changed after your first full weekly sweep of every list and project?", "What you found, and what you kept"],
+    ["use", "Real-Life Result", "What happened when you started capturing every open loop outside your head?", "How your mind felt after"],
+    ["see", "Insight", "Which idea from Getting Things Done changed how you think about being busy?", "What you did before"],
+    ["see", "Summary", "How would you explain the difference between a project and a next action?", "With a real example"],
+    ["ask", "Question", "How do you keep a GTD system alive when life gets chaotic?", "Where it slips for you"],
+    ["ask", "Question", "Do contexts still make sense when you can do almost any task from your phone?", "Your setup"],
+    ["argue", "Disagreement", "Is GTD more system than most people need?", "Who it suits, and who it doesn't"],
+    ["argue", "What Did Not Work", "Which part of GTD did you drop, and what did you replace it with?", "The part, and your replacement"]
+  ],
+  "Make Time": [
+    ["use", "Application", "What happened when you picked one daily Highlight and protected time for it?", "A typical Highlight, and the result"],
+    ["use", "Real-Life Result", "Which tactics from Make Time stuck with you after the first month?", "The tactic, and why it lasted"],
+    ["see", "Insight", "Which idea from Make Time changed how you see your phone and inbox?", "What you notice now"],
+    ["see", "Summary", "How would you explain the Busy Bandwagon and Infinity Pools to a friend?", "In plain words"],
+    ["ask", "Question", "How do you choose a Highlight when your day is controlled by other people?", "Your day"],
+    ["ask", "Question", "Which tactics work for parents or people with irregular schedules?", "Your situation"],
+    ["argue", "Disagreement", "Does a menu of tactics help more than a single system, or does it scatter attention?", "Your view"],
+    ["argue", "Limitation", "Which tactics assume a level of control over your time that many people lack?", "The tactic, and the constraint"]
+  ],
+  "The ONE Thing": [
+    ["use", "Application", "What did asking the focusing question lead you to do first?", "The question, your answer, and the result"],
+    ["use", "Real-Life Result", "What changed when you time-blocked your ONE thing every day?", "How long, and what it produced"],
+    ["see", "Insight", "Which of the book's lies about success changed how you work?", "The lie, and what replaced it"],
+    ["see", "Summary", "How would you explain the domino effect using a goal of your own?", "In plain words"],
+    ["ask", "Question", "How do you pick one thing when several responsibilities really can't wait?", "What you are weighing"],
+    ["ask", "Question", "What does the book mean by balance being a lie, and do you agree in practice?", "Where you land"],
+    ["argue", "Disagreement", "Can single-minded focus cost you relationships or health, and does the book face that?", "Your view"],
+    ["argue", "Limitation", "Which roles make having one thing unrealistic?", "The role, and why"]
+  ],
+  "Four Thousand Weeks": [
+    ["use", "Application", "What did you choose to neglect on purpose after reading Four Thousand Weeks?", "What you let go, and how it felt"],
+    ["use", "Personal Experience", "How did accepting that you'll never get everything done change a normal week?", "The week, and the difference"],
+    ["see", "Insight", "Which idea from the book changed how you think about productivity itself?", "What you believed before"],
+    ["see", "Summary", "How would you explain the efficiency trap to someone who keeps optimising their schedule?", "In plain words"],
+    ["ask", "Question", "How do you embrace limits without giving up on ambition?", "Where the tension shows up"],
+    ["ask", "Question", "What does cosmic insignificance therapy look like in everyday life?", "How you read it"],
+    ["argue", "Disagreement", "Is the book's acceptance of limits easier for people who already have enough?", "Your view"],
+    ["argue", "Limitation", "Does the book give enough guidance on what to actually do on Monday?", "What you wanted more of"]
+  ],
+  "Eat That Frog!": [
+    ["use", "Application", "What happened when you did your hardest task first thing for a week?", "The task, and the difference"],
+    ["use", "Real-Life Result", "How did the ABCDE method change your daily list?", "What moved up or off"],
+    ["see", "Insight", "Which idea from Eat That Frog! made procrastination feel more manageable?", "What changed in your thinking"],
+    ["see", "Summary", "How would you explain eating the frog to someone who starts with easy tasks?", "In plain words"],
+    ["ask", "Question", "What if your most important task depends on other people who aren't ready yet?", "The situation"],
+    ["ask", "Question", "Is the hardest task always the most important one?", "An example either way"],
+    ["argue", "Disagreement", "Does hardest-first ignore energy levels and when you actually think best?", "Your view"],
+    ["argue", "Limitation", "Which tips in the book feel too general to act on?", "The tip, and what is missing"]
+  ],
+  "The Checklist Manifesto": [
+    ["use", "Application", "What checklist did you create after reading Gawande, and what did it catch?", "The checklist, and the save"],
+    ["use", "Real-Life Result", "What changed when your team added a pause point before a risky step?", "The step, and the difference"],
+    ["see", "Insight", "Which idea from The Checklist Manifesto changed how you think about expertise?", "What you believed before"],
+    ["see", "Summary", "How would you explain the difference between read-do and do-confirm checklists?", "With an example"],
+    ["ask", "Question", "How do you get experienced people to use a checklist without feeling insulted?", "The team you mean"],
+    ["ask", "Question", "How short does a checklist have to be to actually get used?", "Your checklist"],
+    ["argue", "Disagreement", "Can checklists create a false sense of safety or box out judgement?", "Your view, and an example"],
+    ["argue", "Limitation", "Which kinds of work are too complex or creative for checklists to help much?", "The work, and why"]
+  ],
+  "The 80/20 Principle": [
+    ["use", "Application", "Where did you find the vital few that produce most of the results, and what did you change?", "The 20 percent, and the move"],
+    ["use", "Real-Life Result", "What happened when you applied 80/20 thinking to your time or relationships?", "What you cut or doubled down on"],
+    ["see", "Insight", "Which idea from The 80/20 Principle changed how you judge effort?", "What you assumed before"],
+    ["see", "Summary", "How would you explain the difference between 80/20 analysis and 80/20 thinking?", "In plain words"],
+    ["ask", "Question", "How do you find the vital few when you can't measure results clearly?", "Your situation"],
+    ["ask", "Question", "When should you keep the trivial many anyway?", "An example"],
+    ["argue", "Disagreement", "Does the book treat a statistical pattern as a law of nature?", "Your view"],
+    ["argue", "Limitation", "Where does cutting the 80 percent cause problems the book doesn't mention?", "An example"]
+  ],
+  "Digital Minimalism": [
+    ["use", "Application", "What did you learn from a digital declutter, and what did you bring back afterwards?", "What returned, and what stayed gone"],
+    ["use", "Real-Life Result", "What happened when you replaced scrolling with a higher-quality leisure activity?", "The activity, and the difference"],
+    ["see", "Insight", "Which idea from Digital Minimalism changed how you think about technology in your life?", "What you believed before"],
+    ["see", "Summary", "How would you explain solitude deprivation to someone always listening to something?", "In plain words"],
+    ["ask", "Question", "How do you practise digital minimalism when your work depends on social media?", "Your work"],
+    ["ask", "Question", "How do you decide which tools genuinely support something you value?", "A tool you are unsure about"],
+    ["argue", "Disagreement", "Does the book undervalue the real community some people find online?", "Your view"],
+    ["argue", "Limitation", "Which parts of the declutter are hard to do with family, friends, or a team?", "The part, and why"]
+  ],
+  "Why We Sleep": [
+    ["use", "Application", "What did you change about your sleep after reading Why We Sleep?", "The change, and what you notice"],
+    ["use", "Real-Life Result", "What happened when you cut caffeine or alcohol later in the day?", "The timing, and the difference"],
+    ["see", "Insight", "Which idea from Why We Sleep changed how you think about rest and performance?", "What you believed before"],
+    ["see", "Summary", "How would you explain what REM and deep sleep each do, in plain language?", "In plain words"],
+    ["ask", "Question", "How do you protect sleep with young children, shift work, or long commutes?", "Your situation"],
+    ["ask", "Question", "Which claims in the book should readers double-check before acting on them?", "The claim you want checked"],
+    ["argue", "Disagreement", "Has the book overstated some risks of short sleep, as critics have argued?", "What you have read"],
+    ["argue", "Limitation", "Does the book leave people with insomnia more anxious rather than better equipped?", "Your view"]
+  ],
+  "Breath": [
+    ["use", "Application", "What changed after you practised nasal or slower breathing for a few weeks?", "The practice, and what you noticed"],
+    ["use", "Personal Experience", "Which breathing technique from the book have you kept using, and when?", "The technique, and the situation"],
+    ["see", "Insight", "Which idea from Breath changed how you think about something you do all day without noticing?", "What surprised you"],
+    ["see", "Summary", "How would you explain the case for slow breathing to a sceptical friend?", "In plain words"],
+    ["ask", "Question", "Which claims in Breath rest on strong evidence and which on anecdotes?", "The claim you are unsure about"],
+    ["ask", "Question", "How do you try these techniques safely if you have a health condition?", "What you would check first"],
+    ["argue", "Disagreement", "Does the book reach beyond its evidence on how much breathing can change health?", "The claim, and your view"],
+    ["argue", "Limitation", "Which parts of Nestor's personal experiments are hard to generalise?", "The experiment, and why"]
+  ]
+}

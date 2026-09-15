@@ -1,0 +1,202 @@
+{
+  "Prediction Machines": [
+    ["use", "Application", "Where did you apply the idea of AI as cheap prediction to a real decision or process?", "The process, and what changed"],
+    ["use", "Personal Experience", "How did separating prediction from judgment change how you think about your own role?", "The role, and the shift"],
+    ["see", "Insight", "Which idea from Prediction Machines changed how you think about what AI is good for?", "What you believed before"],
+    ["see", "Summary", "How would you explain why judgment becomes more valuable as prediction gets cheaper?", "In plain words"],
+    ["ask", "Question", "How do you use the AI canvas when the decision involves many people and trade-offs?", "The decision you have in mind"],
+    ["ask", "Question", "Which jobs are most exposed when prediction becomes cheap, and which gain?", "Your reasoning"],
+    ["argue", "Disagreement", "Does the economic framing leave out what is hard about deploying AI in real organisations?", "Your view"],
+    ["argue", "Limitation", "Which parts of the book have aged as generative AI has changed the picture?", "The part, and what changed"]
+  ],
+  "Human Compatible": [
+    ["use", "Personal Experience", "How did Human Compatible change how you think about building machines with fixed goals?", "What you believed before"],
+    ["use", "Application", "Has Russell's argument changed how you design, buy, or question automated systems?", "What you do differently"],
+    ["see", "Insight", "Which idea from the book made the risk of advanced AI click for you?", "The idea, and why"],
+    ["see", "Summary", "How would you explain the King Midas problem to someone new to AI safety?", "In plain words"],
+    ["ask", "Question", "How can a machine learn human preferences when people disagree with each other?", "Where you are unsure"],
+    ["ask", "Question", "Why would uncertainty about goals make an AI more willing to be switched off?", "The step you want explained"],
+    ["argue", "Disagreement", "Is provably beneficial AI a realistic goal, or a hopeful framing?", "Your view"],
+    ["argue", "Limitation", "Which of Russell's proposals feel hard to apply to how AI is actually built today?", "The proposal, and why"]
+  ],
+  "The Second Machine Age": [
+    ["use", "Personal Experience", "How did The Second Machine Age change how you think about your own job and skills?", "The skill, and the shift"],
+    ["use", "Application", "Did the book change what you chose to learn or how you work alongside technology?", "The choice, and why"],
+    ["see", "Insight", "Which idea from the book changed how you see technology's effect on wages and inequality?", "What you believed before"],
+    ["see", "Summary", "How would you explain the difference between the bounty and the spread?", "In plain words"],
+    ["ask", "Question", "What does racing with the machines rather than against them look like in practice?", "Your field"],
+    ["ask", "Question", "Which of the book's policy ideas still make sense today?", "The idea, and your reasoning"],
+    ["argue", "Disagreement", "Were the authors too optimistic about how quickly technology would lift productivity?", "Your view"],
+    ["argue", "Limitation", "Which parts of the book need updating after the arrival of generative AI?", "The part, and what changed"]
+  ],
+  "The Shallows": [
+    ["use", "Application", "What did you change about how you read or use the internet after reading The Shallows?", "The change, and what you noticed"],
+    ["use", "Real-Life Result", "What happened when you tried reading long books again after years of skimming online?", "How it felt, and what came back"],
+    ["see", "Insight", "Which argument in The Shallows changed how you think about attention?", "What you believed before"],
+    ["see", "Summary", "How would you explain Carr's argument that tools reshape how we think?", "In plain words"],
+    ["ask", "Question", "Is distraction a new problem, or has every new medium raised the same fear?", "Your reasoning"],
+    ["ask", "Question", "How do you protect deep reading in a job that requires constant online work?", "Your situation"],
+    ["argue", "Disagreement", "Does the book underestimate how the internet has also improved how we think?", "Your view, and an example"],
+    ["argue", "Limitation", "Which claims about the brain in the book are strongest, and which are weakest?", "The claim you want checked"]
+  ],
+  "The Singularity Is Nearer": [
+    ["use", "Personal Experience", "How did The Singularity Is Nearer change how you think about your own future?", "What you believed before"],
+    ["use", "Application", "Has Kurzweil's view of accelerating change affected any decision you made?", "The decision, and your reasoning"],
+    ["see", "Insight", "Which of Kurzweil's arguments was most persuasive to you?", "The argument, and why"],
+    ["see", "Summary", "How would you explain the law of accelerating returns in plain terms?", "In plain words"],
+    ["ask", "Question", "How should we judge a forecaster whose earlier predictions were partly right and partly wrong?", "Where you land"],
+    ["ask", "Question", "What would merging with AI actually mean for everyday life?", "Your reading"],
+    ["argue", "Disagreement", "Does the book underplay the social and political obstacles to its predictions?", "Your view"],
+    ["argue", "Limitation", "Which timelines in the book feel least grounded?", "The timeline, and why"]
+  ],
+  "AI 2041": [
+    ["use", "Personal Experience", "Which story in AI 2041 changed how you picture the next twenty years?", "The story, and the shift"],
+    ["use", "Application", "Did the book change how you prepare for AI in your career or family?", "What you are doing about it"],
+    ["see", "Insight", "Which pairing of story and analysis made an AI idea click for you?", "The chapter, and why"],
+    ["see", "Summary", "How would you explain the book's view of jobs lost and jobs created by AI?", "In plain words"],
+    ["ask", "Question", "Which of the book's scenarios seems most likely, and which least?", "Your reasoning"],
+    ["ask", "Question", "How should schools change if AI tutors become as capable as the book imagines?", "The school you have in mind"],
+    ["argue", "Disagreement", "Is the book too optimistic about how societies will adapt?", "Your view"],
+    ["argue", "Limitation", "Which parts of the book already look different just a few years later?", "The part, and what changed"]
+  ],
+  "Power and Prediction": [
+    ["use", "Application", "Where have you seen the difference between a point solution and a system solution play out?", "The organisation, and the difference"],
+    ["use", "Personal Experience", "How did the book change how you think about AI projects in your organisation?", "The project, and the shift"],
+    ["see", "Insight", "Which idea from Power and Prediction changed how you think about AI adoption?", "What you believed before"],
+    ["see", "Summary", "How would you explain why rules and decisions matter to how AI creates value?", "In plain words"],
+    ["ask", "Question", "How do you move an organisation from point solutions to system change?", "Where you get stuck"],
+    ["ask", "Question", "Who gains and who loses power when AI changes how decisions are made?", "An example"],
+    ["argue", "Disagreement", "Does the book make system-level change sound more manageable than it is?", "Your view"],
+    ["argue", "Limitation", "Which examples in the book have been overtaken by newer AI tools?", "The example, and what changed"]
+  ],
+  "A Brief History of Time": [
+    ["use", "Personal Experience", "How did this book change how you think about time and the universe?", "What you believed before"],
+    ["use", "Application", "Did the book change how you explain science to others or how you read science news?", "What you do differently"],
+    ["see", "Insight", "Which idea about the origin or fate of the universe stayed with you?", "The idea, and why"],
+    ["see", "Summary", "How would you explain one of the book's big ideas to a curious teenager?", "In plain words"],
+    ["ask", "Question", "Which concept in the book did you find hardest to picture?", "The concept, and your question"],
+    ["ask", "Question", "How much of the science described has changed since the book was written?", "The part you want updated"],
+    ["argue", "Disagreement", "Does popular cosmology make open questions sound more settled than they are?", "Your view"],
+    ["argue", "Limitation", "What would a reader need to know first to get the most from this book?", "The background that helped"]
+  ],
+  "The Gene": [
+    ["use", "Personal Experience", "How did The Gene change how you think about your own family history or health?", "Share only what you are comfortable sharing"],
+    ["use", "Application", "Has the book changed how you think about genetic testing or genetic news?", "What you do differently"],
+    ["see", "Insight", "Which part of the history of genetics surprised you most?", "The part, and why"],
+    ["see", "Summary", "How would you explain the difference between genes as destiny and genes as tendency?", "In plain words"],
+    ["ask", "Question", "Where should we draw lines on predicting and editing human traits?", "Your reasoning"],
+    ["ask", "Question", "What should people learn from the history of eugenics as genetic tools improve?", "Your reading"],
+    ["argue", "Disagreement", "Does the book mix personal story and science in a way that helps or distracts?", "Your view"],
+    ["argue", "Limitation", "Which parts of the science have moved on since 2016?", "The part, and what changed"]
+  ],
+  "The Emperor of All Maladies": [
+    ["use", "Personal Experience", "How did The Emperor of All Maladies change how you understand cancer?", "Share only what you are comfortable sharing"],
+    ["use", "Application", "Has the book changed how you read news about cancer treatments or prevention?", "What you notice now"],
+    ["see", "Insight", "Which moment in the history of cancer treatment stayed with you most?", "The moment, and why"],
+    ["see", "Summary", "How would you explain why cancer is so hard to cure compared with many other diseases?", "In plain words"],
+    ["ask", "Question", "Why did radical treatments persist so long before evidence caught up?", "The part you want explained"],
+    ["ask", "Question", "How should we balance hope for new treatments with realistic expectations?", "Where you are unsure"],
+    ["argue", "Disagreement", "Does the book give prevention enough weight compared with the story of cures?", "Your view"],
+    ["argue", "Limitation", "Which parts of the story have changed since the book was published?", "The part, and what changed"]
+  ],
+  "The Demon-Haunted World": [
+    ["use", "Application", "Where have you used something like Sagan's baloney detection kit on a real claim?", "The claim, and what you found"],
+    ["use", "Personal Experience", "How did the book change how you respond to misinformation from people close to you?", "The conversation, and the change"],
+    ["see", "Insight", "Which idea from The Demon-Haunted World feels most relevant today?", "The idea, and where you see it"],
+    ["see", "Summary", "How would you explain Sagan's case that scepticism and wonder belong together?", "In plain words"],
+    ["ask", "Question", "How do you stay open-minded without being fooled?", "Where the line is for you"],
+    ["ask", "Question", "How would Sagan's tools need to change for social media and AI-generated content?", "Your ideas"],
+    ["argue", "Disagreement", "Is Sagan too confident that scientific thinking can win people over?", "Your view"],
+    ["argue", "Limitation", "Which examples in the book feel dated, and which still hold?", "Both sides, briefly"]
+  ],
+  "Cosmos": [
+    ["use", "Personal Experience", "How did Cosmos change the way you see your place in the universe?", "What changed for you"],
+    ["use", "Application", "Did the book change how you talk about science with children or friends?", "What you do differently"],
+    ["see", "Insight", "Which chapter or story from the history of science stayed with you most?", "The story, and why"],
+    ["see", "Summary", "How would you explain Sagan's idea that we are made of star stuff?", "In plain words"],
+    ["ask", "Question", "Which parts of the science in Cosmos have changed since 1980?", "The part you want updated"],
+    ["ask", "Question", "How does a cosmic perspective help with ordinary problems, if at all?", "Your view"],
+    ["argue", "Disagreement", "Does the book's lyrical style ever get ahead of the evidence?", "An example"],
+    ["argue", "Limitation", "What does the book leave out about science that you wished it covered?", "The gap you noticed"]
+  ],
+  "The Immortal Life of Henrietta Lacks": [
+    ["use", "Personal Experience", "How did Henrietta Lacks's story change how you think about consent in medicine?", "What you believed before"],
+    ["use", "Application", "Has the book changed how you think about donating samples or data for research?", "Your view now"],
+    ["see", "Insight", "Which part of the Lacks family's story affected you most?", "The part, and why"],
+    ["see", "Summary", "How would you explain why HeLa cells mattered so much to science?", "In plain words"],
+    ["ask", "Question", "What would fair recognition or compensation for the Lacks family have looked like?", "Your reasoning"],
+    ["ask", "Question", "How far have medical consent rules changed since Henrietta's time?", "What you want to know"],
+    ["argue", "Disagreement", "Did the author handle her own role in the family's story well?", "Your view"],
+    ["argue", "Limitation", "Which questions about race and medicine does the book open but leave unresolved?", "The question"]
+  ],
+  "Entangled Life": [
+    ["use", "Personal Experience", "How did Entangled Life change how you see the natural world around you?", "What you notice now"],
+    ["use", "Application", "Did the book change anything you do, such as gardening, cooking, or walking in woods?", "What you do differently"],
+    ["see", "Insight", "Which fact about fungi changed how you think about what counts as an individual?", "The fact, and the shift"],
+    ["see", "Summary", "How would you explain mycorrhizal networks to a friend who has never heard of them?", "In plain words"],
+    ["ask", "Question", "How much of the wood wide web idea is established science, and how much is still debated?", "Where you are unsure"],
+    ["ask", "Question", "What does the book suggest about human dependence on other organisms?", "Your reading"],
+    ["argue", "Disagreement", "Does the book's sense of wonder sometimes run ahead of the evidence?", "An example"],
+    ["argue", "Limitation", "Which topics in the book did you want explored in more depth?", "The topic"]
+  ],
+  "An Immense World": [
+    ["use", "Personal Experience", "How did An Immense World change how you see the animals you live around?", "The animal, and what changed"],
+    ["use", "Application", "Did the book change anything you do, such as with pets, light, or noise at home?", "What you do differently"],
+    ["see", "Insight", "Which animal sense from the book surprised you most?", "The sense, and why"],
+    ["see", "Summary", "How would you explain the idea of an umwelt to someone who has never heard the word?", "In plain words"],
+    ["ask", "Question", "How can scientists study senses that humans can't experience at all?", "Where you are curious"],
+    ["ask", "Question", "What does sensory pollution mean for cities and wildlife?", "Your reading"],
+    ["argue", "Disagreement", "Does the book avoid hard questions about animal consciousness and welfare?", "Your view"],
+    ["argue", "Limitation", "Which chapters felt more like a catalogue than an argument?", "The chapter, and why"]
+  ],
+  "The Sixth Extinction": [
+    ["use", "Personal Experience", "How did The Sixth Extinction change how you think about human impact on the planet?", "What you believed before"],
+    ["use", "Application", "Did the book change anything you do or support?", "What you did, and why"],
+    ["see", "Insight", "Which species story in the book stayed with you most?", "The story, and why"],
+    ["see", "Summary", "How would you explain why scientists call this a sixth mass extinction?", "In plain words"],
+    ["ask", "Question", "What can individuals meaningfully do about extinction at this scale?", "Where you feel stuck"],
+    ["ask", "Question", "How should conservation choose what to save when it can't save everything?", "Your reasoning"],
+    ["argue", "Disagreement", "Does the book leave readers with too little sense of what is working?", "Your view"],
+    ["argue", "Limitation", "Which parts of the science have developed since 2014?", "The part, and what changed"]
+  ],
+  "The Order of Time": [
+    ["use", "Personal Experience", "How did The Order of Time change how you think about past, present, and future?", "The shift, in your words"],
+    ["use", "Application", "Did the book change how you think about your own life or mortality?", "What changed for you"],
+    ["see", "Insight", "Which idea about time from Rovelli was most surprising?", "The idea, and why"],
+    ["see", "Summary", "How would you explain Rovelli's claim that there is no single universal now?", "In plain words"],
+    ["ask", "Question", "How does entropy give time a direction, and where did you get lost?", "The step you want explained"],
+    ["ask", "Question", "Which parts of the book are established physics, and which are Rovelli's own view?", "Where you are unsure"],
+    ["argue", "Disagreement", "Does the poetic final part of the book add to the physics or distract from it?", "Your view"],
+    ["argue", "Limitation", "What background would help a reader follow the harder middle chapters?", "What helped you"]
+  ],
+  "The Song of the Cell": [
+    ["use", "Personal Experience", "How did The Song of the Cell change how you think about your own body?", "What you believed before"],
+    ["use", "Application", "Has the book changed how you read news about cell therapies or medical advances?", "What you notice now"],
+    ["see", "Insight", "Which moment in the history of cell biology surprised you most?", "The moment, and why"],
+    ["see", "Summary", "How would you explain why the cell is the unit of life to a curious friend?", "In plain words"],
+    ["ask", "Question", "How should we think about the risks of engineering cells, as in CAR-T or IVF?", "Where you are unsure"],
+    ["ask", "Question", "Which chapter was hardest to follow, and what would have helped?", "The chapter, and your question"],
+    ["argue", "Disagreement", "Does the book promise more from cell therapies than they have yet delivered?", "Your view"],
+    ["argue", "Limitation", "How does this book compare with The Gene, and what does it leave out?", "The comparison, briefly"]
+  ],
+  "Astrophysics for People in a Hurry": [
+    ["use", "Personal Experience", "How did this short book change how you see the night sky or the universe?", "What you notice now"],
+    ["use", "Application", "Did the book change how you talk about science with children or friends?", "What you do differently"],
+    ["see", "Insight", "Which chapter gave you the biggest sense of scale?", "The chapter, and why"],
+    ["see", "Summary", "How would you explain dark matter and dark energy in a couple of sentences?", "In plain words"],
+    ["ask", "Question", "Which idea in the book did you find hardest to picture?", "The idea, and your question"],
+    ["ask", "Question", "What should a reader pick up next after this book?", "Your suggestion, and why"],
+    ["argue", "Disagreement", "Does a book this short simplify so much that it misleads?", "Your view, and an example"],
+    ["argue", "Limitation", "Which topics felt rushed or left you wanting more?", "The topic"]
+  ],
+  "Immune": [
+    ["use", "Personal Experience", "How did Immune change how you think about getting sick and recovering?", "What you understand now"],
+    ["use", "Application", "Has the book changed how you read news about vaccines, allergies, or infections?", "What you notice now"],
+    ["see", "Insight", "Which part of the immune system surprised you most?", "The part, and why"],
+    ["see", "Summary", "How would you explain the difference between innate and adaptive immunity?", "In plain words"],
+    ["ask", "Question", "Why does the immune system sometimes attack the body itself?", "The part you want explained"],
+    ["ask", "Question", "Which chapter was hardest to follow, and what would have helped?", "The chapter, and your question"],
+    ["argue", "Disagreement", "Does the book's playful style ever oversimplify the science?", "An example"],
+    ["argue", "Limitation", "What would you want to know that the book doesn't cover?", "The topic"]
+  ]
+}

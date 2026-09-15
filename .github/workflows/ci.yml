@@ -25,4 +25,7 @@ jobs:
       - run: npm run typecheck
       - run: npm run lint
       - run: npm run audit:content
+      # Node 24 runs the TypeScript selection rules directly for these two.
+      - run: npm run audit:prompts
+      - run: npm run test:prompts
       - run: npm run build

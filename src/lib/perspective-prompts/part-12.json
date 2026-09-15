@@ -1,0 +1,202 @@
+{
+  "Against the Gods": [
+    ["use", "Application", "How did the history of risk in Against the Gods change a decision you make about uncertainty?", "The decision, and the shift"],
+    ["use", "Personal Experience", "Where have you seen regression to the mean catch you or someone else out?", "The situation, and what happened"],
+    ["see", "Insight", "Which figure in the history of risk surprised you most?", "The person, and why"],
+    ["see", "Summary", "How would you explain why measuring risk was such a turning point for the modern world?", "In plain words"],
+    ["ask", "Question", "How far can probability help with risks that have never happened before?", "Where you are unsure"],
+    ["ask", "Question", "Which chapters were hardest to follow, and what helped?", "The chapter, and your question"],
+    ["argue", "Disagreement", "Does the book trust quantitative risk models more than events since have justified?", "Your view"],
+    ["argue", "Limitation", "What does a history of risk measurement leave out about how people feel risk?", "The gap you noticed"]
+  ],
+  "The Big Short": [
+    ["use", "Personal Experience", "How did The Big Short change how you think about banks, ratings, and financial products?", "What you believed before"],
+    ["use", "Application", "Has the book changed how you react when everyone around you agrees an asset is safe?", "The moment, and your reaction"],
+    ["see", "Insight", "Which character's way of seeing what others missed stayed with you?", "The person, and why"],
+    ["see", "Summary", "How would you explain a synthetic CDO in the simplest terms you can?", "In plain words"],
+    ["ask", "Question", "Why did so few people act on the warning signs, even inside the banks?", "Your reading"],
+    ["ask", "Question", "Could a crisis like 2008 happen again, and where would it start?", "Your reasoning"],
+    ["argue", "Disagreement", "Does the book make heroes of people who profited from others' losses?", "Your view"],
+    ["argue", "Limitation", "What does a story told through a few investors leave out about the crisis?", "The gap you noticed"]
+  ],
+  "Homo Deus": [
+    ["use", "Personal Experience", "How did Homo Deus change how you think about humanity's future goals?", "What you believed before"],
+    ["use", "Application", "Has the book changed how you think about data, apps, or who makes your decisions?", "The change, and an example"],
+    ["see", "Insight", "Which argument in Homo Deus was most unsettling to you?", "The argument, and why"],
+    ["see", "Summary", "How would you explain what Harari means by dataism?", "In plain words"],
+    ["ask", "Question", "What would a useless class mean for work and dignity, and is it likely?", "Where you are unsure"],
+    ["ask", "Question", "Is Harari predicting the future or describing possibilities to avoid?", "Your reading"],
+    ["argue", "Disagreement", "Does the book overstate how far humanity has conquered famine, plague, and war?", "Your view"],
+    ["argue", "Limitation", "Which of the book's forecasts look different a decade later?", "The forecast, and what changed"]
+  ],
+  "21 Lessons for the 21st Century": [
+    ["use", "Personal Experience", "Which of the 21 lessons changed how you think about your own life right now?", "The lesson, and the shift"],
+    ["use", "Application", "Did the book change how you approach news, education, or career choices?", "The change, and why"],
+    ["see", "Insight", "Which chapter felt most relevant to the present moment?", "The chapter, and why"],
+    ["see", "Summary", "How would you explain Harari's case for humility in a confusing world?", "In plain words"],
+    ["ask", "Question", "What should young people learn when we can't predict which skills will matter?", "Your ideas"],
+    ["ask", "Question", "How does the chapter on meditation fit the rest of the book?", "Your reading"],
+    ["argue", "Disagreement", "Does the book spread itself too thin across so many big topics?", "Your view"],
+    ["argue", "Limitation", "Which lessons offer diagnosis without much guidance on what to do?", "The lesson, and what is missing"]
+  ],
+  "Guns, Germs, and Steel": [
+    ["use", "Personal Experience", "How did Guns, Germs, and Steel change how you explain differences between societies?", "What you believed before"],
+    ["use", "Application", "Has the book changed how you read news about development or global inequality?", "What you notice now"],
+    ["see", "Insight", "Which of Diamond's explanations was most persuasive to you?", "The explanation, and why"],
+    ["see", "Summary", "How would you explain why continental axes mattered for the spread of farming?", "In plain words"],
+    ["ask", "Question", "How much can geography explain, and where do choices and culture come in?", "Where you are unsure"],
+    ["ask", "Question", "How should readers take the criticisms historians and anthropologists have made?", "What you have read"],
+    ["argue", "Disagreement", "Is the book too close to geographic determinism?", "Your view"],
+    ["argue", "Limitation", "Which parts of the evidence have changed since 1997?", "The part, and what changed"]
+  ],
+  "SPQR": [
+    ["use", "Personal Experience", "How did SPQR change how you picture ancient Rome?", "What you imagined before"],
+    ["use", "Application", "Has the book changed how you judge modern comparisons to Rome in politics?", "The comparison, and your view"],
+    ["see", "Insight", "Which part of Beard's account surprised you most?", "The part, and why"],
+    ["see", "Summary", "How would you explain why the expansion of Roman citizenship mattered so much?", "In plain words"],
+    ["ask", "Question", "How do historians separate Roman myth from what actually happened?", "The case you want explained"],
+    ["ask", "Question", "Why does Beard stop in 212 CE, and what does that choice show?", "Your reading"],
+    ["argue", "Disagreement", "Does the book's scepticism about sources leave readers with too few firm answers?", "Your view"],
+    ["argue", "Limitation", "Which periods or people did you want more of?", "The gap"]
+  ],
+  "The Guns of August": [
+    ["use", "Application", "How did The Guns of August change how you think about plans that can't adapt?", "The plan, and the lesson"],
+    ["use", "Personal Experience", "Where have you seen a chain of miscalculations like the ones Tuchman describes?", "The situation, and what happened"],
+    ["see", "Insight", "Which decision in August 1914 stayed with you most?", "The decision, and why"],
+    ["see", "Summary", "How would you explain why the Schlieffen Plan mattered so much?", "In plain words"],
+    ["ask", "Question", "Could leaders in 1914 have stopped the war, and at which moment?", "Your reading"],
+    ["ask", "Question", "What lessons did later leaders, like Kennedy, take from this book?", "What you want to know"],
+    ["argue", "Disagreement", "Does Tuchman's narrative style shape conclusions that historians now question?", "Your view"],
+    ["argue", "Limitation", "What does focusing on one month leave out about why the war began?", "The gap you noticed"]
+  ],
+  "A People's History of the United States": [
+    ["use", "Personal Experience", "How did A People's History change how you see the history you learned at school?", "What you learned before"],
+    ["use", "Application", "Has the book changed how you read news about workers, protest, or power?", "What you notice now"],
+    ["see", "Insight", "Which chapter surprised you most?", "The chapter, and why"],
+    ["see", "Summary", "How would you explain what telling history from below means?", "In plain words"],
+    ["ask", "Question", "How should a reader balance Zinn's view with more conventional histories?", "Your approach"],
+    ["ask", "Question", "Is a deliberately one-sided history useful, and when?", "Your reasoning"],
+    ["argue", "Disagreement", "Do the criticisms of Zinn's accuracy and selectivity hold up?", "What you have read"],
+    ["argue", "Limitation", "Which parts of the story does the book leave out or flatten?", "The gap you noticed"]
+  ],
+  "The Rise and Fall of the Third Reich": [
+    ["use", "Personal Experience", "How did Shirer's history change how you think about how democracies fall?", "What you believed before"],
+    ["use", "Application", "Has the book changed what you watch for in politics today?", "The warning signs you notice"],
+    ["see", "Insight", "Which part of the rise to power surprised you most?", "The part, and why"],
+    ["see", "Summary", "How would you explain how Hitler came to power through legal means?", "In plain words"],
+    ["ask", "Question", "Why did so many ordinary people go along, according to the book?", "Your reading"],
+    ["ask", "Question", "How should readers approach a history written by a journalist who was there?", "Its strengths and risks"],
+    ["argue", "Disagreement", "Which of Shirer's interpretations have historians since challenged?", "The interpretation, and why"],
+    ["argue", "Limitation", "What does later research add that this book couldn't include?", "The gap"]
+  ],
+  "1776": [
+    ["use", "Application", "How did Washington's leadership in 1776 change how you think about leading through setbacks?", "The moment, and the lesson"],
+    ["use", "Personal Experience", "Which moment from that year stayed with you in a hard stretch of your own?", "The moment, and why"],
+    ["see", "Insight", "What surprised you most about how close the Revolution came to collapse?", "What you assumed before"],
+    ["see", "Summary", "How would you explain why the crossing to Trenton mattered so much?", "In plain words"],
+    ["ask", "Question", "How much did luck, rather than strategy, decide that year?", "Your reading"],
+    ["ask", "Question", "What did Knox and Greene contribute that is easy to overlook?", "What stood out"],
+    ["argue", "Disagreement", "Is the book too admiring of Washington's generalship?", "Your view"],
+    ["argue", "Limitation", "Whose experience of 1776 does the book leave largely out?", "Who, and why it matters"]
+  ],
+  "Salt": [
+    ["use", "Personal Experience", "How did Salt change how you look at an ordinary thing in your kitchen?", "What you notice now"],
+    ["use", "Application", "Has the book changed how you think about commodities and trade today?", "The connection you drew"],
+    ["see", "Insight", "Which episode in the history of salt surprised you most?", "The episode, and why"],
+    ["see", "Summary", "How would you explain why salt shaped economies and empires?", "In plain words"],
+    ["ask", "Question", "Which modern commodity plays the role salt once did?", "Your reasoning"],
+    ["ask", "Question", "How did you find reading history organised around one substance?", "What worked, and what didn't"],
+    ["argue", "Disagreement", "Does telling history through one commodity make it seem more important than it was?", "Your view"],
+    ["argue", "Limitation", "Which parts of the book felt more like a list than a story?", "The part"]
+  ],
+  "The Devil in the White City": [
+    ["use", "Personal Experience", "How did the book change how you think about ambition and the 1893 World's Fair?", "What stood out"],
+    ["use", "Application", "Did Burnham's story change how you think about managing a huge project under pressure?", "The lesson, and your project"],
+    ["see", "Insight", "What did pairing the fair's builder with a killer reveal for you?", "Your reading"],
+    ["see", "Summary", "How would you explain what made the fair such a turning point for Chicago?", "In plain words"],
+    ["ask", "Question", "How does Larson build suspense while staying with the historical record?", "What you noticed"],
+    ["ask", "Question", "How much of the book's detail is documented, and how much is reconstructed?", "Where you are unsure"],
+    ["argue", "Disagreement", "Does the true-crime storyline overshadow the history of the fair?", "Your view"],
+    ["argue", "Limitation", "What does the book leave out about the people who built and worked at the fair?", "The gap"]
+  ],
+  "The Selfish Gene": [
+    ["use", "Personal Experience", "How did The Selfish Gene change how you think about altruism and cooperation?", "What you believed before"],
+    ["use", "Application", "Has the gene's-eye view changed how you explain behaviour in people or animals?", "An example"],
+    ["see", "Insight", "Which idea from Dawkins changed how you see evolution?", "The idea, and the shift"],
+    ["see", "Summary", "How would you explain why selfish genes can produce cooperative animals?", "In plain words"],
+    ["ask", "Question", "What exactly does selfish mean in the title, and why is it so often misread?", "Where it confused you"],
+    ["ask", "Question", "How useful is the idea of memes, which the book introduced?", "Your view"],
+    ["argue", "Disagreement", "Does the gene-centred view leave too little room for other levels of selection?", "What you have read"],
+    ["argue", "Limitation", "Which parts of the science have moved on since 1976?", "The part, and what changed"]
+  ],
+  "Silent Spring": [
+    ["use", "Personal Experience", "How did Silent Spring change how you think about chemicals in everyday life?", "What you notice now"],
+    ["use", "Application", "Did the book change anything you do at home, in gardening, or in what you buy?", "The change, and why"],
+    ["see", "Insight", "What surprised you about how Carson built her case?", "What you expected"],
+    ["see", "Summary", "How would you explain why Silent Spring mattered so much when it came out?", "In plain words"],
+    ["ask", "Question", "How should we balance pesticide use against the need to grow enough food?", "Your reasoning"],
+    ["ask", "Question", "What lessons does the attack on Carson hold for scientists who challenge industries today?", "Your reading"],
+    ["argue", "Disagreement", "Have criticisms of the book's effect on DDT use in malaria control got a point?", "What you have read"],
+    ["argue", "Limitation", "Which parts of the science have changed since 1962?", "The part, and what changed"]
+  ],
+  "The Body": [
+    ["use", "Personal Experience", "How did The Body change how you think about your own health?", "What you believed before"],
+    ["use", "Application", "Did any fact from Bryson change a habit of yours?", "The fact, and the habit"],
+    ["see", "Insight", "Which fact about the body surprised you most?", "The fact, and why"],
+    ["see", "Summary", "How would you explain one system of the body the way Bryson does?", "In plain words"],
+    ["ask", "Question", "Which chapter left you wanting to know more?", "The chapter, and your question"],
+    ["ask", "Question", "How do you check the medical facts in a book written for entertainment?", "The claim you want checked"],
+    ["argue", "Disagreement", "Does the book's lightness ever undercut serious topics?", "An example"],
+    ["argue", "Limitation", "What does a tour of facts leave out that would help readers act?", "The gap you noticed"]
+  ],
+  "A Short History of Nearly Everything": [
+    ["use", "Personal Experience", "How did Bryson's book change how you see science or the world around you?", "What changed for you"],
+    ["use", "Application", "Did the book change how you explain science to children or friends?", "What you do differently"],
+    ["see", "Insight", "Which story of a scientist's discovery stayed with you most?", "The story, and why"],
+    ["see", "Summary", "How would you explain one big idea from the book in a few sentences?", "In plain words"],
+    ["ask", "Question", "Which parts of the science have changed since 2003?", "The part you want updated"],
+    ["ask", "Question", "What should a reader pick up next to go deeper on one topic?", "Your suggestion"],
+    ["argue", "Disagreement", "Does the focus on quirky scientists distract from the ideas themselves?", "Your view"],
+    ["argue", "Limitation", "Which topics felt rushed for how much they matter?", "The topic"]
+  ],
+  "Behave": [
+    ["use", "Personal Experience", "How did Behave change how you judge other people's behaviour?", "What you believed before"],
+    ["use", "Application", "Has the book changed how you respond when you or someone else acts badly?", "The situation, and the change"],
+    ["see", "Insight", "Which timescale in Sapolsky's framework, from seconds to millennia, changed your thinking most?", "The timescale, and why"],
+    ["see", "Summary", "How would you explain why Sapolsky says no single cause explains behaviour?", "In plain words"],
+    ["ask", "Question", "If biology shapes so much, what room is left for responsibility?", "Where you are unsure"],
+    ["ask", "Question", "Which chapters were hardest going, and was it worth pushing through?", "Your experience"],
+    ["argue", "Disagreement", "Does the book lean too heavily on biology compared with culture and choice?", "Your view"],
+    ["argue", "Limitation", "Which findings are hardest to use in everyday life?", "The finding, and why"]
+  ],
+  "Determined": [
+    ["use", "Personal Experience", "How did Determined change how you think about blame and credit?", "What you believed before"],
+    ["use", "Application", "Has the book changed how you treat yourself or others after mistakes?", "The situation, and the change"],
+    ["see", "Insight", "Which argument against free will was hardest to dismiss?", "The argument, and why"],
+    ["see", "Summary", "How would you explain Sapolsky's position on free will in a few sentences?", "In plain words"],
+    ["ask", "Question", "If there is no free will, how should justice and punishment work?", "Your reasoning"],
+    ["ask", "Question", "How do you live day to day if you accept the book's conclusion?", "Where you get stuck"],
+    ["argue", "Disagreement", "Are the compatibilist responses to Sapolsky stronger than he allows?", "What you have read"],
+    ["argue", "Limitation", "Does the book say enough about what should replace blame?", "What you wanted more of"]
+  ],
+  "Why Zebras Don't Get Ulcers": [
+    ["use", "Application", "What did you change about how you manage stress after reading this book?", "The change, and what you notice"],
+    ["use", "Personal Experience", "How did understanding chronic stress change how you see your own health?", "Share only what you are comfortable sharing"],
+    ["see", "Insight", "Which idea from Sapolsky changed how you think about stress?", "What you believed before"],
+    ["see", "Summary", "How would you explain why zebras don't get ulcers and humans do?", "In plain words"],
+    ["ask", "Question", "How much control do people really have over stressors in their lives?", "Your situation"],
+    ["ask", "Question", "Which coping strategies does the evidence in the book support most?", "What you want to know"],
+    ["argue", "Disagreement", "Does the book place enough weight on social and economic causes of stress?", "Your view"],
+    ["argue", "Limitation", "Which parts of the science have moved on since the last edition?", "The part, and what changed"]
+  ],
+  "Emotional Intelligence": [
+    ["use", "Application", "Which part of emotional intelligence did you work on, and what changed?", "The skill, and the difference"],
+    ["use", "Personal Experience", "When did noticing an amygdala hijack help you respond better?", "The moment, and your response"],
+    ["see", "Insight", "Which idea from Goleman changed how you think about intelligence and success?", "What you believed before"],
+    ["see", "Summary", "How would you explain the parts of emotional intelligence to a colleague?", "In plain words"],
+    ["ask", "Question", "Can emotional intelligence really be learned as an adult, and how?", "Your experience"],
+    ["ask", "Question", "How do you build empathy without absorbing everyone else's emotions?", "Where the line is"],
+    ["argue", "Disagreement", "Does the book overstate how much emotional intelligence predicts success?", "What you have read"],
+    ["argue", "Limitation", "Which claims about the brain in the book have aged least well?", "The claim, and why"]
+  ]
+}

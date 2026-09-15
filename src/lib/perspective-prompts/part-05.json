@@ -1,0 +1,202 @@
+{
+  "The Body Keeps the Score": [
+    ["use", "Personal Experience", "How did The Body Keeps the Score change how you understand stress or trauma in your own life?", "Share only what you are comfortable sharing"],
+    ["use", "Application", "Which body-based practice from the book, such as yoga or rhythm, have you found helpful?", "The practice, and what you noticed"],
+    ["see", "Insight", "Which idea from the book changed how you see the link between the body and memory?", "What you believed before"],
+    ["see", "Summary", "How would you explain the idea of the brain's smoke detector to someone new to the topic?", "In plain words"],
+    ["ask", "Question", "How should a reader use this book alongside, rather than instead of, professional support?", "Where you are unsure"],
+    ["ask", "Question", "Which treatments described in the book have the strongest evidence behind them?", "The treatment you want to understand"],
+    ["argue", "Disagreement", "Do some of the book's claims about trauma and memory go further than the research supports?", "The claim, and what you have read"],
+    ["argue", "Limitation", "Who might find this book overwhelming, and what would help them read it safely?", "The reader, and your suggestion"]
+  ],
+  "How Not to Die": [
+    ["use", "Application", "What did you change about how you eat after reading How Not to Die?", "The change, and how long it has lasted"],
+    ["use", "Real-Life Result", "What happened when you tried following the Daily Dozen for a while?", "What was easy, and what was hard"],
+    ["see", "Insight", "Which chapter changed how you think about food and long-term health?", "What you believed before"],
+    ["see", "Summary", "How would you explain Greger's case for whole plant foods to a curious friend?", "In plain words"],
+    ["ask", "Question", "How do you weigh the book's evidence against studies that point in other directions?", "The claim you are unsure about"],
+    ["ask", "Question", "How do you follow this approach on a tight budget or with a family that eats differently?", "Your situation"],
+    ["argue", "Disagreement", "Does the book present nutrition research with more certainty than it deserves?", "Your view, and an example"],
+    ["argue", "Limitation", "Which parts of the advice are hard to sustain in everyday life?", "The part, and why"]
+  ],
+  "Spark": [
+    ["use", "Application", "What changed when you started exercising before demanding mental work?", "The routine, and what you noticed"],
+    ["use", "Real-Life Result", "How did Spark change the way you use exercise for mood or focus?", "The change, and the result"],
+    ["see", "Insight", "Which finding from Spark changed how you think about exercise and the brain?", "What you believed before"],
+    ["see", "Summary", "How would you explain why Ratey calls BDNF fertiliser for the brain?", "In plain words"],
+    ["ask", "Question", "How much exercise does it take to notice the benefits the book describes?", "Your current routine"],
+    ["ask", "Question", "How should schools act on the Naperville example, and what would get in the way?", "The school you have in mind"],
+    ["argue", "Disagreement", "Does the book make brain benefits sound more certain than the research shows?", "The claim, and your view"],
+    ["argue", "Limitation", "Which recommendations are hard for people with injuries, illness, or little free time?", "The constraint"]
+  ],
+  "In Defense of Food": [
+    ["use", "Application", "Which of Pollan's food rules changed how you shop or cook?", "The rule, and the change"],
+    ["use", "Real-Life Result", "What happened when you tried eat food, not too much, mostly plants for a month?", "What changed, and what stuck"],
+    ["see", "Insight", "What did nutritionism change about how you read health claims on food?", "What you noticed after"],
+    ["see", "Summary", "How would you explain Pollan's difference between food and edible food-like substances?", "In plain words"],
+    ["ask", "Question", "How do you follow Pollan's advice when fresh food is expensive or far away?", "Your situation"],
+    ["ask", "Question", "Which of Pollan's rules would you change for how people eat today?", "The rule, and your version"],
+    ["argue", "Disagreement", "Is Pollan too dismissive of nutrition science in making his case?", "Your view"],
+    ["argue", "Limitation", "Does the book place too much responsibility on individuals rather than food systems?", "Where you would add context"]
+  ],
+  "The Comfort Crisis": [
+    ["use", "Application", "What misogi or hard challenge did you take on after reading The Comfort Crisis?", "The challenge, and what you learned"],
+    ["use", "Real-Life Result", "What happened when you added more boredom, hunger, or carrying into ordinary weeks?", "The practice, and the difference"],
+    ["see", "Insight", "Which idea from The Comfort Crisis changed how you see comfort in modern life?", "What you believed before"],
+    ["see", "Summary", "How would you explain the case for voluntary discomfort to someone who loves routine?", "In plain words"],
+    ["ask", "Question", "How do you choose discomfort that builds you up rather than wears you down?", "Where you draw the line"],
+    ["ask", "Question", "What does a misogi look like for someone without time or money for big adventures?", "Your version"],
+    ["argue", "Disagreement", "Does the book romanticise hardship that many people never chose?", "Your view"],
+    ["argue", "Limitation", "Which of Easter's experiences are hard to generalise to everyday readers?", "The experience, and why"]
+  ],
+  "The Myth of Sisyphus": [
+    ["use", "Personal Experience", "When did Camus's idea of the absurd change how you faced a repetitive or pointless-feeling task?", "The task, and the shift"],
+    ["use", "Application", "How has revolt, in Camus's sense, shaped a choice you made?", "The choice, and your reasoning"],
+    ["see", "Insight", "What did one must imagine Sisyphus happy come to mean for you?", "Your reading"],
+    ["see", "Summary", "How would you explain the absurd to someone who has never read philosophy?", "In plain words"],
+    ["ask", "Question", "How is Camus's response to the absurd different from simply giving up on meaning?", "Where it is unclear for you"],
+    ["ask", "Question", "Is it hard to follow Camus's argument, and which part confused you most?", "The part, and your question"],
+    ["argue", "Disagreement", "Is Camus's rejection of hope a strength of the essay or a blind spot?", "Your view"],
+    ["argue", "Limitation", "Does the essay speak to people facing real suffering, or mostly to comfortable doubt?", "Your view"]
+  ],
+  "Zen Mind, Beginner's Mind": [
+    ["use", "Application", "What changed when you practised zazen or brought beginner's mind to something familiar?", "The practice, and what you noticed"],
+    ["use", "Personal Experience", "Which of Suzuki's talks do you return to, and in what kind of moment?", "The talk, and the moment"],
+    ["see", "Insight", "What did beginner's mind change about how you approach something you already know well?", "The thing, and the shift"],
+    ["see", "Summary", "How would you explain practising without a gaining idea to someone who meditates for results?", "In plain words"],
+    ["ask", "Question", "How much of the book can a reader use without a teacher or a Zen community?", "Your situation"],
+    ["ask", "Question", "Which passages felt deliberately puzzling, and how did you make sense of them?", "The passage, and your reading"],
+    ["argue", "Disagreement", "Does reading about Zen risk turning practice into ideas, as Suzuki himself warns?", "Your view"],
+    ["argue", "Limitation", "Which parts of the book are hard to translate out of their cultural setting?", "The part, and why"]
+  ],
+  "Steve Jobs": [
+    ["use", "Application", "Which of Jobs's habits, like cutting product lines or insisting on simplicity, have you used?", "The habit, and what happened"],
+    ["use", "Personal Experience", "How did Jobs's story change how you think about taste and quality in your own work?", "The work, and the change"],
+    ["see", "Insight", "What did Isaacson's portrait change about how you see Apple's success?", "What you believed before"],
+    ["see", "Summary", "How would you explain the reality distortion field, both its power and its cost?", "In plain words"],
+    ["ask", "Question", "How do you separate what made Jobs effective from how he treated people?", "Where it blurs for you"],
+    ["ask", "Question", "Which of Jobs's decisions could only have worked for someone in his position?", "The decision, and why"],
+    ["argue", "Disagreement", "Does the biography excuse behaviour that would be unacceptable from anyone else?", "Your view"],
+    ["argue", "Limitation", "Which lessons from Jobs's career are hard for most people to use?", "The lesson, and the gap"]
+  ],
+  "Shoe Dog": [
+    ["use", "Personal Experience", "Which part of Knight's early struggle changed how you handle risk in your own work?", "The moment, and what you changed"],
+    ["use", "Application", "How did Shoe Dog change how you think about partners and early collaborators?", "The relationship, and the lesson"],
+    ["see", "Insight", "What surprised you about how close Nike came to collapse in its early years?", "What you assumed before"],
+    ["see", "Summary", "How would you explain what kept Knight going through the cash crises?", "In plain words"],
+    ["ask", "Question", "When is persistence like Knight's wise, and when is it a gamble you shouldn't take?", "The situation you are weighing"],
+    ["ask", "Question", "How much of Nike's early success came from Bowerman and the team rather than Knight?", "Your reading"],
+    ["argue", "Disagreement", "Does the memoir leave out harder questions about how Nike later grew?", "What you wanted addressed"],
+    ["argue", "Limitation", "Which of Knight's choices worked only because of the time and market he started in?", "The choice, and why"]
+  ],
+  "The Ride of a Lifetime": [
+    ["use", "Application", "Which of Iger's leadership principles have you tried to practise, and how?", "The principle, and the situation"],
+    ["use", "Personal Experience", "How did Iger's handling of hard news or crises change how you lead in difficult moments?", "The moment, and what you did"],
+    ["see", "Insight", "What did the Pixar, Marvel, and Lucasfilm deals teach you about trust in negotiation?", "The lesson, in your words"],
+    ["see", "Summary", "How would you explain Iger's view of optimism to a team facing uncertainty?", "In plain words"],
+    ["ask", "Question", "How do you practise decisiveness when you don't have full information?", "The decision you face"],
+    ["ask", "Question", "Which of Iger's principles are hardest to apply without a CEO's authority?", "Your role"],
+    ["argue", "Disagreement", "Is the memoir too flattering about Iger's own decisions and succession?", "Your view"],
+    ["argue", "Limitation", "Which lessons apply mainly to leaders of very large companies?", "The lesson, and your context"]
+  ],
+  "Becoming": [
+    ["use", "Personal Experience", "Which part of Michelle Obama's story changed how you think about your own path?", "The part, and what it changed"],
+    ["use", "Application", "How did Becoming change how you handle doubts about whether you belong somewhere?", "The situation, and the shift"],
+    ["see", "Insight", "What surprised you most about her life before and during the White House?", "What you expected"],
+    ["see", "Summary", "How would you explain what becoming means across the three parts of the book?", "In your own words"],
+    ["ask", "Question", "How do you balance ambition with family the way the book describes, without her support structure?", "Your situation"],
+    ["ask", "Question", "Which of her career decisions would you have made differently, and why?", "The decision"],
+    ["argue", "Disagreement", "Does the memoir stay too careful about politics to say what it really thinks?", "Your view"],
+    ["argue", "Limitation", "Which experiences in the book are hard to relate to, and why?", "The experience, and the gap"]
+  ],
+  "Benjamin Franklin": [
+    ["use", "Application", "Did you try anything like Franklin's list of virtues, and what did you learn?", "The virtue, and how it went"],
+    ["use", "Personal Experience", "How did Franklin's practical, experiment-minded approach change how you tackle problems?", "The problem, and your approach"],
+    ["see", "Insight", "What did Isaacson's portrait change about how you see Franklin?", "What you believed before"],
+    ["see", "Summary", "How would you explain what made Franklin such an effective networker and civic builder?", "In plain words"],
+    ["ask", "Question", "How do you weigh Franklin's public achievements against his failings at home?", "Where you land"],
+    ["ask", "Question", "Which of Franklin's habits would work in a modern career?", "The habit, and your reasoning"],
+    ["argue", "Disagreement", "Does the biography treat Franklin's pragmatism more kindly than it deserves?", "Your view"],
+    ["argue", "Limitation", "Which parts of Franklin's self-improvement story depend on his era and position?", "The part, and why"]
+  ],
+  "Leonardo da Vinci": [
+    ["use", "Application", "What changed when you started keeping notes of observations the way Leonardo did?", "What you notice now"],
+    ["use", "Personal Experience", "How did Leonardo's curiosity change how you spend your own attention?", "The curiosity you followed"],
+    ["see", "Insight", "What did the book change about how you see the link between art and science?", "What you believed before"],
+    ["see", "Summary", "How would you explain what made Leonardo's way of thinking unusual?", "In plain words"],
+    ["ask", "Question", "Was Leonardo's habit of leaving work unfinished a flaw or part of his genius?", "Your reading"],
+    ["ask", "Question", "How do you practise wide curiosity when a career rewards narrow expertise?", "Your field"],
+    ["argue", "Disagreement", "Does Isaacson turn Leonardo into a lesson about curiosity at the expense of his times?", "Your view"],
+    ["argue", "Limitation", "Which lessons from Leonardo are hard to apply without patronage and freedom?", "The lesson, and the gap"]
+  ],
+  "Team of Rivals": [
+    ["use", "Application", "Have you brought a critic or rival closer, as Lincoln did, and what happened?", "The person, and the result"],
+    ["use", "Personal Experience", "Which of Lincoln's ways of handling difficult people changed how you lead?", "The approach, and the situation"],
+    ["see", "Insight", "What did the book change about how you see Lincoln's political skill?", "What you believed before"],
+    ["see", "Summary", "How would you explain why Lincoln put his rivals in his cabinet?", "In plain words"],
+    ["ask", "Question", "When does including rivals strengthen a team, and when does it paralyse it?", "The team you have in mind"],
+    ["ask", "Question", "How did Lincoln manage enormous egos without being walked over?", "The moment that stood out"],
+    ["argue", "Disagreement", "Does the book give Lincoln too much credit for outcomes shaped by events?", "Your view"],
+    ["argue", "Limitation", "Which of Lincoln's methods depend on the crisis of the Civil War?", "The method, and why"]
+  ],
+  "The Lessons of History": [
+    ["use", "Personal Experience", "Which lesson from the Durants changed how you read today's news?", "The lesson, and what you notice"],
+    ["use", "Application", "Did the book change how you think about progress in your own life or work?", "The change, in brief"],
+    ["see", "Insight", "Which chapter of this short book surprised you most?", "The chapter, and why"],
+    ["see", "Summary", "How would you explain the Durants' view of how civilisations rise and decline?", "In plain words"],
+    ["ask", "Question", "Can history really teach lessons, or do we find the patterns we look for?", "Your view"],
+    ["ask", "Question", "How should a reader treat broad claims about race, religion, and biology written in 1968?", "Where you are unsure"],
+    ["argue", "Disagreement", "Which of the Durants' conclusions do you think history has since challenged?", "The conclusion, and why"],
+    ["argue", "Limitation", "What does such a short overview leave out that matters?", "The gap you noticed"]
+  ],
+  "The Silk Roads": [
+    ["use", "Personal Experience", "How did The Silk Roads change the way you picture world history?", "What moved to the centre"],
+    ["use", "Application", "Did the book change how you think about trade, supply chains, or geopolitics today?", "The topic, and the shift"],
+    ["see", "Insight", "Which part of Frankopan's history surprised you most?", "The part, and why"],
+    ["see", "Summary", "How would you explain why Frankopan centres history on the lands between East and West?", "In plain words"],
+    ["ask", "Question", "How do you keep track of so many empires and centuries in a book this broad?", "What helped, or didn't"],
+    ["ask", "Question", "Which modern events make more sense after reading the book?", "The event, and the connection"],
+    ["argue", "Disagreement", "Does the book overcorrect in moving attention away from Europe?", "Your view"],
+    ["argue", "Limitation", "Which periods or regions felt rushed or thin to you?", "The part, and what was missing"]
+  ],
+  "The Wright Brothers": [
+    ["use", "Personal Experience", "How did the Wrights' careful, patient experimenting change how you approach a hard problem?", "The problem, and your approach"],
+    ["use", "Application", "Which of the brothers' habits have you tried to adopt in your own work?", "The habit, and how it went"],
+    ["see", "Insight", "What surprised you about how two bicycle makers solved powered flight?", "What you assumed before"],
+    ["see", "Summary", "How would you explain what set the Wrights apart from better-funded rivals?", "In plain words"],
+    ["ask", "Question", "How much of their success came from temperament, and how much from method?", "Your reading"],
+    ["ask", "Question", "What role did Katharine Wright play, and why is it easy to overlook?", "What stood out to you"],
+    ["argue", "Disagreement", "Does the book pass too lightly over the brothers' later patent battles?", "Your view"],
+    ["argue", "Limitation", "Which parts of their story are hard to learn from outside invention and engineering?", "The part, and why"]
+  ],
+  "Attached": [
+    ["use", "Personal Experience", "How did learning about attachment styles change how you understand a relationship in your life?", "The relationship, and the shift"],
+    ["use", "Application", "What changed when you started communicating needs directly, as the book suggests?", "The conversation, and the response"],
+    ["see", "Insight", "Which idea from Attached changed how you read your own reactions in relationships?", "The reaction, and the new reading"],
+    ["see", "Summary", "How would you explain anxious, avoidant, and secure attachment without turning them into labels?", "In plain words"],
+    ["ask", "Question", "Can attachment styles change over time, and what helps that happen?", "Your experience or question"],
+    ["ask", "Question", "How do you use this book in a relationship where the two of you have different styles?", "Your situation"],
+    ["argue", "Disagreement", "Does the book encourage people to screen out partners too quickly by type?", "Your view"],
+    ["argue", "Limitation", "Does sorting people into three styles oversimplify how relationships really work?", "Where it fits, and where it doesn't"]
+  ],
+  "Hold Me Tight": [
+    ["use", "Application", "Which of the seven conversations did you try with your partner, and what happened?", "The conversation, and the result"],
+    ["use", "Personal Experience", "How did recognising a demon dialogue change a recurring argument?", "The pattern, and the change"],
+    ["see", "Insight", "Which idea from Hold Me Tight changed how you see arguments in close relationships?", "What you believed before"],
+    ["see", "Summary", "How would you explain being accessible, responsive, and engaged to a couple in conflict?", "In plain words"],
+    ["ask", "Question", "How do you start these conversations when one partner is reluctant?", "Your situation"],
+    ["ask", "Question", "How do you tell when a couple needs a therapist rather than the book alone?", "Where you are unsure"],
+    ["argue", "Disagreement", "Does the book put too much weight on attachment as the root of every conflict?", "Your view"],
+    ["argue", "Limitation", "Which relationships does the approach not suit, such as those involving harm?", "The situation, and why"]
+  ],
+  "The Seven Principles for Making Marriage Work": [
+    ["use", "Application", "What changed when you started noticing and turning toward your partner's bids?", "A bid, and the difference"],
+    ["use", "Real-Life Result", "Which of the seven principles made the biggest difference in your relationship?", "The principle, and what changed"],
+    ["see", "Insight", "Which finding from Gottman's research changed how you see conflict between partners?", "What you believed before"],
+    ["see", "Summary", "How would you explain the four horsemen to a couple who argue often?", "In plain words"],
+    ["ask", "Question", "How do you live with perpetual problems that will never be fully solved?", "The kind of problem you mean"],
+    ["ask", "Question", "How do you replace contempt once it has become a habit between two people?", "Your situation"],
+    ["argue", "Disagreement", "Is the book's confidence in predicting divorce from observation justified?", "Your view"],
+    ["argue", "Limitation", "Which couples or cultures does the research picture of marriage leave out?", "Who is missing"]
+  ]
+}

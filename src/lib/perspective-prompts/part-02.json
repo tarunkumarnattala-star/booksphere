@@ -1,0 +1,202 @@
+{
+  "A Random Walk Down Wall Street": [
+    ["use", "Application", "What did you change in how you invest after reading A Random Walk Down Wall Street?", "The move you made, and why"],
+    ["use", "Personal Experience", "When a stock tip or hot fund tempted you, how did Malkiel's argument change what you did?", "The tip, and your decision"],
+    ["see", "Insight", "Which part of the book changed how you think about beating the market?", "What you believed before"],
+    ["see", "Summary", "How would you explain the firm-foundation and castle-in-the-air theories to a new investor?", "In plain words"],
+    ["ask", "Question", "If markets are mostly efficient, how do you explain bubbles like the dot-com boom?", "Where the two ideas collide for you"],
+    ["ask", "Question", "How should the life-cycle advice change for someone who starts investing later in life?", "Your age or situation"],
+    ["argue", "Disagreement", "Does the efficient market argument leave room for investors who clearly outperform?", "An investor, and your case"],
+    ["argue", "Limitation", "Which parts of the book need updating now that index investing is so widespread?", "What has changed since it was written"]
+  ],
+  "The Millionaire Next Door": [
+    ["use", "Application", "What changed in your spending after working out whether you were a PAW or a UAW?", "Your number, and what you changed"],
+    ["use", "Personal Experience", "Did the book change how you judge people who look wealthy, including yourself?", "Big hat, no cattle, in your own words"],
+    ["see", "Insight", "Which finding about how millionaires actually live surprised you most?", "What you assumed before"],
+    ["see", "Summary", "How would you explain the book's wealth formula to someone earning well but saving little?", "In plain words"],
+    ["ask", "Question", "How relevant is frugality-first advice when housing and education cost far more than in 1996?", "Your costs, and where you are unsure"],
+    ["ask", "Question", "Where is the line between the book's frugality and simply not enjoying your money?", "Where you draw it"],
+    ["argue", "Disagreement", "Does the book mistake cause and effect in the habits it links to wealth?", "The habit, and your doubt"],
+    ["argue", "Limitation", "Which groups of people does the study's picture of millionaires leave out?", "Who is missing"]
+  ],
+  "Your Money or Your Life": [
+    ["use", "Application", "What did calculating your real hourly wage show you, and what did you change?", "The number, and the decision it changed"],
+    ["use", "Real-Life Result", "What happened after you tracked every dollar as life energy for a few months?", "What you noticed, and kept doing"],
+    ["see", "Insight", "Which idea from Your Money or Your Life changed what enough means to you?", "What you believed before"],
+    ["see", "Summary", "How would you explain the fulfilment curve to someone who keeps upgrading their lifestyle?", "In plain words"],
+    ["ask", "Question", "How do you reach the crossover point when returns are lower than the book assumed?", "Your assumptions"],
+    ["ask", "Question", "How do you follow the steps if your partner doesn't share the goal?", "Your situation"],
+    ["argue", "Disagreement", "Is financial independence the right goal, or does the book undervalue meaningful paid work?", "Your view"],
+    ["argue", "Limitation", "Which steps are hard to follow on a low income with little to cut?", "The step, and the constraint"]
+  ],
+  "The Richest Man in Babylon": [
+    ["use", "Application", "What happened when you started keeping a part of all you earn, as the parables advise?", "How much, and what it changed"],
+    ["use", "Personal Experience", "Which of the seven cures for a lean purse have you actually lived by?", "The cure, and how it went"],
+    ["see", "Insight", "Why do you think a century-old set of parables still lands with readers today?", "What gave it force for you"],
+    ["see", "Summary", "How would you explain the five laws of gold to a teenager getting their first paycheck?", "In plain words"],
+    ["ask", "Question", "How should the advice on lending and debt translate to credit cards and modern loans?", "The situation you have in mind"],
+    ["ask", "Question", "Is paying yourself a tenth still the right amount, or just the right habit?", "Your reasoning"],
+    ["argue", "Disagreement", "Does the book make building wealth sound more like character than circumstance?", "Where you would push back"],
+    ["argue", "Limitation", "What does a story set in ancient Babylon leave out about money today?", "The gap you notice"]
+  ],
+  "The Little Book of Common Sense Investing": [
+    ["use", "Application", "What did you change after seeing how much fees would cost you over decades?", "The fund or fee, and the move"],
+    ["use", "Real-Life Result", "How has buying the whole market held up for you through a downturn?", "What you did, and how it felt"],
+    ["see", "Insight", "Which argument from Bogle changed how you think about investment costs?", "What you assumed before"],
+    ["see", "Summary", "How would you explain the humble arithmetic of index investing to a friend picking stocks?", "In plain words"],
+    ["ask", "Question", "If everyone indexes, who keeps prices honest, and does that matter to you?", "Where you are unsure"],
+    ["ask", "Question", "How should you choose between a total market fund and an S&P 500 fund?", "What you are weighing"],
+    ["argue", "Disagreement", "Is Bogle too dismissive of every active manager and strategy?", "A case that complicates it"],
+    ["argue", "Limitation", "Which parts of the book assume a US investor with access to cheap funds?", "Your market, and the gap"]
+  ],
+  "Common Stocks and Uncommon Profits": [
+    ["use", "Application", "How did you use the scuttlebutt method to research a company, and what did you learn?", "Who you talked to, and what surfaced"],
+    ["use", "Personal Experience", "Did Fisher's fifteen points change a stock you bought or sold?", "The point that mattered most"],
+    ["see", "Insight", "Which of Fisher's ideas changed how you think about holding great companies?", "What you did before"],
+    ["see", "Summary", "How would you explain the difference between Fisher's approach and Graham's?", "In plain words"],
+    ["ask", "Question", "How do you do scuttlebutt research without access to suppliers, rivals, or insiders?", "What you can realistically reach"],
+    ["ask", "Question", "How do you know when a growth company no longer deserves a long hold?", "The signals you would watch"],
+    ["argue", "Disagreement", "Does Fisher's buy-and-hold advice underplay how often great companies decline?", "An example you have in mind"],
+    ["argue", "Limitation", "Which of the fifteen points are hardest for an ordinary investor to judge?", "The point, and why"]
+  ],
+  "Fooled by Randomness": [
+    ["use", "Application", "Where did you start judging a decision by its process rather than its outcome?", "The decision, and what changed"],
+    ["use", "Personal Experience", "When did you realise someone's success, maybe your own, owed more to luck than it looked?", "The moment, and what it changed"],
+    ["see", "Insight", "Which idea from Fooled by Randomness changed how you read success stories?", "What you believed before"],
+    ["see", "Summary", "How would you explain alternative histories to someone who judges choices only by results?", "In plain words"],
+    ["ask", "Question", "How do you tell skill from luck when you only have a short track record to go on?", "The case you are thinking of"],
+    ["ask", "Question", "If frequent checking mostly shows noise, how often should you look at investments or metrics?", "Your current habit"],
+    ["argue", "Disagreement", "Does Taleb's scorn for traders and forecasters get in the way of his argument?", "Where it helps or hurts"],
+    ["argue", "Limitation", "Is the book's scepticism useful for everyday decisions, or mostly for markets?", "Where it fits, and where it doesn't"]
+  ],
+  "The Simple Path to Wealth": [
+    ["use", "Application", "What changed after you simplified your investing the way Collins recommends?", "What you sold or kept, and why"],
+    ["use", "Real-Life Result", "How did knowing the market's history help you stay the course during a crash?", "The drop, and what you did"],
+    ["see", "Insight", "Which idea from The Simple Path to Wealth changed how you think about financial freedom?", "What you believed before"],
+    ["see", "Summary", "How would you explain Collins's case against debt to someone who sees it as normal?", "In plain words"],
+    ["ask", "Question", "How should the advice change if you don't live in the United States?", "Your country and funds"],
+    ["ask", "Question", "How do you know when to move from building wealth to preserving it?", "Where you are now"],
+    ["argue", "Disagreement", "Is a single total market fund too simple an answer for everyone?", "Who might need more"],
+    ["argue", "Limitation", "Which parts of the book depend on markets behaving like the past century?", "The assumption, and your doubt"]
+  ],
+  "One Up On Wall Street": [
+    ["use", "Application", "Which company did you notice in everyday life before Wall Street did, and what did you do?", "What you saw, and the result"],
+    ["use", "Personal Experience", "How did sorting stocks into Lynch's six categories change what you bought or held?", "The category, and the decision"],
+    ["see", "Insight", "Which idea from Peter Lynch changed how you think about ordinary investors?", "What you assumed before"],
+    ["see", "Summary", "How would you explain Lynch's two-minute story test for a stock?", "With an example"],
+    ["ask", "Question", "Does investing in what you know still work when much of the market is technology you don't use?", "Where you are unsure"],
+    ["ask", "Question", "How much homework is enough before you buy what you know?", "Your process"],
+    ["argue", "Disagreement", "Has invest in what you know led people to buy brands they simply like?", "An example"],
+    ["argue", "Limitation", "Which parts of Lynch's approach came easier to a full-time fund manager than to you?", "The part, and the gap"]
+  ],
+  "Security Analysis": [
+    ["use", "Application", "Which method from Security Analysis have you actually used to value a business or bond?", "The method, and what you found"],
+    ["use", "Personal Experience", "What changed in how you read financial statements after working through Graham and Dodd?", "What you look at now"],
+    ["see", "Insight", "Which idea from Security Analysis is still the most useful to you?", "The idea, and why it lasted"],
+    ["see", "Summary", "How would you explain intrinsic value to someone who only watches the share price?", "In plain words"],
+    ["ask", "Question", "Which edition of Security Analysis is worth reading today, and why?", "The edition you chose"],
+    ["ask", "Question", "How do you adapt Graham and Dodd's tests to companies whose value is mostly intangible?", "The company type"],
+    ["argue", "Disagreement", "Is Security Analysis still practical, or mainly a historical foundation now?", "Your case"],
+    ["argue", "Limitation", "Which parts of the book are hardest to use with modern accounting and markets?", "The part, and why"]
+  ],
+  "The Most Important Thing": [
+    ["use", "Application", "Where have you used second-level thinking to make a better decision?", "The obvious view, and yours"],
+    ["use", "Personal Experience", "How did thinking about where we are in the cycle change something you did with money?", "The moment, and the decision"],
+    ["see", "Insight", "Which of Marks's most important things changed how you think about risk?", "What risk meant to you before"],
+    ["see", "Summary", "How would you explain the pendulum of investor psychology to someone chasing a rally?", "In plain words"],
+    ["ask", "Question", "How do you judge where you are in a cycle without pretending to predict it?", "The signs you watch"],
+    ["ask", "Question", "How can a non-professional be contrarian without simply being stubborn?", "Where the line is"],
+    ["argue", "Disagreement", "Is second-level thinking realistic for most investors, or mostly for professionals like Marks?", "Your view"],
+    ["argue", "Limitation", "Which ideas in the book are easy to agree with and hard to act on?", "The idea, and the gap"]
+  ],
+  "The Essays of Warren Buffett": [
+    ["use", "Application", "Which principle from Buffett's letters changed how you judge a business or a job?", "The principle, and the decision"],
+    ["use", "Personal Experience", "How did your circle of competence change what you chose to invest in or avoid?", "What moved inside or outside it"],
+    ["see", "Insight", "Which of Buffett's essays changed how you think about managers and owners?", "What you believed before"],
+    ["see", "Summary", "How would you explain Buffett's idea of owner earnings to a new investor?", "In plain words"],
+    ["ask", "Question", "How do you judge a moat when you are not an insider or an expert in the industry?", "Where you get stuck"],
+    ["ask", "Question", "Which of Buffett's views on capital allocation apply to a small business owner?", "Your business"],
+    ["argue", "Disagreement", "Is Buffett's approach repeatable, or does it rely on advantages few investors will have?", "Your case"],
+    ["argue", "Limitation", "Which of Buffett's positions in the essays have aged less well?", "The position, and what changed"]
+  ],
+  "Reminiscences of a Stock Operator": [
+    ["use", "Application", "Which lesson from Livermore's story changed how you handle a position that moves against you?", "The lesson, and what you do now"],
+    ["use", "Personal Experience", "When did patience, rather than a clever idea, make the difference for you?", "The situation, and the result"],
+    ["see", "Insight", "What did the book teach you about human nature in markets that still holds?", "The pattern you recognise"],
+    ["see", "Summary", "How would you explain Livermore's point that the sitting, not the thinking, made the money?", "In plain words"],
+    ["ask", "Question", "How much of Livermore's trading wisdom applies to long-term investors?", "Where you are unsure"],
+    ["ask", "Question", "How should readers weigh these lessons, knowing how Livermore's own life ended?", "What you take from it"],
+    ["argue", "Disagreement", "Does the book romanticise speculation in a way that misleads readers?", "Your view"],
+    ["argue", "Limitation", "Which parts of trading in the 1920s have no real equivalent today?", "The part, and why"]
+  ],
+  "Market Wizards": [
+    ["use", "Application", "Which trader's approach to risk did you borrow, and how did it change your decisions?", "The trader, and the rule you adopted"],
+    ["use", "Personal Experience", "Did the interviews change how you handle a losing streak?", "What you do now"],
+    ["see", "Insight", "What did seeing so many different winning styles teach you about finding your own?", "What you believed before"],
+    ["see", "Summary", "What common pattern runs through the traders Schwager interviewed, in your reading?", "The pattern, in plain words"],
+    ["ask", "Question", "How do you learn from exceptional traders without falling for survivorship bias?", "Where you get stuck"],
+    ["ask", "Question", "Which lessons from the interviews carry over to careers and decisions outside trading?", "The lesson, and where you use it"],
+    ["argue", "Disagreement", "Does the book make trading success look more reachable than it is?", "Your view"],
+    ["argue", "Limitation", "Which parts of the interviews reflect markets that no longer exist?", "The part, and what changed"]
+  ],
+  "The Dhandho Investor": [
+    ["use", "Application", "How did heads I win, tails I don't lose much change a decision you made?", "The bet, and the downside you limited"],
+    ["use", "Personal Experience", "Where have you spotted a low-risk, high-uncertainty opportunity like the Patel motels?", "The opportunity, and what you did"],
+    ["see", "Insight", "Which idea from The Dhandho Investor changed how you tell risk apart from uncertainty?", "The difference, in your words"],
+    ["see", "Summary", "How would you explain few bets, big bets, infrequent bets to a new investor?", "In plain words"],
+    ["ask", "Question", "How do you tell low risk from high uncertainty when you are the one placing the bet?", "The situation"],
+    ["ask", "Question", "How far does the Dhandho framework reach outside investing, such as starting a business?", "Your idea"],
+    ["argue", "Disagreement", "Is concentrated betting sensible advice for most individual investors?", "Who it suits, and who it doesn't"],
+    ["argue", "Limitation", "Which examples in the book look easier in hindsight than they would have at the time?", "The example, and why"]
+  ],
+  "The Warren Buffett Way": [
+    ["use", "Application", "Which of Buffett's tenets did you use to evaluate a company, and what did it show?", "The tenet, and the company"],
+    ["use", "Personal Experience", "How did focus investing change how many holdings you keep?", "Before and after"],
+    ["see", "Insight", "Which part of The Warren Buffett Way made Buffett's thinking click for you?", "What was unclear before"],
+    ["see", "Summary", "How would you explain Buffett's business, management, financial, and market tenets briefly?", "In plain words"],
+    ["ask", "Question", "How is reading Hagstrom's interpretation different from reading Buffett's own letters?", "What each gives you"],
+    ["ask", "Question", "How do you apply Buffett's tenets with a small portfolio and limited time?", "Your situation"],
+    ["argue", "Disagreement", "Does the book make Buffett's method sound more systematic than it really is?", "Your view"],
+    ["argue", "Limitation", "Which tenets are hardest to apply to today's technology companies?", "The tenet, and why"]
+  ],
+  "Mindset": [
+    ["use", "Application", "What changed when you started praising effort and process instead of talent?", "Who you praised, and the response"],
+    ["use", "Personal Experience", "When did you catch your own fixed mindset, and what did you do next?", "The moment, and the shift"],
+    ["see", "Insight", "Which idea from Mindset changed how you respond to setbacks?", "How you responded before"],
+    ["see", "Summary", "How would you explain the power of not yet to a student or colleague?", "In plain words"],
+    ["ask", "Question", "How do you tell a real growth mindset from just telling yourself to try harder?", "Where it blurs"],
+    ["ask", "Question", "Can a whole team or organisation have a mindset, and how would you know?", "The team you have in mind"],
+    ["argue", "Disagreement", "Has growth mindset research held up well enough to support the book's claims?", "What you have read, and your view"],
+    ["argue", "Limitation", "Does the book underplay how circumstances and resources shape what people can achieve?", "Where you would add context"]
+  ],
+  "The 7 Habits of Highly Effective People": [
+    ["use", "Application", "Which of the seven habits actually changed how you work or live?", "The habit, and what looked different after"],
+    ["use", "Real-Life Result", "What happened when you started planning your week around Quadrant II?", "What you finally made time for"],
+    ["see", "Insight", "What did the circle of influence versus the circle of concern change in where you spend energy?", "What you worried about before"],
+    ["see", "Summary", "How would you explain the emotional bank account using one relationship in your life?", "In plain words"],
+    ["ask", "Question", "How do you seek first to understand when the other person isn't trying to understand you?", "The conversation you have in mind"],
+    ["ask", "Question", "What does think win-win look like in a situation that really is zero-sum?", "The situation"],
+    ["argue", "Disagreement", "Is being proactive always within reach, or does the book overlook real constraints?", "Where you would push back"],
+    ["argue", "Limitation", "Which parts of the 7 Habits feel tied to the corporate world of 1989?", "The part, and what changed"]
+  ],
+  "Essentialism": [
+    ["use", "Application", "What did you say no to after reading Essentialism, and what did it free up?", "The request, and what you gained"],
+    ["use", "Real-Life Result", "What happened when you used the 90 percent rule on a real decision?", "The decision, and the outcome"],
+    ["see", "Insight", "Which idea from Essentialism changed how you think about trade-offs?", "What you believed before"],
+    ["see", "Summary", "How would you explain the disciplined pursuit of less to someone who says yes to everything?", "In plain words"],
+    ["ask", "Question", "How do you practise essentialism in a job where you don't set your own priorities?", "Your role"],
+    ["ask", "Question", "How do you decide what is essential when several things genuinely matter?", "What you are weighing"],
+    ["argue", "Disagreement", "Is Essentialism a luxury for people who already have security and options?", "Your view"],
+    ["argue", "What Did Not Work", "When did saying no backfire for you, and what would you do differently?", "What happened, and what you learned"]
+  ],
+  "The War of Art": [
+    ["use", "Application", "How did naming Resistance change how you start creative or difficult work?", "The work, and what changed"],
+    ["use", "Personal Experience", "What did turning pro look like in your life, in practice?", "The habits, and when it began"],
+    ["see", "Insight", "Which idea from The War of Art changed how you see procrastination?", "How you saw it before"],
+    ["see", "Summary", "How would you explain Pressfield's difference between an amateur and a professional?", "In plain words"],
+    ["ask", "Question", "How do you tell Resistance from a real signal that a project should stop?", "The project, and your doubt"],
+    ["ask", "Question", "What do you make of the book's final part about the Muse and unseen help?", "How you read it"],
+    ["argue", "Disagreement", "Does treating every hesitation as Resistance risk ignoring burnout or good judgement?", "Your view"],
+    ["argue", "Limitation", "Does the book's tough-love tone help everyone, or only certain kinds of people?", "Who it suits"]
+  ]
+}

@@ -1,0 +1,202 @@
+{
+  "The Obstacle Is the Way": [
+    ["use", "Application", "Which obstacle did you turn into the way forward, and how did you do it?", "The obstacle, and what it became"],
+    ["use", "Personal Experience", "When did separating perception, action, and will help you through a hard situation?", "Which of the three mattered most"],
+    ["see", "Insight", "Which story in The Obstacle Is the Way changed how you see setbacks?", "The story, and what it changed"],
+    ["see", "Summary", "How would you explain the book's three disciplines to someone facing a sudden problem?", "In plain words"],
+    ["ask", "Question", "How do you tell an obstacle worth pushing through from one worth walking around?", "The situation you are weighing"],
+    ["ask", "Question", "What does amor fati mean in practice when something truly bad has happened?", "Where you struggle with it"],
+    ["argue", "Disagreement", "Does reframing every obstacle as opportunity risk excusing things that should be fixed?", "Your view"],
+    ["argue", "Limitation", "Which historical examples in the book feel too polished to guide ordinary lives?", "The example, and why"]
+  ],
+  "Can't Hurt Me": [
+    ["use", "Application", "What did you take on after reading about the 40 percent rule, and how far did it take you?", "The challenge, and what you found"],
+    ["use", "Real-Life Result", "What happened when you used an accountability mirror or cookie jar in your own life?", "The practice, and the result"],
+    ["see", "Insight", "Which part of Goggins's story changed how you think about your own limits?", "What you believed before"],
+    ["see", "Summary", "How would you explain callousing the mind to someone who avoids discomfort?", "In plain words"],
+    ["ask", "Question", "How do you push past your limits without ignoring real signals from your body?", "Where you draw the line"],
+    ["ask", "Question", "How much of Goggins's approach works without his particular history and temperament?", "What you think transfers"],
+    ["argue", "Disagreement", "Does the book treat suffering as more valuable than it should?", "Your view"],
+    ["argue", "Limitation", "Who might Can't Hurt Me be harmful for, and why?", "The reader, and the risk"]
+  ],
+  "Make Your Bed": [
+    ["use", "Application", "Which of McRaven's ten lessons have you actually built into your days?", "The lesson, and the routine"],
+    ["use", "Personal Experience", "When did finding someone to help you paddle make a hard stretch possible?", "The person, and the stretch"],
+    ["see", "Insight", "Which lesson from Make Your Bed hit harder than you expected from such a short book?", "The lesson, and why"],
+    ["see", "Summary", "How would you explain why small tasks done well matter, using an example from your life?", "In plain words"],
+    ["ask", "Question", "How do lessons from SEAL training translate to hardships that look nothing like it?", "Your situation"],
+    ["ask", "Question", "How do you decide when not ringing the bell is wisdom and when it is stubbornness?", "The choice you face"],
+    ["argue", "Disagreement", "Is the book's advice too simple to help with genuinely complex problems?", "Your view"],
+    ["argue", "Limitation", "Which lessons depend on the structure and team that military life provides?", "The lesson, and the gap"]
+  ],
+  "Man's Search for Meaning": [
+    ["use", "Personal Experience", "How has Frankl's idea that we choose our attitude shaped how you faced something difficult?", "The situation, and your choice"],
+    ["use", "Application", "Where have you found meaning through work, love, or suffering, as Frankl describes?", "Which one, and how"],
+    ["see", "Insight", "What part of Frankl's account of the camps has stayed with you most?", "The moment, and why"],
+    ["see", "Summary", "How would you explain logotherapy to someone who has never heard of it?", "In plain words"],
+    ["ask", "Question", "How do you apply a book born of extreme suffering to ordinary struggles without trivialising it?", "Where you feel the tension"],
+    ["ask", "Question", "Is meaning something you find or something you create, in Frankl's view and in yours?", "Your reading"],
+    ["argue", "Disagreement", "Does the book place too much weight on attitude when circumstances crush people?", "Your view"],
+    ["argue", "Limitation", "Which parts of logotherapy feel hard to use outside Frankl's own context?", "The part, and why"]
+  ],
+  "How to Win Friends and Influence People": [
+    ["use", "Application", "Which of Carnegie's principles did you practise on purpose, and how did people respond?", "The principle, and the response"],
+    ["use", "Real-Life Result", "What changed when you stopped trying to win arguments?", "A relationship, and the difference"],
+    ["see", "Insight", "Which idea from Carnegie still feels surprisingly modern to you?", "The idea, and where you see it"],
+    ["see", "Summary", "How would you explain talking in terms of the other person's interests with a real example?", "In plain words"],
+    ["ask", "Question", "Where is the line between being genuinely interested and using interest as a technique?", "Where it blurs for you"],
+    ["ask", "Question", "How do Carnegie's principles work in online and remote conversations?", "The setting you mean"],
+    ["argue", "Disagreement", "Does the book teach people-pleasing more than real connection?", "Your view"],
+    ["argue", "Limitation", "Which of Carnegie's principles feel dated or culturally specific today?", "The principle, and why"]
+  ],
+  "Crucial Conversations": [
+    ["use", "Application", "Which crucial conversation did you prepare for with the book, and how did it go?", "The conversation, and the turning point"],
+    ["use", "Real-Life Result", "What happened when you restored safety by making the mutual purpose clear?", "The moment, and the shift"],
+    ["see", "Insight", "Which idea from Crucial Conversations changed how you notice silence and violence?", "What you notice now"],
+    ["see", "Summary", "How would you explain the pool of shared meaning to a team that avoids hard topics?", "In plain words"],
+    ["ask", "Question", "How do you use contrasting without it sounding scripted?", "The words you struggle with"],
+    ["ask", "Question", "What do you do when the other person has no interest in a two-way conversation?", "The situation"],
+    ["argue", "Disagreement", "Do the book's techniques assume both people want the relationship to work?", "Where you would push back"],
+    ["argue", "Limitation", "Which parts of the approach are hard to use when there is a big power gap?", "The gap, and what gets hard"]
+  ],
+  "Nonviolent Communication": [
+    ["use", "Application", "What happened when you separated an observation from an evaluation in a tense moment?", "The moment, and what changed"],
+    ["use", "Real-Life Result", "How did naming feelings and needs change a recurring conflict in your life?", "The conflict, and the difference"],
+    ["see", "Insight", "Which idea from Nonviolent Communication changed how you listen?", "How you listened before"],
+    ["see", "Summary", "How would you explain observations, feelings, needs, and requests using one real conversation?", "In plain words"],
+    ["ask", "Question", "How do you use NVC naturally when the other person has never heard of it?", "Where it feels awkward"],
+    ["ask", "Question", "What separates a request from a demand when you really need something?", "Your situation"],
+    ["argue", "Disagreement", "Can NVC become a polite way of controlling a conversation?", "Your view, and an example"],
+    ["argue", "Limitation", "Where does NVC fit poorly, such as abuse, workplaces, or emergencies?", "The setting, and why"]
+  ],
+  "Made to Stick": [
+    ["use", "Application", "Which idea did you make stickier with the SUCCESs checklist, and what changed?", "The idea, and the principle you used"],
+    ["use", "Real-Life Result", "What happened when you replaced abstract language with a concrete example?", "Before and after"],
+    ["see", "Insight", "How did the curse of knowledge change the way you explain things?", "What you did before"],
+    ["see", "Summary", "How would you explain commander's intent to a team that gets lost in detail?", "In plain words"],
+    ["ask", "Question", "How do you make a message simple without making it misleading?", "The message you have in mind"],
+    ["ask", "Question", "Which of the six principles matters most for ideas that need to spread online?", "Your reasoning"],
+    ["argue", "Disagreement", "Could the same principles make false ideas stick just as well, and does the book face that?", "Your view"],
+    ["argue", "Limitation", "Which kinds of ideas resist being made sticky no matter what you do?", "An example"]
+  ],
+  "Influence": [
+    ["use", "Application", "Where did you spot one of Cialdini's principles being used on you, and what did you do?", "The principle, and your response"],
+    ["use", "Personal Experience", "Which principle have you used ethically at work, and how did it go?", "The principle, and the situation"],
+    ["see", "Insight", "Which principle from Influence changed how you see sales, marketing, or everyday requests?", "What you notice now"],
+    ["see", "Summary", "How would you explain the click-whirr response to someone who thinks they are hard to persuade?", "In plain words"],
+    ["ask", "Question", "Where is the line between ethical persuasion and manipulation with these principles?", "Where it blurs"],
+    ["ask", "Question", "How do you resist social proof when you genuinely don't know the right choice?", "The situation"],
+    ["argue", "Disagreement", "Have some of the studies behind Influence held up less well than the book suggests?", "The claim you doubt"],
+    ["argue", "Limitation", "Which principles lose their force once people know about them?", "The principle, and why"]
+  ],
+  "Talk Like TED": [
+    ["use", "Application", "Which technique from Talk Like TED did you use in a real presentation, and how did it land?", "The technique, and the reaction"],
+    ["use", "Real-Life Result", "What happened when you built a talk around one story instead of slides full of data?", "The talk, and the difference"],
+    ["see", "Insight", "Which idea from the book changed how you prepare to speak?", "How you prepared before"],
+    ["see", "Summary", "How would you explain the case for an 18-minute limit to someone planning an hour-long talk?", "In plain words"],
+    ["ask", "Question", "How do you use storytelling in technical or data-heavy presentations?", "The kind of talk you give"],
+    ["ask", "Question", "How do you stay conversational when you are nervous and have rehearsed heavily?", "Where you get stuck"],
+    ["argue", "Disagreement", "Has the TED style made presentations more polished but less substantive?", "Your view"],
+    ["argue", "Limitation", "Which techniques work on stage but poorly in meetings or small rooms?", "The technique, and the setting"]
+  ],
+  "Difficult Conversations": [
+    ["use", "Application", "How did separating the what-happened, feelings, and identity conversations help a hard talk?", "Which part mattered most"],
+    ["use", "Real-Life Result", "What changed when you mapped contribution instead of assigning blame?", "The situation, and the shift"],
+    ["see", "Insight", "Which idea from Difficult Conversations changed how you think about intent versus impact?", "What you assumed before"],
+    ["see", "Summary", "How would you explain starting from the third story using a real disagreement?", "In plain words"],
+    ["ask", "Question", "How do you handle the identity conversation happening inside you while you talk?", "What it sounds like for you"],
+    ["ask", "Question", "When is it better not to raise a difficult conversation at all?", "The situation you are weighing"],
+    ["argue", "Disagreement", "Does the book's even-handedness fit situations where one side really is in the wrong?", "Your view"],
+    ["argue", "Limitation", "Which parts of the approach need more time and calm than real conflicts allow?", "The part, and the pressure"]
+  ],
+  "On Writing Well": [
+    ["use", "Application", "What did you cut from your writing after reading Zinsser on clutter?", "Before and after, briefly"],
+    ["use", "Real-Life Result", "How did your writing change once you wrote for yourself rather than an imagined audience?", "What readers noticed"],
+    ["see", "Insight", "Which lesson from On Writing Well changed how you think writing works?", "What you believed before"],
+    ["see", "Summary", "How would you explain why clear writing comes from clear thinking?", "With an example"],
+    ["ask", "Question", "How do you keep warmth and personality in writing that also has to be professional?", "The writing you do"],
+    ["ask", "Question", "Which of Zinsser's rules would you bend for writing online today?", "The rule, and why"],
+    ["argue", "Disagreement", "Is Zinsser's taste for simplicity sometimes too narrow for good writing?", "An example"],
+    ["argue", "Limitation", "Which parts of the book feel tied to the magazine and newspaper writing of its era?", "The part, and what changed"]
+  ],
+  "Everybody Writes": [
+    ["use", "Application", "What changed in your work writing once you allowed yourself an ugly first draft?", "The writing, and the difference"],
+    ["use", "Personal Experience", "Which of Handley's rules do you now use every time you write for customers or colleagues?", "The rule, and why it stuck"],
+    ["see", "Insight", "Which idea from Everybody Writes changed how you think about business writing?", "What you believed before"],
+    ["see", "Summary", "How would you explain writing with empathy for the reader to a busy colleague?", "In plain words"],
+    ["ask", "Question", "How do you keep a human voice when writing for a brand with strict guidelines?", "Your situation"],
+    ["ask", "Question", "How does the book's advice change now that many people draft with AI tools?", "How you write now"],
+    ["argue", "Disagreement", "Does the book focus too much on marketing content and too little on thinking?", "Your view"],
+    ["argue", "Limitation", "Which rules in the book would you ignore for your kind of writing?", "The rule, and your context"]
+  ],
+  "Predictably Irrational": [
+    ["use", "Application", "Where did you notice the decoy effect or anchoring in a price, and what did you do?", "The price, and your decision"],
+    ["use", "Personal Experience", "How did social norms versus market norms change how you handle favours or payment?", "The situation, and the change"],
+    ["see", "Insight", "Which experiment from Predictably Irrational changed how you see your own choices?", "The experiment, and the shift"],
+    ["see", "Summary", "How would you explain why a price of zero changes our behaviour so dramatically?", "With an everyday example"],
+    ["ask", "Question", "If our irrationality is predictable, can we design our lives to work around it?", "Where you have tried"],
+    ["ask", "Question", "How should readers treat the book now that some of Ariely's research has been questioned?", "What you still trust"],
+    ["argue", "Disagreement", "Does the book overstate how irrational people are in everyday decisions?", "Your view"],
+    ["argue", "Limitation", "Which findings are hard to apply outside a lab experiment?", "The finding, and why"]
+  ],
+  "Flow": [
+    ["use", "Application", "What did you change in your work or hobbies to get into flow more often?", "The change, and how often it happens"],
+    ["use", "Real-Life Result", "What happened when you deliberately matched challenge to skill in something you do?", "The activity, and the difference"],
+    ["see", "Insight", "Which idea from Flow changed how you think about happiness?", "What you believed before"],
+    ["see", "Summary", "How would you explain the conditions for flow to someone who feels bored or anxious at work?", "In plain words"],
+    ["ask", "Question", "How do you find flow in work that is mostly routine or constantly interrupted?", "Your work"],
+    ["ask", "Question", "What does an autotelic personality look like in everyday life?", "Someone you know, or yourself"],
+    ["argue", "Disagreement", "Can flow become a trap, such as in gaming or overwork?", "Your view"],
+    ["argue", "Limitation", "Which parts of the book are harder to act on than to understand?", "The part, and the gap"]
+  ],
+  "The Power of Habit": [
+    ["use", "Application", "Which habit did you change by keeping the cue and reward but swapping the routine?", "The habit, and the new routine"],
+    ["use", "Real-Life Result", "What happened when you focused on one keystone habit?", "The habit, and what followed"],
+    ["see", "Insight", "Which story in The Power of Habit changed how you see habits in organisations?", "The story, and what it showed"],
+    ["see", "Summary", "How would you explain the habit loop using a habit you have right now?", "Cue, routine, reward"],
+    ["ask", "Question", "How do you find the real reward behind a habit you want to change?", "The habit you are testing"],
+    ["ask", "Question", "Is willpower a habit you can build, as the book suggests, or a limited resource?", "Your experience"],
+    ["argue", "Disagreement", "Does the book make habit change sound more mechanical than it is?", "Where you would push back"],
+    ["argue", "Limitation", "Which of the company stories feel more like good narrative than evidence?", "The story, and your doubt"]
+  ],
+  "Grit": [
+    ["use", "Application", "What did you commit to after reading Grit, and how did you keep going?", "The goal, and what kept you on it"],
+    ["use", "Personal Experience", "How did the hard thing rule work in your family or team?", "The rule, and how it went"],
+    ["see", "Insight", "Which idea from Grit changed how you think about talent and effort?", "What you believed before"],
+    ["see", "Summary", "How would you explain why effort counts twice in Duckworth's model?", "In plain words"],
+    ["ask", "Question", "How do you tell grit from stubbornly sticking with the wrong goal?", "The goal you are weighing"],
+    ["ask", "Question", "Can grit be taught, or is the book mostly describing people who already have it?", "Your view"],
+    ["argue", "Disagreement", "Is grit meaningfully different from conscientiousness, as critics have asked?", "What you have read"],
+    ["argue", "Limitation", "Does the book underplay the role of support, money, and luck in who keeps going?", "Where you would add context"]
+  ],
+  "Stumbling on Happiness": [
+    ["use", "Application", "What decision did you make differently after learning how poorly we predict our own happiness?", "The decision, and the reasoning"],
+    ["use", "Personal Experience", "When did asking someone already living your future give a better answer than imagining it?", "The choice, and who you asked"],
+    ["see", "Insight", "Which idea from Stumbling on Happiness changed how you plan for the future?", "What you believed before"],
+    ["see", "Summary", "How would you explain the psychological immune system using something that happened to you?", "In plain words"],
+    ["ask", "Question", "If imagination misleads us, how should we make big life choices at all?", "The choice you face"],
+    ["ask", "Question", "How much should we trust other people's experience when everyone's circumstances differ?", "Where you are unsure"],
+    ["argue", "Disagreement", "Does the book leave too little room for knowing yourself well?", "Your view"],
+    ["argue", "Limitation", "Which findings are easy to agree with but hard to act on?", "The finding, and the gap"]
+  ],
+  "The Righteous Mind": [
+    ["use", "Application", "How did the elephant and the rider change how you try to persuade people?", "The conversation, and what you changed"],
+    ["use", "Personal Experience", "When did moral foundations help you understand someone you strongly disagree with?", "The disagreement, and the shift"],
+    ["see", "Insight", "Which idea from The Righteous Mind changed how you see political arguments?", "What you believed before"],
+    ["see", "Summary", "How would you explain the moral foundations to someone who thinks the other side is simply wrong?", "In plain words"],
+    ["ask", "Question", "If intuitions come first, can good arguments ever change anyone's mind?", "An example either way"],
+    ["ask", "Question", "How do you use this book without becoming relativist about everything?", "Where you get stuck"],
+    ["argue", "Disagreement", "Is moral foundations theory as well supported as the book suggests?", "What you have read"],
+    ["argue", "Limitation", "Which parts of the book feel tied to American politics in particular?", "The part, and your context"]
+  ],
+  "Quiet": [
+    ["use", "Application", "What did you change about your work or social life after reading Quiet?", "The change, and how it feels"],
+    ["use", "Real-Life Result", "What happened when you created a restorative niche for yourself?", "The niche, and the difference"],
+    ["see", "Insight", "Which idea from Quiet changed how you see introverts, including yourself?", "What you believed before"],
+    ["see", "Summary", "How would you explain free trait theory to someone who thinks introverts can't lead?", "In plain words"],
+    ["ask", "Question", "How do introverts thrive in open offices and meeting-heavy cultures without faking it?", "Your workplace"],
+    ["ask", "Question", "How should extroverted managers change how they run teams after reading Quiet?", "The team you have in mind"],
+    ["argue", "Disagreement", "Does the book lean too heavily on the introvert versus extrovert divide?", "Your view"],
+    ["argue", "Limitation", "Which of the book's workplace arguments have shifted since remote work became common?", "What has changed"]
+  ]
+}

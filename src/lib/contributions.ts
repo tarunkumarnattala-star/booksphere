@@ -20,6 +20,7 @@ export type DbContribution = {
   outcome?: string | null;
   what_failed?: string | null;
   would_change?: string | null;
+  starter_prompt_id?: string | null;
   status?: "draft" | "published" | "archived" | "removed";
   created_at: string;
   updated_at?: string | null;
@@ -262,33 +263,43 @@ export async function createSupabaseContribution(input: {
   outcome?: string;
   whatFailed?: string;
   wouldChange?: string;
+  starterPromptId?: string;
 }) {
   if (!supabase) return { post: null, error: "Supabase is not configured.", cause: { code: "no_client", message: null } };
   const dbBook = await resolveDbBook(input.book);
   if (!dbBook) return { post: null, error: "This book is not connected to the production database yet.", cause: { code: "book_unresolved", message: input.book.id } };
 
-  const { data, error } = await supabase
-    .from("discussion_posts")
-    .insert({
-      user_id: input.profileId,
-      book_id: dbBook.id,
-      post_type: input.postType,
-      perspective_type: perspectiveTypeByPostType[input.postType],
-      title: input.title,
-      body: input.body,
-      chapter_id: input.chapterId || null,
-      concept_id: input.conceptId || null,
-      quote_reference: input.quoteReference || null,
-      connected_book_id: input.connectedBookId || null,
-      context_type: input.contextType || null,
-      action_taken: input.actionTaken || null,
-      outcome: input.outcome || null,
-      what_failed: input.whatFailed || null,
-      would_change: input.wouldChange || null,
-      status: "published"
-    })
-    .select(contributionSelect)
-    .single();
+  const row: Record<string, unknown> = {
+    user_id: input.profileId,
+    book_id: dbBook.id,
+    post_type: input.postType,
+    perspective_type: perspectiveTypeByPostType[input.postType],
+    title: input.title,
+    body: input.body,
+    chapter_id: input.chapterId || null,
+    concept_id: input.conceptId || null,
+    quote_reference: input.quoteReference || null,
+    connected_book_id: input.connectedBookId || null,
+    context_type: input.contextType || null,
+    action_taken: input.actionTaken || null,
+    outcome: input.outcome || null,
+    what_failed: input.whatFailed || null,
+    would_change: input.wouldChange || null,
+    status: "published"
+  };
+  // Which book-page prompt this perspective answers, so that prompt can make way for a
+  // different angle for the next reader.
+  if (input.starterPromptId) row.starter_prompt_id = input.starterPromptId;
+
+  const insertRow = (values: Record<string, unknown>) =>
+    supabase!.from("discussion_posts").insert(values).select(contributionSelect).single();
+  let { data, error } = await insertRow(row);
+  // Until the starter_prompt_id migration is applied, PostgREST rejects the unknown column
+  // (PGRST204). The perspective matters more than the prompt link, so publish without it.
+  if (error?.code === "PGRST204" && "starter_prompt_id" in row) {
+    delete row.starter_prompt_id;
+    ({ data, error } = await insertRow(row));
+  }
 
   // Return the underlying Postgres error alongside the friendly one. Collapsing every
   // failure into a single sentence and discarding the cause meant a failed publish was

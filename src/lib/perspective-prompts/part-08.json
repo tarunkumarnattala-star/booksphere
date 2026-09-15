@@ -1,0 +1,202 @@
+{
+  "Why We Get Sick": [
+    ["use", "Application", "What did you change about eating or exercise after reading Why We Get Sick?", "The change, and how it has gone"],
+    ["use", "Personal Experience", "How did learning about insulin resistance change how you see your own health?", "Share only what you are comfortable sharing"],
+    ["see", "Insight", "Which idea from Bikman changed how you think about chronic disease?", "What you believed before"],
+    ["see", "Summary", "How would you explain the book's central argument about insulin to a curious friend?", "In plain words"],
+    ["ask", "Question", "How do you weigh this book's claims against other nutrition advice you have heard?", "The claim you are unsure about"],
+    ["ask", "Question", "What should someone check with a doctor before acting on the book?", "The change you are considering"],
+    ["argue", "Disagreement", "Does the book give insulin resistance too central a role in so many illnesses?", "Your view"],
+    ["argue", "Limitation", "Which recommendations are hard to follow for people with other health conditions?", "The constraint"]
+  ],
+  "Exercised": [
+    ["use", "Application", "What did you change about how you move after reading Exercised?", "The change, and why it stuck"],
+    ["use", "Personal Experience", "How did the book change how you feel about resting, sitting, or not wanting to exercise?", "The feeling, and the shift"],
+    ["see", "Insight", "Which exercise myth from the book surprised you most?", "The myth, and what you believed"],
+    ["see", "Summary", "How would you explain Lieberman's point that humans evolved to be active, not to exercise?", "In plain words"],
+    ["ask", "Question", "How do you build activity into a modern life that doesn't require it?", "Your routine"],
+    ["ask", "Question", "How much exercise is enough according to the evidence the book presents?", "Where you are unsure"],
+    ["argue", "Disagreement", "Does comparing us with hunter-gatherers tell us as much as the book suggests?", "Your view"],
+    ["argue", "Limitation", "Which parts of the book are more useful for understanding than for changing habits?", "The part, and why"]
+  ],
+  "Being Mortal": [
+    ["use", "Personal Experience", "How did Being Mortal change a conversation you had about ageing or the end of life?", "Share only what you are comfortable sharing"],
+    ["use", "Application", "Did the book lead you to ask someone what matters most to them, and what did you learn?", "The conversation, and what surfaced"],
+    ["see", "Insight", "Which story in Being Mortal changed how you think about medicine's goals?", "What you believed before"],
+    ["see", "Summary", "How would you explain the tension between safety and autonomy in elder care?", "In plain words"],
+    ["ask", "Question", "How do families have honest end-of-life conversations when people disagree?", "Your situation"],
+    ["ask", "Question", "What would care that puts a good life before a longer life look like where you live?", "Your community"],
+    ["argue", "Disagreement", "Does the book underplay how costly and unequal good end-of-life care can be?", "Your view"],
+    ["argue", "Limitation", "Which ideas are hard to apply in health systems unlike the one Gawande describes?", "Your context"]
+  ],
+  "The Wealth of Nations": [
+    ["use", "Personal Experience", "How did reading Smith himself change your view of what he actually argued?", "What you assumed before"],
+    ["use", "Application", "Has the book changed how you think about specialisation in your own work?", "The change, and an example"],
+    ["see", "Insight", "Which part of The Wealth of Nations surprised you most?", "The part, and why"],
+    ["see", "Summary", "How would you explain the pin factory example and why it mattered?", "In plain words"],
+    ["ask", "Question", "How should we read Smith's remarks on self-interest alongside his concern for fairness?", "Where you are unsure"],
+    ["ask", "Question", "Which parts of the book are worth reading today, and which can be skipped?", "Your suggestion"],
+    ["argue", "Disagreement", "Has Smith been claimed by free-market thinkers in ways the book doesn't support?", "Your view"],
+    ["argue", "Limitation", "Which of Smith's ideas fit an eighteenth-century economy better than today's?", "The idea, and why"]
+  ],
+  "Capital in the Twenty-First Century": [
+    ["use", "Personal Experience", "How did Piketty change how you think about inheritance, wealth, and fairness?", "What you believed before"],
+    ["use", "Application", "Did the book change how you vote, invest, or talk about inequality?", "The change, and why"],
+    ["see", "Insight", "Which piece of historical data in the book changed your view most?", "The data, and the shift"],
+    ["see", "Summary", "How would you explain r greater than g to someone with no economics background?", "In plain words"],
+    ["ask", "Question", "Is a global wealth tax workable, and what would stand in the way?", "Your reasoning"],
+    ["ask", "Question", "How should a general reader approach a book this long and data-heavy?", "What helped, or didn't"],
+    ["argue", "Disagreement", "Which of Piketty's conclusions have economists challenged most convincingly?", "The challenge, and your view"],
+    ["argue", "Limitation", "Does the book say enough about how inequality affects everyday life rather than aggregates?", "What you wanted more of"]
+  ],
+  "Poor Economics": [
+    ["use", "Personal Experience", "How did Poor Economics change how you think about the choices poor families make?", "What you believed before"],
+    ["use", "Application", "Has the book changed how you give, volunteer, or judge aid programmes?", "What you do differently"],
+    ["see", "Insight", "Which finding from the book overturned something you assumed about poverty?", "The finding, and the assumption"],
+    ["see", "Summary", "How would you explain why randomised trials changed development economics?", "In plain words"],
+    ["ask", "Question", "Can small, tested interventions add up to ending poverty, or is something bigger needed?", "Your reasoning"],
+    ["ask", "Question", "Why did microfinance deliver less than many hoped, according to the evidence?", "The part you want explained"],
+    ["argue", "Disagreement", "Does a focus on experiments miss the politics and institutions that shape poverty?", "Your view"],
+    ["argue", "Limitation", "Which results are hard to generalise from one place to another?", "The result, and why"]
+  ],
+  "Good Economics for Hard Times": [
+    ["use", "Personal Experience", "Which chapter changed your view on immigration, trade, or inequality?", "The topic, and your view before"],
+    ["use", "Application", "Did the book change how you argue about economic policy with friends or family?", "The conversation, and the change"],
+    ["see", "Insight", "Which piece of evidence in the book surprised you most?", "The evidence, and why"],
+    ["see", "Summary", "How would you explain the authors' case for dignity as a goal of economic policy?", "In plain words"],
+    ["ask", "Question", "Why do people resist evidence on economic questions they feel strongly about?", "An example"],
+    ["ask", "Question", "Which of the authors' policy ideas seem most realistic?", "The idea, and your reasoning"],
+    ["argue", "Disagreement", "Is the book's confidence in evidence enough to settle questions of values?", "Your view"],
+    ["argue", "Limitation", "Which parts of the book lean mainly on the United States and India?", "Your context, and the gap"]
+  ],
+  "The Undercover Economist": [
+    ["use", "Application", "Where did you start noticing price discrimination or scarcity power after reading the book?", "The example, and what you did"],
+    ["use", "Personal Experience", "How did Harford change how you think about an everyday purchase?", "The purchase, and the new view"],
+    ["see", "Insight", "Which everyday example made an economic idea finally click for you?", "The example, and the idea"],
+    ["see", "Summary", "How would you explain why coffee in a busy station costs so much?", "In plain words"],
+    ["ask", "Question", "How should governments deal with externalities like traffic and pollution?", "Your reasoning"],
+    ["ask", "Question", "Which examples from 2005 still hold, and which would you update?", "The example"],
+    ["argue", "Disagreement", "Does the book trust markets more than the evidence justifies?", "Your view"],
+    ["argue", "Limitation", "Which topics feel too light for the questions they raise?", "The topic, and what is missing"]
+  ],
+  "Freakonomics": [
+    ["use", "Application", "Where did thinking about hidden incentives change a decision you made?", "The incentive, and the decision"],
+    ["use", "Personal Experience", "How did Freakonomics change how you read statistics in the news?", "What you notice now"],
+    ["see", "Insight", "Which chapter of Freakonomics changed how you think about cause and effect?", "The chapter, and the shift"],
+    ["see", "Summary", "How would you explain the book's main lesson about incentives with an example of your own?", "In plain words"],
+    ["ask", "Question", "How do you tell a clever correlation from a real cause?", "The claim you are testing"],
+    ["ask", "Question", "Which conclusions in the book have held up, and which have been challenged?", "What you have read"],
+    ["argue", "Disagreement", "Does the book prize surprising answers over careful ones?", "Your view, and an example"],
+    ["argue", "Limitation", "Which chapters work as puzzles but offer little you can use?", "The chapter, and why"]
+  ],
+  "Misbehaving": [
+    ["use", "Application", "Where did you spot mental accounting in your own spending, and what did you change?", "The account, and the change"],
+    ["use", "Personal Experience", "How did the endowment effect or supposedly irrelevant factors show up in a decision you made?", "The decision, and the factor"],
+    ["see", "Insight", "Which story from Thaler's career changed how you see economics?", "The story, and the shift"],
+    ["see", "Summary", "How would you explain the difference between Econs and Humans?", "In plain words"],
+    ["ask", "Question", "If people misbehave predictably, who should design around it, and how?", "Your reasoning"],
+    ["ask", "Question", "How did behavioural economics change how economists actually work?", "What you want explained"],
+    ["argue", "Disagreement", "Has behavioural economics been oversold as a fix for policy problems?", "Your view"],
+    ["argue", "Limitation", "Which findings are hard to use outside finance and consumer choices?", "The finding, and why"]
+  ],
+  "Nudge": [
+    ["use", "Application", "Which default or nudge did you set up for yourself or others, and how did it work?", "The nudge, and the effect"],
+    ["use", "Personal Experience", "Where have you noticed choice architecture steering you, and what did you do?", "The situation, and your response"],
+    ["see", "Insight", "Which idea from Nudge changed how you think about freedom of choice?", "What you believed before"],
+    ["see", "Summary", "How would you explain libertarian paternalism to a sceptic?", "In plain words"],
+    ["ask", "Question", "Who gets to decide which direction people should be nudged?", "Where you are unsure"],
+    ["ask", "Question", "When does a helpful nudge become manipulation?", "An example near the line"],
+    ["argue", "Disagreement", "Have nudges delivered less than the book promised when used at scale?", "What you have read"],
+    ["argue", "Limitation", "Which problems are too big or structural for nudges to touch?", "The problem, and why"]
+  ],
+  "The Deficit Myth": [
+    ["use", "Personal Experience", "How did The Deficit Myth change how you think about government spending?", "What you believed before"],
+    ["use", "Application", "Has the book changed how you read news about budgets and national debt?", "What you notice now"],
+    ["see", "Insight", "Which argument from Kelton was most surprising to you?", "The argument, and why"],
+    ["see", "Summary", "How would you explain the difference between a currency issuer and a household?", "In plain words"],
+    ["ask", "Question", "If inflation is the real limit, how would a government know when it is close?", "The part you want explained"],
+    ["ask", "Question", "Does the argument apply to countries that don't issue their own currency?", "Your country"],
+    ["argue", "Disagreement", "What are the strongest criticisms of Modern Monetary Theory, and are they persuasive?", "The criticism, and your view"],
+    ["argue", "Limitation", "How did the book's ideas look in light of the inflation that followed 2020?", "Your reading"]
+  ],
+  "Doughnut Economics": [
+    ["use", "Application", "Has the doughnut model changed a decision in your work, business, or community?", "The decision, and how you used it"],
+    ["use", "Personal Experience", "How did the book change how you think about growth as a goal?", "What you believed before"],
+    ["see", "Insight", "Which of Raworth's seven ways to think changed your view most?", "The idea, and the shift"],
+    ["see", "Summary", "How would you explain the social foundation and ecological ceiling to a friend?", "In plain words"],
+    ["ask", "Question", "What would a growth-agnostic economy look like in practice?", "Where you are unsure"],
+    ["ask", "Question", "How are cities or companies actually using the doughnut, and with what results?", "What you want to know"],
+    ["argue", "Disagreement", "Is the book too dismissive of what mainstream economics already offers?", "Your view"],
+    ["argue", "Limitation", "Which ideas are compelling in principle but hard to measure or enforce?", "The idea, and why"]
+  ],
+  "Why Nations Fail": [
+    ["use", "Personal Experience", "How did Why Nations Fail change how you see your own country's institutions?", "The institution, and the shift"],
+    ["use", "Application", "Has the book changed how you think about organisations you belong to?", "The organisation, and what you see"],
+    ["see", "Insight", "Which historical example in the book was most persuasive to you?", "The example, and why"],
+    ["see", "Summary", "How would you explain inclusive versus extractive institutions using the two Nogales?", "In plain words"],
+    ["ask", "Question", "How do countries escape extractive institutions once they are entrenched?", "The case you have in mind"],
+    ["ask", "Question", "How does China's rapid growth fit the book's argument?", "Your reading"],
+    ["argue", "Disagreement", "Does the book downplay geography, culture, or luck too much?", "Your view"],
+    ["argue", "Limitation", "Is the inclusive and extractive distinction too broad to guide real policy?", "Where it helps, and where it doesn't"]
+  ],
+  "The Ascent of Money": [
+    ["use", "Personal Experience", "How did The Ascent of Money change how you think about banks, debt, or markets?", "What you believed before"],
+    ["use", "Application", "Has knowing financial history changed how you react to booms and crashes?", "The moment, and your reaction"],
+    ["see", "Insight", "Which episode in the history of money surprised you most?", "The episode, and why"],
+    ["see", "Summary", "How would you explain why credit and bonds were such important inventions?", "In plain words"],
+    ["ask", "Question", "Which patterns from past crises do you see repeating today?", "The pattern, and where"],
+    ["ask", "Question", "How should ordinary savers use financial history in their own decisions?", "Your situation"],
+    ["argue", "Disagreement", "Does Ferguson's storytelling favour certain conclusions about finance?", "Your view"],
+    ["argue", "Limitation", "Which parts of the book have been overtaken by events since 2008?", "The part, and what happened"]
+  ],
+  "The Great Transformation": [
+    ["use", "Personal Experience", "How did Polanyi change how you think about the relationship between markets and society?", "What you believed before"],
+    ["use", "Application", "Has the double movement helped you make sense of politics today?", "The event, and the connection"],
+    ["see", "Insight", "Which argument in The Great Transformation was most surprising?", "The argument, and why"],
+    ["see", "Summary", "How would you explain Polanyi's idea of fictitious commodities?", "In plain words"],
+    ["ask", "Question", "Which parts of the book were hardest to follow, and how did you get through them?", "The part, and what helped"],
+    ["ask", "Question", "Can a market economy stay embedded in society, and what would that look like?", "Your reading"],
+    ["argue", "Disagreement", "Is Polanyi's history of market society accurate, according to later historians?", "What you have read"],
+    ["argue", "Limitation", "Which parts of a book written in 1944 need the most translation today?", "The part, and why"]
+  ],
+  "Naked Economics": [
+    ["use", "Application", "Which idea from Naked Economics changed how you make a money or career decision?", "The idea, and the decision"],
+    ["use", "Personal Experience", "How did the book change how you follow economic news?", "What you understand now"],
+    ["see", "Insight", "Which chapter finally made an economic concept click for you?", "The concept, and why"],
+    ["see", "Summary", "How would you explain why productivity matters so much to living standards?", "In plain words"],
+    ["ask", "Question", "Which topics in the book would you want explored with more depth or numbers?", "The topic"],
+    ["ask", "Question", "How has the economy changed since the book's latest edition?", "What you would update"],
+    ["argue", "Disagreement", "Does the book present contested ideas as more settled than they are?", "An example"],
+    ["argue", "Limitation", "What does an economics book without maths gain and lose?", "Your view"]
+  ],
+  "Scarcity": [
+    ["use", "Personal Experience", "When did scarcity of time or money make you tunnel on one thing and miss others?", "The situation, and what you missed"],
+    ["use", "Application", "What did you change to build more slack into your week or budget?", "The change, and the effect"],
+    ["see", "Insight", "Which idea from Scarcity changed how you judge other people's decisions?", "What you believed before"],
+    ["see", "Summary", "How would you explain the bandwidth tax to someone who thinks poor choices are about character?", "In plain words"],
+    ["ask", "Question", "How should programmes and workplaces be designed for people with little bandwidth?", "An example you have in mind"],
+    ["ask", "Question", "Is scarcity of time really comparable to scarcity of money?", "Your reasoning"],
+    ["argue", "Disagreement", "Have some of the studies behind the bandwidth claims held up?", "What you have read"],
+    ["argue", "Limitation", "Does understanding scarcity help much if you can't create more slack?", "Your view"]
+  ],
+  "The Creative Act": [
+    ["use", "Application", "What changed in your creative practice after reading The Creative Act?", "The practice, and the difference"],
+    ["use", "Personal Experience", "Which passage do you return to when you feel stuck, and what does it help with?", "The passage, and the moment"],
+    ["see", "Insight", "Which idea from Rubin changed how you think about who counts as an artist?", "What you believed before"],
+    ["see", "Summary", "How would you explain Rubin's idea of tuning in to the source?", "In plain words"],
+    ["ask", "Question", "How do you balance Rubin's openness with deadlines and paying work?", "Your situation"],
+    ["ask", "Question", "How do you know when a piece of work is finished?", "What you use to decide"],
+    ["argue", "Disagreement", "Does the book's spiritual language help or blur its practical advice?", "Your view"],
+    ["argue", "Limitation", "Which ideas are easier to follow for someone with Rubin's resources and reputation?", "The idea, and the gap"]
+  ],
+  "Big Magic": [
+    ["use", "Application", "What did you start making after reading Big Magic, and how is it going?", "The project, and what changed"],
+    ["use", "Personal Experience", "How did letting fear ride along without driving change a creative decision?", "The decision, and the fear"],
+    ["see", "Insight", "Which idea from Big Magic changed how you think about creativity and permission?", "What you believed before"],
+    ["see", "Summary", "How would you explain Gilbert's case for curiosity over passion?", "In plain words"],
+    ["ask", "Question", "How do you keep creating when no one is paying for or noticing the work?", "Your situation"],
+    ["ask", "Question", "How literally do you take the idea that ideas look for people to make them?", "Your reading"],
+    ["argue", "Disagreement", "Does the book make creative life sound gentler than it is for most people?", "Your view"],
+    ["argue", "Limitation", "Which advice depends on having financial security first?", "The advice, and why"]
+  ]
+}

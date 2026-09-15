@@ -1,0 +1,202 @@
+{
+  "Steal Like an Artist": [
+    ["use", "Application", "Which of Kleon's ten ideas changed how you make things, and what did you make?", "The idea, and the work"],
+    ["use", "Personal Experience", "Who did you learn to steal from well, and how did it shape your own style?", "The influence, and what became yours"],
+    ["see", "Insight", "Which idea from Steal Like an Artist changed how you think about originality?", "What you believed before"],
+    ["see", "Summary", "How would you explain the difference between stealing and copying in Kleon's sense?", "In plain words"],
+    ["ask", "Question", "How do you mix influences without your work feeling derivative?", "The work you have in mind"],
+    ["ask", "Question", "How does the advice change for work made with AI tools?", "Your situation"],
+    ["argue", "Disagreement", "Is the book's light touch too thin for serious creative problems?", "Your view"],
+    ["argue", "Limitation", "Which ideas suit visual and writing work better than other creative fields?", "The idea, and your field"]
+  ],
+  "Show Your Work!": [
+    ["use", "Application", "What happened when you started sharing your process instead of only finished work?", "What you shared, and the response"],
+    ["use", "Real-Life Result", "What opportunity came from teaching what you know in public?", "What you taught, and what followed"],
+    ["see", "Insight", "Which idea from Show Your Work! changed how you think about self-promotion?", "What you believed before"],
+    ["see", "Summary", "How would you explain the difference between sharing generously and becoming human spam?", "In plain words"],
+    ["ask", "Question", "How do you share work in progress without fear of being judged too early?", "Where you hold back"],
+    ["ask", "Question", "How much should you share when your field values privacy or confidentiality?", "Your field"],
+    ["argue", "Disagreement", "Does constant sharing pull attention away from doing the work itself?", "Your view"],
+    ["argue", "Limitation", "Which parts of the advice have changed with today's social platforms?", "The part, and what changed"]
+  ],
+  "Keep Going": [
+    ["use", "Application", "What does your bliss station look like after reading Keep Going?", "The place or time, and what it protects"],
+    ["use", "Personal Experience", "Which of Kleon's ideas helped you through a stretch when you wanted to quit making things?", "The stretch, and the idea"],
+    ["see", "Insight", "Which idea from Keep Going changed how you think about daily creative work?", "What you believed before"],
+    ["see", "Summary", "How would you explain forget the noun, do the verb to someone chasing a title?", "In plain words"],
+    ["ask", "Question", "How do you keep a creative routine when the rest of life is unpredictable?", "Your situation"],
+    ["ask", "Question", "When is it right to change your mind about a long project?", "The project you are weighing"],
+    ["argue", "Disagreement", "Is the book too gentle for creative problems that need hard decisions?", "Your view"],
+    ["argue", "Limitation", "Which ideas feel easier with a flexible schedule than with a full-time job?", "The idea, and the gap"]
+  ],
+  "The Artist's Way": [
+    ["use", "Application", "What happened when you wrote morning pages for several weeks?", "How long, and what changed"],
+    ["use", "Real-Life Result", "What did your artist dates lead to?", "A date, and what came from it"],
+    ["see", "Insight", "Which idea from The Artist's Way changed how you see creative blocks?", "What you believed before"],
+    ["see", "Summary", "How would you explain the idea of a shadow artist to a friend?", "In plain words"],
+    ["ask", "Question", "How do you work through the twelve weeks when life gets in the way?", "Where you get stuck"],
+    ["ask", "Question", "How do you use the book if its spiritual language doesn't suit you?", "Your approach"],
+    ["argue", "Disagreement", "Does the programme ask for more time than most working adults have?", "Your view"],
+    ["argue", "What Did Not Work", "Which exercise did you drop, and what would you do instead?", "The exercise, and your alternative"]
+  ],
+  "Creativity, Inc.": [
+    ["use", "Application", "What did you change about giving feedback after reading about Pixar's Braintrust?", "The practice, and the difference"],
+    ["use", "Real-Life Result", "What happened when you protected an early idea from being judged too soon?", "The idea, and what it became"],
+    ["see", "Insight", "Which idea from Creativity, Inc. changed how you think about candour on a team?", "What you believed before"],
+    ["see", "Summary", "How would you explain Catmull's point that early ideas are ugly babies?", "In plain words"],
+    ["ask", "Question", "How do you build candour when people fear consequences for speaking up?", "Your team"],
+    ["ask", "Question", "How do you find hidden problems that leaders can't see from where they sit?", "Your organisation"],
+    ["argue", "Disagreement", "Does the book give a rosier picture of Pixar's culture than reality supported?", "Your view"],
+    ["argue", "Limitation", "Which practices depend on Pixar's talent and resources to work well?", "The practice, and why"]
+  ],
+  "Bird by Bird": [
+    ["use", "Application", "How did taking it bird by bird help you get through a big writing task?", "The task, and how you broke it up"],
+    ["use", "Personal Experience", "What changed once you gave yourself permission for a terrible first draft?", "The draft, and what came after"],
+    ["see", "Insight", "Which lesson from Bird by Bird changed how you think about writing?", "What you believed before"],
+    ["see", "Summary", "How would you explain the one-inch picture frame to someone overwhelmed by a project?", "In plain words"],
+    ["ask", "Question", "How do you keep going when jealousy of other writers creeps in?", "The feeling, and your approach"],
+    ["ask", "Question", "Which of Lamott's lessons apply beyond writing?", "The lesson, and where you use it"],
+    ["argue", "Disagreement", "Is Lamott right that publication won't change how you feel about your work?", "Your view"],
+    ["argue", "Limitation", "Which parts of the book are more about fiction than other kinds of writing?", "The part, and your writing"]
+  ],
+  "On Writing": [
+    ["use", "Application", "What changed in your writing after King's advice about cutting a draft down?", "Before and after"],
+    ["use", "Personal Experience", "How did writing with the door closed, then open, change your process?", "Your process now"],
+    ["see", "Insight", "Which part of King's memoir changed how you see the writing life?", "The part, and why"],
+    ["see", "Summary", "How would you explain King's case against adverbs to a new writer?", "In plain words"],
+    ["ask", "Question", "How do you read a lot and write a lot when time is limited?", "Your routine"],
+    ["ask", "Question", "Which of King's rules would you break for your own writing?", "The rule, and why"],
+    ["argue", "Disagreement", "Is King's firm advice right for writers who work very differently from him?", "Your view"],
+    ["argue", "Limitation", "Which parts of the toolbox fit novels better than other writing?", "The part, and your writing"]
+  ],
+  "Originals": [
+    ["use", "Application", "Did you use strategic procrastination on a creative problem, and what came of it?", "The problem, and the result"],
+    ["use", "Personal Experience", "How did Originals change how you speak up with an unpopular idea at work?", "The idea, and how it went"],
+    ["see", "Insight", "Which finding from Originals changed how you think about risk-taking?", "What you believed before"],
+    ["see", "Summary", "How would you explain why original thinkers often balance risk in other parts of life?", "In plain words"],
+    ["ask", "Question", "How do you judge which of your ideas are worth pursuing?", "The ideas you are weighing"],
+    ["ask", "Question", "How do you raise a new idea with a boss who dislikes change?", "Your situation"],
+    ["argue", "Disagreement", "Does the book cherry-pick examples of originals who happened to succeed?", "Your view"],
+    ["argue", "Limitation", "Which advice is harder to follow for people with less security or status?", "The advice, and why"]
+  ],
+  "Lateral Thinking": [
+    ["use", "Application", "Where did you use provocation or a random entry point to solve a real problem?", "The problem, and the idea it produced"],
+    ["use", "Personal Experience", "How did the book change how you run brainstorming or problem-solving sessions?", "What you do now"],
+    ["see", "Insight", "Which idea from de Bono changed how you approach being stuck?", "What you did before"],
+    ["see", "Summary", "How would you explain the difference between vertical and lateral thinking?", "With an example"],
+    ["ask", "Question", "How do you get a team to take provocations seriously without it feeling silly?", "Your team"],
+    ["ask", "Question", "Which techniques still feel useful decades after the book was written?", "The technique, and why"],
+    ["argue", "Disagreement", "Is there good evidence that lateral thinking techniques improve creativity?", "What you know or doubt"],
+    ["argue", "Limitation", "Which kinds of problems don't benefit from lateral thinking?", "An example"]
+  ],
+  "A Technique for Producing Ideas": [
+    ["use", "Application", "What happened when you followed Young's steps from gathering material to letting it rest?", "The idea, and where it came from"],
+    ["use", "Personal Experience", "When has stepping away from a problem produced an idea for you?", "The problem, and the moment"],
+    ["see", "Insight", "What did the idea that new ideas are combinations of old ones change for you?", "What you believed before"],
+    ["see", "Summary", "How would you explain Young's five steps in a few sentences?", "In plain words"],
+    ["ask", "Question", "How do you gather general material when work demands focus on specifics?", "Your situation"],
+    ["ask", "Question", "How long should you let a problem incubate before pushing again?", "Your experience"],
+    ["argue", "Disagreement", "Is idea-making really as repeatable as this short book suggests?", "Your view"],
+    ["argue", "Limitation", "What does a book from 1940 leave out about producing ideas today?", "The gap you noticed"]
+  ],
+  "The Practice": [
+    ["use", "Application", "What did you start shipping regularly after reading The Practice?", "The work, and how often"],
+    ["use", "Personal Experience", "How did focusing on the process rather than the outcome change how you felt about your work?", "The work, and the shift"],
+    ["see", "Insight", "Which idea from The Practice changed how you think about creative confidence?", "What you believed before"],
+    ["see", "Summary", "How would you explain Godin's idea of a smallest viable audience?", "In plain words"],
+    ["ask", "Question", "How do you trust the process when the work isn't getting any response?", "Your situation"],
+    ["ask", "Question", "How do you balance generous work with the need to earn a living?", "Where you feel the tension"],
+    ["argue", "Disagreement", "Does the book's short-section style give ideas enough depth?", "Your view"],
+    ["argue", "Limitation", "Which advice suits someone with Godin's platform better than a beginner?", "The advice, and why"]
+  ],
+  "Creative Confidence": [
+    ["use", "Application", "Which design thinking exercise from the book did you try, and what came of it?", "The exercise, and the result"],
+    ["use", "Personal Experience", "How did the book change how you see yourself as creative or not?", "What you believed before"],
+    ["see", "Insight", "Which story from IDEO or the d.school changed how you approach problems?", "The story, and the shift"],
+    ["see", "Summary", "How would you explain the role of empathy in design thinking?", "In plain words"],
+    ["ask", "Question", "How do you overcome fear of judgement in a team that rarely experiments?", "Your team"],
+    ["ask", "Question", "How do you bring a bias toward action into an organisation that values caution?", "Your organisation"],
+    ["argue", "Disagreement", "Has design thinking been oversold as a method for solving any problem?", "Your view"],
+    ["argue", "Limitation", "Which parts of the approach are hard to use outside design firms and startups?", "The part, and why"]
+  ],
+  "The Accidental Creative": [
+    ["use", "Application", "Which part of Henry's FRESH framework did you change, and what happened?", "The element, and the result"],
+    ["use", "Personal Experience", "How did the book change how you plan your week as someone who makes things for work?", "What you plan now"],
+    ["see", "Insight", "Which idea from The Accidental Creative changed how you think about creative burnout?", "What you believed before"],
+    ["see", "Summary", "How would you explain the book's creative rhythm to someone always on deadline?", "In plain words"],
+    ["ask", "Question", "How do you protect time for your own ideas when clients or bosses fill the calendar?", "Your situation"],
+    ["ask", "Question", "How do you notice the assassins of creativity before they take hold?", "The one you struggle with"],
+    ["argue", "Disagreement", "Does the book treat creative work too much like a system to be managed?", "Your view"],
+    ["argue", "Limitation", "Which ideas are harder to apply for freelancers than for employees?", "The idea, and why"]
+  ],
+  "So Good They Can't Ignore You": [
+    ["use", "Application", "What did you start building career capital in after reading this book?", "The skill, and how you practise it"],
+    ["use", "Real-Life Result", "How did the craftsman mindset change how you feel about your current job?", "The job, and the shift"],
+    ["see", "Insight", "Which argument from Newport changed how you think about following your passion?", "What you believed before"],
+    ["see", "Summary", "How would you explain the difference between the passion mindset and the craftsman mindset?", "In plain words"],
+    ["ask", "Question", "How do you know a skill is rare and valuable enough to build career capital?", "The skill you are weighing"],
+    ["ask", "Question", "When should you trade career capital for more control?", "Your situation"],
+    ["argue", "Disagreement", "Is the book too dismissive of passion as a guide to work?", "Your view"],
+    ["argue", "Limitation", "Which advice works better in knowledge work than in other careers?", "The advice, and why"]
+  ],
+  "Designing Your Life": [
+    ["use", "Application", "What did your three odyssey plans reveal about your options?", "The plans, and what surprised you"],
+    ["use", "Real-Life Result", "What happened after you had prototype conversations with people in a career you were curious about?", "Who you talked to, and what changed"],
+    ["see", "Insight", "Which idea from Designing Your Life changed how you think about career decisions?", "What you believed before"],
+    ["see", "Summary", "How would you explain the idea of a gravity problem to someone stuck on something they can't change?", "In plain words"],
+    ["ask", "Question", "How do you prototype a life change when you can't afford to experiment?", "Your situation"],
+    ["ask", "Question", "How do you align your workview and lifeview when they conflict?", "Where they pull apart"],
+    ["argue", "Disagreement", "Does design thinking fit life decisions as neatly as the book suggests?", "Your view"],
+    ["argue", "Limitation", "Which exercises assume options and flexibility many people lack?", "The exercise, and the constraint"]
+  ],
+  "Range": [
+    ["use", "Personal Experience", "How did Range change how you feel about a winding or unusual career path?", "Your path, and the shift"],
+    ["use", "Application", "What did you start sampling or learning outside your field after reading Range?", "The area, and what it added"],
+    ["see", "Insight", "Which idea from Range changed how you think about early specialisation?", "What you believed before"],
+    ["see", "Summary", "How would you explain the difference between kind and wicked learning environments?", "With an example"],
+    ["ask", "Question", "How do you balance breadth with building real expertise?", "Where you feel the tension"],
+    ["ask", "Question", "How should parents apply Range when so many activities push early specialisation?", "Your situation"],
+    ["argue", "Disagreement", "Does Range underplay the fields where early specialisation really does win?", "The field, and your view"],
+    ["argue", "Limitation", "Which examples in the book feel more like good stories than strong evidence?", "The example, and why"]
+  ],
+  "Give and Take": [
+    ["use", "Application", "What happened when you tried five-minute favours or otherish giving?", "The favour, and the result"],
+    ["use", "Personal Experience", "How did Give and Take change how you handle takers in your working life?", "The situation, and your approach"],
+    ["see", "Insight", "Which finding from Give and Take changed how you think about success?", "What you believed before"],
+    ["see", "Summary", "How would you explain why givers end up both at the top and the bottom?", "In plain words"],
+    ["ask", "Question", "How do you give generously without burning out or being exploited?", "Where you draw the line"],
+    ["ask", "Question", "How can you tell a taker from a matcher early on?", "The signals you watch"],
+    ["argue", "Disagreement", "Does the book make giving sound more strategic than generous?", "Your view"],
+    ["argue", "Limitation", "Which workplaces make being a giver especially costly?", "The workplace, and why"]
+  ],
+  "The Third Door": [
+    ["use", "Application", "Where did you find a third door into an opportunity, and what happened?", "The opportunity, and how you got in"],
+    ["use", "Personal Experience", "How did Banayan's persistence change how you approach people you'd like to meet?", "The approach, and the result"],
+    ["see", "Insight", "Which moment in The Third Door changed how you think about getting started young?", "The moment, and why"],
+    ["see", "Summary", "How would you explain the book's idea of the third door?", "In plain words"],
+    ["ask", "Question", "Where is the line between persistence and being a nuisance?", "Where you draw it"],
+    ["ask", "Question", "Which lessons from the interviews did you find most useful, and which were not new?", "Your take"],
+    ["argue", "Disagreement", "Does the book celebrate hustle in ways that aren't realistic for most readers?", "Your view"],
+    ["argue", "Limitation", "Which of Banayan's tactics are harder to use now than when he tried them?", "The tactic, and why"]
+  ],
+  "The Startup of You": [
+    ["use", "Application", "What did your ABZ plan look like after reading The Startup of You?", "Plan A, B, and Z, briefly"],
+    ["use", "Personal Experience", "How did thinking of your career as permanent beta change a decision?", "The decision, and the shift"],
+    ["see", "Insight", "Which idea from the book changed how you think about networks?", "What you believed before"],
+    ["see", "Summary", "How would you explain taking intelligent risks with your career?", "In plain words"],
+    ["ask", "Question", "How do you build a network that feels genuine rather than transactional?", "Your approach"],
+    ["ask", "Question", "How much of the advice still holds in a job market changed by AI?", "Your field"],
+    ["argue", "Disagreement", "Does treating yourself as a startup encourage constant hustle?", "Your view"],
+    ["argue", "Limitation", "Which advice assumes access to Silicon Valley-style networks?", "The advice, and the gap"]
+  ],
+  "Working Identity": [
+    ["use", "Application", "Which small career experiment did you run after reading Working Identity, and what did you learn?", "The experiment, and the lesson"],
+    ["use", "Personal Experience", "How did shifting connections help you move toward a new kind of work?", "The people, and the move"],
+    ["see", "Insight", "Which idea from Ibarra changed how you think about career change?", "What you believed before"],
+    ["see", "Summary", "How would you explain why doing comes before knowing in a career change?", "In plain words"],
+    ["ask", "Question", "How do you experiment with a new career when you can't afford an income dip?", "Your situation"],
+    ["ask", "Question", "How long should a career transition take before you worry?", "Where you are now"],
+    ["argue", "Disagreement", "Does the test-and-learn approach risk drifting without a clear direction?", "Your view"],
+    ["argue", "Limitation", "Which parts of the book fit professionals better than people in other jobs?", "The part, and why"]
+  ]
+}

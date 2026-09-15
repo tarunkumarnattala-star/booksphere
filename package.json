@@ -9,7 +9,9 @@
     "audit:launch": "node scripts/audit-launch-config.mjs",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "audit:prompts": "node scripts/audit-prompts.mjs",
+    "test:prompts": "node scripts/test-prompt-selection.mjs"
   },
   "keywords": [],
   "author": "",

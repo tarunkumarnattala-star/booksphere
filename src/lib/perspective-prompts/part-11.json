@@ -1,0 +1,202 @@
+{
+  "Us": [
+    ["use", "Application", "What changed when you started thinking about us instead of you and me in a disagreement?", "The disagreement, and the shift"],
+    ["use", "Personal Experience", "How did recognising your adaptive child versus your wise adult change how you react?", "Share only what you are comfortable sharing"],
+    ["see", "Insight", "Which idea from Terrence Real changed how you think about closeness?", "What you believed before"],
+    ["see", "Summary", "How would you explain Real's idea of fierce intimacy?", "In plain words"],
+    ["ask", "Question", "How do you move toward us when your partner still thinks in terms of who is right?", "Your situation"],
+    ["ask", "Question", "How does the book's critique of individualism apply outside romantic relationships?", "The relationship you have in mind"],
+    ["argue", "Disagreement", "Is Real's direct style helpful, or too confrontational for some couples?", "Your view"],
+    ["argue", "Limitation", "Which situations does the approach not fit, such as relationships involving harm?", "The situation"]
+  ],
+  "Platonic": [
+    ["use", "Application", "What happened when you took the initiative with a friend, assuming they liked you?", "The friend, and the result"],
+    ["use", "Real-Life Result", "How did Platonic change one friendship that matters to you?", "The friendship, and the change"],
+    ["see", "Insight", "Which idea from Marisa Franco changed how you think about making friends as an adult?", "What you believed before"],
+    ["see", "Summary", "How would you explain the acceptance prophecy to someone who waits to be invited?", "In plain words"],
+    ["ask", "Question", "How do you keep friendships going through moves, parenthood, or busy seasons?", "Your situation"],
+    ["ask", "Question", "How do you raise hurt or anger with a friend without losing them?", "The situation"],
+    ["argue", "Disagreement", "Does attachment theory explain friendship as well as the book suggests?", "Your view"],
+    ["argue", "Limitation", "Which advice is harder for people with little time or social energy?", "The advice, and the constraint"]
+  ],
+  "Eight Dates": [
+    ["use", "Application", "Which of the eight conversations did you have, and what did you learn about each other?", "The date, and what surfaced"],
+    ["use", "Real-Life Result", "What changed in your relationship after working through several of the dates?", "The change, in brief"],
+    ["see", "Insight", "Which conversation topic surprised you by how much it mattered?", "The topic, and why"],
+    ["see", "Summary", "How would you explain why structured conversations help couples?", "In plain words"],
+    ["ask", "Question", "How do you suggest the dates to a partner who dislikes structured talks?", "Your situation"],
+    ["ask", "Question", "How do the conversations change for long-established couples versus new ones?", "Your stage"],
+    ["argue", "Disagreement", "Can scripted questions make intimacy feel less natural?", "Your view"],
+    ["argue", "Limitation", "Which of the dates assume a kind of relationship yours doesn't match?", "The date, and why"]
+  ],
+  "The Relationship Cure": [
+    ["use", "Application", "What happened when you started noticing and turning toward bids for connection?", "A bid, and the response"],
+    ["use", "Real-Life Result", "How did the book improve a relationship at work, in family, or with friends?", "The relationship, and the change"],
+    ["see", "Insight", "Which idea from The Relationship Cure changed how you see small everyday moments?", "What you believed before"],
+    ["see", "Summary", "How would you explain turning toward, away, and against?", "With an everyday example"],
+    ["ask", "Question", "How do you respond to bids when you are exhausted or overwhelmed?", "Your situation"],
+    ["ask", "Question", "How do you rebuild a relationship where turning away has become the pattern?", "The relationship"],
+    ["argue", "Disagreement", "Does focusing on small bids overlook bigger problems in a relationship?", "Your view"],
+    ["argue", "Limitation", "Which relationships does the approach suit least?", "The relationship, and why"]
+  ],
+  "Secure Love": [
+    ["use", "Application", "What changed when you and a partner named your negative cycle together?", "The cycle, and the change"],
+    ["use", "Personal Experience", "How did Secure Love change how you understand your own reactions in conflict?", "Share only what you are comfortable sharing"],
+    ["see", "Insight", "Which idea from Julie Menanno changed how you think about security in a relationship?", "What you believed before"],
+    ["see", "Summary", "How would you explain the pursue and withdraw pattern to a couple caught in it?", "In plain words"],
+    ["ask", "Question", "How do you build security when only one partner is working on it?", "Your situation"],
+    ["ask", "Question", "When should a couple seek a therapist rather than use the book alone?", "Where you are unsure"],
+    ["argue", "Disagreement", "Does the book frame too many problems through attachment?", "Your view"],
+    ["argue", "Limitation", "Which situations need more support than a self-help book can offer?", "The situation"]
+  ],
+  "Come Together": [
+    ["use", "Personal Experience", "How did Come Together change how you think about intimacy in a long relationship?", "Share only what you are comfortable sharing"],
+    ["use", "Application", "What did you and a partner change in how you talk about intimacy?", "The conversation, and the difference"],
+    ["see", "Insight", "Which idea from Emily Nagoski challenged something you had assumed?", "What you believed before"],
+    ["see", "Summary", "How would you explain the book's central idea about lasting connection?", "In plain words"],
+    ["ask", "Question", "How do couples start these conversations when they feel awkward?", "Your situation"],
+    ["ask", "Question", "How does the book's advice change with stress, health, or young children?", "Your circumstances"],
+    ["argue", "Disagreement", "Does the book set expectations that feel hard for many couples to meet?", "Your view"],
+    ["argue", "Limitation", "Which readers or relationships might the book speak to least?", "Who, and why"]
+  ],
+  "Fight Right": [
+    ["use", "Application", "What changed when you tried a gentler start to a conflict?", "The conflict, and the difference"],
+    ["use", "Real-Life Result", "How did a repair attempt from the book change how a fight ended?", "The fight, and the repair"],
+    ["see", "Insight", "Which idea from Fight Right changed how you think about conflict in a relationship?", "What you believed before"],
+    ["see", "Summary", "How would you explain why understanding should come before persuading in a fight?", "In plain words"],
+    ["ask", "Question", "How do you repair when your partner doesn't accept repair attempts?", "Your situation"],
+    ["ask", "Question", "How do you handle perpetual problems that keep resurfacing?", "The problem type"],
+    ["argue", "Disagreement", "Can a research-based approach make arguments feel too managed?", "Your view"],
+    ["argue", "Limitation", "Which conflicts aren't safe or suitable for the book's approach?", "The situation"]
+  ],
+  "Elon Musk": [
+    ["use", "Application", "Did you try Musk's algorithm of questioning requirements and deleting steps, and what happened?", "The process, and the result"],
+    ["use", "Personal Experience", "How did reading about Musk change how you think about urgency and risk in your work?", "The work, and the shift"],
+    ["see", "Insight", "What did Isaacson's portrait change about how you see Musk?", "What you believed before"],
+    ["see", "Summary", "How would you explain the link the book draws between Musk's childhood and his leadership?", "In plain words"],
+    ["ask", "Question", "How do you separate Musk's effective methods from the costs to the people around him?", "Where it blurs"],
+    ["ask", "Question", "Which of his approaches work only with his wealth and control?", "The approach, and why"],
+    ["argue", "Disagreement", "Is the biography too close to its subject to judge him fairly?", "Your view"],
+    ["argue", "Limitation", "Which events since publication change how the book reads?", "The event, and the effect"]
+  ],
+  "The Snowball": [
+    ["use", "Application", "Which of Buffett's habits from The Snowball have you tried to adopt?", "The habit, and how it went"],
+    ["use", "Personal Experience", "How did the idea of an inner scorecard change how you judge your own choices?", "The choice, and the shift"],
+    ["see", "Insight", "What surprised you most about Buffett's life beyond investing?", "What you assumed before"],
+    ["see", "Summary", "How would you explain the snowball metaphor for building wealth and reputation?", "In plain words"],
+    ["ask", "Question", "How do you weigh Buffett's professional wisdom against the costs to his family life?", "Where you land"],
+    ["ask", "Question", "How much of Buffett's success came from timing and circumstance?", "Your reading"],
+    ["argue", "Disagreement", "Is Schroeder's portrait more critical, or less, than it should be?", "Your view"],
+    ["argue", "Limitation", "Which parts of Buffett's path are hardest to learn from today?", "The part, and why"]
+  ],
+  "Titan": [
+    ["use", "Personal Experience", "How did Titan change how you think about business ambition and ethics?", "What you believed before"],
+    ["use", "Application", "Which of Rockefeller's business habits, good or bad, do you recognise in companies today?", "The habit, and where you see it"],
+    ["see", "Insight", "What surprised you most about Rockefeller the person?", "What you assumed before"],
+    ["see", "Summary", "How would you explain how Standard Oil came to dominate its industry?", "In plain words"],
+    ["ask", "Question", "How should we weigh Rockefeller's philanthropy against how he made his fortune?", "Where you land"],
+    ["ask", "Question", "What lessons does the Standard Oil breakup hold for today's tech giants?", "Your reading"],
+    ["argue", "Disagreement", "Is Chernow too sympathetic to Rockefeller, or not sympathetic enough?", "Your view"],
+    ["argue", "Limitation", "Which parts of the story are hard to apply outside the Gilded Age?", "The part, and why"]
+  ],
+  "Alexander Hamilton": [
+    ["use", "Personal Experience", "How did Hamilton's story change how you think about ambition and work ethic?", "What you took from it"],
+    ["use", "Application", "Did the book change how you understand today's debates about debt and government?", "The debate, and the shift"],
+    ["see", "Insight", "Which part of Hamilton's life surprised you most?", "The part, and why"],
+    ["see", "Summary", "How would you explain Hamilton's role in building America's financial system?", "In plain words"],
+    ["ask", "Question", "How did Hamilton's temperament help and hurt him?", "The moment you have in mind"],
+    ["ask", "Question", "How does the biography compare with the version of Hamilton in the musical?", "What differs"],
+    ["argue", "Disagreement", "Does Chernow judge Jefferson and Burr too harshly to lift Hamilton up?", "Your view"],
+    ["argue", "Limitation", "What does the biography say too little about, such as slavery?", "The gap you noticed"]
+  ],
+  "Educated": [
+    ["use", "Personal Experience", "How did Educated change how you think about family loyalty and becoming your own person?", "Share only what you are comfortable sharing"],
+    ["use", "Application", "Did Westover's story change how you think about the value of education?", "The change, and why"],
+    ["see", "Insight", "Which moment in Educated stayed with you most?", "The moment, and why"],
+    ["see", "Summary", "How would you explain what education came to mean for Westover?", "In plain words"],
+    ["ask", "Question", "How do you read a memoir when the author openly questions her own memory?", "How it affected you"],
+    ["ask", "Question", "Can someone leave a family's worldview without losing the family?", "Your reading"],
+    ["argue", "Disagreement", "Is the book fair to the family members who dispute her account?", "Your view"],
+    ["argue", "Limitation", "Which parts of Westover's path depended on luck or mentors few people have?", "The part, and why"]
+  ],
+  "Born a Crime": [
+    ["use", "Personal Experience", "How did Born a Crime change how you think about identity and belonging?", "What you took from it"],
+    ["use", "Application", "Did the book change how you use language or humour to connect with people?", "An example"],
+    ["see", "Insight", "Which story about Trevor Noah's mother stayed with you most?", "The story, and why"],
+    ["see", "Summary", "How would you explain what being born a crime meant under apartheid?", "In plain words"],
+    ["ask", "Question", "How does the book use humour to tell painful stories, and does it work for you?", "Your reading"],
+    ["ask", "Question", "What does the book show about poverty that statistics miss?", "The part that showed it"],
+    ["argue", "Disagreement", "Does the comic tone ever soften things that deserve more weight?", "Your view"],
+    ["argue", "Limitation", "What would you want to know about South Africa that the memoir leaves out?", "The gap"]
+  ],
+  "Disciplined Entrepreneurship": [
+    ["use", "Application", "Which of Aulet's 24 steps changed your startup plan the most?", "The step, and the change"],
+    ["use", "Real-Life Result", "What happened when you picked a beachhead market and built a persona for it?", "The market, and what you learned"],
+    ["see", "Insight", "Which idea from the book changed how you think about entrepreneurship as a discipline?", "What you believed before"],
+    ["see", "Summary", "How would you explain why a full life cycle use case matters?", "In plain words"],
+    ["ask", "Question", "Do you need to follow the steps in order, or can you jump around?", "Your situation"],
+    ["ask", "Question", "How do you size a market honestly when the numbers are uncertain?", "Your market"],
+    ["argue", "Disagreement", "Does a step-by-step method fit something as messy as starting a company?", "Your view"],
+    ["argue", "Limitation", "Which steps suit technology startups better than other businesses?", "The step, and why"]
+  ],
+  "The Startup Owner's Manual": [
+    ["use", "Application", "What did you learn when you got out of the building to test your assumptions?", "The assumption, and what you heard"],
+    ["use", "Real-Life Result", "How did customer development change a product or business decision?", "The decision, and the evidence"],
+    ["see", "Insight", "Which idea from Blank and Dorf changed how you think about a startup?", "What you believed before"],
+    ["see", "Summary", "How would you explain customer discovery versus customer validation?", "In plain words"],
+    ["ask", "Question", "How do you work through a manual this long without drowning in process?", "What helped, or didn't"],
+    ["ask", "Question", "How many customer conversations are enough to move to validation?", "Where you are now"],
+    ["argue", "Disagreement", "Is the manual too heavy for early founders who need to move fast?", "Your view"],
+    ["argue", "Limitation", "Which parts of the book have dated as startup tools have changed?", "The part, and what changed"]
+  ],
+  "The Cold Start Problem": [
+    ["use", "Application", "How did you find or build an atomic network for your product?", "The network, and what worked"],
+    ["use", "Personal Experience", "Which stage of network growth have you lived through, and what did it teach you?", "The stage, and the lesson"],
+    ["see", "Insight", "Which idea from Andrew Chen changed how you think about network effects?", "What you believed before"],
+    ["see", "Summary", "How would you explain the hard side of a network with an example?", "In plain words"],
+    ["ask", "Question", "How small can an atomic network be and still sustain itself?", "Your product"],
+    ["ask", "Question", "How do you get the first users when the product is empty without them?", "Your situation"],
+    ["argue", "Disagreement", "Does the book lean too heavily on cases from very successful companies?", "Your view"],
+    ["argue", "Limitation", "Which tactics depend on money or scale that small teams lack?", "The tactic, and why"]
+  ],
+  "The Founder's Dilemmas": [
+    ["use", "Application", "How did the book change how you split equity or roles with a cofounder?", "The decision, and the reasoning"],
+    ["use", "Personal Experience", "Did thinking about rich versus king change what you wanted from a company?", "The choice, and why"],
+    ["see", "Insight", "Which finding from Wasserman surprised you most?", "The finding, and why"],
+    ["see", "Summary", "How would you explain the rich versus king trade-off to a new founder?", "In plain words"],
+    ["ask", "Question", "How do you raise hard questions about equity with a cofounder who is also a friend?", "Your situation"],
+    ["ask", "Question", "When is it worth giving up control to grow faster?", "The trade-off you face"],
+    ["argue", "Disagreement", "Does the data support the book's advice for today's startups?", "Your view"],
+    ["argue", "Limitation", "Which dilemmas does the book leave without clear guidance?", "The dilemma"]
+  ],
+  "The Little Book That Still Beats the Market": [
+    ["use", "Application", "Did you try the magic formula, and how did sticking with it feel through a bad year?", "The approach, and your experience"],
+    ["use", "Personal Experience", "How did the book change how you think about buying good companies at good prices?", "The shift, in your words"],
+    ["see", "Insight", "Which argument from Greenblatt changed how you see simple investing strategies?", "What you believed before"],
+    ["see", "Summary", "How would you explain return on capital and earnings yield to a new investor?", "In plain words"],
+    ["ask", "Question", "Why would a simple formula keep working if everyone knows about it?", "Your reasoning"],
+    ["ask", "Question", "What changed between the original and the updated edition?", "What you noticed"],
+    ["argue", "Disagreement", "Has the magic formula delivered what the book promised in recent years?", "What you have seen"],
+    ["argue", "Limitation", "Which investors does the strategy suit, and which not?", "Who, and why"]
+  ],
+  "The Outsiders": [
+    ["use", "Application", "Which lesson about capital allocation from the book have you applied?", "The lesson, and the decision"],
+    ["use", "Personal Experience", "How did the book change how you judge a CEO or company you follow?", "The company, and the shift"],
+    ["see", "Insight", "Which of the eight CEOs changed how you think about leadership?", "The CEO, and why"],
+    ["see", "Summary", "How would you explain what made these CEOs outsiders?", "In plain words"],
+    ["ask", "Question", "How do you spot a good capital allocator from outside the company?", "The signals you watch"],
+    ["ask", "Question", "Which of the book's lessons apply to running a small business?", "Your business"],
+    ["argue", "Disagreement", "Does the book pick its CEOs with the benefit of hindsight?", "Your view"],
+    ["argue", "Limitation", "Which practices, like heavy buybacks, look different in today's markets?", "The practice, and why"]
+  ],
+  "The Black Swan": [
+    ["use", "Application", "Where have you used a barbell strategy in money, career, or life?", "The two ends, and why"],
+    ["use", "Personal Experience", "When did an unexpected event overturn a plan you were confident in?", "The event, and what you learned"],
+    ["see", "Insight", "Which idea from The Black Swan changed how you think about prediction?", "What you believed before"],
+    ["see", "Summary", "How would you explain Mediocristan versus Extremistan with an everyday example?", "In plain words"],
+    ["ask", "Question", "How do you prepare for events that are by definition unpredictable?", "Your approach"],
+    ["ask", "Question", "How do you avoid the narrative fallacy when explaining what happened?", "An example"],
+    ["argue", "Disagreement", "Does Taleb's combative style undermine an important argument?", "Your view"],
+    ["argue", "Limitation", "Is the book more useful as a warning than as practical guidance?", "Where it helps, and where it doesn't"]
+  ]
+}

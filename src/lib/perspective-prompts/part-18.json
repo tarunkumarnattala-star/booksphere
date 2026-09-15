@@ -1,0 +1,202 @@
+{
+  "Save the Cat!": [
+    ["use", "Application", "How did you use Snyder's beat sheet on a story or script, and what did it fix?", "The story, and the beat that helped"],
+    ["use", "Personal Experience", "Did writing a one-line logline first change how you developed an idea?", "The logline, and what changed"],
+    ["see", "Insight", "Which idea from Save the Cat! changed how you watch films?", "What you notice now"],
+    ["see", "Summary", "How would you explain the save the cat moment to a new storyteller?", "In plain words"],
+    ["ask", "Question", "How do you use a structure like this without the story feeling formulaic?", "Where the line is"],
+    ["ask", "Question", "Which of Snyder's genres fits the story you are working on?", "Your story"],
+    ["argue", "Disagreement", "Has the book made Hollywood films more predictable?", "Your view"],
+    ["argue", "Limitation", "Which kinds of stories resist the book's structure?", "An example"]
+  ],
+  "Wired for Love": [
+    ["use", "Application", "What changed when you and a partner started protecting your couple bubble?", "The practice, and the difference"],
+    ["use", "Personal Experience", "How did recognising yourself as an anchor, island, or wave change how you see conflict?", "Share only what you are comfortable sharing"],
+    ["see", "Insight", "Which idea from Stan Tatkin changed how you think about arguments in a relationship?", "What you believed before"],
+    ["see", "Summary", "How would you explain the couple bubble to a couple who feel like roommates?", "In plain words"],
+    ["ask", "Question", "How do you calm the more primitive parts of the brain in the middle of a fight?", "Your situation"],
+    ["ask", "Question", "How do the book's ideas apply when partners have very different attachment styles?", "Your relationship"],
+    ["argue", "Disagreement", "Does the brain science in the book explain relationships as neatly as it claims?", "Your view"],
+    ["argue", "Limitation", "Which relationships does the approach not suit?", "The situation, and why"]
+  ],
+  "Boundaries": [
+    ["use", "Application", "Which boundary did you set after reading Cloud and Townsend, and how did people react?", "The boundary, and the reaction"],
+    ["use", "Personal Experience", "How did the difference between being responsible to someone and for someone change a relationship?", "The relationship, and the shift"],
+    ["see", "Insight", "Which idea from Boundaries changed how you think about saying no?", "What you believed before"],
+    ["see", "Summary", "How would you explain boundaries as property lines?", "In plain words"],
+    ["ask", "Question", "How do you hold boundaries with people who respond with guilt or anger?", "Your situation"],
+    ["ask", "Question", "How useful is the book for readers who don't share its Christian framework?", "Your experience"],
+    ["argue", "Disagreement", "Can boundaries be used to justify withdrawing from people who need you?", "Your view"],
+    ["argue", "Limitation", "Which situations call for more support than the book offers?", "The situation"]
+  ],
+  "Games People Play": [
+    ["use", "Personal Experience", "Which game from Berne's book did you recognise playing in your own relationships?", "The game, and where it shows up"],
+    ["use", "Application", "What changed when you responded from your Adult state instead of Parent or Child?", "The conversation, and the difference"],
+    ["see", "Insight", "Which idea from transactional analysis changed how you see everyday conversations?", "What you believed before"],
+    ["see", "Summary", "How would you explain the Parent, Adult, and Child ego states?", "In plain words"],
+    ["ask", "Question", "How do you stop a game once you notice it is happening?", "The game you are thinking of"],
+    ["ask", "Question", "Is transactional analysis still used by therapists today, and how?", "What you want to know"],
+    ["argue", "Disagreement", "Does naming games make people cynical about others' motives?", "Your view"],
+    ["argue", "Limitation", "Which parts of a 1964 book feel dated in how they describe people?", "The part, and why"]
+  ],
+  "Men Are from Mars, Women Are from Venus": [
+    ["use", "Personal Experience", "Did any idea from the book help a real misunderstanding in your relationship?", "The misunderstanding, and the idea"],
+    ["use", "Application", "What did you change in how you respond when a partner withdraws or wants to talk?", "The change, and the result"],
+    ["see", "Insight", "Why do you think this book became so popular?", "Your explanation"],
+    ["see", "Summary", "How would you explain Gray's ideas of the cave and the wave?", "In plain words"],
+    ["ask", "Question", "How do you use the book's advice without assuming it fits every man or woman?", "Where you are unsure"],
+    ["ask", "Question", "How do the book's ideas apply to same-sex couples or people who don't fit the categories?", "Your reading"],
+    ["argue", "Disagreement", "Does research on gender differences support the book's claims?", "What you have read"],
+    ["argue", "Limitation", "Which parts of the book reinforce stereotypes that can hurt relationships?", "The part, and why"]
+  ],
+  "Poor Charlie's Almanack": [
+    ["use", "Application", "Which mental model from Munger did you use on a real decision?", "The model, and the decision"],
+    ["use", "Real-Life Result", "What happened when you tried to invert a problem instead of attacking it directly?", "The problem, and what inversion showed"],
+    ["see", "Insight", "Which of Munger's causes of human misjudgment changed how you see your own mistakes?", "The tendency, and an example"],
+    ["see", "Summary", "How would you explain a latticework of mental models to someone who relies on one field?", "In plain words"],
+    ["ask", "Question", "How do you build a latticework of models without it becoming a list of names?", "Your approach"],
+    ["ask", "Question", "Which of Munger's ideas apply to ordinary careers rather than investing?", "The idea, and where"],
+    ["argue", "Disagreement", "Does Munger's confidence in rationality underplay luck in his results?", "Your view"],
+    ["argue", "Limitation", "Is the book's scrapbook style useful or hard to learn from?", "Your experience"]
+  ],
+  "Mastering the Market Cycle": [
+    ["use", "Application", "How did thinking about where we are in the cycle change how you positioned money?", "The decision, and the reasoning"],
+    ["use", "Personal Experience", "Which cycle in the book did you recognise from a boom or bust you lived through?", "The cycle, and the experience"],
+    ["see", "Insight", "Which idea from Howard Marks changed how you think about cycles?", "What you believed before"],
+    ["see", "Summary", "How would you explain the credit cycle and why it matters so much?", "In plain words"],
+    ["ask", "Question", "How do you prepare for a cycle you can't predict?", "Your approach"],
+    ["ask", "Question", "Which signals of excess or fear do you actually watch?", "The signals"],
+    ["argue", "Disagreement", "Can ordinary investors act on cycles, or is this mostly for professionals?", "Your view"],
+    ["argue", "Limitation", "How does this book add to The Most Important Thing, if at all?", "What is new for you"]
+  ],
+  "The Little Book That Beats the Market": [
+    ["use", "Application", "How did Greenblatt's simple ranking of good and cheap companies change how you pick stocks?", "The approach, and your experience"],
+    ["use", "Personal Experience", "Did the book's schoolyard examples make investing feel simpler to you?", "What clicked"],
+    ["see", "Insight", "Which idea from the original Little Book changed how you see value investing?", "What you believed before"],
+    ["see", "Summary", "How would you explain why a good business at a bargain price beats the market over time?", "In plain words"],
+    ["ask", "Question", "How do you stay patient with a strategy that can lag for years?", "Your situation"],
+    ["ask", "Question", "Should you read this original edition or the updated one, and why?", "Your reasoning"],
+    ["argue", "Disagreement", "Is the formula's past success likely to last once it is widely known?", "Your view"],
+    ["argue", "Limitation", "Which parts of the approach are hard to apply outside US markets?", "Your market"]
+  ],
+  "Beating the Street": [
+    ["use", "Application", "Which of Peter Lynch's principles have you used when researching a company?", "The principle, and the company"],
+    ["use", "Personal Experience", "How did Lynch's stories from running Magellan change how you think about investing?", "The story, and the shift"],
+    ["see", "Insight", "Which lesson from Beating the Street added something One Up On Wall Street didn't?", "The lesson, and why"],
+    ["see", "Summary", "How would you explain how Lynch researched an industry he didn't know well?", "In plain words"],
+    ["ask", "Question", "How much research is realistic for an investor with a full-time job?", "Your routine"],
+    ["ask", "Question", "Which of Lynch's principles still apply in today's markets?", "The principle, and why"],
+    ["argue", "Disagreement", "Does Lynch make stock picking look easier than it is for most people?", "Your view"],
+    ["argue", "Limitation", "Which specific examples from the early 1990s have aged least well?", "The example, and why"]
+  ],
+  "100 Baggers": [
+    ["use", "Application", "What did you change about how long you hold investments after reading 100 Baggers?", "The change, and why"],
+    ["use", "Personal Experience", "Have you held a stock through big drops because of the book's advice, and what happened?", "The stock, and the experience"],
+    ["see", "Insight", "Which pattern among 100-baggers surprised you most?", "The pattern, and why"],
+    ["see", "Summary", "How would you explain the coffee can approach to investing?", "In plain words"],
+    ["ask", "Question", "How do you spot a potential 100-bagger without falling for hype?", "The signals you look for"],
+    ["ask", "Question", "How do you hold on through the volatility these stocks usually have?", "Your approach"],
+    ["argue", "Disagreement", "Does studying past 100-baggers suffer from survivorship bias?", "Your view"],
+    ["argue", "Limitation", "Which investors can realistically follow this approach?", "Who, and why"]
+  ],
+  "Devil Take the Hindmost": [
+    ["use", "Personal Experience", "How did Chancellor's history of speculation change how you see today's market excitement?", "What you notice now"],
+    ["use", "Application", "Has the book changed how you react when an asset is soaring?", "The moment, and your reaction"],
+    ["see", "Insight", "Which historical bubble in the book surprised you most?", "The bubble, and why"],
+    ["see", "Summary", "How would you explain what speculative manias have in common across centuries?", "In plain words"],
+    ["ask", "Question", "How do you tell a real innovation from a speculative bubble while it is happening?", "The case you have in mind"],
+    ["ask", "Question", "Which modern episodes would you add to Chancellor's history?", "The episode, and why"],
+    ["argue", "Disagreement", "Does the book treat all speculation as harmful when some of it funds real progress?", "Your view"],
+    ["argue", "Limitation", "What does history tell us, and not tell us, about when a bubble will end?", "Your reading"]
+  ],
+  "Manias, Panics, and Crashes": [
+    ["use", "Personal Experience", "How did Kindleberger's model change how you understand a crisis you lived through?", "The crisis, and the stage you recognise"],
+    ["use", "Application", "Has the book changed how you watch credit and debt in the economy?", "What you watch now"],
+    ["see", "Insight", "Which idea from Manias, Panics, and Crashes changed how you think about financial crises?", "What you believed before"],
+    ["see", "Summary", "How would you explain the stages of a mania, from displacement to revulsion?", "In plain words"],
+    ["ask", "Question", "When should a lender of last resort step in, and what are the risks?", "Your reasoning"],
+    ["ask", "Question", "Which edition is best to read, given how often the book has been updated?", "The edition you used"],
+    ["argue", "Disagreement", "Does the model fit every crisis, or only the ones it was built from?", "Your view"],
+    ["argue", "Limitation", "Is the book too academic for a general reader, and what helped you through it?", "Your experience"]
+  ],
+  "Common Sense on Mutual Funds": [
+    ["use", "Application", "What did you change about your funds after reading Bogle on costs?", "The fund, and the move"],
+    ["use", "Personal Experience", "How did the book change how you judge fund managers and their track records?", "What you look at now"],
+    ["see", "Insight", "Which argument from Bogle about the fund industry surprised you most?", "The argument, and why"],
+    ["see", "Summary", "How would you explain reversion to the mean in fund performance?", "In plain words"],
+    ["ask", "Question", "How should an investor choose an asset allocation using the book's principles?", "Your situation"],
+    ["ask", "Question", "How does this book differ from The Little Book of Common Sense Investing?", "What each gives you"],
+    ["argue", "Disagreement", "Is Bogle too hard on actively managed funds?", "Your view"],
+    ["argue", "Limitation", "Which parts of the fund industry have changed since the book was written?", "The part, and what changed"]
+  ],
+  "Genius Makers": [
+    ["use", "Personal Experience", "How did Genius Makers change how you understand where today's AI came from?", "What you believed before"],
+    ["use", "Application", "Has the book changed how you think about working in or with AI?", "The change, and why"],
+    ["see", "Insight", "Which person or moment in the story of deep learning surprised you most?", "The person or moment, and why"],
+    ["see", "Summary", "How would you explain why deep learning took off after decades on the margins?", "In plain words"],
+    ["ask", "Question", "What did the race for AI talent between big companies change about the field?", "Your reading"],
+    ["ask", "Question", "How should researchers weigh building powerful AI against its risks?", "Where you are unsure"],
+    ["argue", "Disagreement", "Does the book focus too much on famous individuals and too little on the wider community?", "Your view"],
+    ["argue", "Limitation", "Which parts of the story have been overtaken by more recent AI developments?", "The part, and what changed"]
+  ],
+  "AI Superpowers": [
+    ["use", "Personal Experience", "How did AI Superpowers change how you think about AI competition between countries?", "What you believed before"],
+    ["use", "Application", "Did the book change how you think about your job and which skills will last?", "The skill, and your reasoning"],
+    ["see", "Insight", "Which argument from Kai-Fu Lee surprised you most?", "The argument, and why"],
+    ["see", "Summary", "How would you explain the book's four waves of AI?", "In plain words"],
+    ["ask", "Question", "Which jobs will keep a human touch, and is Lee right about them?", "Your reasoning"],
+    ["ask", "Question", "How did Lee's personal story change the tone of the book for you?", "Your reading"],
+    ["argue", "Disagreement", "Has the book's view of China's AI advantage held up?", "Your view"],
+    ["argue", "Limitation", "Which predictions look different now that generative AI has arrived?", "The prediction, and what changed"]
+  ],
+  "The Master Algorithm": [
+    ["use", "Personal Experience", "How did The Master Algorithm change how you think about machine learning?", "What you believed before"],
+    ["use", "Application", "Has the book changed how you choose or explain machine learning methods at work?", "What you do differently"],
+    ["see", "Insight", "Which of the five tribes of machine learning made the most sense to you?", "The tribe, and why"],
+    ["see", "Summary", "How would you explain the idea of a single master algorithm?", "In plain words"],
+    ["ask", "Question", "Has deep learning's success settled the debate between the tribes?", "Your reading"],
+    ["ask", "Question", "Which parts of the book were hardest to follow without a technical background?", "The part, and your question"],
+    ["argue", "Disagreement", "Is the search for one master algorithm realistic or a helpful metaphor?", "Your view"],
+    ["argue", "Limitation", "Which parts of the book have dated since 2015?", "The part, and what changed"]
+  ],
+  "The Everything Store": [
+    ["use", "Application", "Which Amazon principle, like customer obsession or frugality, did you apply in your own work?", "The principle, and the result"],
+    ["use", "Personal Experience", "How did the book change how you think about ambition and long-term bets?", "The shift, in your words"],
+    ["see", "Insight", "What surprised you most about how Amazon was built?", "What you assumed before"],
+    ["see", "Summary", "How would you explain Bezos's idea of it always being Day 1?", "In plain words"],
+    ["ask", "Question", "How do you separate Amazon's effective habits from its harsh culture?", "Where it blurs"],
+    ["ask", "Question", "Which of Bezos's decisions only made sense with his long time horizon?", "The decision, and why"],
+    ["argue", "Disagreement", "Is Brad Stone's portrait of Bezos fair?", "Your view"],
+    ["argue", "Limitation", "Which lessons depend on Amazon's scale and timing?", "The lesson, and why"]
+  ],
+  "Hackers": [
+    ["use", "Personal Experience", "How did Hackers change how you think about the people who built computing?", "What you believed before"],
+    ["use", "Application", "Does the hacker ethic shape how you work or share knowledge?", "An example"],
+    ["see", "Insight", "Which era or group in Levy's history surprised you most?", "The era, and why"],
+    ["see", "Summary", "How would you explain the hacker ethic in a few sentences?", "In plain words"],
+    ["ask", "Question", "What happened to the hacker ethic as computing became big business?", "Your reading"],
+    ["ask", "Question", "Which hacker values still shape open source and the internet today?", "An example"],
+    ["argue", "Disagreement", "Does the book romanticise a culture that left many people out?", "Your view"],
+    ["argue", "Limitation", "What would a history of hackers written today need to add?", "The gap you noticed"]
+  ],
+  "Running Lean": [
+    ["use", "Application", "What did filling out a Lean Canvas reveal about your idea?", "The idea, and the riskiest assumption"],
+    ["use", "Real-Life Result", "What happened when you ran problem interviews before building?", "Who you spoke to, and what changed"],
+    ["see", "Insight", "Which idea from Ash Maurya changed how you plan a product?", "How you planned before"],
+    ["see", "Summary", "How would you explain the difference between problem interviews and solution interviews?", "In plain words"],
+    ["ask", "Question", "How do you identify the riskiest assumption when everything feels risky?", "Your idea"],
+    ["ask", "Question", "How does Running Lean differ from The Lean Startup in practice?", "What each gives you"],
+    ["argue", "Disagreement", "Does the method slow down founders who already know their market well?", "Your view"],
+    ["argue", "Limitation", "Which parts of the method fit software better than physical products?", "The part, and why"]
+  ],
+  "Lean Analytics": [
+    ["use", "Application", "How did you pick your one metric that matters, and what did it change?", "The metric, and the change"],
+    ["use", "Real-Life Result", "What happened when you set a line in the sand for a key number?", "The number, and the result"],
+    ["see", "Insight", "Which idea from Lean Analytics changed how you use data in a startup?", "What you did before"],
+    ["see", "Summary", "How would you explain the book's stages from empathy to scale?", "In plain words"],
+    ["ask", "Question", "How do you know when to move to a new one metric that matters?", "Your stage"],
+    ["ask", "Question", "Which benchmarks in the book are still useful today?", "The benchmark, and why"],
+    ["argue", "Disagreement", "Can focusing on one metric hide problems elsewhere?", "An example"],
+    ["argue", "Limitation", "Which business models in the book have changed since 2013?", "The model, and what changed"]
+  ]
+}

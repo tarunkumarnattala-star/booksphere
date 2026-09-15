@@ -1,0 +1,202 @@
+{
+  "The Long Game": [
+    ["use", "Application", "What did you say no to after reading The Long Game, and what did that make room for?", "The no, and what it opened up"],
+    ["use", "Personal Experience", "How did thinking in years rather than months change a career decision?", "The decision, and the timeline"],
+    ["see", "Insight", "Which idea from Dorie Clark changed how you think about patience in a career?", "What you believed before"],
+    ["see", "Summary", "How would you explain the value of white space to someone whose calendar is always full?", "In plain words"],
+    ["ask", "Question", "How do you keep investing in long-term bets when short-term results are expected?", "Your situation"],
+    ["ask", "Question", "How do you tell strategic patience from simply waiting too long?", "The bet you are weighing"],
+    ["argue", "Disagreement", "Is long-term thinking a luxury for people with financial security?", "Your view"],
+    ["argue", "Limitation", "Which advice fits consultants and independents better than employees?", "The advice, and why"]
+  ],
+  "The Good Enough Job": [
+    ["use", "Personal Experience", "How did The Good Enough Job change how much of your identity you place in work?", "What you believed before"],
+    ["use", "Application", "What did you start doing outside work after reading the book?", "The activity, and the difference"],
+    ["see", "Insight", "Which story in the book changed how you think about ambition?", "The story, and the shift"],
+    ["see", "Summary", "How would you explain the idea of workism to a friend who lives for their job?", "In plain words"],
+    ["ask", "Question", "How do you care about your work without letting it define you?", "Where the line is for you"],
+    ["ask", "Question", "Can a good enough job still be a meaningful one?", "Your experience"],
+    ["argue", "Disagreement", "Does the book underrate the satisfaction some people find in total dedication to work?", "Your view"],
+    ["argue", "Limitation", "Which ideas are easier to act on for people with well-paid, secure jobs?", "The idea, and the gap"]
+  ],
+  "Slow Productivity": [
+    ["use", "Application", "What did you stop doing to follow Newport's advice to do fewer things?", "What you dropped, and the effect"],
+    ["use", "Real-Life Result", "What changed when you let a project run at a more natural pace?", "The project, and the result"],
+    ["see", "Insight", "Which idea from Slow Productivity changed how you judge a good week of work?", "What you measured before"],
+    ["see", "Summary", "How would you explain pseudo-productivity to a manager who counts visible busyness?", "In plain words"],
+    ["ask", "Question", "How do you do fewer things in an organisation that keeps adding more?", "Your workplace"],
+    ["ask", "Question", "How do you obsess over quality without drifting into perfectionism?", "Where the line is"],
+    ["argue", "Disagreement", "Does slow productivity mainly suit people with unusual autonomy, like authors and professors?", "Your view"],
+    ["argue", "Limitation", "Which of the book's examples are hardest to copy in an ordinary job?", "The example, and why"]
+  ],
+  "The Pathless Path": [
+    ["use", "Personal Experience", "How did The Pathless Path change how you think about leaving, or staying on, the default path?", "Where you are, and the shift"],
+    ["use", "Application", "What experiment in how you work did you try after reading the book?", "The experiment, and what you learned"],
+    ["see", "Insight", "Which idea from Millerd changed how you think about meaningful work?", "What you believed before"],
+    ["see", "Summary", "How would you explain the difference between the default path and the pathless path?", "In plain words"],
+    ["ask", "Question", "How do you step off the default path without putting your finances at risk?", "Your situation"],
+    ["ask", "Question", "How do you know when enough is enough, in money or career?", "Where you are unsure"],
+    ["argue", "Disagreement", "Does the book romanticise leaving a stable job?", "Your view"],
+    ["argue", "Limitation", "Which readers is the pathless path realistic for, and which not?", "Who, and why"]
+  ],
+  "The Defining Decade": [
+    ["use", "Personal Experience", "How did The Defining Decade change how you think about your twenties?", "What you believed before"],
+    ["use", "Application", "What did you start building in identity capital after reading the book?", "The investment, and why"],
+    ["see", "Insight", "Which idea from Meg Jay changed how you see weak ties or relationships?", "The idea, and the shift"],
+    ["see", "Summary", "How would you explain identity capital to someone in their early twenties?", "In plain words"],
+    ["ask", "Question", "How do you take your twenties seriously without panicking about them?", "Where you feel the pressure"],
+    ["ask", "Question", "How does the advice apply to someone reading it in their thirties or forties?", "Your stage of life"],
+    ["argue", "Disagreement", "Does the book put too much pressure on a single decade of life?", "Your view"],
+    ["argue", "Limitation", "Which advice depends on having choices many young adults don't have?", "The advice, and the constraint"]
+  ],
+  "The First 90 Days": [
+    ["use", "Application", "How did you use The First 90 Days in a new role, and what happened?", "The role, and the first win"],
+    ["use", "Real-Life Result", "What changed when you diagnosed your situation using the STARS model?", "Which situation, and your approach"],
+    ["see", "Insight", "Which idea from Watkins changed how you think about starting a new job?", "What you did before"],
+    ["see", "Summary", "How would you explain securing early wins without rushing?", "In plain words"],
+    ["ask", "Question", "How do you negotiate success with a new boss who is vague about expectations?", "Your situation"],
+    ["ask", "Question", "How does the playbook change for a remote or hybrid role?", "Your setup"],
+    ["argue", "Disagreement", "Does a 90-day plan push people to act before they truly understand an organisation?", "Your view"],
+    ["argue", "Limitation", "Which parts of the book fit senior leaders more than individual contributors?", "The part, and your role"]
+  ],
+  "Bowling Alone": [
+    ["use", "Personal Experience", "How did Bowling Alone change how you see the community around you?", "What you notice now"],
+    ["use", "Application", "What did you join or start after reading the book?", "The group, and what it gives you"],
+    ["see", "Insight", "Which finding about social capital surprised you most?", "The finding, and why"],
+    ["see", "Summary", "How would you explain the difference between bonding and bridging social capital?", "In plain words"],
+    ["ask", "Question", "How has the internet changed Putnam's picture since 2000?", "Your reading"],
+    ["ask", "Question", "What would rebuilding social capital look like in your neighbourhood?", "Your community"],
+    ["argue", "Disagreement", "Did Putnam overstate the decline, or measure the wrong kinds of connection?", "Your view"],
+    ["argue", "Limitation", "Which parts of the American data apply to other countries?", "Your country, and the gap"]
+  ],
+  "The Coddling of the American Mind": [
+    ["use", "Personal Experience", "How did the three great untruths change how you think about your own reactions?", "The untruth, and the shift"],
+    ["use", "Application", "Did the book change how you parent, teach, or manage young people?", "What you do differently"],
+    ["see", "Insight", "Which argument in the book changed how you see debates on campus or online?", "What you believed before"],
+    ["see", "Summary", "How would you explain safetyism to someone who hasn't heard the term?", "In plain words"],
+    ["ask", "Question", "Where is the line between protecting young people and making them fragile?", "An example near the line"],
+    ["ask", "Question", "How do ideas from cognitive behavioural therapy apply to groups rather than individuals?", "Where you are unsure"],
+    ["argue", "Disagreement", "Does the book dismiss real harms that students were raising?", "Your view"],
+    ["argue", "Limitation", "Which parts of the argument have been overtaken by later events?", "The part, and what changed"]
+  ],
+  "Amusing Ourselves to Death": [
+    ["use", "Personal Experience", "How did Postman change how you think about the media you consume?", "What you notice now"],
+    ["use", "Application", "Did the book change how you get news or information?", "The change, and why"],
+    ["see", "Insight", "Which argument from Postman feels most relevant to social media today?", "The argument, and where you see it"],
+    ["see", "Summary", "How would you explain Postman's contrast between Orwell's and Huxley's warnings?", "In plain words"],
+    ["ask", "Question", "Is a medium ever neutral, or does it always shape the message?", "An example"],
+    ["ask", "Question", "What would Postman make of short video and AI-generated content?", "Your reading"],
+    ["argue", "Disagreement", "Is Postman too nostalgic about print culture?", "Your view"],
+    ["argue", "Limitation", "Which examples in the book are dated, and which arguments survive?", "Both sides, briefly"]
+  ],
+  "The Status Game": [
+    ["use", "Personal Experience", "Which status game did you recognise yourself playing after reading the book?", "The game, and what you noticed"],
+    ["use", "Application", "Did the book change how you handle status at work or online?", "What you do differently"],
+    ["see", "Insight", "Which idea from Will Storr changed how you see human motivation?", "What you believed before"],
+    ["see", "Summary", "How would you explain the difference between dominance, virtue, and success games?", "In plain words"],
+    ["ask", "Question", "Can anyone step out of status games, or only choose better ones?", "Your reasoning"],
+    ["ask", "Question", "How do status games explain political and online conflicts?", "An example"],
+    ["argue", "Disagreement", "Does the book explain too much of human behaviour through status?", "Your view"],
+    ["argue", "Limitation", "What does the book offer for playing status games more wisely?", "What you wanted more of"]
+  ],
+  "The Dawn of Everything": [
+    ["use", "Personal Experience", "How did The Dawn of Everything change how you think about human history?", "What you believed before"],
+    ["use", "Application", "Has the book changed how you think about how organisations or societies could be run?", "The change, and an example"],
+    ["see", "Insight", "Which archaeological example in the book surprised you most?", "The example, and why"],
+    ["see", "Summary", "How would you explain the authors' challenge to the story of steady social progress?", "In plain words"],
+    ["ask", "Question", "Why did early societies seem to experiment with forms of government that later disappeared?", "The part you want explained"],
+    ["ask", "Question", "How should a general reader judge claims specialists still dispute?", "Where you are unsure"],
+    ["argue", "Disagreement", "Does the book push its conclusions further than the archaeological evidence allows?", "The claim, and your view"],
+    ["argue", "Limitation", "Is the book's length and density worth it for a general reader?", "Your experience"]
+  ],
+  "The WEIRDest People in the World": [
+    ["use", "Personal Experience", "How did the book change how you see your own values and habits of thinking?", "What you took for granted"],
+    ["use", "Application", "Has the book changed how you work with people from other cultures?", "The situation, and the change"],
+    ["see", "Insight", "Which argument from Henrich was most surprising?", "The argument, and why"],
+    ["see", "Summary", "How would you explain what WEIRD psychology means?", "In plain words"],
+    ["ask", "Question", "How convincing is the link between church marriage rules and modern individualism?", "Where you are unsure"],
+    ["ask", "Question", "What does the book mean for psychology studies done mostly on Western students?", "Your reading"],
+    ["argue", "Disagreement", "Does the book explain too much through a single historical cause?", "Your view"],
+    ["argue", "Limitation", "Which parts of the evidence are hardest for a general reader to judge?", "The part, and why"]
+  ],
+  "Evicted": [
+    ["use", "Personal Experience", "How did Evicted change how you think about housing and poverty?", "What you believed before"],
+    ["use", "Application", "Did the book lead you to do anything about housing where you live?", "What you did, and why"],
+    ["see", "Insight", "Which family's story in Evicted stayed with you most?", "The story, and why"],
+    ["see", "Summary", "How would you explain Desmond's argument that eviction causes poverty, not just follows it?", "In plain words"],
+    ["ask", "Question", "How should cities balance the rights of tenants and landlords?", "Your reasoning"],
+    ["ask", "Question", "Would universal housing vouchers work, and what would stand in the way?", "Where you are unsure"],
+    ["argue", "Disagreement", "Is the book fair to the landlords it follows?", "Your view"],
+    ["argue", "Limitation", "How far do lessons from Milwaukee apply to other cities and countries?", "Your context"]
+  ],
+  "Caste": [
+    ["use", "Personal Experience", "How did Caste change the way you see hierarchy in your own society?", "What you notice now"],
+    ["use", "Application", "Has the book changed how you talk about race and inequality with others?", "The conversation, and the change"],
+    ["see", "Insight", "Which of the eight pillars of caste changed your thinking most?", "The pillar, and why"],
+    ["see", "Summary", "How would you explain Wilkerson's distinction between caste and race?", "In plain words"],
+    ["ask", "Question", "What does comparing the United States, India, and Nazi Germany reveal, and what does it risk?", "Your reading"],
+    ["ask", "Question", "How can individuals act against a caste system they didn't create?", "Where you feel stuck"],
+    ["argue", "Disagreement", "Does the caste framework obscure differences that a race-based analysis captures?", "Your view"],
+    ["argue", "Limitation", "Which comparisons in the book feel strongest, and which weakest?", "Both, briefly"]
+  ],
+  "Invisible Women": [
+    ["use", "Personal Experience", "Where have you noticed a design that assumes a male default since reading Invisible Women?", "The design, and what you noticed"],
+    ["use", "Application", "Has the book changed how you collect data or design products at work?", "What you do differently"],
+    ["see", "Insight", "Which example of the gender data gap surprised you most?", "The example, and why"],
+    ["see", "Summary", "How would you explain the gender data gap to someone who thinks data is neutral?", "In plain words"],
+    ["ask", "Question", "How should organisations start closing data gaps they don't know they have?", "Your organisation"],
+    ["ask", "Question", "How do intersecting gaps, such as race and disability, fit the book's argument?", "Where you want more"],
+    ["argue", "Disagreement", "Do some of the book's examples overstate their case?", "The example, and your view"],
+    ["argue", "Limitation", "Which areas of life does the book leave out that matter to you?", "The area"]
+  ],
+  "On Tyranny": [
+    ["use", "Application", "Which of Snyder's twenty lessons have you acted on, and how?", "The lesson, and what you did"],
+    ["use", "Personal Experience", "How did On Tyranny change how you respond to political news?", "What you do now"],
+    ["see", "Insight", "Which lesson from On Tyranny felt most urgent to you?", "The lesson, and why"],
+    ["see", "Summary", "How would you explain do not obey in advance to someone who thinks it is alarmist?", "In plain words"],
+    ["ask", "Question", "How do ordinary people defend institutions without becoming partisan?", "Where you feel the tension"],
+    ["ask", "Question", "Which lessons apply to workplaces and organisations, not only governments?", "The lesson, and the setting"],
+    ["argue", "Disagreement", "Do the book's historical comparisons help or inflame political debate?", "Your view"],
+    ["argue", "Limitation", "Does a short book of lessons oversimplify how democracies decline?", "Your view"]
+  ],
+  "Set Boundaries, Find Peace": [
+    ["use", "Application", "Which boundary did you set after reading this book, and how did people respond?", "The boundary, and the response"],
+    ["use", "Personal Experience", "How did recognising porous or rigid boundaries change how you see a relationship?", "Share only what you are comfortable sharing"],
+    ["see", "Insight", "Which idea from Tawwab changed how you think about guilt when you say no?", "What you felt before"],
+    ["see", "Summary", "How would you explain the different kinds of boundaries the book describes?", "In plain words"],
+    ["ask", "Question", "How do you hold a boundary with family who keep pushing against it?", "Your situation"],
+    ["ask", "Question", "How do you set boundaries at work when your job feels at stake?", "Your workplace"],
+    ["argue", "Disagreement", "Can boundaries become a way to avoid hard conversations or accountability?", "Your view"],
+    ["argue", "Limitation", "Which situations need more than boundaries, such as professional support?", "The situation"]
+  ],
+  "All About Love": [
+    ["use", "Personal Experience", "How did bell hooks's idea of love as action change how you love someone?", "The relationship, and the change"],
+    ["use", "Application", "What do you do differently in friendships or family after reading All About Love?", "The practice, and the difference"],
+    ["see", "Insight", "Which chapter of All About Love changed how you define love?", "Your definition before"],
+    ["see", "Summary", "How would you explain the elements hooks says love is made of?", "In plain words"],
+    ["ask", "Question", "How do you practise a love ethic in a culture that rewards self-interest?", "Where you feel the tension"],
+    ["ask", "Question", "What does hooks mean when she links love and honesty so closely?", "Your reading"],
+    ["argue", "Disagreement", "Is hooks's definition of love too demanding for everyday relationships?", "Your view"],
+    ["argue", "Limitation", "Which parts of the book did you want more practical guidance on?", "The part"]
+  ],
+  "Mating in Captivity": [
+    ["use", "Personal Experience", "How did Mating in Captivity change how you think about desire in a long relationship?", "Share only what you are comfortable sharing"],
+    ["use", "Application", "What did you and your partner try after reading Perel, and what changed?", "The change, in brief"],
+    ["see", "Insight", "Which idea from Perel changed how you see the tension between security and desire?", "What you believed before"],
+    ["see", "Summary", "How would you explain why closeness can sometimes dampen desire?", "In plain words"],
+    ["ask", "Question", "How do couples create distance and novelty without threatening trust?", "Where you are unsure"],
+    ["ask", "Question", "How does the book's argument apply to couples with young children?", "Your situation"],
+    ["argue", "Disagreement", "Does Perel put too much weight on desire compared with companionship?", "Your view"],
+    ["argue", "Limitation", "Which cultures or kinds of relationships does the book speak to least?", "Who, and why"]
+  ],
+  "The State of Affairs": [
+    ["use", "Personal Experience", "How did The State of Affairs change how you think about infidelity?", "Share only what you are comfortable sharing"],
+    ["use", "Application", "Has the book changed how you would talk with a partner about trust and longing?", "What you would say now"],
+    ["see", "Insight", "Which idea from Perel about why affairs happen surprised you most?", "What you believed before"],
+    ["see", "Summary", "How would you explain Perel's view that affairs can be about longing, not just dissatisfaction?", "In plain words"],
+    ["ask", "Question", "Can a relationship become stronger after an affair, and what makes that possible?", "Your view or experience"],
+    ["ask", "Question", "How should friends respond when someone confides an affair?", "The situation"],
+    ["argue", "Disagreement", "Does the book understate the harm infidelity does to the betrayed partner?", "Your view"],
+    ["argue", "Limitation", "Which situations does the book's nuanced view fit poorly?", "The situation, and why"]
+  ]
+}

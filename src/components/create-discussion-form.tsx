@@ -55,7 +55,7 @@ function draftKey(bookId: string) {
   return `booksphere.perspectiveDraft.${bookId}`;
 }
 
-export function CreateDiscussionForm({ book, initialPostType = "Insight", initialTitle = "" }: { book: Book; initialPostType?: PostType; initialTitle?: string }) {
+export function CreateDiscussionForm({ book, initialPostType = "Insight", initialTitle = "", starterPromptId = "" }: { book: Book; initialPostType?: PostType; initialTitle?: string; starterPromptId?: string }) {
   const [submitted, setSubmitted] = useState(false);
   // This is the product's core action and it had no double-submit guard at all: the button
   // was never disabled, and requireProfile() plus the insert is several seconds on a phone,
@@ -75,7 +75,9 @@ export function CreateDiscussionForm({ book, initialPostType = "Insight", initia
     actionTaken: "",
     outcome: "",
     whatFailed: "",
-    wouldChange: ""
+    wouldChange: "",
+    // The book-page prompt this perspective started from, if any. Travels with the draft.
+    starterPromptId
   });
   // Restore after mount rather than in the initial state: this component is server-rendered
   // and reading localStorage during render is a hydration mismatch.
@@ -88,7 +90,16 @@ export function CreateDiscussionForm({ book, initialPostType = "Insight", initia
         if (!stored) return;
         const parsed = JSON.parse(stored) as Partial<typeof form>;
         if (!parsed || typeof parsed !== "object") return;
-        setForm((current) => ({ ...current, ...parsed, postType: (parsed.postType as PostType) || current.postType }));
+        setForm((current) => ({
+          ...current,
+          ...parsed,
+          postType: (parsed.postType as PostType) || current.postType,
+          // A restored draft about a different question keeps its own prompt link, not the one
+          // in the URL; a draft saved before prompts were linked carries none.
+          starterPromptId: parsed.title && parsed.title !== current.title
+            ? (typeof parsed.starterPromptId === "string" ? parsed.starterPromptId : "")
+            : current.starterPromptId
+        }));
         setRestored(true);
       } catch {
         window.localStorage.removeItem(draftKey(book.id));
@@ -169,7 +180,8 @@ export function CreateDiscussionForm({ book, initialPostType = "Insight", initia
           actionTaken: form.actionTaken.trim() || undefined,
           outcome: form.outcome.trim() || undefined,
           whatFailed: form.whatFailed.trim() || undefined,
-          wouldChange: form.wouldChange.trim() || undefined
+          wouldChange: form.wouldChange.trim() || undefined,
+          starterPromptId: form.starterPromptId || undefined
         })
       : {
           post: addLocalDiscussion({

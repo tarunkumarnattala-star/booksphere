@@ -1,0 +1,202 @@
+{
+  "Build the Life You Want": [
+    ["use", "Application", "What did you change after thinking about enjoyment, satisfaction, and purpose as the parts of happiness?", "The change, and which part it fed"],
+    ["use", "Personal Experience", "How did the book change how you manage a difficult emotion?", "The emotion, and your approach"],
+    ["see", "Insight", "Which idea from Brooks and Winfrey changed how you think about happiness?", "What you believed before"],
+    ["see", "Summary", "How would you explain the book's idea that happiness is a direction, not a destination?", "In plain words"],
+    ["ask", "Question", "How do you focus less on yourself without neglecting your own needs?", "Where the line is"],
+    ["ask", "Question", "Which of the four pillars, family, friendship, work, or faith, is hardest to build now?", "The pillar, and why"],
+    ["argue", "Disagreement", "Does the book's advice fit readers without religious faith?", "Your view"],
+    ["argue", "Limitation", "Which recommendations depend on time, money, or stability many people lack?", "The recommendation, and the constraint"]
+  ],
+  "From Strength to Strength": [
+    ["use", "Personal Experience", "How did learning about fluid and crystallised intelligence change how you see your career ahead?", "Your stage, and the shift"],
+    ["use", "Application", "What did you start doing to move toward what Brooks calls the second curve?", "The change, and why"],
+    ["see", "Insight", "Which idea from From Strength to Strength surprised you most about ageing and work?", "What you believed before"],
+    ["see", "Summary", "How would you explain the striver's curse?", "In plain words"],
+    ["ask", "Question", "How do you plan for decline in your field without becoming fatalistic?", "Your field"],
+    ["ask", "Question", "What does letting go of professional identity look like in practice?", "Your situation"],
+    ["argue", "Disagreement", "Does the book generalise from high achievers in a way that misses most workers?", "Your view"],
+    ["argue", "Limitation", "Which advice depends on having already achieved enough to step back?", "The advice, and why"]
+  ],
+  "The Gifts of Imperfection": [
+    ["use", "Application", "Which of Brown's guideposts for wholehearted living did you work on, and how?", "The guidepost, and what changed"],
+    ["use", "Personal Experience", "How did the book change how you respond to your own imperfection?", "Share only what you are comfortable sharing"],
+    ["see", "Insight", "Which idea from The Gifts of Imperfection changed how you think about self-worth?", "What you believed before"],
+    ["see", "Summary", "How would you explain the difference between fitting in and belonging?", "In plain words"],
+    ["ask", "Question", "How do you let go of perfectionism when your work demands high standards?", "Your situation"],
+    ["ask", "Question", "How do you practise play and rest when there is always more to do?", "Where you get stuck"],
+    ["argue", "Disagreement", "Is the book's approach too gentle to help people make hard changes?", "Your view"],
+    ["argue", "Limitation", "Which guideposts felt vague or hard to act on?", "The guidepost"]
+  ],
+  "Daring Greatly": [
+    ["use", "Application", "Where did you choose to be vulnerable after reading Daring Greatly, and what happened?", "The moment, and the result"],
+    ["use", "Personal Experience", "How did learning about shame resilience change how you respond to criticism?", "The situation, and your response"],
+    ["see", "Insight", "Which idea from Daring Greatly changed how you think about courage?", "What you believed before"],
+    ["see", "Summary", "How would you explain the book's use of the man in the arena?", "In plain words"],
+    ["ask", "Question", "How do you tell healthy vulnerability from oversharing?", "Where the line is"],
+    ["ask", "Question", "How do leaders build cultures where vulnerability is safe?", "Your organisation"],
+    ["argue", "Disagreement", "Does the book underplay the real risks of vulnerability in some settings?", "The setting, and your view"],
+    ["argue", "Limitation", "Which parts of the research are hardest to apply outside the book's examples?", "The part, and why"]
+  ],
+  "Atlas of the Heart": [
+    ["use", "Application", "What changed when you started naming emotions more precisely?", "The emotion, and the difference"],
+    ["use", "Personal Experience", "Which emotion from the book did you realise you had been misnaming?", "The emotion, and what you called it"],
+    ["see", "Insight", "Which distinction between emotions surprised you most?", "The two emotions, and the difference"],
+    ["see", "Summary", "How would you explain why language for emotions matters?", "In plain words"],
+    ["ask", "Question", "How do you use the atlas in a hard conversation, not just afterwards?", "Your situation"],
+    ["ask", "Question", "How would you teach a child or teenager to name emotions this way?", "Your approach"],
+    ["argue", "Disagreement", "Does cataloguing emotions make them feel more tidy than they are?", "Your view"],
+    ["argue", "Limitation", "Which entries felt thin compared with the others?", "The entry"]
+  ],
+  "The Body Is Not an Apology": [
+    ["use", "Personal Experience", "How did The Body Is Not an Apology change how you think about your own body?", "Share only what you are comfortable sharing"],
+    ["use", "Application", "What did you change in how you talk about bodies, yours or others'?", "The change, and why"],
+    ["see", "Insight", "Which idea from Taylor changed how you see body shame?", "What you believed before"],
+    ["see", "Summary", "How would you explain the difference between body positivity and radical self-love?", "In plain words"],
+    ["ask", "Question", "How do you practise radical self-love in a culture that sells body shame?", "Where you feel the pressure"],
+    ["ask", "Question", "How does the book connect personal body shame to wider systems?", "Your reading"],
+    ["argue", "Disagreement", "Does the book's systemic focus leave enough room for personal health choices?", "Your view"],
+    ["argue", "Limitation", "Which readers might the book speak to less, and why?", "Who, and why"]
+  ],
+  "Tiny Habits": [
+    ["use", "Application", "Which tiny habit did you anchor after an existing routine, and did it grow?", "The anchor, the habit, and how it grew"],
+    ["use", "Real-Life Result", "What happened when you celebrated right after doing a tiny habit?", "The celebration, and the effect"],
+    ["see", "Insight", "Which idea from BJ Fogg changed how you think about motivation?", "What you believed before"],
+    ["see", "Summary", "How would you explain behaviour equals motivation, ability, and prompt?", "In plain words"],
+    ["ask", "Question", "How do you scale a tiny habit up without losing it?", "The habit you are growing"],
+    ["ask", "Question", "How do you use Tiny Habits to stop a habit rather than start one?", "The habit you want to stop"],
+    ["argue", "Disagreement", "Can habits this small make a real difference, or do they stay small?", "Your view"],
+    ["argue", "Limitation", "How does Tiny Habits compare with Atomic Habits for you?", "What each gave you"]
+  ],
+  "The Molecule of More": [
+    ["use", "Personal Experience", "How did The Molecule of More change how you understand wanting versus enjoying?", "What you notice now"],
+    ["use", "Application", "Did the book change how you handle chasing the next thing?", "The situation, and the change"],
+    ["see", "Insight", "Which idea from the book changed how you see ambition or restlessness?", "What you believed before"],
+    ["see", "Summary", "How would you explain the difference between dopamine and the here-and-now chemicals?", "In plain words"],
+    ["ask", "Question", "How do you balance anticipation with enjoying what you already have?", "Your situation"],
+    ["ask", "Question", "How far should we trust the book's links between dopamine and politics or creativity?", "Where you are unsure"],
+    ["argue", "Disagreement", "Does the book simplify brain chemistry into a neat but misleading story?", "Your view"],
+    ["argue", "Limitation", "Which claims would you want checked by a neuroscientist?", "The claim"]
+  ],
+  "Dopamine Nation": [
+    ["use", "Application", "What happened when you tried a period of abstinence from something you overuse?", "The habit, and what you noticed"],
+    ["use", "Personal Experience", "How did the pleasure-pain balance change how you understand a craving?", "Share only what you are comfortable sharing"],
+    ["see", "Insight", "Which idea from Anna Lembke changed how you think about a world full of easy pleasure?", "What you believed before"],
+    ["see", "Summary", "How would you explain the pleasure-pain seesaw?", "In plain words"],
+    ["ask", "Question", "Which self-binding strategies from the book work best, and for what?", "The strategy you are considering"],
+    ["ask", "Question", "When should someone seek professional help rather than try the book's methods alone?", "Where you are unsure"],
+    ["argue", "Disagreement", "Does the book stretch addiction science to cover too many everyday habits?", "Your view"],
+    ["argue", "Limitation", "Which patient stories felt most and least useful to you?", "The story, and why"]
+  ],
+  "Bittersweet": [
+    ["use", "Personal Experience", "How did Bittersweet change how you think about sadness and longing?", "Share only what you are comfortable sharing"],
+    ["use", "Application", "Did the book change how you use music, art, or writing when you feel low?", "What you do now"],
+    ["see", "Insight", "Which idea from Susan Cain changed how you see the pressure to be positive?", "What you believed before"],
+    ["see", "Summary", "How would you explain the bittersweet state of mind?", "In plain words"],
+    ["ask", "Question", "How do you honour sadness without being consumed by it?", "Where the line is"],
+    ["ask", "Question", "How should workplaces handle grief and loss better?", "Your workplace"],
+    ["argue", "Disagreement", "Does the book romanticise melancholy in a way that could mislead?", "Your view"],
+    ["argue", "Limitation", "Which parts might not help someone dealing with clinical depression?", "The part, and why"]
+  ],
+  "The Second Mountain": [
+    ["use", "Personal Experience", "Which mountain are you on, in Brooks's sense, and how did the book change how you see it?", "Where you are, and the shift"],
+    ["use", "Application", "What commitment did you deepen after reading The Second Mountain?", "The commitment, and why"],
+    ["see", "Insight", "Which idea from David Brooks changed how you think about success?", "What you believed before"],
+    ["see", "Summary", "How would you explain the difference between the first and second mountain?", "In plain words"],
+    ["ask", "Question", "Do you need to fall into a valley to find the second mountain?", "Your reasoning"],
+    ["ask", "Question", "How do you balance the four commitments the book describes?", "Where you feel stretched"],
+    ["argue", "Disagreement", "Does the book undervalue individual freedom in its call to commitment?", "Your view"],
+    ["argue", "Limitation", "Which parts of the book depend on religious or community structures many lack?", "The part, and why"]
+  ],
+  "How to Know a Person": [
+    ["use", "Application", "What happened when you asked a bigger question in a conversation, as Brooks suggests?", "The question, and what you learned"],
+    ["use", "Real-Life Result", "How did the book change a relationship where you had stopped really seeing the person?", "The relationship, and the change"],
+    ["see", "Insight", "Which idea from How to Know a Person changed how you listen?", "What you did before"],
+    ["see", "Summary", "How would you explain the difference between an illuminator and a diminisher?", "In plain words"],
+    ["ask", "Question", "How do you know someone deeply when time together is short?", "Your situation"],
+    ["ask", "Question", "How do you accompany someone through suffering without trying to fix it?", "The situation"],
+    ["argue", "Disagreement", "Can the book's techniques feel performed rather than genuine?", "Your view"],
+    ["argue", "Limitation", "Which advice is harder for people who find conversation draining?", "The advice, and why"]
+  ],
+  "Never Finished": [
+    ["use", "Application", "What did you take on after reading Never Finished, and what did it teach you?", "The challenge, and the lesson"],
+    ["use", "Personal Experience", "How did Goggins's idea of continuing to evolve change how you see your own progress?", "Your progress, and the shift"],
+    ["see", "Insight", "Which part of Never Finished added something Can't Hurt Me didn't?", "The part, and why"],
+    ["see", "Summary", "How would you explain the mindset Goggins describes in this book?", "In plain words"],
+    ["ask", "Question", "How do you keep pushing when your body is injured or recovering?", "Your situation"],
+    ["ask", "Question", "How do you apply the book without copying Goggins's extreme approach?", "What you adapt"],
+    ["argue", "Disagreement", "Does the book glorify never being satisfied?", "Your view"],
+    ["argue", "Limitation", "Who might find this book unhelpful or even harmful?", "Who, and why"]
+  ],
+  "Discipline Is Destiny": [
+    ["use", "Application", "What area of self-discipline did you work on after reading Discipline Is Destiny?", "The area, and what changed"],
+    ["use", "Personal Experience", "Which example of temperance from the book changed how you see your own habits?", "The example, and the shift"],
+    ["see", "Insight", "Which idea from Holiday changed how you think about moderation?", "What you believed before"],
+    ["see", "Summary", "How would you explain temperance as a virtue rather than restriction?", "In plain words"],
+    ["ask", "Question", "How do you stay disciplined without becoming rigid or joyless?", "Where the line is"],
+    ["ask", "Question", "How do you forgive yourself when discipline slips?", "Your approach"],
+    ["argue", "Disagreement", "Does the book make discipline sound more like character than circumstance?", "Your view"],
+    ["argue", "Limitation", "Which historical examples feel least relevant to ordinary lives?", "The example, and why"]
+  ],
+  "Right Thing, Right Now": [
+    ["use", "Application", "When did you choose to do the right thing after reading this book, and what did it cost?", "The choice, and the cost"],
+    ["use", "Personal Experience", "Which figure in Right Thing, Right Now changed how you think about integrity?", "The person, and the shift"],
+    ["see", "Insight", "Which idea from Holiday changed how you think about justice in everyday life?", "What you believed before"],
+    ["see", "Summary", "How would you explain the book's view of justice as a daily practice?", "In plain words"],
+    ["ask", "Question", "How do you decide what the right thing is when values conflict?", "The situation"],
+    ["ask", "Question", "How do you act on justice at work without risking your livelihood?", "Your situation"],
+    ["argue", "Disagreement", "Does the book simplify moral questions that are genuinely hard?", "Your view"],
+    ["argue", "Limitation", "Which examples feel chosen to fit the lesson rather than tested by it?", "The example, and why"]
+  ],
+  "Linchpin": [
+    ["use", "Application", "What did you do to become more indispensable at work after reading Linchpin?", "The change, and the response"],
+    ["use", "Personal Experience", "When did you quiet the lizard brain and ship something that scared you?", "The work, and the result"],
+    ["see", "Insight", "Which idea from Linchpin changed how you see your job?", "What you believed before"],
+    ["see", "Summary", "How would you explain Godin's idea of emotional labour as art?", "In plain words"],
+    ["ask", "Question", "How do you become a linchpin in a job designed to be replaceable?", "Your job"],
+    ["ask", "Question", "How does the book's idea of giving gifts fit with getting paid fairly?", "Where you feel the tension"],
+    ["argue", "Disagreement", "Does the book put too much weight on individuals rather than employers?", "Your view"],
+    ["argue", "Limitation", "Which advice feels dated in today's job market?", "The advice, and why"]
+  ],
+  "Purple Cow": [
+    ["use", "Application", "What did you make more remarkable after reading Purple Cow, and what happened?", "The product, and the response"],
+    ["use", "Personal Experience", "Where have you seen a remarkable product spread on its own?", "The product, and why it spread"],
+    ["see", "Insight", "Which idea from Purple Cow changed how you think about marketing?", "What you believed before"],
+    ["see", "Summary", "How would you explain why safe is risky in Godin's argument?", "In plain words"],
+    ["ask", "Question", "How do you make something remarkable in a boring category?", "Your category"],
+    ["ask", "Question", "How do you find the sneezers who will talk about your product?", "Your market"],
+    ["argue", "Disagreement", "Is remarkable enough, or does distribution still decide who wins?", "Your view"],
+    ["argue", "Limitation", "Which examples from 2003 would you replace with today's?", "The example"]
+  ],
+  "This Is Marketing": [
+    ["use", "Application", "What happened when you marketed to your smallest viable audience?", "The audience, and the result"],
+    ["use", "Real-Life Result", "How did people like us do things like this change how you position something?", "The positioning, and the change"],
+    ["see", "Insight", "Which idea from This Is Marketing changed what you think marketing is?", "What you believed before"],
+    ["see", "Summary", "How would you explain Godin's view of marketing as creating tension and status?", "In plain words"],
+    ["ask", "Question", "How do you pick a smallest viable audience without limiting growth?", "Your business"],
+    ["ask", "Question", "How do you market with empathy when you need sales quickly?", "Your situation"],
+    ["argue", "Disagreement", "Does the book rely on ideas Godin has repeated in earlier books?", "Your view"],
+    ["argue", "Limitation", "Which advice fits creators and small brands better than larger companies?", "The advice, and why"]
+  ],
+  "Draft No. 4": [
+    ["use", "Application", "How did McPhee's approach to structure change how you organise a long piece of writing?", "The piece, and the structure"],
+    ["use", "Personal Experience", "What changed when you let yourself write a rough draft before shaping it?", "The draft, and what came after"],
+    ["see", "Insight", "Which lesson from Draft No. 4 changed how you think about nonfiction writing?", "What you believed before"],
+    ["see", "Summary", "How would you explain McPhee's view of omission?", "In plain words"],
+    ["ask", "Question", "How do you find the structure of a piece before you've written it?", "Your process"],
+    ["ask", "Question", "Which of McPhee's methods work for shorter writing?", "The method, and your writing"],
+    ["argue", "Disagreement", "Is McPhee's slow, careful process realistic for writers on deadline?", "Your view"],
+    ["argue", "Limitation", "Which parts of the book are more memoir than usable advice?", "The part"]
+  ],
+  "Zen in the Art of Writing": [
+    ["use", "Application", "What happened when you tried writing every day, as Bradbury urges?", "How long, and what changed"],
+    ["use", "Personal Experience", "Did making lists of nouns or memories lead you to a story or idea?", "The list, and what came of it"],
+    ["see", "Insight", "Which essay from Bradbury changed how you feel about writing?", "The essay, and why"],
+    ["see", "Summary", "How would you explain Bradbury's idea of zest and gusto in writing?", "In plain words"],
+    ["ask", "Question", "How do you keep joy in writing when it becomes work?", "Your situation"],
+    ["ask", "Question", "How do you feed the muse, in Bradbury's sense, with a busy life?", "Your approach"],
+    ["argue", "Disagreement", "Does Bradbury's enthusiasm leave out the hard, unglamorous parts of writing?", "Your view"],
+    ["argue", "Limitation", "Which advice suits fiction writers more than others?", "The advice, and your writing"]
+  ]
+}

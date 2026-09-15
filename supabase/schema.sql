@@ -534,3 +534,24 @@ using (exists (select 1 from profiles p where p.id = user_id and p.auth_user_id 
 create policy "Reading paths are readable" on reading_paths for select using (true);
 create policy "Reading path books are readable" on reading_path_books for select using (true);
 create policy "Editorial picks are readable" on editorial_picks for select using (true);
+
+-- From migration 20260914000000_starter_prompt_id.sql
+alter table public.discussion_posts
+  add column if not exists starter_prompt_id text;
+
+alter table public.discussion_posts
+  drop constraint if exists discussion_posts_starter_prompt_id_format;
+
+-- <book slug>:<angle><n>, e.g. atomic-habits:use1. Bounded so the column cannot be used to
+-- store arbitrary text.
+alter table public.discussion_posts
+  add constraint discussion_posts_starter_prompt_id_format
+  check (
+    starter_prompt_id is null
+    or (char_length(starter_prompt_id) <= 120
+        and starter_prompt_id ~ '^[a-z0-9-]+:(use|see|ask|argue|link)[0-9]$')
+  );
+
+create index if not exists discussion_posts_book_starter_prompt_idx
+  on public.discussion_posts (book_id, starter_prompt_id)
+  where starter_prompt_id is not null;

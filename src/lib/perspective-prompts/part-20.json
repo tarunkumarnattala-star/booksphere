@@ -1,0 +1,92 @@
+{
+  "The Making of a Manager": [
+    ["use", "Application", "What changed in your first months as a manager after reading Julie Zhuo?", "The change, and how your team responded"],
+    ["use", "Real-Life Result", "What happened when you focused on purpose, people, and process rather than doing the work yourself?", "The shift, and the result"],
+    ["see", "Insight", "Which idea from The Making of a Manager changed what you think a manager is for?", "What you believed before"],
+    ["see", "Summary", "How would you explain Zhuo's view that a manager's job is better outcomes from a group?", "In plain words"],
+    ["ask", "Question", "How do you manage former peers who are now on your team?", "Your situation"],
+    ["ask", "Question", "How do you handle imposter feelings as a new manager?", "Where they show up"],
+    ["argue", "Disagreement", "Does the book reflect a large tech company more than most workplaces?", "Your view"],
+    ["argue", "Limitation", "Which advice is harder with a tiny team or no manager of your own?", "The advice, and why"]
+  ],
+  "An Elegant Puzzle": [
+    ["use", "Application", "How did Larson's four states of a team change what you asked for as a leader?", "The state, and your request"],
+    ["use", "Real-Life Result", "What happened when you ran a migration the way the book suggests?", "The migration, and the result"],
+    ["see", "Insight", "Which idea from An Elegant Puzzle changed how you think about engineering organisations?", "What you believed before"],
+    ["see", "Summary", "How would you explain why Larson recommends teams of six to eight?", "In plain words"],
+    ["ask", "Question", "How do you move a team from treading water to repaying debt?", "Your team"],
+    ["ask", "Question", "Which parts of the book apply outside engineering management?", "The part, and where"],
+    ["argue", "Disagreement", "Does treating organisations as systems leave out the human side?", "Your view"],
+    ["argue", "Limitation", "Which practices depend on the scale of a fast-growing tech company?", "The practice, and why"]
+  ],
+  "The Manager's Path": [
+    ["use", "Application", "Which stage of The Manager's Path helped you in a new role, and how?", "The stage, and what you did"],
+    ["use", "Personal Experience", "How did the book change how you run one-on-ones or mentor people?", "The practice, and the change"],
+    ["see", "Insight", "Which idea from Camille Fournier changed how you think about moving from engineer to manager?", "What you believed before"],
+    ["see", "Summary", "How would you explain the difference between a tech lead and a manager of people?", "In plain words"],
+    ["ask", "Question", "How do you decide whether to stay technical or move into management?", "What you are weighing"],
+    ["ask", "Question", "How do you manage managers when you remember being an engineer?", "Your situation"],
+    ["argue", "Disagreement", "Does the book present one career ladder as more universal than it is?", "Your view"],
+    ["argue", "Limitation", "Which advice fits startups better than large companies, or the reverse?", "The advice, and your company"]
+  ],
+  "Crucial Accountability": [
+    ["use", "Application", "How did you raise a broken commitment using the book's approach, and what happened?", "The situation, and the outcome"],
+    ["use", "Real-Life Result", "What changed when you described the gap between what was expected and what happened?", "The gap, and the response"],
+    ["see", "Insight", "Which idea from Crucial Accountability changed how you hold people to their word?", "What you did before"],
+    ["see", "Summary", "How would you explain the difference between a motivation problem and an ability problem?", "With an example"],
+    ["ask", "Question", "How do you raise a repeated pattern rather than just the latest incident?", "The pattern you have in mind"],
+    ["ask", "Question", "How do you hold a peer or your own boss accountable?", "Your situation"],
+    ["argue", "Disagreement", "Does the book's structure make accountability conversations feel scripted?", "Your view"],
+    ["argue", "Limitation", "Which situations need formal processes rather than a conversation?", "The situation"]
+  ],
+  "Getting to Yes": [
+    ["use", "Application", "What happened when you focused on interests instead of positions in a real negotiation?", "The negotiation, and the result"],
+    ["use", "Real-Life Result", "How did knowing your BATNA change how you negotiated?", "Your alternative, and the difference"],
+    ["see", "Insight", "Which principle from Getting to Yes changed how you approach disagreement?", "What you did before"],
+    ["see", "Summary", "How would you explain separating the people from the problem?", "With an everyday example"],
+    ["ask", "Question", "How do you use principled negotiation when the other side plays hardball?", "The situation"],
+    ["ask", "Question", "How do you find objective criteria when both sides dispute what's fair?", "Your case"],
+    ["argue", "Disagreement", "Is the book's cooperative approach naive compared with tactics in Never Split the Difference?", "Your view"],
+    ["argue", "Limitation", "Which negotiations, such as one-off deals or big power gaps, does the method fit poorly?", "The situation, and why"]
+  ],
+  "Getting Past No": [
+    ["use", "Application", "When did you go to the balcony in a tense negotiation, and what did it change?", "The moment, and the result"],
+    ["use", "Real-Life Result", "What happened when you built a golden bridge for someone who kept saying no?", "The bridge, and the outcome"],
+    ["see", "Insight", "Which step from Getting Past No changed how you handle difficult people?", "What you did before"],
+    ["see", "Summary", "How would you explain stepping to their side without giving in?", "In plain words"],
+    ["ask", "Question", "How do you reframe an attack without sounding evasive?", "The attack you have in mind"],
+    ["ask", "Question", "When should you use power, and how do you use it to educate rather than escalate?", "Your situation"],
+    ["argue", "Disagreement", "Does the approach ask too much patience in situations that need firmness?", "Your view"],
+    ["argue", "Limitation", "Which difficult people or situations does the method not work with?", "The situation, and why"]
+  ],
+  "Quiet Leadership": [
+    ["use", "Application", "What happened when you helped someone find their own answer instead of giving advice?", "The conversation, and the result"],
+    ["use", "Real-Life Result", "How did the book's approach to coaching change how your team solves problems?", "The change, and an example"],
+    ["see", "Insight", "Which idea from David Rock changed how you think about improving performance?", "What you believed before"],
+    ["see", "Summary", "How would you explain Rock's idea of helping someone reach their own realisation?", "In plain words"],
+    ["ask", "Question", "How do you coach when you already know the answer and time is short?", "Your situation"],
+    ["ask", "Question", "How much of the brain science in the book holds up today?", "Where you are unsure"],
+    ["argue", "Disagreement", "Is guiding people to their own realisations always better than direct instruction?", "Your view"],
+    ["argue", "Limitation", "Which people or situations need more direction than the book suggests?", "The situation"]
+  ],
+  "Your Brain at Work": [
+    ["use", "Application", "What changed when you did your hardest thinking while your mind was fresh?", "The schedule, and the difference"],
+    ["use", "Real-Life Result", "How did the SCARF model help you understand a reaction at work?", "The reaction, and the part of SCARF"],
+    ["see", "Insight", "Which idea from Your Brain at Work changed how you manage your attention?", "What you did before"],
+    ["see", "Summary", "How would you explain the SCARF model to a manager?", "In plain words"],
+    ["ask", "Question", "How do you protect your best mental hours when meetings fill them?", "Your calendar"],
+    ["ask", "Question", "How well does labelling an emotion calm it down in real situations?", "Your experience"],
+    ["argue", "Disagreement", "Does the book lean on neuroscience that has moved on since 2009?", "Your view"],
+    ["argue", "Limitation", "Which strategies are hard to use in jobs full of interruptions?", "The strategy, and why"]
+  ],
+  "The Coaching Habit": [
+    ["use", "Application", "Which of Bungay Stanier's seven questions do you now ask regularly, and what has it changed?", "The question, and the difference"],
+    ["use", "Real-Life Result", "What happened when you asked and what else instead of jumping in with advice?", "The conversation, and what surfaced"],
+    ["see", "Insight", "Which idea from The Coaching Habit changed how you help people?", "What you did before"],
+    ["see", "Summary", "How would you explain the advice monster to a manager who loves solving problems?", "In plain words"],
+    ["ask", "Question", "How do you stay curious a little longer when people want quick answers?", "Your situation"],
+    ["ask", "Question", "How do the seven questions work outside management, such as with friends or family?", "The relationship"],
+    ["argue", "Disagreement", "Can asking questions feel evasive when someone really needs guidance?", "Your view"],
+    ["argue", "Limitation", "Which situations need more than seven questions to help someone?", "The situation"]
+  ]
+}
