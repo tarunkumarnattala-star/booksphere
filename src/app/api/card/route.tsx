@@ -14,7 +14,10 @@ import type { NextRequest } from "next/server";
 // kinds: hook (dark, stacked headline) | idea | quote | tension | line (dark, closing)
 // ratio: portrait (1080x1350, default) | story (1080x1920)
 
-export const runtime = "edge";
+// Node.js runtime, not edge. On edge this route bundled to 1.05 MB against the plan's 1 MB
+// edge-function limit, and Vercel rejected every production deploy that included it -
+// the build passed and only the deploy step failed. ImageResponse renders the same on Node.
+export const runtime = "nodejs";
 
 const INK = "#0d0d0d";
 const PAPER = "#f4f4f2";
