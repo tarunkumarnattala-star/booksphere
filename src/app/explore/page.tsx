@@ -1,26 +1,15 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
-import type { ReactNode } from "react";
-import { ArrowRight, CheckCircle2, Clock3, Plus, Users } from "lucide-react";
-import { EditorialPickCard } from "@/components/editorial-pick-card";
-import { GenreDirectory } from "@/components/genre-directory";
-import { HeroInlineSearch } from "@/components/hero-inline-search";
-import { ReadingPathCard } from "@/components/reading-path-card";
+import { ArrowRight } from "lucide-react";
 import { SectionShelf } from "@/components/section-shelf";
 import { BookCover } from "@/components/book-cover";
 import {
-  books,
-  genres,
+  authorProfileFor,
   getBook,
   getDiscussionRankingLabel,
-  getEditorialDiscussionPicks,
-  getHomeDiscoveryShelves,
   getMostDiscussed,
-  getMostSaved,
-  authorProfileFor,
-  getTrendingDiscussionPosts,
-  readingPaths
+  getTrendingDiscussionPosts
 } from "@/lib/data";
 import type { DiscussionPost } from "@/lib/types";
 import { getSupabaseFeedContributions } from "@/lib/contributions";
@@ -29,194 +18,103 @@ import { bookCoverData } from "@/lib/book-cover-data";
 
 export const metadata: Metadata = pageMetadata({
   title: "Explore",
-  description: "Books read through the people applying their ideas.",
+  description: "What readers made of these books.",
   path: "/explore"
 });
 
+// This page was 826 KB and uncacheable: it served a greeting, a value proposition, an FAQ,
+// three book shelves, the reading paths, the whole genre directory, and a search box that
+// carried all 394 books to the browser. On a phone it sat on the loading screen long enough
+// to read as broken. It now does one thing - show what readers wrote - and caches, because
+// perspectives arriving a few minutes late costs nobody anything.
+export const revalidate = 300;
 
-export const dynamic = "force-dynamic";
+export default async function ExplorePage() {
+  const persistedPosts = await getSupabaseFeedContributions(12);
+  const trendingPosts = isSupabaseConfigured ? persistedPosts : getTrendingDiscussionPosts(12);
+  // A card returns null when the catalog cannot resolve post.bookId, so filter once and drive
+  // both the list and the empty state from the same array.
+  const perspectives = trendingPosts.filter((post) => Boolean(getBook(post.bookId)));
 
-export default async function ExplorePage({ searchParams }: { searchParams?: Promise<{ q?: string }> }) {
-  const query = searchParams ? await searchParams : {};
-  const shelves = getHomeDiscoveryShelves();
-  const persistedPosts = await getSupabaseFeedContributions(10);
-  const trendingPosts = isSupabaseConfigured ? persistedPosts : getTrendingDiscussionPosts(10);
-  const editorialPicks = getEditorialDiscussionPicks(5);
-  // LiveThreadCard returns null when the catalog cannot resolve post.bookId, and the empty
-  // state was gated on the count BEFORE that filter - so four unresolvable posts rendered a
-  // heading, a "View all" link and an empty box with no explanation. Filter once, then drive
-  // both the list and the empty state off the same array.
-  const liveThreadPosts = trendingPosts.filter((post) => Boolean(getBook(post.bookId)));
   return (
     <div className="mx-auto max-w-[1560px]">
-      <section className="container-page pb-3 pt-7 md:pb-4 md:pt-9 lg:pb-3 lg:pt-10">
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,0.96fr)_minmax(420px,0.74fr)] lg:items-start">
-          <div className="max-w-[900px]">
-            <div data-onboarding="explore" className="rounded-[24px]">
-              <p className="caption mb-4">Good evening</p>
-              <h1 className="large-title max-w-4xl">Understand books through the people applying them.</h1>
-              <p className="body-copy mt-5 max-w-2xl">
-                No time to finish every book? Learn the core ideas through summaries, applications, disagreements, and real reader perspectives.
-              </p>
-              <div className="mt-5 grid grid-cols-3 divide-x divide-[color:var(--color-hairline)] border-y border-[color:var(--color-hairline)] py-3 sm:hidden">
-                <MobileValueCue icon={<Clock3 size={15} />} text="Ideas fast" />
-                <MobileValueCue icon={<Users size={15} />} text="Perspectives" />
-                <MobileValueCue icon={<CheckCircle2 size={15} />} text="Worth reading?" />
-              </div>
-              <div className="mt-6 hidden max-w-3xl gap-2.5 sm:grid sm:grid-cols-3">
-                <FirstFiveSecondCard icon={<Clock3 size={17} />} label="Start fast" text="Get the useful idea before committing hours." />
-                <FirstFiveSecondCard icon={<Users size={17} />} label="Learn socially" text="See how readers applied, challenged, and explained it." />
-                <FirstFiveSecondCard icon={<CheckCircle2 size={17} />} label="Decide clearly" text="Know when the full book is worth reading." />
-              </div>
-            </div>
-            <HeroInlineSearch books={books} initialQuery={query.q || ""} />
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-              <a href="#editorial-perspectives" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-medium !text-white transition hover:opacity-85">
-                Read useful perspectives <ArrowRight size={16} />
-              </a>
-              <Link href="/genres" className="inline-flex min-h-11 items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-medium text-[color:var(--color-text-primary)] shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] transition hover:bg-black/[0.035]">
-                Browse genres
-              </Link>
-            </div>
-          </div>
-
-          <div className="rounded-[30px] bg-white p-4 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.04] md:p-5">
-            <div className="mb-4 flex items-end justify-between gap-4">
-              <div>
-                <p className="caption mb-2">Live reading room</p>
-                <h2 className="text-[22px] font-medium leading-tight tracking-[-0.035em] text-[color:var(--color-text-primary)]">Perspectives you can join today</h2>
-              </div>
-              <Link href="/feed" className="hidden text-sm font-medium text-[color:var(--color-text-secondary)] transition hover:text-[color:var(--color-text-primary)] sm:inline">
-                View all
-              </Link>
-            </div>
-            <div className="grid gap-2.5">
-              {liveThreadPosts.slice(0, 4).map((post, index) => (
-                <LiveThreadCard key={post.id} post={post} priority={index === 0} />
-              ))}
-              {!liveThreadPosts.length && (
-                <p className="rounded-[20px] bg-black/[0.025] px-4 py-6 text-sm font-medium leading-6 text-[color:var(--color-text-secondary)]">
-                  The reading room is ready. New community discussions will appear here as readers contribute.
-                </p>
-              )}
-            </div>
-          </div>
+      {/* The first-use tour highlights [data-onboarding='explore']; without it the tour
+          polls twenty times and then highlights nothing. */}
+      <section data-onboarding="explore" className="container-page pb-6 pt-7 md:pt-9">
+        <p className="caption mb-3">Perspectives</p>
+        <h1 className="title-1 max-w-3xl">What readers made of these books</h1>
+        <p className="body-copy mt-3 max-w-2xl">
+          Open one to read it in full, ask the writer about it, or add your own.
+        </p>
+        <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+          <Link
+            href="/search"
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-medium !text-white transition hover:opacity-85"
+          >
+            Find a book <ArrowRight size={16} />
+          </Link>
+          <Link
+            href="/genres"
+            className="inline-flex min-h-11 items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-medium text-[color:var(--color-text-primary)] shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] transition hover:bg-black/[0.035]"
+          >
+            Browse genres
+          </Link>
         </div>
       </section>
 
-      <section id="editorial-perspectives" className="scroll-mt-24 pb-8 pt-5 md:pb-10 md:pt-5">
-        <div className="mb-5 px-4 md:px-6 lg:px-8">
-          <p className="caption mb-2">Editorial</p>
-          <h2 className="title-2">Five Perspectives Worth Reading</h2>
-          <p className="subheadline mt-2 max-w-2xl">Human-curated insights that show the idea, application, question, or disagreement behind a book.</p>
+      <section className="container-page pb-10">
+        <div className="grid gap-2.5 lg:grid-cols-2">
+          {perspectives.slice(0, 8).map((post, index) => (
+            <PerspectiveCard key={post.id} post={post} priority={index === 0} />
+          ))}
         </div>
-        <div className="shelf-scroll flex gap-5 overflow-x-auto px-4 pb-4 md:px-6 lg:px-8">
-          {editorialPicks.map(({ pick, post }) => <EditorialPickCard key={pick.id} pick={pick} post={post} />)}
-        </div>
+        {!perspectives.length && (
+          <p className="rounded-[20px] bg-black/[0.025] px-4 py-6 text-sm font-medium leading-6 text-[color:var(--color-text-secondary)]">
+            Nothing has been written yet. Pick a book and answer one of its questions.
+          </p>
+        )}
       </section>
 
-      <section className="py-8 md:py-10">
-        <div className="mb-5 px-4 md:px-6 lg:px-8">
-          <p className="caption mb-2">Start Here</p>
-          <h2 className="title-2">Reading Paths</h2>
-          <p className="subheadline mt-2 max-w-2xl">Curated sequences for people who know the outcome they want and need the clearest books, ideas, and perspectives to start with.</p>
-        </div>
-        <div className="shelf-scroll flex gap-5 overflow-x-auto px-4 pb-4 md:px-6 lg:px-8">
-          {readingPaths.map((path) => <ReadingPathCard key={path.id} path={path} />)}
-        </div>
-      </section>
-
-      <SectionShelf title="Editor’s Picks" subtitle="Books with clear ideas, practical takeaways, and strong reader perspective." books={shelves[0].books} badge="Editor’s Pick" signal="insights" />
-      <SectionShelf title="Books to Compare" subtitle="Books selected for useful questions, applications, and disagreements." books={getMostDiscussed()} badge="Editorial Selection" signal="editorial" />
-      <SectionShelf title="Worth Returning To" subtitle="Evergreen books selected for long-term knowledge value." books={getMostSaved()} badge="Evergreen" signal="editorial" />
-
-      <GenreDirectory genres={genres} booksByGenre={(genreName) => books.filter((book) => book.genres.includes(genreName))} heading="Browse by Genre" subtitle="Focused reading rooms organized around ideas, not shelves in a database." />
-
-      <section id="about-booksphere" className="container-page scroll-mt-24 py-10 md:py-14">
-        <div className="mx-auto max-w-4xl">
-          <p className="caption mb-2">About BookSphere</p>
-          <h2 className="title-2">Questions, answered simply.</h2>
-          <div className="mt-6 divide-y divide-[color:var(--color-hairline)] border-y border-[color:var(--color-hairline)]">
-            <ProductAnswer
-              question="What is BookSphere?"
-              answer="BookSphere helps you understand books through concise context and real reader perspectives, including how people applied, questioned, or challenged an idea."
-            />
-            <ProductAnswer
-              question="Does BookSphere replace the full book?"
-              answer="It gives you the core ideas and lived perspectives quickly, then helps you decide whether the full book's examples, evidence, and depth are worth your time."
-            />
-            <ProductAnswer
-              question="How are book pages and the Feed different?"
-              answer="A book page is centered on knowledge from one book. The Feed is centered on knowledge from people and real life; a book can be referenced, but it is never required."
-            />
-            <ProductAnswer
-              question="Do I need an account?"
-              answer="You can explore books and perspectives without one. An account is needed when you want to write a perspective, reply, save, or follow."
-            />
-          </div>
-        </div>
-      </section>
+      <SectionShelf
+        title="Books people are arguing about"
+        subtitle="The books with the most perspectives written on them so far."
+        books={getMostDiscussed()}
+        badge="Most discussed"
+        signal="insights"
+      />
     </div>
   );
 }
 
-function ProductAnswer({ question, answer }: { question: string; answer: string }) {
-  return (
-    <details className="group">
-      <summary className="flex cursor-pointer list-none items-center justify-between gap-5 py-5 text-base font-semibold text-[color:var(--color-text-primary)] [&::-webkit-details-marker]:hidden">
-        <span>{question}</span>
-        <Plus size={18} className="shrink-0 text-[color:var(--color-text-secondary)] transition-transform group-open:rotate-45" />
-      </summary>
-      <p className="max-w-3xl pb-5 pr-10 text-sm leading-6 text-[color:var(--color-text-secondary)]">{answer}</p>
-    </details>
-  );
-}
-
-function FirstFiveSecondCard({ icon, label, text }: { icon: ReactNode; label: string; text: string }) {
-  return (
-    <div className="rounded-[20px] bg-white/78 p-4 shadow-[0_8px_24px_rgba(0,0,0,0.035)] ring-1 ring-black/[0.025]">
-      <div className="mb-3 flex items-center gap-2 text-[color:var(--color-accent)]">
-        {icon}
-        <p className="caption text-[10px]">{label}</p>
-      </div>
-      <p className="text-sm font-medium leading-5 text-[color:var(--color-text-primary)]">{text}</p>
-    </div>
-  );
-}
-
-function MobileValueCue({ icon, text }: { icon: ReactNode; text: string }) {
-  return (
-    <div className="flex min-w-0 items-center justify-center gap-1.5 px-2 text-center text-[11px] font-medium text-[color:var(--color-text-secondary)]">
-      <span className="shrink-0 text-[color:var(--color-accent)]">{icon}</span>
-      <span className="leading-tight">{text}</span>
-    </div>
-  );
-}
-
-function LiveThreadCard({ post, priority = false }: { post: DiscussionPost; priority?: boolean }) {
+// The card shows the perspective's own first words. A card that describes a perspective
+// ("a sharper way to discuss money and identity") is less interesting than the thing itself.
+function PerspectiveCard({ post, priority = false }: { post: DiscussionPost; priority?: boolean }) {
   const book = getBook(post.bookId);
   const profile = authorProfileFor(post);
-
   if (!book) return null;
 
   return (
     <Link
-      // The card names a specific perspective. Sending it to /book/<id>#discussions opened
-      // whichever post the book page defaults to, so the reader arrived at a thread that was
-      // not the one they tapped. The perspective has its own address.
       href={`/discussion/${post.id}`}
-      className="group flex min-w-0 items-center gap-3 rounded-[20px] p-2.5 transition hover:bg-black/[0.025]"
+      className="group flex min-w-0 items-start gap-3 rounded-[20px] p-3 transition hover:bg-black/[0.025]"
     >
-      <BookCover book={bookCoverData(book)} priority={priority} className="w-[52px] shrink-0 rounded-[11px] shadow-[0_10px_24px_rgba(0,0,0,0.10)]" />
+      <BookCover
+        book={bookCoverData(book)}
+        priority={priority}
+        className="w-[52px] shrink-0 rounded-[11px] shadow-[0_10px_24px_rgba(0,0,0,0.10)]"
+      />
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="rounded-full bg-black/[0.04] px-2.5 py-1 text-[11px] font-medium text-[color:var(--color-text-secondary)]">{getDiscussionRankingLabel(post)}</span>
+          <span className="rounded-full bg-black/[0.04] px-2.5 py-1 text-[11px] font-medium text-[color:var(--color-text-secondary)]">
+            {getDiscussionRankingLabel(post)}
+          </span>
           <span className="caption text-[10px]">{post.postType}</span>
         </div>
-        <h3 className="mt-1.5 line-clamp-2 text-[15px] font-medium leading-[1.18] tracking-[-0.025em] text-[color:var(--color-text-primary)]">
+        <h2 className="mt-1.5 line-clamp-2 text-[15px] font-medium leading-[1.18] tracking-[-0.025em] text-[color:var(--color-text-primary)]">
           {post.title}
-        </h3>
-        <p className="mt-1 truncate text-sm font-normal text-[color:var(--color-text-secondary)]">
+        </h2>
+        <p className="mt-1.5 line-clamp-2 text-sm leading-[1.45] text-[color:var(--color-text-secondary)]">{post.body}</p>
+        <p className="mt-1.5 truncate text-[13px] text-[color:var(--color-text-muted)]">
           {book.title} · {profile.name}
         </p>
       </div>
