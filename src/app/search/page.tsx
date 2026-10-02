@@ -3,7 +3,7 @@ import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { SearchClient } from "@/components/search-client";
 import { findKnowledgeConcept } from "@/lib/concepts";
-import { genres } from "@/lib/data";
+import { genres, readingPaths } from "@/lib/data";
 import { getSupabaseFeedContributions } from "@/lib/contributions";
 import { getSupabaseKnowledgePosts } from "@/lib/knowledge-posts";
 
@@ -56,6 +56,26 @@ export default async function SearchPage({ searchParams }: { searchParams?: Prom
             ))}
           </div>
         </div>
+        {/* Reading paths had no way in once Explore stopped listing them. They are a way of
+            choosing books, so they belong here with the genres. */}
+        {readingPaths.length > 0 && (
+          <div className="mt-8">
+            <p className="caption mb-3">Or follow a reading path</p>
+            <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+              {readingPaths.map((path) => (
+                <Link
+                  key={path.slug}
+                  href={`/path/${path.slug}`}
+                  className="rounded-[20px] bg-white p-4 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] transition hover:bg-black/[0.015]"
+                >
+                  <p className="text-[15px] font-medium leading-snug tracking-[-0.02em] text-[color:var(--color-text-primary)]">{path.title}</p>
+                  <p className="mt-1.5 line-clamp-2 text-sm leading-[1.45] text-[color:var(--color-text-secondary)]">{path.description}</p>
+                  <p className="mt-2 text-[12px] text-[color:var(--color-text-muted)]">{path.bookIds.length} books in order</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </>}
       {adding && !focusedConcept && (
         <div className="mt-6 rounded-[24px] bg-white p-4 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">

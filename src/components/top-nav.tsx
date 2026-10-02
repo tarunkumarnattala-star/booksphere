@@ -17,6 +17,7 @@ import { canUseLocalCommunityFallback } from "@/lib/community-runtime";
 // button and all, with the tab lit as though it were them. Same bug, same day, one surface.
 const navItems = [
   { href: "/explore", label: "Home" },
+  { href: "/feed", label: "Feed" },
   { href: "/search", label: "Books" },
   { href: "/login?next=%2Fexplore", label: "You" }
 ];

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Compass, LibraryBig, UserRound } from "lucide-react";
+import { Compass, LibraryBig, UserRound, UsersRound } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { getLocalProfile } from "@/lib/local-session";
@@ -15,6 +15,7 @@ import { canUseLocalCommunityFallback } from "@/lib/community-runtime";
 // how to return them here afterwards.
 const baseMobileItems = [
   { href: "/explore", label: "Home", icon: Compass },
+  { href: "/feed", label: "Feed", icon: UsersRound },
   { href: "/search", label: "Books", icon: LibraryBig },
   { href: "/login?next=%2Fexplore", label: "You", icon: UserRound }
 ];
@@ -78,7 +79,7 @@ export function MobileBottomNav() {
 
   return (
     <nav aria-label="Primary mobile navigation" className="fixed inset-x-0 bottom-0 z-50 border-t border-[color:var(--color-hairline)] bg-[#f5f5f7]/90 px-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] pt-2 backdrop-blur-2xl lg:hidden">
-      <div className="mx-auto grid max-w-md grid-cols-3 gap-1">
+      <div className="mx-auto grid max-w-md grid-cols-4 gap-1">
         {mobileItems.map((item) => {
           const Icon = item.icon;
           const active = item.label === "Books"

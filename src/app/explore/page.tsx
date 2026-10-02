@@ -11,9 +11,8 @@ import {
   getMostDiscussed,
   getTrendingDiscussionPosts
 } from "@/lib/data";
-import type { DiscussionPost, KnowledgePost } from "@/lib/types";
+import type { DiscussionPost } from "@/lib/types";
 import { getSupabaseFeedContributions } from "@/lib/contributions";
-import { getSupabaseKnowledgePosts } from "@/lib/knowledge-posts";
 import { getFeaturedQuestion } from "@/lib/featured-question";
 import { isSupabaseConfigured } from "@/lib/supabase";
 import { bookCoverData } from "@/lib/book-cover-data";
@@ -30,28 +29,17 @@ export const metadata: Metadata = pageMetadata({
 // perspective arriving a few minutes late costs nobody anything.
 export const revalidate = 300;
 
-type StreamItem =
-  | { kind: "perspective"; at: string; post: DiscussionPost }
-  | { kind: "note"; at: string; post: KnowledgePost };
-
 export default async function HomePage() {
-  const [persistedPosts, notes, featured] = await Promise.all([
+  const [persistedPosts, featured] = await Promise.all([
     getSupabaseFeedContributions(12),
-    getSupabaseKnowledgePosts(8),
     getFeaturedQuestion()
   ]);
   const trendingPosts = isSupabaseConfigured ? persistedPosts : getTrendingDiscussionPosts(12);
   const perspectives = trendingPosts.filter((post) => Boolean(getBook(post.bookId)));
 
-  // Perspectives about a book and notes without one used to be two separate tabs. They are
-  // the same thing to a reader - someone wrote something worth reading - so they share a
-  // stream, newest first.
-  const stream: StreamItem[] = [
-    ...perspectives.map((post) => ({ kind: "perspective" as const, at: post.createdAt, post })),
-    ...notes.map((post) => ({ kind: "note" as const, at: post.createdAt, post }))
-  ]
-    .sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime())
-    .slice(0, 10);
+  // Notes without a book live in the Feed, which is its own destination: that is where
+  // readers talk about what they are learning. Home stays about the books.
+  const stream = perspectives.slice(0, 10);
 
   return (
     <div className="mx-auto max-w-[1560px]">
@@ -90,13 +78,9 @@ export default async function HomePage() {
           Open one to read it in full, ask the writer about it, or add your own.
         </p>
         <div className="mt-6 grid gap-2.5 lg:grid-cols-2">
-          {stream.map((item, index) =>
-            item.kind === "perspective" ? (
-              <PerspectiveCard key={item.post.id} post={item.post} priority={index === 0} />
-            ) : (
-              <NoteCard key={item.post.id} post={item.post} />
-            )
-          )}
+          {stream.map((post, index) => (
+            <PerspectiveCard key={post.id} post={post} priority={index === 0} />
+          ))}
         </div>
         {!stream.length && (
           <p className="mt-6 rounded-[20px] bg-black/[0.025] px-4 py-6 text-sm font-medium leading-6 text-[color:var(--color-text-secondary)]">
@@ -146,30 +130,6 @@ function PerspectiveCard({ post, priority = false }: { post: DiscussionPost; pri
         <p className="mt-1.5 line-clamp-2 text-sm leading-[1.45] text-[color:var(--color-text-secondary)]">{post.body}</p>
         <p className="mt-1.5 truncate text-[13px] text-[color:var(--color-text-muted)]">
           {book.title} · {profile.name}
-        </p>
-      </div>
-    </Link>
-  );
-}
-
-function NoteCard({ post }: { post: KnowledgePost }) {
-  return (
-    <Link
-      href={`/post/${post.id}`}
-      className="group flex min-w-0 items-start gap-3 rounded-[20px] p-3 transition hover:bg-black/[0.025]"
-    >
-      <span className="mt-0.5 grid h-[52px] w-[52px] shrink-0 place-items-center rounded-[11px] bg-black/[0.04] text-[color:var(--color-text-muted)]">
-        <PenLine size={18} />
-      </span>
-      <div className="min-w-0 flex-1">
-        <span className="caption text-[10px]">{post.topic || "Reader note"}</span>
-        <h3 className="mt-1.5 line-clamp-2 text-[15px] font-medium leading-[1.18] tracking-[-0.025em] text-[color:var(--color-text-primary)]">
-          {post.title}
-        </h3>
-        <p className="mt-1.5 line-clamp-2 text-sm leading-[1.45] text-[color:var(--color-text-secondary)]">{post.body}</p>
-        <p className="mt-1.5 truncate text-[13px] text-[color:var(--color-text-muted)]">
-          {post.referenceTitle ? `${post.referenceTitle} · ` : ""}
-          {post.authorName || "A reader"}
         </p>
       </div>
     </Link>

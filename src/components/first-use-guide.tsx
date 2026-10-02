@@ -7,21 +7,11 @@ import { trackEvent } from "@/lib/analytics";
 
 const COMPLETED_KEY = "booksphere.onboarding.v2.completed";
 const ACTIVE_KEY = "booksphere.onboarding.v2.active";
-const SHOWN_EVENT_KEY = "booksphere.onboarding.v2.shownLogged";
 const START_EVENT = "booksphere:onboarding:start";
 
 // Two steps, matching the three destinations. It used to walk Explore, Genres, Feed and
 // Search - two of which are no longer places you navigate to.
 type GuideStage = "welcome" | "explore" | "search" | "action";
-
-function isGuideEligiblePath(pathname: string) {
-  return pathname === "/"
-    || pathname.startsWith("/explore")
-    || pathname.startsWith("/genres")
-    || pathname.startsWith("/genre/")
-    || pathname.startsWith("/feed")
-    || pathname.startsWith("/search");
-}
 
 const steps: Record<Exclude<GuideStage, "welcome" | "action">, { count: string; title: string; body: string }> = {
   explore: {
@@ -60,6 +50,9 @@ export function FirstUseGuide() {
     else window.localStorage.removeItem(ACTIVE_KEY);
   }
 
+  // The welcome card used to raise itself on a first visit and cover the page on a phone,
+  // including the open question someone had just arrived to read. The tour now runs only
+  // when a reader asks for it from Settings; an unfinished tour still resumes.
   useEffect(() => {
     const restart = () => {
       window.localStorage.removeItem(COMPLETED_KEY);
@@ -76,23 +69,6 @@ export function FirstUseGuide() {
         setStage(active);
         setVisible(true);
       }, 0);
-      return () => {
-        window.clearTimeout(timer);
-        window.removeEventListener(START_EVENT, restart);
-      };
-    } else if (!window.localStorage.getItem(COMPLETED_KEY) && isGuideEligiblePath(pathname)) {
-      const timer = window.setTimeout(() => {
-        setStage("welcome");
-        setVisible(true);
-        // This effect depends on [pathname], so every eligible route change while the guide
-        // was neither completed nor active re-armed the timer and fired again. Home ->
-        // Explore -> Genres logged three "shown" events for one visitor, inflating the top
-        // of the only funnel /admin/analytics has.
-        if (!window.sessionStorage.getItem(SHOWN_EVENT_KEY)) {
-          window.sessionStorage.setItem(SHOWN_EVENT_KEY, "1");
-          trackEvent("onboarding_shown", { path: pathname });
-        }
-      }, 700);
       return () => {
         window.clearTimeout(timer);
         window.removeEventListener(START_EVENT, restart);
