@@ -12,7 +12,10 @@ import {
 } from "lucide-react";
 import styles from "./landing-page.module.css";
 
-const betaHref = "/login?next=%2Fexplore";
+// Reading needs no account, so the buttons open the product. Writing asks for sign-in at
+// the moment it is needed - a stranger from a link should never meet a login screen first.
+const browseHref = "/explore";
+const signInHref = "/login?next=%2Fexplore";
 
 const faqs = [
   {
@@ -76,7 +79,7 @@ function Brand() {
 // instead of the product. The button now names what is actually on the other side of it.
 function BetaLink({ quiet = false, label = "Start reading" }: { quiet?: boolean; label?: string }) {
   return (
-    <Link className={quiet ? styles.quietBeta : styles.betaLink} href={betaHref}>
+    <Link className={quiet ? styles.quietBeta : styles.betaLink} href={quiet ? signInHref : browseHref}>
       {label}
       <ArrowRight aria-hidden="true" size={17} strokeWidth={1.8} />
     </Link>
@@ -94,7 +97,7 @@ export function LandingPage() {
           <a href="#knowledge">Knowledge</a>
           <a href="#faq">FAQ</a>
         </nav>
-        <BetaLink quiet label="Start reading" />
+        <BetaLink quiet label="Log in" />
       </header>
 
       <main>
@@ -125,7 +128,7 @@ export function LandingPage() {
 
             <div className={styles.heroActions}>
               <BetaLink />
-              <p className={styles.heroFine}>Free · no waiting list · sign in with Google</p>
+              <p className={styles.heroFine}>Free to read · no account needed · sign in only when you want to post</p>
             </div>
 
             <div className={styles.heroProof}>

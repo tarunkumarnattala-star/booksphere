@@ -17,7 +17,7 @@ export async function requireProfile(): Promise<AuthResult> {
       }
       return {
         ok: false,
-        message: "Log in to save books, recommend titles, follow readers, and join discussions. For beta preview, email login creates a local test account."
+        message: "Log in to write a perspective, save a book, or reply to a reader. You come straight back here, and nothing you have typed is lost. For beta preview, email login creates a local test account."
       };
     }
     return {
@@ -28,7 +28,7 @@ export async function requireProfile(): Promise<AuthResult> {
 
   const SIGNED_OUT = {
     ok: false as const,
-    message: "Log in to save books, recommend titles, follow readers, and join discussions."
+    message: "Log in to write a perspective, save a book, or reply to a reader. You come straight back here, and nothing you have typed is lost."
   };
 
   // A single perspective page mounts roughly ten components that each call this on mount -
