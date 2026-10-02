@@ -3,6 +3,7 @@ import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { SearchClient } from "@/components/search-client";
 import { findKnowledgeConcept } from "@/lib/concepts";
+import { genres } from "@/lib/data";
 import { getSupabaseFeedContributions } from "@/lib/contributions";
 import { getSupabaseKnowledgePosts } from "@/lib/knowledge-posts";
 
@@ -39,6 +40,22 @@ export default async function SearchPage({ searchParams }: { searchParams?: Prom
             ? "BookSphere works best when every insight has context. Find the book first, then add the idea, application, question, or disagreement that helps another reader."
             : "Search a book, concept, question, or goal. Understand the idea, check the context, and see the books and real perspectives behind it."}
         </p>
+        {/* Genres were their own tab competing with this one. They are a way of browsing
+            books, so they live here, under the box that finds a book faster. */}
+        <div className="mt-6">
+          <p className="caption mb-3">Or browse by genre</p>
+          <div className="flex flex-wrap gap-2">
+            {genres.map((genre) => (
+              <Link
+                key={genre.slug}
+                href={`/genre/${genre.slug}`}
+                className="rounded-full bg-white px-3.5 py-2 text-sm font-medium text-[color:var(--color-text-secondary)] shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] transition hover:text-[color:var(--color-text-primary)]"
+              >
+                {genre.name}
+              </Link>
+            ))}
+          </div>
+        </div>
       </>}
       {adding && !focusedConcept && (
         <div className="mt-6 rounded-[24px] bg-white p-4 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">

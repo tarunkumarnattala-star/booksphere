@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Compass, LibraryBig, Search, UserRound, UsersRound } from "lucide-react";
+import { Compass, LibraryBig, UserRound } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { getLocalProfile } from "@/lib/local-session";
@@ -14,22 +14,20 @@ import { canUseLocalCommunityFallback } from "@/lib/community-runtime";
 // the tab highlighted as though it were them. Send them to the door instead - /login knows
 // how to return them here afterwards.
 const baseMobileItems = [
-  { href: "/explore", label: "Explore", icon: Compass },
-  { href: "/genres", label: "Genres", icon: LibraryBig },
-  { href: "/feed", label: "Feed", icon: UsersRound },
-  { href: "/search", label: "Search", icon: Search },
-  { href: "/login?next=%2Ffeed", label: "Profile", icon: UserRound }
+  { href: "/explore", label: "Home", icon: Compass },
+  { href: "/search", label: "Books", icon: LibraryBig },
+  { href: "/login?next=%2Fexplore", label: "You", icon: UserRound }
 ];
 
 export function MobileBottomNav() {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [profileHref, setProfileHref] = useState("/login?next=%2Ffeed");
+  const [profileHref, setProfileHref] = useState("/login?next=%2Fexplore");
 
   useEffect(() => {
     const item = baseMobileItems.find(({ href }) => pathname === href);
-    if (!item || item.label === "Profile") return;
+    if (!item || item.label === "You") return;
     const query = searchParams.toString();
     const currentHref = `${pathname}${query ? `?${query}` : ""}`;
     const storageKey = `booksphere:last:${item.label.toLowerCase()}`;
@@ -41,7 +39,7 @@ export function MobileBottomNav() {
     async function refreshProfileHref() {
       if (!supabase) {
         const local = canUseLocalCommunityFallback() ? getLocalProfile() : null;
-        if (active) setProfileHref(local ? "/profile/local-reader" : "/login?next=%2Ffeed");
+        if (active) setProfileHref(local ? "/profile/local-reader" : "/login?next=%2Fexplore");
         return;
       }
       // getSession reads the locally stored session; getUser makes a network call that can
@@ -55,7 +53,7 @@ export function MobileBottomNav() {
       // a session sends anyone to the door.
       const { data: sessionData } = await supabase.auth.getSession();
       if (!sessionData.session) {
-        if (active) setProfileHref("/login?next=%2Ffeed");
+        if (active) setProfileHref("/login?next=%2Fexplore");
         return;
       }
       const { data } = await supabase.auth.getUser();
@@ -74,18 +72,18 @@ export function MobileBottomNav() {
   }, []);
 
   const mobileItems = baseMobileItems.map((item) => {
-    if (item.label === "Profile") return { ...item, href: profileHref };
+    if (item.label === "You") return { ...item, href: profileHref };
     return item;
   });
 
   return (
     <nav aria-label="Primary mobile navigation" className="fixed inset-x-0 bottom-0 z-50 border-t border-[color:var(--color-hairline)] bg-[#f5f5f7]/90 px-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] pt-2 backdrop-blur-2xl lg:hidden">
-      <div className="mx-auto grid max-w-md grid-cols-5 gap-1">
+      <div className="mx-auto grid max-w-md grid-cols-3 gap-1">
         {mobileItems.map((item) => {
           const Icon = item.icon;
-          const active = item.label === "Genres"
-            ? pathname === "/genres" || pathname.startsWith("/genre/")
-            : item.label === "Profile"
+          const active = item.label === "Books"
+            ? pathname === "/search" || pathname === "/genres" || pathname.startsWith("/genre/")
+            : item.label === "You"
               ? pathname.startsWith("/profile/")
               : pathname === item.href.split("?")[0];
           return (
@@ -93,7 +91,7 @@ export function MobileBottomNav() {
               key={item.href}
               href={item.href}
               onClick={(event) => {
-                if (item.label === "Profile") return;
+                if (item.label === "You") return;
                 const rememberedHref = window.sessionStorage.getItem(`booksphere:last:${item.label.toLowerCase()}`);
                 if (!rememberedHref || rememberedHref === item.href) return;
                 event.preventDefault();

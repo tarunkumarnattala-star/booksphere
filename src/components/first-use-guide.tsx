@@ -10,7 +10,9 @@ const ACTIVE_KEY = "booksphere.onboarding.v2.active";
 const SHOWN_EVENT_KEY = "booksphere.onboarding.v2.shownLogged";
 const START_EVENT = "booksphere:onboarding:start";
 
-type GuideStage = "welcome" | "explore" | "genres" | "feed" | "search" | "action";
+// Two steps, matching the three destinations. It used to walk Explore, Genres, Feed and
+// Search - two of which are no longer places you navigate to.
+type GuideStage = "welcome" | "explore" | "search" | "action";
 
 function isGuideEligiblePath(pathname: string) {
   return pathname === "/"
@@ -23,31 +25,19 @@ function isGuideEligiblePath(pathname: string) {
 
 const steps: Record<Exclude<GuideStage, "welcome" | "action">, { count: string; title: string; body: string }> = {
   explore: {
-    count: "1 of 4",
-    title: "Explore what readers found useful.",
-    body: "Start with practical ideas and perspectives worth opening."
-  },
-  genres: {
-    count: "2 of 4",
-    title: "Browse focused reading rooms.",
-    body: "Choose a topic to find its strongest books and reader perspectives."
-  },
-  feed: {
-    count: "3 of 4",
-    title: "Add your perspective.",
-    body: "Share something you learned, tried, noticed, or questioned. A book is optional."
+    count: "1 of 2",
+    title: "Start with an open question.",
+    body: "Every book carries questions nobody has answered yet. Answer one, or read what others wrote."
   },
   search: {
-    count: "4 of 4",
-    title: "Search by what you need.",
-    body: "Use a book title, question, decision, or goal."
+    count: "2 of 2",
+    title: "Find any book.",
+    body: "Search a book, concept, or question - or browse by genre underneath."
   }
 };
 
 function highlightFor(stage: GuideStage) {
   if (stage === "explore") return "explore";
-  if (stage === "genres") return "genres";
-  if (stage === "feed") return "feed-composer";
   if (stage === "search" || stage === "action") return "search";
   return null;
 }
@@ -81,7 +71,7 @@ export function FirstUseGuide() {
     window.addEventListener(START_EVENT, restart);
 
     const active = window.localStorage.getItem(ACTIVE_KEY) as GuideStage | null;
-    if (active && ["welcome", "explore", "genres", "feed", "search", "action"].includes(active)) {
+    if (active && ["welcome", "explore", "search", "action"].includes(active)) {
       const timer = window.setTimeout(() => {
         setStage(active);
         setVisible(true);
@@ -163,16 +153,6 @@ export function FirstUseGuide() {
 
   function nextStep() {
     if (stage === "explore") {
-      persistStage("genres");
-      router.push("/genres?guide=genres");
-      return;
-    }
-    if (stage === "genres") {
-      persistStage("feed");
-      router.push("/feed?guide=feed");
-      return;
-    }
-    if (stage === "feed") {
       persistStage("search");
       router.push("/search?guide=search");
       return;

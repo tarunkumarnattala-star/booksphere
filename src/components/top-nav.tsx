@@ -16,14 +16,12 @@ import { canUseLocalCommunityFallback } from "@/lib/community-runtime";
 // tapping the tab that should be theirs still landed on BookSphere's own profile, Follow
 // button and all, with the tab lit as though it were them. Same bug, same day, one surface.
 const navItems = [
-  { href: "/explore", label: "Explore" },
-  { href: "/genres", label: "Genres" },
-  { href: "/feed", label: "Feed" },
-  { href: "/search", label: "Search" },
-  { href: "/login?next=%2Ffeed", label: "Profile" }
+  { href: "/explore", label: "Home" },
+  { href: "/search", label: "Books" },
+  { href: "/login?next=%2Fexplore", label: "You" }
 ];
 
-const SIGNED_OUT_PROFILE_HREF = "/login?next=%2Ffeed";
+const SIGNED_OUT_PROFILE_HREF = "/login?next=%2Fexplore";
 
 export function TopNav() {
   const pathname = usePathname();
@@ -71,10 +69,10 @@ export function TopNav() {
 
         <div className="hidden items-center gap-6 lg:flex">
           {navItems.map((item) => {
-            const href = item.label === "Profile" ? profileHref : item.href;
+            const href = item.label === "You" ? profileHref : item.href;
             const active = item.href === "/genres"
               ? pathname === "/genres" || pathname.startsWith("/genre/")
-              : item.label === "Profile"
+              : item.label === "You"
                 ? pathname.startsWith("/profile/")
                 : pathname === item.href;
             return (
