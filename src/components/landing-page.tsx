@@ -18,7 +18,7 @@ const faqs = [
   {
     question: "Is BookSphere a book-summary app?",
     answer:
-      "No. A summary tells you what an author said. BookSphere also shows how readers used the idea, where it broke down, what they questioned, and whether the full book deserves your time."
+      "No. A summary tells you what an author said. BookSphere also shows how readers used the idea, what it changed, what they question, and where they would push back."
   },
   {
     question: "Do I need to finish a book before joining?",
@@ -37,26 +37,26 @@ const faqs = [
   }
 ];
 
-const outcomes = [
+const angles = [
   {
     number: "01",
-    title: "It worked",
-    copy: "The idea changed a decision, habit, conversation, or result."
+    title: "What changed",
+    copy: "The idea a reader put to work, and what it changed for them."
   },
   {
     number: "02",
-    title: "It failed",
-    copy: "The advice met a real limit the book did not make obvious."
+    title: "What clicked",
+    copy: "The part that shifted how they think, long after the detail faded."
   },
   {
     number: "03",
-    title: "It changed my mind",
-    copy: "A reader saw the claim differently after testing it."
+    title: "What puzzles them",
+    copy: "The question the book left open, waiting for someone to answer."
   },
   {
     number: "04",
-    title: "It connected",
-    copy: "One idea became clearer through another book or lived experience."
+    title: "Where they would push back",
+    copy: "The claim that does not hold everywhere, and the conditions it needs."
   }
 ];
 
@@ -74,7 +74,7 @@ function Brand() {
 // "Join the Private Beta" promised gated exclusivity - a passcode, a queue, an approval -
 // and none of it exists: the link goes straight to sign-in. It also sold the waiting room
 // instead of the product. The button now names what is actually on the other side of it.
-function BetaLink({ quiet = false, label = "See what happened next" }: { quiet?: boolean; label?: string }) {
+function BetaLink({ quiet = false, label = "Start reading" }: { quiet?: boolean; label?: string }) {
   return (
     <Link className={quiet ? styles.quietBeta : styles.betaLink} href={betaHref}>
       {label}
@@ -107,26 +107,20 @@ export function LandingPage() {
           <div className={styles.heroContent}>
             <p className={styles.heroEyebrow}>Early access · 394 books</p>
             <h1 id="landing-title">
-              Know whether the advice works before you read the book.
+              You&rsquo;ll never read them all. <em>Read the people who did.</em>
             </h1>
             <p className={styles.heroLead}>
-              BookSphere collects what happened when readers actually used a book&rsquo;s
-              ideas — what they applied, where it failed, and what they would tell you first.
+              Four questions on every book, answered by people who read it. Learn what they
+              took from it — then ask them, or argue back.
             </p>
 
-            <div className={styles.heroCompare} aria-label="How BookSphere differs">
-              <div>
-                <p className={styles.compareLabel}>Ratings</p>
-                <p className={styles.compareText}>Tell you whether people liked it.</p>
-              </div>
-              <div>
-                <p className={styles.compareLabel}>Summaries</p>
-                <p className={styles.compareText}>Tell you what the author said.</p>
-              </div>
-              <div className={styles.compareOwn}>
-                <p className={styles.compareLabel}>BookSphere</p>
-                <p className={styles.compareText}>Tells you what happened when someone tried it.</p>
-              </div>
+            <div className={styles.heroAngles} aria-label="The four angles on every book">
+              {angles.map((angle) => (
+                <div key={angle.title}>
+                  <p className={styles.angleLabel}>{angle.title}</p>
+                  <p className={styles.angleText}>{angle.copy}</p>
+                </div>
+              ))}
             </div>
 
             <div className={styles.heroActions}>
@@ -170,7 +164,7 @@ export function LandingPage() {
               <div className={styles.comparison}>
                 <p><span>Ratings</span> tell you if people liked the book.</p>
                 <p><span>Summaries</span> tell you what the author said.</p>
-                <p><strong>BookSphere</strong> shows what happened next.</p>
+                <p><strong>BookSphere</strong> shows what a reader made of it.</p>
               </div>
             </div>
           </div>
@@ -246,7 +240,7 @@ export function LandingPage() {
           <div className={styles.feedInner} data-landing-reveal>
             <div>
               <p className={styles.kicker}>Knowledge feed</p>
-              <h2>Books teach ideas. People show what happened next.</h2>
+              <h2>Books teach ideas. Readers show what they made of them.</h2>
             </div>
             <blockquote>
               <span>Reader reflection</span>
@@ -261,14 +255,14 @@ export function LandingPage() {
           <div className={styles.shell} data-landing-reveal>
             <div className={styles.perspectiveIntro}>
               <p className={styles.kicker}>Reader perspectives</p>
-              <h2>One book. Many honest outcomes.</h2>
+              <h2>One book. Four ways in.</h2>
               <p>
-                The useful part is not agreement. It is seeing the conditions
-                under which an idea helps, fails, or changes.
+                The useful part is not agreement. It is seeing what different readers
+                took from the same pages, and where they disagree.
               </p>
             </div>
             <div className={styles.outcomes}>
-              {outcomes.map((outcome) => (
+              {angles.map((outcome) => (
                 <article key={outcome.number}>
                   <span>{outcome.number}</span>
                   <h3>{outcome.title}</h3>
@@ -303,10 +297,10 @@ export function LandingPage() {
           <div data-landing-reveal>
             <UsersRound aria-hidden="true" size={28} strokeWidth={1.3} />
             <p className={styles.kicker}>Start here</p>
-            <h2>Find out what happened when someone tried it.</h2>
+            <h2>Start with a book you have already read.</h2>
             <p>
-              394 books, read through what people applied, questioned, and abandoned.
-              It is early, and the first readers shape what this becomes.
+              394 books, read through what people took from them, questioned, and argued
+              with. It is early, and the first readers shape what this becomes.
             </p>
             <BetaLink />
           </div>

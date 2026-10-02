@@ -156,6 +156,12 @@
   text-wrap: pretty;
 }
 
+/* The second sentence carries the promise, so it carries the only colour in the hero. */
+.hero h1 em {
+  font-style: normal;
+  color: var(--green-deep);
+}
+
 .heroLead {
   max-width: 54ch;
   margin: 24px 0 0;
@@ -165,53 +171,38 @@
   text-wrap: pretty;
 }
 
-/* The contrast is the fastest way to say what this is. Three cells, scannable in about a
-   second, and the only one that is filled is the one that matters. */
-.heroCompare {
+/* The four questions every book page asks, on the first screen. Someone arriving from a
+   link to one of those questions meets the same four here, so the front door and the book
+   page say the same thing. */
+.heroAngles {
   display: grid;
-  overflow: hidden;
   width: min(100%, 940px);
-  margin-top: 40px;
+  margin-top: 36px;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+}
+
+.heroAngles > div {
+  padding: 16px 18px;
   border: 1px solid rgba(18, 23, 19, 0.1);
-  border-radius: 18px;
-  gap: 1px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  background: rgba(18, 23, 19, 0.1);
+  border-radius: 16px;
+  background: rgba(18, 23, 19, 0.02);
 }
 
-.heroCompare > div {
-  padding: 22px 24px 26px;
-  background: var(--paper);
-}
-
-.compareOwn {
-  background: var(--green-deep) !important;
-  color: #f6f7f2;
-}
-
-.compareLabel {
-  margin: 0 0 10px;
-  color: #9aa09b;
-  font-size: 10.5px;
+.angleLabel {
+  margin: 0;
+  color: var(--green-deep);
+  font-size: 11px;
   font-weight: 620;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
-.compareOwn .compareLabel {
-  color: var(--green);
-}
-
-.compareText {
-  margin: 0;
+.angleText {
+  margin: 7px 0 0;
   color: var(--muted);
-  font-size: clamp(15px, 1.15vw, 17.5px);
-  letter-spacing: -0.01em;
-  line-height: 1.42;
-}
-
-.compareOwn .compareText {
-  color: #f6f7f2;
+  font-size: 14.5px;
+  line-height: 1.45;
 }
 
 .heroActions {
@@ -291,9 +282,9 @@
 }
 
 @media (max-width: 860px) {
-  .heroCompare {
-    margin-top: 30px;
-    grid-template-columns: 1fr;
+  .heroAngles {
+    margin-top: 28px;
+    grid-template-columns: 1fr 1fr;
   }
 
   .heroProof {
