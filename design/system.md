@@ -173,3 +173,11 @@ heading is smaller" exception.
 A `.caption` that labels a list sits **20px** above it (`.records-tight`). A heading with a
 lead paragraph sits **52px** above its list (`.records`). The gap says whether the words above
 are a label or an introduction.
+
+## Prefetch
+
+A long index - 87 books on a genre page, 45 on a profile, 20 shelves - is a list of links a
+reader scrolls past, not a list of links they are about to follow. Those carry
+`prefetch={false}`, because 87 route payloads fetched in the background while someone scans a
+list is a design decision too, and the wrong one on a phone. Record links, which are few and
+deliberate, keep the default.

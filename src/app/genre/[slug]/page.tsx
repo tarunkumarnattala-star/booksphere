@@ -148,7 +148,7 @@ export default async function GenrePage({ params }: { params: Promise<{ slug: st
             const badge = getBookShelfBadge(book, "");
             return (
               <li key={book.id} className="border-b border-[color:var(--rule)]">
-                <Link href={`/book/${book.id}`} className="block py-2.5 transition-colors hover:bg-[color:var(--band)]">
+                <Link href={`/book/${book.id}`} prefetch={false} className="block py-2.5 transition-colors hover:bg-[color:var(--band)]">
                   <span className="block text-[15px] leading-snug text-[color:var(--ink)]">{book.title}</span>
                   <span className="mt-1 block text-[13px] leading-snug text-[color:var(--ink-50)]">
                     {book.author}

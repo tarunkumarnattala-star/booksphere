@@ -131,7 +131,7 @@ function DefaultSearchState({ onSelect }: { onSelect: (query: string) => void })
           {genres.map((genre, index) => (
             <span key={genre.slug}>
               {index > 0 && <span className="text-[color:var(--ink-50)]">{"  \u00b7  "}</span>}
-              <Link href={`/genre/${genre.slug}`} className="underline decoration-[color:var(--rule)] decoration-1 underline-offset-[5px] transition hover:decoration-[color:var(--ink)]">
+              <Link href={`/genre/${genre.slug}`} prefetch={false} className="underline decoration-[color:var(--rule)] decoration-1 underline-offset-[5px] transition hover:decoration-[color:var(--ink)]">
                 {genre.name}
               </Link>
             </span>

@@ -117,7 +117,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
           <ul className="mt-5 grid gap-x-8 border-t border-[color:var(--rule-strong)] sm:grid-cols-2">
             {referencedBooks.map((book) => (
               <li key={book.id} className="border-b border-[color:var(--rule)]">
-                <Link href={`/book/${book.id}`} className="block py-2.5 transition-colors hover:bg-[color:var(--band)]">
+                <Link href={`/book/${book.id}`} prefetch={false} className="block py-2.5 transition-colors hover:bg-[color:var(--band)]">
                   <span className="block text-[15px] leading-snug text-[color:var(--ink)]">{book.title}</span>
                   <span className="mt-1 block text-[13px] leading-snug text-[color:var(--ink-50)]">{book.author}</span>
                 </Link>

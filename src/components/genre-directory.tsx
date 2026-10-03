@@ -48,7 +48,7 @@ export function GenreDirectory({
               <p className="caption record-stamp numeral">{shelf.length} books</p>
               <div className="min-w-0">
                 <h2 className="record-title">
-                  <Link href={`/genre/${genre.slug}`} className="transition-colors hover:text-[color:var(--accent)]">
+                  <Link href={`/genre/${genre.slug}`} prefetch={false} className="transition-colors hover:text-[color:var(--accent)]">
                     {genre.name}
                   </Link>
                 </h2>

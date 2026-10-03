@@ -169,7 +169,7 @@ export function FirstUseGuide() {
       role="dialog"
       aria-modal="false"
       aria-labelledby="first-use-guide-title"
-      className="onboarding-panel fixed inset-x-5 bottom-[calc(76px+env(safe-area-inset-bottom)+20px)] z-[120] mx-auto w-auto max-w-sm border-t-2 border-[color:var(--ink)] bg-[color:var(--paper)] p-5 shadow-[0_0_0_1px_var(--rule)] md:inset-x-auto md:bottom-8 md:right-8 md:w-[360px]"
+      className="onboarding-panel fixed inset-x-5 bottom-[calc(76px+env(safe-area-inset-bottom)+20px)] z-[120] mx-auto w-auto max-w-sm border border-[color:var(--rule)] border-t-2 border-t-[color:var(--ink)] bg-[color:var(--paper)] p-5 md:inset-x-auto md:bottom-8 md:right-8 md:w-[360px]"
     >
       <button
         type="button"
