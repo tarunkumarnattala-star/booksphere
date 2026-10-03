@@ -1,9 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { BookCover } from "@/components/book-cover";
 import { bookCoverData } from "@/lib/book-cover-data";
-import { GenrePill } from "@/components/genre-pill";
 import { readingPaths, getPathBooks, getReadingPath } from "@/lib/data";
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/metadata";
@@ -38,43 +36,38 @@ export default async function ReadingPathPage({ params }: { params: Promise<{ sl
   const pathBooks = getPathBooks(path);
 
   return (
-    <div className="editorial-page max-w-[1240px]">
-      <section className="grid gap-10 lg:grid-cols-[0.9fr_1fr] lg:items-end">
-        <div>
-          <p className="caption mb-4">Official Reading Path</p>
-          <h1 className="large-title">{path.title}</h1>
-          <p className="body-copy mt-5 max-w-2xl">{path.description}</p>
-        </div>
-        <div className="flex h-[250px] items-end gap-3 overflow-hidden rounded-[30px] bg-white p-4 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] sm:h-[300px] sm:gap-4 sm:p-6 lg:h-[340px]">
-          {pathBooks.slice(0, 5).map((book, index) => (
-            <BookCover key={book.id} book={bookCoverData(book)} priority={index < 2} className={`${index === 0 ? "w-[120px] sm:w-[160px] lg:w-[190px]" : "w-[78px] sm:w-[112px] lg:w-[138px]"} ${index % 2 ? "mb-6 sm:mb-10" : ""}`} />
-          ))}
-        </div>
-      </section>
+    <div className="editorial-page">
+      <header>
+        <p className="caption">Reading path</p>
+        <h1 className="large-title mt-4 max-w-[16ch]">{path.title}</h1>
+        <p className="body-copy measure mt-5">{path.description}</p>
+        <p className="footnote mt-5">
+          <span className="numeral">{pathBooks.length}</span> books, in this order
+        </p>
+      </header>
 
-      <section className="mt-16 space-y-5">
-        <div>
-          <p className="caption mb-2">Sequence</p>
-          <h2 className="title-2">Read in this order</h2>
-        </div>
+      {/* The order is the whole product of a reading path, so the step number is the docket
+          and nothing else competes with it. The hero used to be five covers fanned out in a
+          rounded white box, which said nothing about sequence at all. */}
+      <ol className="records">
         {pathBooks.map((book, index) => (
-          <Link key={book.id} href={`/book/${book.id}`} className="interactive-lift grid gap-5 rounded-[30px] bg-white p-5 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:grid-cols-[96px_1fr_auto] md:items-center">
-            <BookCover book={bookCoverData(book)} className="w-[82px] rounded-[14px] md:w-[96px]" />
-            <div>
-              <p className="caption text-[10px]">Step {index + 1}</p>
-              <h3 className="title-3 mt-1">{book.title}</h3>
-              <p className="subheadline mt-1">{book.author}</p>
-              <p className="body-copy mt-3 text-[15px] leading-6">{path.notes[book.id] || book.whyMatters}</p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {book.genres.slice(0, 3).map((genre) => <GenrePill key={genre} name={genre} interactive={false} />)}
+          <li key={book.id} className="record">
+            <p className="caption record-stamp numeral">{String(index + 1).padStart(2, "0")}</p>
+            <div className="grid min-w-0 grid-cols-[64px_minmax(0,1fr)] gap-5">
+              <Link href={`/book/${book.id}`} className="block" tabIndex={-1} aria-hidden="true">
+                <BookCover book={bookCoverData(book)} className="w-full" />
+              </Link>
+              <div className="min-w-0">
+                <h2 className="record-title">
+                  <Link href={`/book/${book.id}`} className="transition-colors hover:text-[color:var(--accent)]">{book.title}</Link>
+                </h2>
+                <p className="record-meta !mt-2">{book.author}</p>
+                <p className="record-text">{path.notes[book.id] || book.whyMatters}</p>
               </div>
             </div>
-            <span className="hidden items-center gap-2 text-sm font-medium text-[color:var(--color-text-primary)] md:flex">
-              Open book <ArrowRight size={15} />
-            </span>
-          </Link>
+          </li>
         ))}
-      </section>
+      </ol>
     </div>
   );
 }
