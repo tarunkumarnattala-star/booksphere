@@ -9,7 +9,7 @@ Authorship is 5.
 | Shell (masthead, bottom bar, footer) | **done** (1 pass) | 24 -> 0 | Masthead is the wordmark alone; the bottom bar is four tracked words under a hairline with a rule marking the one you are in; footer is a colophon. |
 | Home `/explore` | **done** (1 pass) | 23 -> 0 | The question is the page. Ten perspectives as records with a docket column. The "MOST DISCUSSED" shelf and the "Hot" chip both claimed rankings the data cannot support; both gone. |
 | Book `/book/[id]` | **done** (1 pass) | 25 -> 0 | Perspectives printed in the product's own three groups from one shared list. One 150px docket column for cover, labels and stamps. 6,409px -> 5,000px at 390. |
-| Perspective `/discussion/[id]` | untouched | 22 | The thing worth reading is inside a 32px white card with a shadow. |
+| Perspective `/discussion/[id]` | **done** (1 pass) | 22 -> 0 | One column of prose at 70 characters. Actions in two rows of tracked text; counts only when not zero. |
 | Write `/book/[id]/create-discussion` | untouched | — | |
 | Feed `/feed` | untouched | — | |
 | Note `/post/[id]` | untouched | — | |
@@ -23,7 +23,7 @@ Authorship is 5.
 | Sign in `/login` | untouched | — | |
 | Privacy / Terms | untouched | — | |
 | Admin | untouched | — | Internal. |
-| States: not-found, error, loading, empties | untouched | — | |
+| States: not-found, error, loading | **done** | — | Shimmer skeleton replaced by the word "Loading"; 404, error and root error boundary set like the product. Empties are done with their screens. |
 
 ## Scores
 
@@ -69,3 +69,17 @@ cover thumbnails and the `lucide-react` import both left the page.
 | Authorship | 1 | 5 | The three groups printed as the page's spine, with the lived-outcome group first; a facts block set like a specification sheet; the practical example of each idea set off by a rule because it is the part you can act on. |
 
 **AI-score 0.**
+
+### Perspective `/discussion/[id]` - pass 1
+
+| Axis | Before | After |
+|---|---|---|
+| Hierarchy | 2 | 5 |
+| Rhythm | 2 | 5 |
+| Type | 2 | 5 |
+| Placement | 3 | 5 |
+| Restraint | 1 | 5 |
+| Authorship | 1 | 5 |
+
+**AI-score 0.** 87 characters per line to 70; ten pills to two rows of tracked words; two
+zero counters removed; the missing date and the missing next move both added.

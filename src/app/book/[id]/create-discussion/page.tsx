@@ -54,7 +54,7 @@ export default async function CreateBookDiscussionPage({
   const initialTitle = prompt?.title || (typeof query.title === "string" ? query.title.slice(0, 180) : "");
 
   return (
-    <div className="editorial-page max-w-5xl">
+    <div className="editorial-page editorial-prose">
       <CreateDiscussionForm book={book} initialPostType={postType} initialTitle={initialTitle} starterPromptId={prompt?.id} />
     </div>
   );
