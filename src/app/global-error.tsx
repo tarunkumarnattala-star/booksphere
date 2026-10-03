@@ -18,24 +18,24 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
         style={{
           margin: 0,
           minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
           backgroundColor: "#f6f7f2",
-          fontFamily: "system-ui, -apple-system, sans-serif",
-          color: "#1a1a1a"
+          fontFamily: "-apple-system, BlinkMacSystemFont, system-ui, sans-serif",
+          color: "#121713"
         }}
       >
-        <main style={{ maxWidth: "480px", padding: "32px", textAlign: "center" }}>
-          <p style={{ fontSize: "12px", letterSpacing: "0.12em", textTransform: "uppercase", color: "#7a7a7a", margin: 0 }}>
+        {/* Ranged left on the paper, like every other page, rather than centred in the
+            middle of the screen - the one screen a reader sees when everything else has
+            failed should still look like the same product. */}
+        <main style={{ maxWidth: "664px", padding: "32px 24px" }}>
+          <p style={{ fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace", fontSize: "11px", fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", color: "#18392d", margin: 0 }}>
             BookSphere
           </p>
-          <h1 style={{ fontSize: "28px", lineHeight: 1.2, margin: "12px 0 0", letterSpacing: "-0.02em" }}>
+          <h1 style={{ fontSize: "32px", fontWeight: 300, lineHeight: 1.08, margin: "20px 0 0", letterSpacing: "-0.02em", maxWidth: "20ch" }}>
             Something went wrong at our end.
           </h1>
-          <p style={{ fontSize: "16px", lineHeight: 1.6, color: "#5a5a5a", margin: "16px 0 0" }}>
+          <p style={{ fontSize: "15px", lineHeight: 1.62, color: "#42493f", margin: "20px 0 0", maxWidth: "38em" }}>
             This is not your connection. Try again, and if it keeps happening, email{" "}
-            <a href="mailto:booksphere.support@gmail.com" style={{ color: "#1a1a1a" }}>
+            <a href="mailto:booksphere.support@gmail.com" style={{ color: "#121713" }}>
               booksphere.support@gmail.com
             </a>
             .
@@ -44,19 +44,21 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
             type="button"
             onClick={reset}
             style={{
-              marginTop: "24px",
-              minHeight: "44px",
-              padding: "0 24px",
-              borderRadius: "999px",
-              border: "none",
-              backgroundColor: "#1a1a1a",
-              color: "#ffffff",
-              fontSize: "14px",
+              marginTop: "32px",
+              minHeight: "52px",
+              padding: "0 32px",
+              border: "1px solid #121713",
+              backgroundColor: "#121713",
+              color: "#f6f7f2",
+              fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
+              fontSize: "11px",
               fontWeight: 600,
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
               cursor: "pointer"
             }}
           >
-            Try again
+            Load it again
           </button>
         </main>
       </body>

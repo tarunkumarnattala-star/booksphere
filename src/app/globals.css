@@ -144,9 +144,18 @@ button:disabled {
   padding: var(--s-5) clamp(20px, 4vw, 48px) var(--s-7);
 }
 
-/* Prose is held to 60-72 characters. Anything wider stops being readable as a column. */
+/* Prose is held to 60-72 characters. Anything wider stops being readable as a column.
+   `ch` is the width of a zero, which in this face is a third wider than the average letter,
+   so the cap is set in `em` from a measured line instead: 15px prose at 38em runs about 70
+   characters. */
 .measure {
-  max-width: 68ch;
+  max-width: 38em;
+}
+
+/* A page whose whole job is one column of prose - a perspective, a note, the legal pages -
+   is set narrower than a page of records. 664px holds about 70 characters at 17px. */
+.editorial-prose {
+  max-width: 664px;
 }
 
 /* ---------- type: three weights, one ladder ----------
@@ -252,7 +261,7 @@ button:disabled {
 
 /* Long-form reading: a perspective's own body, set as a book page would set it. */
 .prose-perspective {
-  max-width: 68ch;
+  max-width: 33em;
   font-size: 17px;
   font-weight: 400;
   line-height: 1.72;
@@ -362,9 +371,13 @@ button:disabled {
   padding-inline: var(--s-4);
 }
 
+/* A disabled action stops being a filled block and becomes an outline, so the one live
+   action on a screen is always the only solid shape. */
 .btn-ink:disabled,
 .btn-quiet:disabled {
-  opacity: 0.4;
+  border-color: var(--rule);
+  background: transparent;
+  color: var(--ink-50);
 }
 
 /* Tracked caps carry a trailing 0.18em space on the last letter; anything that follows the
@@ -372,6 +385,95 @@ button:disabled {
 .btn-ink > span:last-child:not(:only-child),
 .btn-quiet > span:last-child:not(:only-child) {
   margin-left: -0.18em;
+}
+
+/* ---------- fields ----------
+   One input treatment everywhere: a ruled box on the paper, no fill, no radius. A filled
+   grey pill says "app"; a ruled box says "form", which is what this is. */
+
+.field {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid var(--rule-strong);
+  background: transparent;
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.field::placeholder {
+  color: var(--ink-50);
+}
+
+.field:focus {
+  border-color: var(--ink);
+  outline: 1px solid var(--ink);
+  outline-offset: -2px;
+}
+
+textarea.field {
+  min-height: 120px;
+  resize: vertical;
+}
+
+select.field {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--ink) 50%), linear-gradient(135deg, var(--ink) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 21px, calc(100% - 13px) 21px;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 40px;
+}
+
+/* A label sits above its field, in the label face, with the gap that says they belong
+   together and not to anything else. */
+.field-label {
+  display: grid;
+  gap: var(--s-2);
+}
+
+/* A row of quiet text controls, separated by rules rather than drawn as pills. */
+.control-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2) var(--s-4);
+}
+
+.control {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-50);
+  transition: color var(--motion-ease);
+}
+
+.control:hover:not(:disabled) {
+  color: var(--ink);
+}
+
+.control:disabled {
+  opacity: 0.45;
+}
+
+.control[aria-pressed="true"],
+.control[aria-expanded="true"],
+.control-on {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+
+.control-lead {
+  color: var(--ink);
 }
 
 /* ---------- the record ----------

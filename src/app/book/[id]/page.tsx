@@ -238,7 +238,7 @@ export default async function BookPage({ params, searchParams }: { params: Promi
       {nextBooks.length > 0 && (
         <section className="section-rule">
           <p className="caption">Often read next</p>
-          <ol className="records">
+          <ol className="records records-tight">
             {nextBooks.slice(0, 4).map((next) => (
               <li key={next.id} className="record record-media">
                 <Link href={`/book/${next.id}`} className="block w-full md:w-[96px]" tabIndex={-1} aria-hidden="true">

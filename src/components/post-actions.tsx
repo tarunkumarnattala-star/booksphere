@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Award, Bookmark, Flag, Heart, MessageCircle, Pencil, PlusCircle, Share2, Trash2 } from "lucide-react";
 import { AwardType, DiscussionAward, DiscussionPost, PostType, UsefulnessReaction, UsefulnessReactionType } from "@/lib/types";
 import { requireProfile } from "@/lib/auth-client";
 import { dbReactionByLabel, deleteSupabaseContribution, getUserContributionState, toggleSupabaseFollowDiscussion, toggleSupabaseLike, toggleSupabaseSaveInsight, updateSupabaseContribution } from "@/lib/contributions";
@@ -561,69 +560,80 @@ export function PostActions({
 
   if (deleted) {
     return (
-      <p className="mt-4 text-sm font-medium text-[color:var(--color-text-secondary)]">
-        Contribution deleted.{" "}
-        <Link href={post?.bookId ? `/book/${post.bookId}` : "/explore"} className="underline underline-offset-4">
-          Back to {post?.bookId ? "the book" : "Explore"}
+      <p className="body-copy mt-5">
+        Deleted.{" "}
+        <Link href={post?.bookId ? `/book/${post.bookId}` : "/explore"} className="text-[color:var(--ink)] underline decoration-[color:var(--rule-strong)] underline-offset-[5px]">
+          Back to {post?.bookId ? "the book" : "Home"}
         </Link>
       </p>
     );
   }
 
+  // Two rows, not one bar of ten pills. The first row is what a reader does with something
+  // they just read; the second is housekeeping. Counts print only when there is something to
+  // count - a row of zeroes is an empty room with the lights left on.
   return (
-    <div>
-      <div className="mt-5 flex flex-wrap items-center gap-2 text-sm font-medium text-[color:var(--color-text-secondary)]">
+    <div className="mt-8 border-t border-[color:var(--rule)] pt-4">
+      <div className="control-row">
+        <button type="button" onClick={openComments} className="control control-lead" aria-label="Go to replies">
+          Reply{comments > 0 ? <span className="numeral">{comments}</span> : null}
+        </button>
         <button
           type="button"
           disabled={syncingCommunity}
           onClick={() => toggleCommunityAction("like", liked, setLiked, "We could not save your like. Please try again.")}
           aria-label="Like this perspective"
-          className="flex min-h-11 items-center gap-2 rounded-full bg-black/[0.035] px-3 py-2 transition hover:bg-black/[0.06]"
+          aria-pressed={liked}
+          className="control control-lead"
         >
-          <Heart size={16} className={liked ? "fill-[color:var(--color-rose)] text-[color:var(--color-rose)]" : ""} />
-          {visibleCount(likes, liked, persistedLiked)}
-        </button>
-        <button type="button" onClick={openComments} className="flex min-h-11 items-center gap-2 rounded-full bg-black/[0.035] px-3 py-2 transition hover:bg-black/[0.06]" aria-label="Jump to comments">
-          <MessageCircle size={16} /> {comments}
+          {liked ? "Liked" : "Like"}
+          {visibleCount(likes, liked, persistedLiked) > 0 ? <span className="numeral">{visibleCount(likes, liked, persistedLiked)}</span> : null}
         </button>
         <button
           type="button"
           disabled={syncingCommunity}
           onClick={() => toggleCommunityAction("save", saved, setSaved, "We could not save this insight.")}
           aria-label="Save this perspective"
-          className="flex min-h-11 items-center gap-2 rounded-full bg-black/[0.035] px-3 py-2 transition hover:bg-black/[0.06]"
+          aria-pressed={saved}
+          className="control control-lead"
         >
-          <Bookmark size={16} className={saved ? "fill-[color:var(--color-text-primary)] text-[color:var(--color-text-primary)]" : ""} /> {saved ? "Saved" : "Save"} {saved || saves ? `· ${visibleCount(saves, saved, persistedSaved)}` : ""}
+          {saved ? "Saved" : "Save"}
+          {visibleCount(saves, saved, persistedSaved) > 0 ? <span className="numeral">{visibleCount(saves, saved, persistedSaved)}</span> : null}
         </button>
-        <button
-          type="button"
-          disabled={syncingCommunity}
-          onClick={() => toggleCommunityAction("follow", following, setFollowing, "We could not follow this perspective. Please try again.")}
-          aria-label="Follow replies to this perspective"
-          className="flex min-h-11 items-center gap-2 rounded-full bg-black/[0.035] px-3 py-2 transition hover:bg-black/[0.06]"
-        >
-          <PlusCircle size={16} /> {following ? "Following replies" : "Follow replies"} {following || follows ? `· ${visibleCount(follows, following, persistedFollowing)}` : ""}
+        <button type="button" onClick={sharePost} className="control control-lead" aria-label="Copy a link to this perspective">
+          {copied ? "Link copied" : "Share"}
         </button>
+      </div>
+
+      <div className="control-row mt-1">
         <button
           type="button"
           onClick={() => requireAction(() => setOpenPicker((value) => value === "usefulness" ? null : "usefulness"))}
           aria-label="Mark why this perspective was useful"
           aria-expanded={openPicker === "usefulness"}
-          className={`flex min-h-11 items-center gap-2 rounded-full px-3 py-2 transition ${openPicker === "usefulness" ? "bg-[color:var(--color-text-primary)] !text-white" : "bg-black/[0.035] hover:bg-black/[0.06]"}`}
+          className="control"
         >
-          <Award size={16} /> Useful
+          Useful
         </button>
         <button
           type="button"
           onClick={() => requireAction(() => setOpenPicker((value) => value === "award" ? null : "award"))}
           aria-label="Award this perspective"
           aria-expanded={openPicker === "award"}
-          className={`flex min-h-11 items-center gap-2 rounded-full px-3 py-2 transition ${openPicker === "award" ? "bg-[color:var(--color-text-primary)] !text-white" : "bg-black/[0.035] hover:bg-black/[0.06]"}`}
+          className="control"
         >
-          <Award size={16} /> Award
+          Award
         </button>
-        <button type="button" onClick={sharePost} className="flex min-h-11 items-center gap-2 rounded-full bg-black/[0.035] px-3 py-2 transition hover:bg-black/[0.06]" aria-label="Share this perspective">
-          <Share2 size={16} /> {copied ? "Copied" : "Share"}
+        <button
+          type="button"
+          disabled={syncingCommunity}
+          onClick={() => toggleCommunityAction("follow", following, setFollowing, "We could not follow this perspective. Please try again.")}
+          aria-label="Follow replies to this perspective"
+          aria-pressed={following}
+          className="control"
+        >
+          {following ? "Following replies" : "Follow replies"}
+          {visibleCount(follows, following, persistedFollowing) > 0 ? <span className="numeral">{visibleCount(follows, following, persistedFollowing)}</span> : null}
         </button>
         <button
           type="button"
@@ -632,17 +642,13 @@ export function PostActions({
           })}
           disabled={reported || reporting}
           aria-label="Report this perspective"
-          className="flex min-h-11 items-center gap-2 rounded-full bg-black/[0.035] px-3 py-2 transition hover:bg-black/[0.06]"
+          className="control"
         >
-          <Flag size={16} /> {reported ? "Reported" : "Report"}
+          {reported ? "Reported" : "Report"}
         </button>
         {(isOwner || canDelete) && post && supabase && (
-          <button
-            type="button"
-            onClick={() => setEditing((value) => !value)}
-            className="flex min-h-11 items-center gap-2 rounded-full bg-black/[0.035] px-3 py-2 transition hover:bg-black/[0.06]"
-          >
-            <Pencil size={16} /> {editing ? "Close edit" : "Edit"}
+          <button type="button" onClick={() => setEditing((value) => !value)} aria-expanded={editing} className="control">
+            {editing ? "Close edit" : "Edit"}
           </button>
         )}
         {(isOwner || canDelete) && (
@@ -650,18 +656,18 @@ export function PostActions({
             type="button"
             disabled={deletingPost}
             onClick={deleteContribution}
-            className="flex min-h-11 items-center gap-2 rounded-full bg-black/[0.035] px-3 py-2 text-[color:var(--color-rose)] transition hover:bg-black/[0.06]"
+            className="control text-[color:var(--color-rose)] hover:!text-[color:var(--color-rose)]"
           >
-            <Trash2 size={16} /> {deletingPost ? "Deleting..." : "Delete"}
+            {deletingPost ? "Deleting" : "Delete"}
           </button>
         )}
       </div>
 
       {reportOpen && !reported && (
-        <div className="mt-3 rounded-[20px] bg-black/[0.025] p-4" role="group" aria-label="Report this perspective">
-          <label className="grid gap-2 text-sm font-medium">
-            Why should this be reviewed?
-            <select value={reportReason} onChange={(event) => setReportReason(event.target.value)} className="min-h-11 rounded-[16px] bg-white px-4 py-3 outline-none ring-1 ring-black/[0.05] focus:ring-black/20">
+        <div className="mt-5 border-l-2 border-[color:var(--ink)] pl-5" role="group" aria-label="Report this perspective">
+          <label className="field-label">
+            <span className="caption caption-muted">Why should this be reviewed?</span>
+            <select value={reportReason} onChange={(event) => setReportReason(event.target.value)} className="field max-w-sm">
               <option>Spam or manipulation</option>
               <option>Harassment or hateful content</option>
               <option>Copyright concern</option>
@@ -669,98 +675,89 @@ export function PostActions({
               <option>Other community concern</option>
             </select>
           </label>
-          <div className="mt-3 flex flex-wrap gap-2">
-            <button type="button" disabled={reporting} onClick={submitReport} className="min-h-11 rounded-full bg-[color:var(--color-text-primary)] px-5 py-2 text-sm font-medium !text-white disabled:opacity-50">{reporting ? "Submitting..." : "Submit report"}</button>
-            <button type="button" disabled={reporting} onClick={() => setReportOpen(false)} className="min-h-11 rounded-full bg-white px-5 py-2 text-sm font-medium ring-1 ring-black/[0.05]">Cancel</button>
+          <div className="control-row mt-4">
+            <button type="button" disabled={reporting} onClick={submitReport} className="btn-ink btn-sm">{reporting ? "Submitting" : "Submit report"}</button>
+            <button type="button" disabled={reporting} onClick={() => setReportOpen(false)} className="control">Cancel</button>
           </div>
         </div>
       )}
 
       {editing && post && (
-        <div className="mt-4 rounded-[24px] bg-black/[0.025] p-4">
-          <div className="grid gap-3">
-            <label className="grid gap-2 text-sm font-medium">
-              Type
+        <div className="mt-5 border-l-2 border-[color:var(--ink)] pl-5">
+          <div className="grid max-w-xl gap-5">
+            <label className="field-label">
+              <span className="caption caption-muted">Type</span>
               <select
                 value={editDraft.postType}
                 onChange={(event) => setEditDraft({ ...editDraft, postType: event.target.value as PostType })}
-                className="rounded-[18px] bg-white px-4 py-3 outline-none ring-1 ring-transparent focus:ring-black/20"
+                className="field"
               >
                 {editablePostTypes.map((type) => <option key={type}>{type}</option>)}
               </select>
             </label>
-            <label className="grid gap-2 text-sm font-medium">
-              Title
-              <input
-                maxLength={180}
-                value={editDraft.title}
-                onChange={(event) => setEditDraft({ ...editDraft, title: event.target.value })}
-                className="rounded-[18px] bg-white px-4 py-3 outline-none ring-1 ring-transparent focus:ring-black/20"
-              />
+            <label className="field-label">
+              <span className="caption caption-muted">Title</span>
+              <input maxLength={180} value={editDraft.title} onChange={(event) => setEditDraft({ ...editDraft, title: event.target.value })} className="field" />
             </label>
-            <label className="grid gap-2 text-sm font-medium">
-              Body
-              <textarea
-                maxLength={10000}
-                value={editDraft.body}
-                onChange={(event) => setEditDraft({ ...editDraft, body: event.target.value })}
-                rows={6}
-                className="rounded-[18px] bg-white px-4 py-3 outline-none ring-1 ring-transparent focus:ring-black/20"
-              />
+            <label className="field-label">
+              <span className="caption caption-muted">Body</span>
+              <textarea maxLength={10000} value={editDraft.body} onChange={(event) => setEditDraft({ ...editDraft, body: event.target.value })} rows={8} className="field" />
             </label>
-            <div className="grid gap-3 md:grid-cols-2">
-              <input value={editDraft.contextType} onChange={(event) => setEditDraft({ ...editDraft, contextType: event.target.value })} placeholder="Context" className="rounded-[18px] bg-white px-4 py-3 text-sm font-medium outline-none ring-1 ring-transparent focus:ring-black/20" />
-              <input value={editDraft.actionTaken} onChange={(event) => setEditDraft({ ...editDraft, actionTaken: event.target.value })} placeholder="Action taken" className="rounded-[18px] bg-white px-4 py-3 text-sm font-medium outline-none ring-1 ring-transparent focus:ring-black/20" />
-              <input value={editDraft.outcome} onChange={(event) => setEditDraft({ ...editDraft, outcome: event.target.value })} placeholder="Outcome" className="rounded-[18px] bg-white px-4 py-3 text-sm font-medium outline-none ring-1 ring-transparent focus:ring-black/20" />
-              <input value={editDraft.whatFailed} onChange={(event) => setEditDraft({ ...editDraft, whatFailed: event.target.value })} placeholder="What failed" className="rounded-[18px] bg-white px-4 py-3 text-sm font-medium outline-none ring-1 ring-transparent focus:ring-black/20" />
-              <input value={editDraft.wouldChange} onChange={(event) => setEditDraft({ ...editDraft, wouldChange: event.target.value })} placeholder="What would change" className="rounded-[18px] bg-white px-4 py-3 text-sm font-medium outline-none ring-1 ring-transparent focus:ring-black/20 md:col-span-2" />
-              <input value={editDraft.quoteReference} onChange={(event) => setEditDraft({ ...editDraft, quoteReference: event.target.value })} placeholder="Quote or reference" className="rounded-[18px] bg-white px-4 py-3 text-sm font-medium outline-none ring-1 ring-transparent focus:ring-black/20 md:col-span-2" />
+            <div className="grid gap-5 md:grid-cols-2">
+              <input value={editDraft.contextType} onChange={(event) => setEditDraft({ ...editDraft, contextType: event.target.value })} placeholder="Context" className="field" />
+              <input value={editDraft.actionTaken} onChange={(event) => setEditDraft({ ...editDraft, actionTaken: event.target.value })} placeholder="Action taken" className="field" />
+              <input value={editDraft.outcome} onChange={(event) => setEditDraft({ ...editDraft, outcome: event.target.value })} placeholder="Outcome" className="field" />
+              <input value={editDraft.whatFailed} onChange={(event) => setEditDraft({ ...editDraft, whatFailed: event.target.value })} placeholder="What failed" className="field" />
+              <input value={editDraft.wouldChange} onChange={(event) => setEditDraft({ ...editDraft, wouldChange: event.target.value })} placeholder="What would change" className="field md:col-span-2" />
+              <input value={editDraft.quoteReference} onChange={(event) => setEditDraft({ ...editDraft, quoteReference: event.target.value })} placeholder="Quote or reference" className="field md:col-span-2" />
             </div>
-            <div className="flex flex-wrap gap-2">
-              <button type="button" disabled={savingEdit} onClick={saveEdit} className="rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-medium !text-white transition hover:opacity-85 disabled:opacity-50">
-                {savingEdit ? "Saving..." : "Save changes"}
+            <div className="control-row">
+              <button type="button" disabled={savingEdit} onClick={saveEdit} className="btn-ink btn-sm">
+                {savingEdit ? "Saving" : "Save changes"}
               </button>
-              <button type="button" disabled={savingEdit} onClick={() => setEditing(false)} className="rounded-full bg-white px-5 py-3 text-sm font-medium text-[color:var(--color-text-primary)] ring-1 ring-black/[0.05] transition hover:bg-black/[0.035]">
-                Cancel
-              </button>
+              <button type="button" disabled={savingEdit} onClick={() => setEditing(false)} className="control">Cancel</button>
             </div>
           </div>
         </div>
       )}
 
       {openPicker === "usefulness" && (
-        <div className="mt-3 flex flex-wrap gap-2 rounded-[20px] bg-black/[0.025] p-3">
+        <div className="control-row mt-4 border-l-2 border-[color:var(--ink)] pl-5">
           {usefulnessOptions.map((type) => (
             <button
               key={type}
               type="button"
               onClick={() => toggleUsefulness(type)}
-              className={`min-h-11 rounded-full px-3 py-2 text-xs font-medium transition ${selectedUsefulness.includes(type) ? "bg-[color:var(--color-text-primary)] !text-white" : "bg-white text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]"}`}
+              aria-pressed={selectedUsefulness.includes(type)}
+              className="control"
             >
-              {usefulnessCount(type)} {type}
+              {type}
+              {usefulnessCount(type) > 0 ? <span className="numeral">{usefulnessCount(type)}</span> : null}
             </button>
           ))}
         </div>
       )}
 
       {openPicker === "award" && (
-        <div className="mt-3 flex flex-wrap gap-2 rounded-[20px] bg-black/[0.025] p-3">
+        <div className="control-row mt-4 border-l-2 border-[color:var(--ink)] pl-5">
           {awardOptions.map((type) => (
             <button
               key={type}
               type="button"
               onClick={() => void toggleAward(type)}
               disabled={syncingCommunity}
-              className={`min-h-11 rounded-full px-3 py-2 text-xs font-medium transition ${selectedAwards.includes(type) ? "bg-[color:var(--color-text-primary)] !text-white" : "bg-white text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]"}`}
+              aria-pressed={selectedAwards.includes(type)}
+              className="control"
             >
-              {awardCount(type)} {type}
+              {type}
+              {awardCount(type) > 0 ? <span className="numeral">{awardCount(type)}</span> : null}
             </button>
           ))}
         </div>
       )}
 
       {notice && <LoginRequiredNotice message={notice} onDismiss={() => setNotice("")} />}
-      {error && <p role="alert" className="mt-3 rounded-[16px] bg-[color:var(--color-rose)]/10 px-4 py-3 text-sm font-medium text-[color:var(--color-rose)]">{error}</p>}
+      {error && <p role="alert" className="footnote mt-4 border-l-2 border-[color:var(--color-rose)] pl-4 text-[color:var(--color-rose)]">{error}</p>}
     </div>
   );
 }
