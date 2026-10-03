@@ -278,6 +278,41 @@ button:disabled {
   font-weight: 600 !important;
 }
 
+/* A major section opens with a 2px ink rule and 32px of air; everything inside it is
+   separated by hairlines. One rule weight per level, so the page's structure is readable
+   from six feet away. */
+.section-rule {
+  margin-top: var(--s-7);
+  border-top: 2px solid var(--ink);
+  padding-top: var(--s-5);
+}
+
+/* A printed data block: the label sits above its value, both ranged left, so a reader can
+   scan the labels down the row or the values across it. */
+.facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-4) var(--s-5);
+  margin: 0;
+}
+
+.facts > div {
+  min-width: 0;
+}
+
+.facts dd {
+  margin: var(--s-2) 0 0;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+@media (min-width: 760px) {
+  .facts {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
 /* ---------- actions ----------
    One button, two tones, carried over from the landing page so the two halves of the product
    press the same shape. Mono caps at 0.18em, 52px tall (44px in a nav), no radius, and the
@@ -359,6 +394,17 @@ button:disabled {
   border-bottom: 1px solid var(--rule);
 }
 
+/* A record whose docket column holds a cover rather than a label keeps its two columns at
+   every width: a 64px cover stacked above its own title is not a record, it is a card. */
+.record-media {
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: var(--s-4);
+}
+
+.records-tight {
+  margin-top: var(--s-4);
+}
+
 .record-stamp {
   padding-top: 3px;
 }
@@ -404,6 +450,10 @@ button:disabled {
     grid-template-columns: 150px minmax(0, 1fr);
     gap: var(--s-5);
     padding: var(--s-5) 0;
+  }
+
+  .record-media {
+    grid-template-columns: 150px minmax(0, 1fr);
   }
 }
 

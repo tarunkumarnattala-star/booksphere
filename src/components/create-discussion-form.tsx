@@ -9,22 +9,19 @@ import { createSupabaseContribution } from "@/lib/contributions";
 import { addLocalDiscussion } from "@/lib/local-discussions";
 import { supabase } from "@/lib/supabase";
 import { LoginRequiredNotice } from "./login-required-notice";
+import { perspectiveGroups } from "@/lib/perspective-groups";
 
-// Grouped so the differentiated kinds lead. A flat list of eleven put "Summary" beside
-// "What Did Not Work", which reads as though they are worth the same - and they are not.
-// A summary is the one thing a language model already does better than any reader will,
-// while an account of what actually happened when someone applied an idea, especially
-// when it failed, exists nowhere else. Leading with lived outcomes is the whole product
-// promise, so the composer should ask for that first.
+// Grouped so the differentiated kinds lead, from the one list the book page also reads
+// (lib/perspective-groups.ts). A flat list of eleven put "Summary" beside "What Did Not
+// Work", which reads as though they are worth the same - and they are not. A summary is the
+// one thing a language model already does better than any reader will, while an account of
+// what actually happened when someone applied an idea, especially when it failed, exists
+// nowhere else.
 //
-// Quote is deliberately absent: it adds nothing a reader cannot get elsewhere and
-// invites pasting copyrighted passages. Existing posts of every type still render; this
-// governs only what can be written from here.
-const postTypeGroups: Array<{ label: string; types: PostType[] }> = [
-  { label: "What happened when you used it", types: ["Real-Life Result", "What Did Not Work", "Application", "Personal Experience"] },
-  { label: "Where it breaks down", types: ["Disagreement", "Limitation"] },
-  { label: "Understanding the idea", types: ["Insight", "Question", "Connection", "Summary"] }
-];
+// Quote is deliberately absent: it adds nothing a reader cannot get elsewhere and invites
+// pasting copyrighted passages. Existing posts of every type still render; this governs only
+// what can be written from here.
+const postTypeGroups = perspectiveGroups;
 const promptByType: Record<PostType, string> = {
   Insight: "What idea changed how you think?",
   Application: "How did you apply this in real life?",

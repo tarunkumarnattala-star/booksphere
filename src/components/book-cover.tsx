@@ -75,8 +75,11 @@ export function BookCover({ book, priority = false, className = "" }: { book: Bo
     <div className={`relative flex aspect-[2/3] overflow-hidden bg-[color:var(--band)] ring-1 ring-[color:var(--rule)] ${className}`}>
       <div className="flex h-full w-full flex-col justify-end p-[8%]">
         <span className="h-px w-8 bg-[color:var(--rule-strong)]" aria-hidden="true" />
+        {/* The title prints whether the cover has failed or has simply not arrived yet. A
+            cover lookup can take a second or two per book, and an empty rectangle for that
+            long reads as a broken image; a title page does not. */}
         <span className="mt-[6%] line-clamp-4 text-[11px] font-normal leading-[1.25] text-[color:var(--ink-70)]">
-          {failed ? book.title : <span className="sr-only">Loading cover</span>}
+          {book.title}
         </span>
       </div>
     </div>

@@ -8,14 +8,14 @@ export function LoginRequiredNotice({ message, onDismiss }: { message: string; o
   const loginHref = `/login?next=${encodeURIComponent(pathname)}`;
 
   return (
-    <div role="status" className="mt-3 rounded-[18px] bg-white p-4 text-sm shadow-[var(--shadow-soft)] ring-1 ring-black/[0.04]">
-      <p className="font-medium leading-6 text-[color:var(--color-text-secondary)]">{message}</p>
-      <div className="mt-3 flex flex-wrap gap-2">
-        <Link href={loginHref} className="rounded-full bg-[color:var(--color-text-primary)] px-4 py-2 text-sm font-semibold !text-white transition hover:opacity-85">
-          Log in
+    <div role="status" className="mt-5 border-l-2 border-[color:var(--ink)] pl-5">
+      <p className="body-copy measure text-[color:var(--ink)]">{message}</p>
+      <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2">
+        <Link href={loginHref} className="btn-ink btn-sm">
+          Sign in with Google
         </Link>
         {onDismiss && (
-          <button type="button" onClick={onDismiss} className="rounded-full bg-black/[0.035] px-4 py-2 text-sm font-semibold text-[color:var(--color-text-secondary)] transition hover:text-[color:var(--color-text-primary)]">
+          <button type="button" onClick={onDismiss} className="caption caption-muted min-h-11 transition-colors hover:text-[color:var(--ink)]">
             Not now
           </button>
         )}
