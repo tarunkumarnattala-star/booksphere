@@ -21,7 +21,7 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "#f5f5f7",
+          backgroundColor: "#f6f7f2",
           fontFamily: "system-ui, -apple-system, sans-serif",
           color: "#1a1a1a"
         }}

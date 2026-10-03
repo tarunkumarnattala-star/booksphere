@@ -91,3 +91,65 @@ page and it is the close. Green survives as type colour only, never as a field.
 
 Hover and focus transitions at 160ms ease. Nothing animates on scroll. `prefers-reduced-motion`
 removes the transitions.
+
+---
+
+# The product half of the system (full-app pass)
+
+The landing page proved the system on one page. This pass puts it in `src/app/globals.css` so
+every screen draws from one source, and the landing module and the product now agree.
+
+## What the product carried before
+
+| | Before | After |
+|---|---|---|
+| Ground | `#f5f5f7` with a white radial gradient painted over it | `--paper #f6f7f2`, flat |
+| Surfaces | white cards at 14 / 20 / 28 / 36px radius | no cards; `--band #eef1e9` for an inset, rules for separation |
+| Radius | four values plus `rounded-full` on every button and chip | **0** |
+| Shadow | `--shadow-soft`, `--shadow-cover`, plus eight one-off `shadow-[...]` literals | **none** |
+| Accent | gold `#a87818` on labels, plus green, blue and rose | `--accent #18392d`, type only; one alert ink for errors |
+| Weights | 400 / 430 / 470 / 500 / 550 / 560 on a system font | **300 display, 400 prose, 600 mono label** |
+| Labels | `.caption` at 12px / 550 / 0.075em in gold | `.caption` mono, 11px / 600 / **0.18em**, accent |
+| Nav | 22px blur glass bar, bottom tab bar with four icons | flat paper masthead with a rule; the bottom bar is words, not icons |
+| Motion | 200ms lifts, `translateY(-3px)` hovers, page-enter slide | 160ms colour only; the page fades, nothing moves |
+| Dead CSS | 1,256 lines of a landing page that was replaced in August | deleted (globals.css 1,600 → 353 lines) |
+
+## The ladder, with named roles
+
+| Class | Role | Value |
+|---|---|---|
+| `.display-large` | the one number or word a page is about | clamp(38, 10vw, 72) / 300 / 1.0 / −0.025em |
+| `.large-title` | page title, once | clamp(32, 7vw, 52) / 300 / 1.04 |
+| `.title-1` | section heading | clamp(26, 5vw, 38) / 300 / 1.08 |
+| `.title-2` | subsection | clamp(21, 3.2vw, 27) / 400 / 1.16 |
+| `.title-3` | a record's own title | clamp(18, 2.1vw, 21) / 400 / 1.3 |
+| `.lead` | the paragraph under a title | clamp(16, 2vw, 19) / 400 / 1.55 |
+| `.body-copy` | body prose | 15 / 400 / 1.62 |
+| `.subheadline` | supporting line | 14 / 400 / 1.5 |
+| `.footnote` | fine print | 13 / 400 / 1.45 |
+| `.caption` | mono label, eyebrow, type stamp | 11 / 600 / 0.18em / caps / mono |
+| `.prose-perspective` | a perspective read end to end | 17 / 400 / **1.72**, capped at 68ch |
+| `.numeral` | any number that carries meaning | tabular figures, 0.02em |
+| `.measure` | any prose column | 68ch |
+
+Three weights. Tailwind's `font-medium` is pulled to 400 and `font-semibold`/`font-bold` to 600
+in globals, so a stray utility cannot introduce a fourth.
+
+## Spacing
+
+The landing scale, unchanged: 4 / 8 / 12 / 20 / 32 / 52 / 84, plus
+`--s-section: clamp(52px, 9vw, 96px)`. Steps are ~1.6x apart so a gap is never ambiguous about
+whether two things belong together. Tailwind's 4px scale maps onto it: use 1 / 2 / 3 / 5 / 8 /
+13 / 21 only (4, 8, 12, 20, 32, 52, 84px).
+
+## Rules
+
+A hairline (`--rule`) separates things of the same kind. A heavier rule (`--rule-strong`, or a
+2px ink rule) opens a section. A rule is the only container this product has; there are no
+boxes, so a rule has to be exact: full measure, or flush to the text column, never inset by a
+card's padding.
+
+## Icons
+
+An icon replaces a word or it does not exist. `lucide-react` is removed from every screen in
+this pass except where it is the whole control (nothing qualified).

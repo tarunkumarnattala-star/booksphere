@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen } from "lucide-react";
 import { APP_NAME } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import { AuthNavButton } from "./auth-nav-button";
@@ -60,15 +59,14 @@ export function TopNav() {
 
   return (
     <header className="glass-nav sticky top-0 z-50">
-      <nav className="mx-auto flex h-14 max-w-[1560px] items-center justify-between px-4 md:h-16 md:px-6">
-        <Link href="/explore" className="flex items-center gap-2.5">
-          <span className="grid size-8 place-items-center rounded-[10px] bg-[color:var(--color-text-primary)] !text-white md:size-9">
-            <BookOpen size={17} strokeWidth={2.1} />
-          </span>
-          <span className="text-[19px] font-semibold tracking-[-0.04em] md:text-[21px]">{APP_NAME}</span>
+      <nav className="container-page flex h-14 items-center justify-between gap-5 md:h-16">
+        {/* The masthead of a printed page: the title, set in the page's own type. The open
+            book in a rounded square is the most generic mark a reading product can carry. */}
+        <Link href="/explore" className="text-[16px] font-semibold tracking-[-0.01em] text-[color:var(--ink)] md:text-[17px]">
+          {APP_NAME}
         </Link>
 
-        <div className="hidden items-center gap-6 lg:flex">
+        <div className="hidden items-center gap-7 lg:flex">
           {navItems.map((item) => {
             const href = item.label === "You" ? profileHref : item.href;
             const active = item.href === "/genres"
@@ -82,8 +80,8 @@ export function TopNav() {
                 href={href}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "text-sm font-medium text-[color:var(--color-text-secondary)] transition duration-200 hover:text-[color:var(--color-text-primary)]",
-                  active && "text-[color:var(--color-text-primary)]"
+                  "caption caption-muted border-b-2 border-transparent py-1 transition-colors duration-200 hover:text-[color:var(--ink)]",
+                  active && "border-[color:var(--ink)] text-[color:var(--ink)]"
                 )}
               >
                 {item.label}

@@ -75,19 +75,22 @@ export function AuthNavButton() {
     const returnable = pathname && !pathname.startsWith("/_") && pathname !== "/login";
     const loginHref = returnable ? `/login?next=${encodeURIComponent(pathname)}` : "/login";
     return (
-      <Link href={loginHref} className="inline-flex min-h-11 items-center rounded-full bg-[color:var(--color-text-primary)] px-4 py-2 text-sm font-medium !text-white transition duration-200 hover:opacity-85">
+      <Link href={loginHref} className="btn-ink btn-sm">
         Log in
       </Link>
     );
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-5">
       <NotificationBell />
-      <Link href={profileHref} className="hidden max-w-[140px] truncate rounded-full bg-white px-4 py-2 text-sm font-medium text-[color:var(--color-text-primary)] ring-1 ring-black/[0.04] lg:block">
+      <Link
+        href={profileHref}
+        className="hidden max-w-[150px] truncate text-[14px] text-[color:var(--ink)] underline decoration-[color:var(--rule-strong)] decoration-1 underline-offset-[5px] transition hover:decoration-[color:var(--ink)] lg:block"
+      >
         {label}
       </Link>
-      <button type="button" onClick={signOut} className="inline-flex min-h-11 items-center rounded-full bg-[color:var(--color-text-primary)] px-4 py-2 text-sm font-medium !text-white transition duration-200 hover:opacity-85">
+      <button type="button" onClick={signOut} className="caption caption-muted min-h-11 transition-colors hover:text-[color:var(--ink)]">
         Log out
       </button>
     </div>
