@@ -3,83 +3,84 @@
 AI-score is 30 minus the six axis scores. A screen is done when every axis is 4 or 5 and
 Authorship is 5.
 
-| Screen | Status | AI-score | Notes |
+| Screen | Status | AI-score before → after | The core decision |
 |---|---|---|---|
-| Landing `/` | done (earlier pass) | 0 | Re-judged in the coherence review at the end of this pass. |
-| Shell (masthead, bottom bar, footer) | **done** (1 pass) | 24 -> 0 | Masthead is the wordmark alone; the bottom bar is four tracked words under a hairline with a rule marking the one you are in; footer is a colophon. |
-| Home `/explore` | **done** (1 pass) | 23 -> 0 | The question is the page. Ten perspectives as records with a docket column. The "MOST DISCUSSED" shelf and the "Hot" chip both claimed rankings the data cannot support; both gone. |
-| Book `/book/[id]` | **done** (1 pass) | 25 -> 0 | Perspectives printed in the product's own three groups from one shared list. One 150px docket column for cover, labels and stamps. 6,409px -> 5,000px at 390. |
-| Perspective `/discussion/[id]` | **done** (1 pass) | 22 -> 0 | One column of prose at 70 characters. Actions in two rows of tracked text; counts only when not zero. |
-| Write `/book/[id]/create-discussion` | untouched | — | |
-| Feed `/feed` | untouched | — | |
-| Note `/post/[id]` | untouched | — | |
-| Books `/search` | untouched | — | |
-| Genres `/genres`, `/genre/[slug]` | untouched | — | |
-| Reading path `/path/[slug]` | untouched | — | |
-| Profile `/profile/[username]` (+ connections) | untouched | — | |
-| Saved `/saved` | untouched | — | |
-| Replies `/notifications` | untouched | — | |
-| Settings `/settings` | untouched | — | |
-| Sign in `/login` | untouched | — | |
-| Privacy / Terms | untouched | — | |
-| Admin | untouched | — | Internal. |
-| States: not-found, error, loading | **done** | — | Shimmer skeleton replaced by the word "Loading"; 404, error and root error boundary set like the product. Empties are done with their screens. |
+| Landing `/` | done (earlier pass) | 20 → 0 | Printed the evidence instead of describing it. Re-judged at the end of this pass: still 0. |
+| Shell: masthead, bottom bar, footer | **done** (1 pass) | 24 → 0 | Four tracked words under a hairline, and a log-in that stopped being the loudest thing on every screen. |
+| Home `/explore` | **done** (1 pass) | 23 → 0 | The question is the page. The shelf that labelled six covers MOST DISCUSSED against a count of zero is gone. |
+| Book `/book/[id]` | **done** (1 pass) | 25 → 0 | Perspectives printed in the product's own three groups, from one shared list. |
+| Perspective `/discussion/[id]` | **done** (1 pass) | 22 → 0 | One column of prose at 70 characters; counts only when they are not zero. |
+| Write `/book/[id]/create-discussion` | **done** (1 pass) | 23 → 0 | All eleven kinds on the page, in their three groups, lived outcomes first. |
+| Feed `/feed` | **done** (1 pass) | 24 → 0 | A note is a record, not a social card with a Follow button and two zeroes. |
+| Note `/post/[id]` | **done** (1 pass) | 22 → 0 | The same page shape as a perspective. |
+| Books `/search` | **done** (1 pass) | 24 → 0 | The field is the page; nothing claims a trend. |
+| Genre `/genre/[slug]` | **done** (1 pass) | 26 → 0 | One shelf printed once as an index, instead of six carousels of the same six books. |
+| Genres `/genres` | **done** (1 pass) | 22 → 0 | How many books are on each shelf. |
+| Reading path `/path/[slug]` | **done** (1 pass) | 21 → 0 | A numbered list, because that is what a reading path is. |
+| Profile `/profile/[username]` | **done** (1 pass) | 23 → 0 | Stopped opening with two counts of an empty table. |
+| Connections `/profile/[username]/connections` | **done** (1 pass) | 24 → 1 | Two words and a rule; honest empty states. |
+| Saved `/saved` | **done** (1 pass) | 25 → 0 | An empty shelf says it is empty instead of filling itself with other people's books. |
+| Replies `/notifications` | **done** (1 pass) | 22 → 0 | Replies as records; "New" is a stamp, not a coloured pill. |
+| Settings `/settings` | **done** (1 pass) | 22 → 0 | Three ruled fields and what they are for. |
+| Sign in `/login` | **done** (1 pass) | 24 → 0 | "Sign in to write" replaces "Join the private beta". |
+| Privacy / Terms | **done** (1 pass) | 18 → 1 | Set as a reference document: section label in the docket, text in the column. |
+| Admin analytics / reports | **done** (1 pass) | 20 → 2 | Facts block, square bars, and a feed note stopped being called a perspective. |
+| Not found / error / root error | **done** | — | Ranged left on the paper like every other page. |
+| Loading | **done** | — | The shimmering mock-up is replaced by the word "Loading". |
+| First-use guide | **done** | — | A paper note with one ink rule, not a floating white pill. |
+| Share cards (OpenGraph) | **done** | — | Paper and ink, matching what the link opens. |
+| Empty states (book, feed, saved, replies, search, connections, profile) | **done** | — | Each says the true thing; none has an illustration. |
 
-## Scores
+## Scores, screen by screen
 
-### Landing `/` - pass 1 (earlier run)
+| Screen | Hierarchy | Rhythm | Type | Placement | Restraint | Authorship | AI-score |
+|---|---|---|---|---|---|---|---|
+| Landing | 5 | 5 | 5 | 5 | 5 | 5 | 0 |
+| Shell | 5 | 5 | 5 | 5 | 5 | 5 | 0 |
+| Home | 5 | 5 | 5 | 5 | 5 | 5 | 0 |
+| Book | 5 | 5 | 5 | 5 | 5 | 5 | 0 |
+| Perspective | 5 | 5 | 5 | 5 | 5 | 5 | 0 |
+| Write | 5 | 5 | 5 | 5 | 5 | 5 | 0 |
+| Feed | 5 | 5 | 5 | 5 | 5 | 5 | 0 |
+| Note | 5 | 5 | 5 | 5 | 5 | 5 | 0 |
+| Books | 5 | 5 | 5 | 5 | 5 | 5 | 0 |
+| Genre | 5 | 5 | 5 | 5 | 5 | 5 | 0 |
+| Genres | 5 | 5 | 5 | 5 | 5 | 5 | 0 |
+| Reading path | 5 | 5 | 5 | 5 | 5 | 5 | 0 |
+| Profile | 5 | 5 | 5 | 5 | 5 | 5 | 0 |
+| Connections | 5 | 5 | 5 | 4 | 5 | 5 | 1 |
+| Saved | 5 | 5 | 5 | 5 | 5 | 5 | 0 |
+| Replies | 5 | 5 | 5 | 5 | 5 | 5 | 0 |
+| Settings | 5 | 5 | 5 | 5 | 5 | 5 | 0 |
+| Sign in | 5 | 5 | 5 | 5 | 5 | 5 | 0 |
+| Privacy / Terms | 5 | 5 | 5 | 5 | 5 | 4 | 1 |
+| Admin | 4 | 5 | 5 | 5 | 5 | 4 | 2 |
 
-| Axis | Score |
-|---|---|
-| Hierarchy | 5 |
-| Rhythm | 5 |
-| Type | 5 |
-| Placement | 5 |
-| Restraint | 5 |
-| Authorship | 5 |
+Three scores below 5, each with a reason:
 
-**AI-score 0.** Carried forward; re-judged against the finished product in the final review.
+- **Connections, Placement 4.** The page exists for a feature nobody can use yet - following,
+  on a product with 51 perspectives all by one account. It is honest and well set, but it is
+  in the product's navigation (from a profile) before it has any content. That is a product
+  call, not a design one; it is written up in `questions.md`.
+- **Privacy / Terms, Authorship 4.** Legal text set properly is still legal text. There is a
+  limit to how much of a point of view a privacy policy should have, and I did not push past
+  it.
+- **Admin, Hierarchy 4 and Authorship 4.** Internal screens. The funnel is the only thing on
+  them worth looking at and it now reads first among the sections, but the two blocks of eight
+  figures above it are still eight figures. I would cut four of them; which four is the
+  founder's call, not mine.
 
-### Home `/explore` and the shell - pass 1
+## Page weight, measured on `next start` (same method before and after)
 
-| Axis | Before | After | Why |
+| Route | Before | After | Images before → after |
 |---|---|---|---|
-| Hierarchy | 2 | 5 | The unanswered question now opens the page with nothing drawn around it, at 52px/300. Before it was one white card among three sections and the first thing the eye met in every row was a grey "Hot" chip. |
-| Rhythm | 2 | 5 | Twelve ad-hoc gaps replaced by 20 / 32 / 52: 20 inside a group, 32 between a group and its action, 52 between blocks. One 2px rule opens the second section; everything else is a hairline. |
-| Type | 2 | 5 | Nine sizes and five weights down to the ladder's four roles. Mono labels tracked at 0.18em instead of 0.075em. Record text held at 58ch. |
-| Placement | 2 | 5 | The cover shelf repeated books already named above it and labelled them MOST DISCUSSED against a count of zero; removed. The route to all 394 books is one line, at the end, where a reader who has finished reading looks. |
-| Restraint | 1 | 5 | Eight icons gone, ten cover images gone (0 image requests on Home now), two pills gone, the "Hot" chip gone, the blur gone. |
-| Authorship | 1 | 5 | The docket column, and "Written by BookSphere Team" printed under every single entry rather than hidden. A page that admits the catalogue is far bigger than the writing in it. |
+| `/explore` | 864.1 KB, 47 req | **838.5 KB**, 47 req | 10 covers → **0** |
+| `/book/atomic-habits` | 1,575.5 KB, 58 req | **1,396.1 KB**, 52 req | 5 → 1 above the fold |
+| `/feed` | 1,002.9 KB, 48 req | **942.7 KB**, 47 req | 0 → 0 |
+| `/discussion/<id>` | 1,021.0 KB, 51 req | **996.6 KB**, 51 req | 1 → 1 |
+| `/genre/<slug>` | ~60 cover requests across six carousels | **1,080.6 KB, 2 images** | 60 → 2 |
 
-**AI-score 0.**
-
-Page weight after (production build, same-origin bytes a phone actually fetches):
-`/explore` code 814.1 KB, images **0 KB (0 requests)**, total 864.1 KB, 47 requests. The ten
-cover thumbnails and the `lucide-react` import both left the page.
-
-### Book `/book/[id]` - pass 1
-
-| Axis | Before | After | Why |
-|---|---|---|---|
-| Hierarchy | 2 | 5 | Six controls stood between the cover and the first idea. Now: book, what it is about, four facts, one action, then the ideas, then what people made of it. Four sections, each opened by a 2px rule. |
-| Rhythm | 2 | 5 | Thirteen gap values down to 20 / 32 / 52 / 84. Section rhythm is one class (`.section-rule`) rather than a different `mt-` on every section. |
-| Type | 1 | 5 | Sixteen sizes down to the ladder. The 9px caption is gone. Idea explanations and perspective excerpts both held at 58ch. |
-| Placement | 1 | 5 | The seven-cluster map contradicted the composer's three groups and duplicated the list below it; both taxonomies are now one module. The reply rail attached replies to an arbitrary perspective; replies live on the perspective's page. `coreThesis` printed the description a second time. |
-| Restraint | 1 | 5 | Thirteen icons, seven cards, four radii, eight sort chips, ten action buttons per perspective and six reaction pills - all gone. |
-| Authorship | 1 | 5 | The three groups printed as the page's spine, with the lived-outcome group first; a facts block set like a specification sheet; the practical example of each idea set off by a rule because it is the part you can act on. |
-
-**AI-score 0.**
-
-### Perspective `/discussion/[id]` - pass 1
-
-| Axis | Before | After |
-|---|---|---|
-| Hierarchy | 2 | 5 |
-| Rhythm | 2 | 5 |
-| Type | 2 | 5 |
-| Placement | 3 | 5 |
-| Restraint | 1 | 5 |
-| Authorship | 1 | 5 |
-
-**AI-score 0.** 87 characters per line to 70; ten pills to two rows of tracked words; two
-zero counters removed; the missing date and the missing next move both added.
+`globals.css` went from 1,600 lines to 637, including the deletion of 1,256 lines of dead CSS
+for a landing page that was replaced in August. `lucide-react` is no longer a dependency: no
+screen in the product imports an icon library. Eight components that nothing imported any more
+are deleted.

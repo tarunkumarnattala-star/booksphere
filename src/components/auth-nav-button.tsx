@@ -74,8 +74,11 @@ export function AuthNavButton() {
     // a reader who hit a dead link and logged in would land on another dead end.
     const returnable = pathname && !pathname.startsWith("/_") && pathname !== "/login";
     const loginHref = returnable ? `/login?next=${encodeURIComponent(pathname)}` : "/login";
+    // A filled black button in the corner of every screen made signing in the
+    // highest-contrast thing in the product, on a product whose whole stance is that
+    // reading never asks you to. It is a label, like the rest of the masthead.
     return (
-      <Link href={loginHref} className="btn-ink btn-sm">
+      <Link href={loginHref} className="caption caption-muted inline-flex min-h-11 items-center transition-colors hover:text-[color:var(--ink)]">
         Log in
       </Link>
     );

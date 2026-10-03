@@ -141,3 +141,47 @@ falls through to "Best for ...". The emoji branches are one non-zero seed away f
 on every shelf. I have not touched `data.ts`.
 
 **Owed: delete the three emoji branches, or tell me to.**
+
+### 11. The connections page is in the product before the feature has anything in it
+
+`/profile/<name>/connections` is reachable from every profile and exists for following, on a
+product where 51 perspectives are all by one editorial account. Both tabs are empty for
+everyone. I set it honestly rather than hiding it, because hiding a route is a navigation
+decision.
+
+**Owed: keep the link on profiles, or drop it until two people follow each other?**
+My recommendation is to drop the link and keep the route.
+
+### 12. "Followers" and "Following" are counts of a table that is empty
+
+Removed from the profile's facts row. The counts are real, which is the problem: a profile
+whose two largest numbers are zero and zero tells every visitor that nobody is here.
+
+**Owed: nothing, unless you want them back once there are readers.**
+
+### 13. The BookSphere Team profile bio says "community"
+
+"Starter prompts and editorial picks to help the community begin with substance." It is a
+database row, so I did not touch it, and "community" is a word the product is careful about
+everywhere else.
+
+**Owed: a replacement line.** Mine would be: "Editorial perspectives, written by the people
+building BookSphere, to give each book a first reading to argue with."
+
+### 14. The six editorial shelf labels no longer appear anywhere except as a stamp
+
+Editor's Pick, Beginner Essential, Hidden Gem and Active Perspective were six carousels. The
+flags are real per book, so they now appear as one stamp beside a title in the genre index,
+and the three real editor's picks lead the page. `getHomeDiscoveryShelves`,
+`getGenreDiscoveryShelves`, `getMostSaved`, `getMostRecommended`, `getRecentlyAdded`,
+`getTrendingDiscussions` and `withFallback` are no longer called by any screen.
+
+**Owed: confirmation that those shelves are retired**, or a rule for when a shelf is allowed
+to exist (my suggestion: only when it can be filled without `withFallback` padding).
+
+### 15. Two numbers on the landing page are still hard-coded
+
+Noted by you, not fixed by me: "Fifty-one perspectives" and the four perspective excerpts.
+Everything I touched counts live - `books.length` on Home, `/search` and `/genres`,
+`posts.length` on a book page, `shelf.length` on a genre page - so the landing is now the only
+page in the product printing a number it did not count.
