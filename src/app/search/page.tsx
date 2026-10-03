@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/metadata";
-import Link from "next/link";
 import { SearchClient } from "@/components/search-client";
 import { findKnowledgeConcept } from "@/lib/concepts";
-import { genres, readingPaths } from "@/lib/data";
+import { books } from "@/lib/data";
 import { getSupabaseFeedContributions } from "@/lib/contributions";
 import { getSupabaseKnowledgePosts } from "@/lib/knowledge-posts";
 
@@ -31,62 +30,27 @@ export default async function SearchPage({ searchParams }: { searchParams?: Prom
     : [[], []];
 
   return (
-    <div className={`editorial-page max-w-[1440px] ${focusedConcept ? "pt-6 md:pt-9" : ""}`}>
-      {!focusedConcept && <>
-        <p className="caption mb-3">Search</p>
-        <h1 className="large-title max-w-[1080px]">{adding ? "Choose the book behind your insight." : "Turn curiosity into knowledge."}</h1>
-        <p className="body-copy mt-4 max-w-[760px] text-[17px] leading-7 md:text-[18px]">
-          {adding
-            ? "BookSphere works best when every insight has context. Find the book first, then add the idea, application, question, or disagreement that helps another reader."
-            : "Search a book, concept, question, or goal. Understand the idea, check the context, and see the books and real perspectives behind it."}
-        </p>
-        {/* Genres were their own tab competing with this one. They are a way of browsing
-            books, so they live here, under the box that finds a book faster. */}
-        <div className="mt-6">
-          <p className="caption mb-3">Or browse by genre</p>
-          <div className="flex flex-wrap gap-2">
-            {genres.map((genre) => (
-              <Link
-                key={genre.slug}
-                href={`/genre/${genre.slug}`}
-                className="rounded-full bg-white px-3.5 py-2 text-sm font-medium text-[color:var(--color-text-secondary)] shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] transition hover:text-[color:var(--color-text-primary)]"
-              >
-                {genre.name}
-              </Link>
-            ))}
-          </div>
-        </div>
-        {/* Reading paths had no way in once Explore stopped listing them. They are a way of
-            choosing books, so they belong here with the genres. */}
-        {readingPaths.length > 0 && (
-          <div className="mt-8">
-            <p className="caption mb-3">Or follow a reading path</p>
-            <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
-              {readingPaths.map((path) => (
-                <Link
-                  key={path.slug}
-                  href={`/path/${path.slug}`}
-                  className="rounded-[20px] bg-white p-4 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] transition hover:bg-black/[0.015]"
-                >
-                  <p className="text-[15px] font-medium leading-snug tracking-[-0.02em] text-[color:var(--color-text-primary)]">{path.title}</p>
-                  <p className="mt-1.5 line-clamp-2 text-sm leading-[1.45] text-[color:var(--color-text-secondary)]">{path.description}</p>
-                  <p className="mt-2 text-[12px] text-[color:var(--color-text-muted)]">{path.bookIds.length} books in order</p>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
-      </>}
-      {adding && !focusedConcept && (
-        <div className="mt-6 rounded-[24px] bg-white p-4 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">
-          <p className="text-sm font-medium leading-6 text-[color:var(--color-text-secondary)]">
-            Open a book result and use <span className="font-semibold text-[color:var(--color-text-primary)]">Share a perspective</span> to publish it with context.
+    <div className="editorial-page">
+      {!focusedConcept && (
+        <header>
+          <p className="caption">Books</p>
+          <h1 className="large-title mt-4 max-w-[16ch]">
+            {adding ? "Choose the book behind your perspective" : <>All <span className="numeral">{books.length}</span> books</>}
+          </h1>
+          <p className="body-copy measure mt-5">
+            {adding
+              ? "Every perspective is attached to a book. Find the book first, then write what you made of it."
+              : "Type a title, an author, an idea or a question. Or browse by genre or reading path underneath."}
           </p>
-          <Link href="/genres" className="mt-3 inline-flex text-sm font-medium text-[color:var(--color-text-primary)] transition hover:opacity-70">
-            Browse by genre instead
-          </Link>
-        </div>
+        </header>
       )}
+
+      {adding && !focusedConcept && (
+        <p className="footnote mt-5 border-l-2 border-[color:var(--ink)] pl-4">
+          Open a book and use <span className="text-[color:var(--ink)]">Share a perspective</span> to publish it with its context.
+        </p>
+      )}
+
       <SearchClient
         key={params?.q || "search-default"}
         initialQuery={params?.q || ""}

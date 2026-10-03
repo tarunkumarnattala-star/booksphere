@@ -58,7 +58,7 @@ export function LocalKnowledgePostPage({ id, initialPost }: { id: string; initia
       <div className="editorial-page editorial-prose">
         <BackToFeedButton />
         <p className="caption mt-5">Removed</p>
-        <h1 className="title-1 mt-4 max-w-[20ch]">Your note has been deleted.</h1>
+        <h1 className="large-title mt-4 max-w-[20ch]">Your note has been deleted.</h1>
         <p className="body-copy measure mt-5">
           It is no longer on the feed or on your profile.{" "}
           <Link href="/feed" className="text-[color:var(--ink)] underline decoration-[color:var(--rule-strong)] underline-offset-[5px]">Back to the feed</Link>
@@ -80,7 +80,7 @@ export function LocalKnowledgePostPage({ id, initialPost }: { id: string; initia
       <div className="editorial-page editorial-prose">
         <BackToFeedButton />
         <p className="caption mt-5">Note unavailable</p>
-        <h1 className="title-1 mt-4 max-w-[20ch]">This note is not here.</h1>
+        <h1 className="large-title mt-4 max-w-[20ch]">This note is not here.</h1>
         <p className="body-copy measure mt-5">It may have been removed, or the link may be incomplete.</p>
       </div>
     );

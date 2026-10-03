@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Bookmark, Heart } from "lucide-react";
 import { requireProfile } from "@/lib/auth-client";
 import { canUseLocalCommunityFallback, COMMUNITY_UNAVAILABLE_MESSAGE } from "@/lib/community-runtime";
 import { getUserContributionState, toggleSupabaseLike, toggleSupabaseSaveInsight } from "@/lib/contributions";
@@ -107,19 +106,17 @@ export function SearchPreviewActions({
   const visibleSaves = Math.max(0, saves + (saved === persistedSaved ? 0 : saved ? 1 : -1));
 
   return (
-    <div>
-      <div className="flex items-center gap-1.5">
-        <button type="button" onClick={() => toggle("like")} disabled={syncing} aria-pressed={liked} aria-label={liked ? "Remove like" : "Like this post"} className="inline-flex min-h-11 items-center gap-1.5 rounded-full bg-black/[0.035] px-3 text-xs font-medium text-[color:var(--color-text-secondary)] transition hover:bg-black/[0.065] disabled:opacity-60">
-          <Heart size={15} className={liked ? "fill-[color:var(--color-rose)] text-[color:var(--color-rose)]" : ""} />
-          {visibleLikes}
-        </button>
-        <button type="button" onClick={() => toggle("save")} disabled={syncing} aria-pressed={saved} aria-label={saved ? "Remove from saved posts" : "Save this post"} className="inline-flex min-h-11 items-center gap-1.5 rounded-full bg-black/[0.035] px-3 text-xs font-medium text-[color:var(--color-text-secondary)] transition hover:bg-black/[0.065] disabled:opacity-60">
-          <Bookmark size={15} className={saved ? "fill-current text-[color:var(--color-accent)]" : ""} />
-          {saved ? "Saved" : "Save"}{kind === "discussion" && visibleSaves > 0 ? ` ${visibleSaves}` : ""}
-        </button>
-      </div>
+    <>
+      <button type="button" onClick={() => toggle("like")} disabled={syncing} aria-pressed={liked} aria-label={liked ? "Remove like" : "Like this post"} className="control">
+        {liked ? "Liked" : "Like"}
+        {visibleLikes > 0 ? <span className="numeral">{visibleLikes}</span> : null}
+      </button>
+      <button type="button" onClick={() => toggle("save")} disabled={syncing} aria-pressed={saved} aria-label={saved ? "Remove from saved posts" : "Save this post"} className="control">
+        {saved ? "Saved" : "Save"}
+        {kind === "discussion" && visibleSaves > 0 ? <span className="numeral">{visibleSaves}</span> : null}
+      </button>
       {notice && <LoginRequiredNotice message={notice} onDismiss={() => setNotice("")} />}
-      {error && <p role="alert" className="mt-2 text-xs font-medium text-[color:var(--color-rose)]">{error}</p>}
-    </div>
+      {error && <p role="alert" className="footnote text-[color:var(--color-rose)]">{error}</p>}
+    </>
   );
 }

@@ -21,7 +21,7 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
   return (
     <div className="editorial-page editorial-prose">
       <p className="caption">Something went wrong</p>
-      <h1 className="title-1 mt-4 max-w-[20ch]">This page could not finish loading.</h1>
+      <h1 className="large-title mt-4 max-w-[20ch]">This page could not finish loading.</h1>
       <p className="body-copy measure mt-5">
         Nothing you wrote has been cleared. Load the page again, or go back to Home.
       </p>

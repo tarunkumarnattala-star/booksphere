@@ -153,3 +153,23 @@ card's padding.
 
 An icon replaces a word or it does not exist. `lucide-react` is removed from every screen in
 this pass except where it is the whole control (nothing qualified).
+
+## The heading rule (set during the coherence review after six screens)
+
+| Level | Class | Used for |
+|---|---|---|
+| Page | `.large-title` | the `h1`, once per page, whatever the page is |
+| Section | `.title-1` | a section inside a page, always under a `.caption` label |
+| Record | `.record-title` | the title of one perspective, note, idea or book in a list |
+| Prompt | `.headline` | an invitation to write, deliberately a step below a record |
+
+`/feed` was setting its `h1` at `.title-1` while `/book` and `/discussion` set theirs at
+`.large-title`, so the same level of heading was two different sizes depending on the route.
+Error and not-found pages follow the same rule; there is no "this page is small so its
+heading is smaller" exception.
+
+## Label-to-list spacing
+
+A `.caption` that labels a list sits **20px** above it (`.records-tight`). A heading with a
+lead paragraph sits **52px** above its list (`.records`). The gap says whether the words above
+are a label or an introduction.

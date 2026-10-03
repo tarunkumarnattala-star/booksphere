@@ -41,7 +41,7 @@ export default async function FeedPage({ searchParams }: { searchParams?: Promis
     <div className="editorial-page">
       <header>
         <p className="caption">Feed</p>
-        <h1 className="title-1 mt-4 max-w-[18ch]">What readers are learning, out loud</h1>
+        <h1 className="large-title mt-4 max-w-[18ch]">What readers are learning, out loud</h1>
         <p className="body-copy measure mt-5">
           Something you learned, tried, changed your mind about, or still cannot settle. A book
           can be the reason, but it is never required.
