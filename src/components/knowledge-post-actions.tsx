@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Heart, MessageCircle, Pencil, Share2, Trash2 } from "lucide-react";
 import { requireProfile } from "@/lib/auth-client";
 import { canUseLocalCommunityFallback, COMMUNITY_UNAVAILABLE_MESSAGE } from "@/lib/community-runtime";
 import {
@@ -199,41 +198,44 @@ export function KnowledgePostActions({ post, onUpdated, onDeleted }: {
   const visibleLikes = Math.max(0, post.likes + likeDelta);
 
   return (
-    <div className="mt-8 border-t border-[color:var(--color-hairline)] pt-5">
-      <div className="flex flex-wrap items-center gap-2 text-sm font-medium text-[color:var(--color-text-secondary)]">
-        <button type="button" onClick={toggleLike} className="inline-flex min-h-10 items-center gap-2 rounded-full bg-black/[0.035] px-3 transition hover:bg-black/[0.06]" aria-label={liked ? "Remove like from this post" : "Like this post"} aria-pressed={liked}>
-          <Heart size={16} className={liked ? "fill-[color:var(--color-rose)] text-[color:var(--color-rose)]" : ""} />
-          {visibleLikes}
+    <div className="mt-8 border-t border-[color:var(--rule)] pt-4">
+      <div className="control-row">
+        <button type="button" onClick={openComments} className="control control-lead" aria-label={`View ${post.comments} ${post.comments === 1 ? "reply" : "replies"}`}>
+          Reply{post.comments > 0 ? <span className="numeral">{post.comments}</span> : null}
         </button>
-        <button type="button" onClick={openComments} className="inline-flex min-h-10 items-center gap-2 rounded-full bg-black/[0.035] px-3 transition hover:bg-black/[0.06]" aria-label={`View ${post.comments} ${post.comments === 1 ? "comment" : "comments"}`}>
-          <MessageCircle size={16} /> {post.comments}
+        <button type="button" onClick={toggleLike} className="control control-lead" aria-label={liked ? "Remove like from this post" : "Like this post"} aria-pressed={liked}>
+          {liked ? "Liked" : "Like"}
+          {visibleLikes > 0 ? <span className="numeral">{visibleLikes}</span> : null}
         </button>
-        <button type="button" onClick={sharePost} className="inline-flex min-h-10 items-center gap-2 rounded-full bg-black/[0.035] px-3 transition hover:bg-black/[0.06]">
-          <Share2 size={16} /> {copied ? "Copied" : "Share"}
+        <button type="button" onClick={sharePost} className="control control-lead">
+          {copied ? "Link copied" : "Share"}
         </button>
         {isOwner && (
-          <div className="ml-auto flex gap-1">
-            <button type="button" onClick={() => setEditing((value) => !value)} className="grid size-10 place-items-center rounded-full transition hover:bg-black/[0.05]" aria-label="Edit your post"><Pencil size={16} /></button>
-            <button type="button" disabled={saving} onClick={deletePost} className="grid size-10 place-items-center rounded-full text-[color:var(--color-rose)] transition hover:bg-[color:var(--color-rose)]/10" aria-label="Delete your post"><Trash2 size={16} /></button>
-          </div>
+          <>
+            <button type="button" onClick={() => setEditing((value) => !value)} aria-expanded={editing} className="control" aria-label="Edit your post">Edit</button>
+            <button type="button" disabled={saving} onClick={deletePost} className="control text-[color:var(--color-rose)] hover:!text-[color:var(--color-rose)]" aria-label="Delete your post">Delete</button>
+          </>
         )}
       </div>
 
       {editing && (
-        <div className="mt-4 grid gap-3 rounded-[20px] bg-black/[0.025] p-4">
-          <label className="text-sm font-medium">Edit post<textarea value={draft.body} onChange={(event) => setDraft({ ...draft, body: event.target.value })} maxLength={2000} rows={6} className="mt-2 w-full rounded-[16px] bg-white px-4 py-3 text-base leading-7 outline-none ring-1 ring-black/5 focus:ring-black/20" /></label>
-          <div className="grid gap-2 sm:grid-cols-2">
-            <input value={draft.topic} onChange={(event) => setDraft({ ...draft, topic: event.target.value })} maxLength={80} placeholder="Topic (optional)" className="min-h-11 rounded-[14px] bg-white px-4 text-sm outline-none ring-1 ring-black/5 focus:ring-black/20" />
-            <input value={draft.referenceTitle} onChange={(event) => setDraft({ ...draft, referenceTitle: event.target.value })} maxLength={200} placeholder="Book or source (optional)" className="min-h-11 rounded-[14px] bg-white px-4 text-sm outline-none ring-1 ring-black/5 focus:ring-black/20" />
+        <div className="mt-5 grid gap-5 border-l-2 border-[color:var(--ink)] pl-5">
+          <label className="field-label">
+            <span className="caption caption-muted">Edit the note</span>
+            <textarea value={draft.body} onChange={(event) => setDraft({ ...draft, body: event.target.value })} maxLength={2000} rows={8} className="field" />
+          </label>
+          <div className="grid gap-5 sm:grid-cols-2">
+            <input value={draft.topic} onChange={(event) => setDraft({ ...draft, topic: event.target.value })} maxLength={80} placeholder="Topic" aria-label="Topic" className="field" />
+            <input value={draft.referenceTitle} onChange={(event) => setDraft({ ...draft, referenceTitle: event.target.value })} maxLength={200} placeholder="Book or source" aria-label="Book or source" className="field" />
           </div>
-          <div className="flex gap-2">
-            <button type="button" disabled={saving} onClick={saveEdit} className="min-h-10 rounded-full bg-[color:var(--color-text-primary)] px-5 text-sm font-semibold !text-white disabled:opacity-50">{saving ? "Saving..." : "Save changes"}</button>
-            <button type="button" onClick={() => setEditing(false)} className="min-h-10 rounded-full bg-white px-5 text-sm font-medium">Cancel</button>
+          <div className="control-row">
+            <button type="button" disabled={saving} onClick={saveEdit} className="btn-ink btn-sm">{saving ? "Saving" : "Save changes"}</button>
+            <button type="button" onClick={() => setEditing(false)} className="control">Cancel</button>
           </div>
         </div>
       )}
       {notice && <LoginRequiredNotice message={notice} onDismiss={() => setNotice("")} />}
-      {error && <p role="alert" className="mt-3 rounded-[14px] bg-[color:var(--color-rose)]/10 px-4 py-3 text-sm font-medium text-[color:var(--color-rose)]">{error}</p>}
+      {error && <p role="alert" className="footnote mt-4 border-l-2 border-[color:var(--color-rose)] pl-4 text-[color:var(--color-rose)]">{error}</p>}
     </div>
   );
 }

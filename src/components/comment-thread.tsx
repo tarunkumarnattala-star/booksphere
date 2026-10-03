@@ -347,7 +347,9 @@ export function CommentThread({
             className={`border-t border-[color:var(--rule)] py-4 ${depth ? "border-l border-l-[color:var(--rule-strong)] pl-5" : ""}`}
             style={{ marginLeft: `${Math.min(depth, 3) * 20}px` }}
           >
-            <p className="caption caption-muted">
+            {/* A person's name keeps its own capitals. Tracked caps are for labels, and a
+                name is not a label. */}
+            <p className="footnote text-[color:var(--ink)]">
               {comment.name}
               {comment.updatedAt && comment.updatedAt !== comment.createdAt ? " \u00b7 Edited" : ""}
             </p>
