@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { BookCard } from "@/components/book-card";
+import { BookCover } from "@/components/book-cover";
+import { bookCoverData } from "@/lib/book-cover-data";
 import { DiscussionCard } from "@/components/discussion-card";
-import { EmptyState } from "@/components/empty-state";
 import { KnowledgeNoteCard } from "@/components/knowledge-note-card";
 import { requireProfile } from "@/lib/auth-client";
 import { getSupabaseContributionsByIds, localBookForDbBook } from "@/lib/contributions";
@@ -156,12 +156,18 @@ export function SavedClient() {
     return selected.length ? selected : getSavedInsightPosts(4);
   }, [localPosts, remoteInsights, savedInsightIds]);
 
-  if (loading) return <p role="status" className="body-copy mt-10">Loading your saved shelf...</p>;
+  if (loading) return <p role="status" className="caption caption-muted mt-8">Loading your shelf</p>;
 
   if (signedIn === false) {
     return (
-      <div className="mt-8">
-        <EmptyState title="Log in to open your saved shelf" body="Saved books and perspectives are private to your account and stay available across devices after you sign in." action={<Link href="/login" className="rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-medium !text-white">Log in</Link>} />
+      <div className="section-rule">
+        <p className="caption">Signed out</p>
+        <h2 className="title-1 mt-4 max-w-[20ch]">Your shelf is private to your account.</h2>
+        <p className="body-copy measure mt-5">
+          Saved books and perspectives stay with your account, so they are there on any device you
+          sign in on.
+        </p>
+        <Link href="/login?next=%2Fsaved" className="btn-ink mt-8">Sign in</Link>
       </div>
     );
   }
@@ -170,33 +176,64 @@ export function SavedClient() {
   // says the opposite - and then a shelf of editorial books under "Books readers save most",
   // all at once. Say one thing.
   if (error) {
-    return <p role="alert" className="mt-8 rounded-[20px] bg-[color:var(--color-rose)]/10 p-4 text-sm font-medium text-[color:var(--color-rose)]">{error}</p>;
+    return <p role="alert" className="body-copy measure mt-8 border-l-2 border-[color:var(--color-rose)] pl-5 text-[color:var(--color-rose)]">{error}</p>;
   }
 
   const hasPersonalSaves = savedBookIds.length > 0 || savedInsightIds.length > 0 || savedNotes.length > 0;
 
+  if (!hasPersonalSaves) {
+    return (
+      <div className="section-rule">
+        <p className="caption">Empty</p>
+        <h2 className="title-1 mt-4 max-w-[20ch]">Nothing kept yet.</h2>
+        <p className="body-copy measure mt-5">
+          Save a book or a perspective and it waits here. Nobody else sees this page.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <>
-      {!hasPersonalSaves && <div className="mt-8"><EmptyState title="Your saved shelf is ready" body="Save a book or a perspective to make this page personal. Your private shelf will appear here." /></div>}
-
-      {savedInsights.length > 0 && (
-        <section className="mt-14">
-          <h2 className="title-2 mb-5">My Saved Perspectives</h2>
-          <div className="grid gap-5 lg:grid-cols-2">{savedInsights.map((post) => <DiscussionCard key={post.id} post={post} showBook compact />)}</div>
+      {/* Only what this reader actually saved. An empty shelf used to fill itself with
+          editorial books under "Books readers save most" and four unsaved perspectives,
+          directly below a line saying the shelf was ready for them. */}
+      {savedInsightIds.length > 0 && savedInsights.length > 0 && (
+        <section className="section-rule">
+          <p className="caption">Perspectives you kept</p>
+          <ol className="records records-tight">
+            {savedInsights.map((post) => <DiscussionCard key={post.id} post={post} showBook />)}
+          </ol>
         </section>
       )}
 
       {savedNotes.length > 0 && (
-        <section className="mt-14">
-          <h2 className="title-2 mb-5">My Saved Posts</h2>
-          <div className="grid gap-5 lg:grid-cols-2">{savedNotes.map((post) => <KnowledgeNoteCard key={post.id} post={post} />)}</div>
+        <section className="section-rule">
+          <p className="caption">Notes you kept</p>
+          <ol className="records records-tight">
+            {savedNotes.map((post) => <KnowledgeNoteCard key={post.id} post={post} />)}
+          </ol>
         </section>
       )}
 
-      {savedBooks.length > 0 && (
-        <section className="mt-14">
-          <h2 className="title-2 mb-5">{savedBookIds.length ? "My Saved Books" : "Books readers save most"}</h2>
-          <div className="shelf-scroll flex gap-5 overflow-x-auto pb-4">{savedBooks.map((book) => <BookCard key={book.id} book={book} badge={savedBookIds.length ? "Saved" : "Most Saved"} signal="saves" />)}</div>
+      {savedBookIds.length > 0 && savedBooks.length > 0 && (
+        <section className="section-rule">
+          <p className="caption">Books you kept</p>
+          <ol className="records records-tight">
+            {savedBooks.map((book) => (
+              <li key={book.id} className="record record-media">
+                <Link href={`/book/${book.id}`} className="block w-full md:w-[96px]" tabIndex={-1} aria-hidden="true">
+                  <BookCover book={bookCoverData(book)} className="w-full" />
+                </Link>
+                <div className="min-w-0">
+                  <h3 className="record-title">
+                    <Link href={`/book/${book.id}`} className="transition-colors hover:text-[color:var(--accent)]">{book.title}</Link>
+                  </h3>
+                  <p className="record-meta !mt-2">{book.author}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </section>
       )}
     </>

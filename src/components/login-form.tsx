@@ -2,7 +2,6 @@
 
 import { useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
-import { Mail } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 import { createLocalProfile } from "@/lib/local-session";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
@@ -112,72 +111,59 @@ export function LoginForm({ next }: { next?: string }) {
   }
 
   return (
-    <div className="rounded-[32px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-8">
-      {/* The landing CTA reads "Join the Private Beta" and lands here. This greeted every
-          arrival with "Welcome Back" and offered only a log in, so the one screen between a
-          stranger and an account told them they were in the wrong place - while the thing
-          that actually matters went unsaid: with magic links, entering an email is how you
-          join. */}
-      <p className="caption">New here or returning</p>
-      <h2 className="title-2 mt-2">Enter your email to join or log in.</h2>
-      <p className="body-copy mt-2 text-[15px] leading-6">
-        No password needed. If this is your first time, your email creates your account.
-      </p>
+    <div className="section-rule">
       {googleAuthEnabled && inApp && (
-        <div className="mt-6 rounded-[16px] bg-black/[0.045] p-4">
-          <p className="text-sm font-semibold text-[color:var(--color-text-primary)]">Open this in your browser first</p>
-          <p className="body-copy mt-1 text-[14px] leading-6">
-            Google will not complete sign-in inside an app&apos;s built-in browser. Tap the menu in the
-            corner of this window and choose &ldquo;Open in browser&rdquo;, or copy the link and paste
-            it into Safari or Chrome.
+        <div className="mb-8 border-l-2 border-[color:var(--ink)] pl-5">
+          <p className="caption">Open this in your browser first</p>
+          <p className="body-copy measure mt-3">
+            Google will not complete sign-in inside an app&apos;s built-in browser. Tap the menu in
+            the corner of this window and choose &ldquo;Open in browser&rdquo;, or copy the link and
+            paste it into Safari or Chrome.
           </p>
-          <button
-            type="button"
-            onClick={copyLink}
-            className="mt-3 inline-flex min-h-11 items-center rounded-full border border-black/10 bg-white px-4 text-sm font-semibold"
-          >
+          <button type="button" onClick={copyLink} className="btn-quiet btn-sm mt-5">
             {copied ? "Link copied" : "Copy the link"}
           </button>
         </div>
       )}
+
       {googleAuthEnabled && (
         <>
-          <button
-            type="button"
-            onClick={signInWithGoogle}
-            disabled={loading}
-            className="mt-6 flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-[color:var(--color-text-primary)] px-4 py-3 text-sm font-medium !text-white transition hover:opacity-85"
-          >
+          <button type="button" onClick={signInWithGoogle} disabled={loading} className="btn-ink w-full sm:w-auto">
             Continue with Google
           </button>
-          <div className="my-5 flex items-center gap-3 text-xs font-semibold uppercase text-[color:var(--color-text-muted)]">
-            <span className="h-px flex-1 bg-[color:var(--color-hairline)]" />
-            or use email
-            <span className="h-px flex-1 bg-[color:var(--color-hairline)]" />
-          </div>
+          <p className="caption caption-muted mt-8">Or use email</p>
         </>
       )}
-      <form onSubmit={signInWithEmail} className={`grid gap-3 ${googleAuthEnabled ? "" : "mt-6"}`}>
-        <label htmlFor="login-email" className="text-sm font-medium text-[color:var(--color-text-primary)]">
-          Email address
+
+      {/* With magic links, entering an email is how you join - so the page says that instead
+          of greeting a first-time reader with "Welcome back". */}
+      <form onSubmit={signInWithEmail} className={googleAuthEnabled ? "mt-5 grid gap-5" : "grid gap-5"}>
+        <label htmlFor="login-email" className="field-label">
+          <span className="caption caption-muted">Email address</span>
+          <input
+            id="login-email"
+            type="email"
+            inputMode="email"
+            autoComplete="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            placeholder="you@example.com"
+            className="field"
+          />
         </label>
-        <input
-          id="login-email"
-          type="email"
-          inputMode="email"
-          autoComplete="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          placeholder="you@example.com"
-          className="min-h-12 w-full rounded-[16px] bg-black/[0.035] px-4 text-base font-medium outline-none ring-1 ring-transparent transition focus:bg-white focus:ring-black/20"
-        />
-        <button disabled={loading} className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-black/10 bg-white px-5 text-sm font-semibold text-[color:var(--color-text-primary)] transition hover:bg-black/[0.035] disabled:opacity-60">
-          <Mail size={17} />
-          {loading ? "Sending link..." : "Email me a sign-in link"}
-        </button>
+        <div>
+          <button disabled={loading} className={googleAuthEnabled ? "btn-quiet w-full sm:w-auto" : "btn-ink w-full sm:w-auto"}>
+            {loading ? "Sending the link" : "Email me a sign-in link"}
+          </button>
+        </div>
       </form>
-      <p className="subheadline mt-4" role="status" aria-live="polite">
-        {message || (isSupabaseConfigured ? "We will email you a secure link. New readers get an account; returning readers get signed in." : canUseLocalCommunityFallback() ? "Beta preview mode: email creates a local test account on this device." : COMMUNITY_UNAVAILABLE_MESSAGE)}
+
+      <p className="footnote measure mt-5" role="status" aria-live="polite">
+        {message || (isSupabaseConfigured
+          ? "No password. The link signs you in, and creates your account if this is your first time."
+          : canUseLocalCommunityFallback()
+            ? "Preview mode: email creates a local test account on this device."
+            : COMMUNITY_UNAVAILABLE_MESSAGE)}
       </p>
     </div>
   );

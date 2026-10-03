@@ -3,8 +3,8 @@ import { pageMetadata } from "@/lib/metadata";
 import { LoginForm } from "@/components/login-form";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Log in or join",
-  description: "Join BookSphere to write, follow, and save books.",
+  title: "Sign in",
+  description: "Sign in to write a perspective, save a book, or reply to someone.",
   path: "/login",
   noIndex: true
 });
@@ -14,14 +14,15 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   const { next } = await searchParams;
 
   return (
-    <div className="editorial-page grid max-w-6xl gap-8 lg:grid-cols-[minmax(0,1fr)_420px] lg:gap-10">
-      <section className="flex flex-col justify-center">
-        <p className="caption mb-4">BookSphere Account</p>
-        <h1 className="large-title">Join the private beta. Or log back in.</h1>
-        <p className="body-copy mt-5 max-w-2xl">
-          Log in to save books, recommend titles, follow thoughtful readers, and share perspectives that help other readers think more clearly.
-        </p>
-      </section>
+    <div className="editorial-page editorial-prose">
+      {/* "Join the private beta" framed a free, open product as invite-only, on the one page
+          a stranger reaches by trying to write something. */}
+      <p className="caption">Sign in</p>
+      <h1 className="large-title mt-4 max-w-[16ch]">Sign in to write</h1>
+      <p className="body-copy measure mt-5">
+        Reading never asks for an account. Writing does, so a perspective can carry a name and
+        somebody can reply to you.
+      </p>
       <LoginForm next={next} />
     </div>
   );

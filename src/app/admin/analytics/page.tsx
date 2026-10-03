@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { BarChart3 } from "lucide-react";
 import { requireProfile } from "@/lib/auth-client";
 import { supabase } from "@/lib/supabase";
 
@@ -85,69 +84,71 @@ export default function AdminAnalyticsPage() {
   const funnelTop = funnelCounts[0]?.count || 0;
 
   return (
-    <div className="container-page py-10 md:py-14">
+    <div className="editorial-page">
       <p className="caption">Moderation</p>
-      <h1 className="title-1 mt-2">Analytics</h1>
-      <p className="body-copy mt-3 max-w-2xl">
-        Events from the last {WINDOW_DAYS} days, plus lifetime community totals. Counts come from the database, not the interface.
+      <h1 className="large-title mt-4">Analytics</h1>
+      <p className="body-copy measure mt-5">
+        Events from the last {WINDOW_DAYS} days, plus lifetime totals. Counts come from the database, not the interface.
       </p>
 
-      {state === "loading" && <p className="body-copy mt-6">Checking access...</p>}
-      {state === "unavailable" && <p className="body-copy mt-6">Analytics requires the production database connection.</p>}
-      {state === "not-moderator" && <p className="body-copy mt-6">This area is only available to moderators.</p>}
+      {state === "loading" && <p className="body-copy measure mt-8">Checking access...</p>}
+      {state === "unavailable" && <p className="body-copy measure mt-8">Analytics requires the production database connection.</p>}
+      {state === "not-moderator" && <p className="body-copy measure mt-8">This area is only available to moderators.</p>}
       {state === "signed-out" && (
-        <p className="body-copy mt-6">
-          Log in with a moderator account to view analytics. <Link className="font-medium underline underline-offset-4" href="/login?next=%2Fadmin%2Fanalytics">Log in</Link>
+        <p className="body-copy measure mt-8">
+          Log in with a moderator account to view analytics. <Link className="text-[color:var(--ink)] underline decoration-[color:var(--rule-strong)] underline-offset-[5px]" href="/login?next=%2Fadmin%2Fanalytics">Log in</Link>
         </p>
       )}
 
       {state === "ready" && events.length >= EVENT_WINDOW_LIMIT && (
-        <p className="subheadline mt-4">
+        <p className="footnote measure mt-5">
           Showing the newest {EVENT_WINDOW_LIMIT} events only. Everything below, including the funnel, is computed from that slice and understates the top of the funnel.
         </p>
       )}
 
       {state === "ready" && (
         <>
-          {error && <p role="alert" className="mt-6 rounded-[16px] bg-[color:var(--color-rose)]/10 px-4 py-3 text-sm font-medium text-[color:var(--color-rose)]">{error}</p>}
+          {error && <p role="alert" className="footnote mt-5 border-l-2 border-[color:var(--color-rose)] pl-4 text-[color:var(--color-rose)]">{error}</p>}
 
-          <section className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {/* "Feed perspectives" called a feed note a perspective, which is the one word
+              this product reserves for a contribution about a book. */}
+          <dl className="facts mt-8 border-t border-[color:var(--rule-strong)] pt-5">
             <Stat label="Accounts" value={totals.accounts} hint="lifetime" />
-            <Stat label="Book perspectives" value={totals.posts} hint="lifetime" />
+            <Stat label="Perspectives" value={totals.posts} hint="lifetime" />
             <Stat label="Replies" value={totals.comments} hint="lifetime" />
-            <Stat label="Feed perspectives" value={totals.knowledgePosts} hint="lifetime" />
-          </section>
+            <Stat label="Feed notes" value={totals.knowledgePosts} hint="lifetime" />
+          </dl>
 
-          <section className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <dl className="facts mt-8 border-t border-[color:var(--rule)] pt-5">
             <Stat label="Events" value={events.length} hint={`last ${WINDOW_DAYS} days`} />
             <Stat label="Events" value={last7} hint="last 7 days" />
             <Stat label="Accounts active" value={activeAccounts} hint={`last ${WINDOW_DAYS} days`} />
             <Stat label="Distinct events" value={ranked.length} hint="types seen" />
-          </section>
+          </dl>
 
-          <section className="mt-10">
-            <h2 className="title-3">Onboarding funnel</h2>
-            <p className="subheadline mt-2">Where new readers stop. Each step is the count of that event in the window.</p>
+          <section className="section-rule">
+            <p className="caption">Onboarding funnel</p>
+            <p className="body-copy measure mt-4">Where new readers stop. Each step is the count of that event in the window.</p>
             {funnelTop === 0 ? (
-              <p className="body-copy mt-4 rounded-[20px] bg-black/[0.025] p-4">
+              <p className="body-copy measure mt-5">
                 No onboarding events recorded yet. This fills in once readers reach the tour.
               </p>
             ) : (
-              <ul className="mt-5 grid gap-3">
+              <ul className="mt-5 border-t border-[color:var(--rule-strong)]">
                 {funnelCounts.map((step, i) => {
                   const pct = funnelTop ? Math.round((step.count / funnelTop) * 100) : 0;
                   const prev = i > 0 ? funnelCounts[i - 1].count : null;
                   const dropped = prev !== null && prev > 0 ? prev - step.count : 0;
                   return (
-                    <li key={step.event} className="rounded-[20px] bg-white p-4 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">
-                      <div className="flex items-baseline justify-between gap-3">
-                        <span className="text-[15px] font-medium text-[color:var(--color-text-primary)]">{step.label}</span>
-                        <span className="text-sm font-semibold">{step.count} <span className="font-normal text-[color:var(--color-text-muted)]">({pct}%)</span></span>
+                    <li key={step.event} className="border-b border-[color:var(--rule)] py-4">
+                      <div className="flex items-baseline justify-between gap-5">
+                        <span className="text-[15px]">{step.label}</span>
+                        <span className="numeral text-[15px]">{step.count} <span className="text-[color:var(--ink-50)]">({pct}%)</span></span>
                       </div>
-                      <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-black/[0.06]">
-                        <div className="h-full rounded-full bg-[color:var(--color-text-primary)]" style={{ width: `${pct}%` }} />
+                      <div className="mt-3 h-1.5 w-full bg-[color:var(--band)]">
+                        <div className="h-full bg-[color:var(--ink)]" style={{ width: `${pct}%` }} />
                       </div>
-                      {dropped > 0 && <p className="mt-2 text-sm text-[color:var(--color-text-secondary)]">{dropped} did not continue from the previous step.</p>}
+                      {dropped > 0 && <p className="footnote mt-2">{dropped} did not continue from the previous step.</p>}
                     </li>
                   );
                 })}
@@ -155,29 +156,28 @@ export default function AdminAnalyticsPage() {
             )}
           </section>
 
-          <section className="mt-10">
-            <h2 className="title-3">Events by type</h2>
+          <section className="section-rule">
+            <p className="caption">Events by type</p>
             {ranked.length === 0 ? (
-              <div className="mt-4 flex items-center gap-3 rounded-[20px] bg-white p-5 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">
-                <BarChart3 size={19} className="text-[color:var(--color-text-muted)]" />
-                <p className="body-copy">
+              <div className="mt-5">
+                <p className="body-copy measure">
                   No events in the last {WINDOW_DAYS} days. Events record for every visitor, signed in or not, so this staying empty means nobody has opened the site - not that nobody has signed in.
                 </p>
               </div>
             ) : (
-              <ul className="mt-5 grid gap-2">
+              <ul className="mt-5 border-t border-[color:var(--rule-strong)]">
                 {ranked.map(([name, count]) => (
-                  <li key={name} className="flex items-center justify-between gap-4 rounded-[16px] bg-white px-4 py-3 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">
-                    <span className="font-mono text-sm text-[color:var(--color-text-primary)]">{name}</span>
-                    <span className="text-sm font-semibold">{count}</span>
+                  <li key={name} className="flex items-baseline justify-between gap-5 border-b border-[color:var(--rule)] py-3">
+                    <span className="font-mono text-[13px]">{name}</span>
+                    <span className="numeral text-[15px]">{count}</span>
                   </li>
                 ))}
               </ul>
             )}
           </section>
 
-          <p className="subheadline mt-10">
-            <Link className="font-medium underline underline-offset-4" href="/admin/reports">Go to the moderation queue</Link>
+          <p className="mt-8 border-t border-[color:var(--rule)] pt-4 footnote">
+            <Link className="text-[color:var(--ink)] underline decoration-[color:var(--rule-strong)] underline-offset-[5px]" href="/admin/reports">Go to the moderation queue</Link>
           </p>
         </>
       )}
@@ -187,10 +187,10 @@ export default function AdminAnalyticsPage() {
 
 function Stat({ label, value, hint }: { label: string; value: number | null; hint: string }) {
   return (
-    <div className="rounded-[20px] bg-white p-5 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">
-      <p className="caption text-[10px]">{label}</p>
-      <p className="mt-2 text-[32px] font-semibold leading-none tracking-[-0.03em] text-[color:var(--color-text-primary)]">{value === null ? "-" : value}</p>
-      <p className="mt-2 text-sm text-[color:var(--color-text-muted)]">{hint}</p>
+    <div>
+      <dt className="caption caption-muted">{label}</dt>
+      <dd className="numeral !mt-3 !text-[28px] !leading-none">{value === null ? "-" : value}</dd>
+      <dd className="footnote !mt-2">{hint}</dd>
     </div>
   );
 }

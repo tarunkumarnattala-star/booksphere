@@ -1,13 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, UserPlus, Users } from "lucide-react";
 import { FollowButton } from "@/components/follow-button";
 import { getProfile } from "@/lib/data";
 import {
   getCanonicalProfileConnections,
   type ProfileConnection
 } from "@/lib/profile-data";
-import { initials } from "@/lib/utils";
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/metadata";
 
@@ -59,31 +57,27 @@ export default async function ProfileConnectionsPage({
   const people = view === "followers" ? followers : following;
 
   return (
-    <div className="editorial-page max-w-3xl">
-      <Link href={`/profile/${profile.username}`} className="inline-flex min-h-11 items-center gap-2 rounded-full px-3 text-sm font-medium transition hover:bg-black/[0.04]">
-        <ArrowLeft size={17} />
-        Back to profile
+    <div className="editorial-page editorial-prose">
+      <Link href={`/profile/${profile.username}`} className="caption caption-muted inline-flex min-h-11 items-center transition-colors hover:text-[color:var(--ink)]">
+        Back to {profile.name}
       </Link>
 
-      <header className="mt-5 flex items-center gap-4">
-        <span className="grid size-14 shrink-0 place-items-center rounded-full bg-[color:var(--color-text-primary)] text-base font-medium !text-white">
-          {initials(profile.name)}
-        </span>
-        <div className="min-w-0">
-          <h1 className="title-2 truncate">{profile.name}</h1>
-          <p className="mt-1 truncate text-sm font-medium text-[color:var(--color-text-secondary)]">@{profile.username}</p>
-        </div>
+      <header className="mt-5 border-t-2 border-[color:var(--ink)] pt-5">
+        <p className="caption">@{profile.username}</p>
+        <h1 className="large-title mt-4">{profile.name}</h1>
       </header>
 
-      <nav aria-label="Profile connections" className="mt-7 grid grid-cols-2 border-b border-[color:var(--color-hairline)]">
-        <ConnectionTab username={profile.username} view="followers" active={view === "followers"} count={followers.length} />
-        <ConnectionTab username={profile.username} view="following" active={view === "following"} count={following.length} />
+      {/* Two words and a rule under the one you are reading. The counts that used to sit
+          beside them are counts of an empty table. */}
+      <nav aria-label="Profile connections" className="control-row mt-8 border-b border-[color:var(--rule)]">
+        <ConnectionTab username={profile.username} view="followers" active={view === "followers"} />
+        <ConnectionTab username={profile.username} view="following" active={view === "following"} />
       </nav>
 
       {people.length > 0 ? (
-        <div className="divide-y divide-[color:var(--color-hairline)]">
+        <ol className="records records-tight">
           {people.map((person) => <ConnectionRow key={person.id} person={person} />)}
-        </div>
+        </ol>
       ) : (
         <EmptyConnections view={view} />
       )}
@@ -91,50 +85,48 @@ export default async function ProfileConnectionsPage({
   );
 }
 
-function ConnectionTab({ username, view, active, count }: { username: string; view: ConnectionView; active: boolean; count: number }) {
+function ConnectionTab({ username, view, active }: { username: string; view: ConnectionView; active: boolean }) {
   const label = view === "followers" ? "Followers" : "Following";
   return (
     <Link
       href={`/profile/${username}/connections?view=${view}`}
       aria-current={active ? "page" : undefined}
-      className={`border-b-2 px-3 py-4 text-center text-sm font-semibold transition ${active ? "border-black text-[color:var(--color-text-primary)]" : "border-transparent text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]"}`}
+      className={`control pb-3 ${active ? "control-on" : ""}`}
     >
-      {label} <span className="ml-1 text-[color:var(--color-text-muted)]">{count}</span>
+      {label}
     </Link>
   );
 }
 
 function ConnectionRow({ person }: { person: ProfileConnection }) {
   return (
-    <div className="flex items-center gap-3 py-4">
-      <Link href={`/profile/${person.username}`} className="grid size-12 shrink-0 place-items-center rounded-full bg-[color:var(--color-text-primary)] text-sm font-medium !text-white">
-        {initials(person.name)}
-      </Link>
-      <Link href={`/profile/${person.username}`} className="min-w-0 flex-1">
-        <h2 className="truncate text-sm font-semibold text-[color:var(--color-text-primary)]">{person.name}</h2>
-        <p className="mt-0.5 truncate text-xs font-medium text-[color:var(--color-text-secondary)]">@{person.username}</p>
-        <p className="mt-1 line-clamp-1 text-sm text-[color:var(--color-text-secondary)]">{person.bio}</p>
-      </Link>
-      <FollowButton profileUsername={person.username} compact />
-    </div>
+    <li className="record">
+      <p className="caption record-stamp caption-muted">@{person.username}</p>
+      <div className="min-w-0">
+        <h2 className="record-title">
+          <Link href={`/profile/${person.username}`} className="transition-colors hover:text-[color:var(--accent)]">{person.name}</Link>
+        </h2>
+        {person.bio && <p className="record-text line-clamp-2">{person.bio}</p>}
+        <div className="control-row mt-5">
+          <FollowButton profileUsername={person.username} compact />
+        </div>
+      </div>
+    </li>
   );
 }
 
 function EmptyConnections({ view }: { view: ConnectionView }) {
   const followers = view === "followers";
   return (
-    <section className="mx-auto flex max-w-md flex-col items-center px-5 py-16 text-center">
-      <span className="grid size-12 place-items-center rounded-full bg-black/[0.045] text-[color:var(--color-text-secondary)]">
-        {followers ? <Users size={21} /> : <UserPlus size={21} />}
-      </span>
-      <h2 className="title-3 mt-5">{followers ? "No followers yet" : "Not following anyone yet"}</h2>
-      <p className="body-copy mt-2 text-[15px]">
+    <section className="mt-8">
+      <h2 className="title-1 max-w-[20ch]">{followers ? "Nobody follows this profile yet." : "Not following anyone yet."}</h2>
+      <p className="body-copy measure mt-5">
         {followers
-          ? "Keep sharing useful perspectives. Readers who want to hear more can follow this profile."
-          : "Explore thoughtful readers and follow the people whose perspectives help you think differently."}
+          ? "BookSphere is in early access and almost nobody is here yet. Writing something is the way that changes."
+          : "Open a perspective you found useful and follow whoever wrote it."}
       </p>
-      <Link href={followers ? "/feed" : "/explore"} className="mt-6 inline-flex min-h-11 items-center rounded-full bg-[color:var(--color-text-primary)] px-5 text-sm font-semibold !text-white transition hover:opacity-85">
-        {followers ? "Share a perspective" : "Discover readers"}
+      <Link href={followers ? "/feed" : "/explore"} className="btn-ink mt-8">
+        {followers ? "Write something" : "Read what is here"}
       </Link>
     </section>
   );

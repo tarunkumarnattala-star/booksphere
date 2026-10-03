@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { Check, X } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 
 const COMPLETED_KEY = "booksphere.onboarding.v2.completed";
@@ -164,54 +163,55 @@ export function FirstUseGuide() {
   const step = !isWelcome && !isAction ? steps[stage] : null;
 
   return (
+    // A note slipped onto the page, not a modal: a paper panel with one ink rule at the top,
+    // sitting above the bottom bar on a phone and in the corner on a desktop.
     <aside
       role="dialog"
       aria-modal="false"
       aria-labelledby="first-use-guide-title"
-      className="onboarding-panel fixed inset-x-4 bottom-[calc(6.4rem+env(safe-area-inset-bottom))] z-[120] mx-auto w-auto max-w-sm rounded-[22px] bg-white p-5 shadow-[0_20px_60px_rgba(0,0,0,0.16)] ring-1 ring-black/[0.07] md:inset-x-auto md:bottom-6 md:right-6 md:w-[360px]"
+      className="onboarding-panel fixed inset-x-5 bottom-[calc(76px+env(safe-area-inset-bottom)+20px)] z-[120] mx-auto w-auto max-w-sm border-t-2 border-[color:var(--ink)] bg-[color:var(--paper)] p-5 shadow-[0_0_0_1px_var(--rule)] md:inset-x-auto md:bottom-8 md:right-8 md:w-[360px]"
     >
       <button
         type="button"
         onClick={skipGuide}
-        aria-label="Close app guide"
-        className="absolute right-3 top-3 grid size-9 place-items-center rounded-full text-[color:var(--color-text-muted)] transition hover:bg-black/[0.04] hover:text-[color:var(--color-text-primary)]"
+        aria-label="Close the guide"
+        className="control absolute right-4 top-4"
       >
-        <X size={17} />
+        Close
       </button>
 
       {isWelcome && (
         <>
-          <p className="caption pr-10">Welcome to BookSphere</p>
-          <h2 id="first-use-guide-title" className="mt-3 text-[24px] font-medium leading-[1.08]">Understand books through people.</h2>
-          <p className="mt-3 text-sm leading-6 text-[color:var(--color-text-secondary)]">Find the useful idea, see how readers tested it, then add what you learned.</p>
-          <div className="mt-5 flex items-center gap-3">
-            <button ref={primaryButtonRef} type="button" onClick={beginGuide} className="min-h-11 rounded-full bg-[color:var(--color-text-primary)] px-5 text-sm font-medium !text-white transition hover:opacity-85">Take a quick tour</button>
-            <button type="button" onClick={skipGuide} className="min-h-11 px-2 text-sm font-medium text-[color:var(--color-text-secondary)] transition hover:text-[color:var(--color-text-primary)]">Not now</button>
+          <p className="caption pr-20">The guide</p>
+          <h2 id="first-use-guide-title" className="title-2 mt-4">Understand books through people.</h2>
+          <p className="body-copy mt-3">Find the useful idea, see how readers tested it, then add what you learned.</p>
+          <div className="control-row mt-5">
+            <button ref={primaryButtonRef} type="button" onClick={beginGuide} className="btn-ink btn-sm">Take the tour</button>
+            <button type="button" onClick={skipGuide} className="control">Not now</button>
           </div>
         </>
       )}
 
       {step && (
         <>
-          <p className="caption pr-10">{step.count}</p>
-          <h2 id="first-use-guide-title" className="mt-3 text-xl font-medium leading-tight">{step.title}</h2>
-          <p className="mt-2 text-sm leading-6 text-[color:var(--color-text-secondary)]">{step.body}</p>
-          <div className="mt-5 flex items-center justify-between gap-3">
-            <button type="button" onClick={skipGuide} className="min-h-11 px-2 text-sm font-medium text-[color:var(--color-text-secondary)] transition hover:text-[color:var(--color-text-primary)]">Skip</button>
-            <button ref={primaryButtonRef} type="button" onClick={nextStep} className="min-h-11 rounded-full bg-[color:var(--color-text-primary)] px-5 text-sm font-medium !text-white transition hover:opacity-85">{stage === "search" ? "Finish" : "Next"}</button>
+          <p className="caption numeral pr-20">{step.count}</p>
+          <h2 id="first-use-guide-title" className="title-2 mt-4">{step.title}</h2>
+          <p className="body-copy mt-3">{step.body}</p>
+          <div className="control-row mt-5 justify-between">
+            <button type="button" onClick={skipGuide} className="control">Skip</button>
+            <button ref={primaryButtonRef} type="button" onClick={nextStep} className="btn-ink btn-sm">{stage === "search" ? "Finish" : "Next"}</button>
           </div>
         </>
       )}
 
       {isAction && (
         <>
-          <span className="grid size-9 place-items-center rounded-full bg-[#f7f2e8] text-[color:var(--color-accent)]"><Check size={18} /></span>
-          <p className="caption mt-4">Your first move</p>
-          <h2 id="first-use-guide-title" className="mt-2 text-xl font-medium leading-tight">Search something you want to understand.</h2>
-          <p className="mt-2 text-sm leading-6 text-[color:var(--color-text-secondary)]">A book, decision, question, or goal all work.</p>
-          <div className="mt-5 flex items-center gap-3">
-            <button ref={primaryButtonRef} type="button" onClick={startSearching} className="min-h-11 rounded-full bg-[color:var(--color-text-primary)] px-5 text-sm font-medium !text-white transition hover:opacity-85">Start searching</button>
-            <button type="button" onClick={skipGuide} className="min-h-11 px-2 text-sm font-medium text-[color:var(--color-text-secondary)] transition hover:text-[color:var(--color-text-primary)]">Later</button>
+          <p className="caption pr-20">Your first move</p>
+          <h2 id="first-use-guide-title" className="title-2 mt-4">Search something you want to understand.</h2>
+          <p className="body-copy mt-3">A book, a decision, a question or a goal all work.</p>
+          <div className="control-row mt-5">
+            <button ref={primaryButtonRef} type="button" onClick={startSearching} className="btn-ink btn-sm">Start searching</button>
+            <button type="button" onClick={skipGuide} className="control">Later</button>
           </div>
         </>
       )}

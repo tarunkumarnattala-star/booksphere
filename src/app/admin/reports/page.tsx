@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ShieldCheck, Trash2 } from "lucide-react";
 import { requireProfile } from "@/lib/auth-client";
 import { supabase } from "@/lib/supabase";
 
@@ -91,63 +90,55 @@ export default function AdminReportsPage() {
   }
 
   return (
-    <div className="container-page py-10 md:py-14">
+    <div className="editorial-page">
       <p className="caption">Moderation</p>
-      <h1 className="title-1 mt-2">Reported content</h1>
+      <h1 className="large-title mt-4">Reported content</h1>
       <p className="subheadline mt-3">
-        <Link className="font-medium underline underline-offset-4" href="/admin/analytics">View analytics</Link>
+        <Link className="text-[color:var(--ink)] underline decoration-[color:var(--rule-strong)] underline-offset-[5px]" href="/admin/analytics">View analytics</Link>
       </p>
 
-      {state === "loading" && <p className="body-copy mt-6">Checking access...</p>}
+      {state === "loading" && <p className="body-copy measure mt-8">Checking access...</p>}
 
       {state === "unavailable" && (
-        <p className="body-copy mt-6">Moderation requires the production database connection.</p>
+        <p className="body-copy measure mt-8">Moderation requires the production database connection.</p>
       )}
 
       {state === "signed-out" && (
-        <p className="body-copy mt-6">
-          Log in with a moderator account to review reports. <Link className="font-medium underline underline-offset-4" href="/login?next=%2Fadmin%2Freports">Log in</Link>
+        <p className="body-copy measure mt-8">
+          Log in with a moderator account to review reports. <Link className="text-[color:var(--ink)] underline decoration-[color:var(--rule-strong)] underline-offset-[5px]" href="/login?next=%2Fadmin%2Freports">Log in</Link>
         </p>
       )}
 
       {state === "not-moderator" && (
-        <p className="body-copy mt-6">This area is only available to moderators.</p>
+        <p className="body-copy measure mt-8">This area is only available to moderators.</p>
       )}
 
       {state === "ready" && (
         <>
-          {error && <p role="alert" className="mt-6 rounded-[16px] bg-[color:var(--color-rose)]/10 px-4 py-3 text-sm font-medium text-[color:var(--color-rose)]">{error}</p>}
+          {error && <p role="alert" className="footnote mt-5 border-l-2 border-[color:var(--color-rose)] pl-4 text-[color:var(--color-rose)]">{error}</p>}
           {reports.length === 0 && !error ? (
-            <div className="mt-8 flex items-center gap-3 rounded-[24px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">
-              <ShieldCheck size={20} className="text-[color:var(--color-green)]" />
-              <p className="body-copy">No open reports. The queue is clear.</p>
-            </div>
+            <p className="body-copy measure mt-8">No open reports. The queue is clear.</p>
           ) : (
-            <ul className="mt-8 grid gap-4">
+            <ul className="records records-tight">
               {reports.map((report) => {
                 const href = targetHref(report);
                 return (
-                  <li key={report.id} className="rounded-[24px] bg-white p-5 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                      <div className="min-w-0">
-                        <p className="caption">{targetLabels[report.target_type]} · {new Date(report.created_at).toLocaleString()}</p>
-                        <p className="body-copy mt-2 font-medium text-[color:var(--color-text-primary)]">{report.reason}</p>
-                        <p className="mt-2 text-sm text-[color:var(--color-text-secondary)]">
-                          Reported by {report.reporter ? `${report.reporter.name} (@${report.reporter.username})` : "an unknown account"}
-                        </p>
-                      </div>
-                      <div className="flex shrink-0 items-center gap-2">
-                        {href && (
-                          <Link href={href} className="inline-flex min-h-10 items-center rounded-full bg-black/[0.04] px-4 text-sm font-medium transition hover:bg-black/[0.07]">
-                            View target
-                          </Link>
-                        )}
+                  <li key={report.id} className="record">
+                    <p className="caption record-stamp">{targetLabels[report.target_type]}</p>
+                    <div className="min-w-0">
+                      <p className="record-title">{report.reason}</p>
+                      <p className="record-meta">
+                        Reported by {report.reporter ? `${report.reporter.name} (@${report.reporter.username})` : "an unknown account"}
+                      </p>
+                      <p className="record-writer">{new Date(report.created_at).toLocaleString()}</p>
+                      <div className="control-row mt-5">
+                        {href && <Link href={href} className="control control-lead">Open what was reported</Link>}
                         <button
                           type="button"
                           onClick={() => dismissReport(report.id)}
-                          className="inline-flex min-h-10 items-center gap-2 rounded-full px-4 text-sm font-medium text-[color:var(--color-rose)] transition hover:bg-[color:var(--color-rose)]/10"
+                          className="control text-[color:var(--color-rose)] hover:!text-[color:var(--color-rose)]"
                         >
-                          <Trash2 size={15} /> Dismiss
+                          Dismiss
                         </button>
                       </div>
                     </div>

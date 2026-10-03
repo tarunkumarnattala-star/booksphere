@@ -11,10 +11,13 @@ export const metadata: Metadata = pageMetadata({
 
 export default function SavedPage() {
   return (
-    <div className="editorial-page max-w-[1240px]">
-      <p className="caption mb-4">Saved</p>
-      <h1 className="large-title">Your personal knowledge shelf.</h1>
-      <p className="body-copy mt-5 max-w-2xl">Save the explanations, applications, questions, and books you want to return to before a decision, conversation, project, or reread.</p>
+    <div className="editorial-page">
+      <p className="caption">Saved</p>
+      <h1 className="large-title mt-4 max-w-[16ch]">Your shelf</h1>
+      <p className="body-copy measure mt-5">
+        The books and perspectives you want in front of you again - before a decision, a
+        conversation, or a reread.
+      </p>
       <SavedClient />
     </div>
   );

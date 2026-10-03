@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Bell, MessageCircle } from "lucide-react";
 import { requireProfile } from "@/lib/auth-client";
 import { getLastSeenAt, getReplyNotifications, markNotificationsSeen, type ReplyNotification } from "@/lib/notifications";
 import { supabase } from "@/lib/supabase";
@@ -63,64 +62,60 @@ export default function NotificationsPage() {
   }, []);
 
   return (
-    <div className="container-page py-10 md:py-14">
-      <p className="caption">Your activity</p>
-      <h1 className="title-1 mt-2">Replies to your writing</h1>
+    <div className="editorial-page">
+      <p className="caption">Your writing</p>
+      <h1 className="large-title mt-4 max-w-[16ch]">Replies to you</h1>
 
-      {state === "loading" && <p className="body-copy mt-6">Loading...</p>}
+      {state === "loading" && <p role="status" className="caption caption-muted mt-8">Loading</p>}
 
-      {state === "unavailable" && <p className="body-copy mt-6">Replies need the production database connection.</p>}
+      {state === "unavailable" && <p className="body-copy measure mt-8">Replies need the production database connection.</p>}
 
       {state === "error" && (
-        <p role="alert" className="body-copy mt-6">
-          Your replies could not be loaded just now. Refresh the page to try again - nothing has been marked as read.
+        <p role="alert" className="body-copy measure mt-8 border-l-2 border-[color:var(--color-rose)] pl-5 text-[color:var(--color-rose)]">
+          Your replies could not be loaded just now. Load the page again - nothing has been marked as read.
         </p>
       )}
 
       {state === "signed-out" && (
-        <p className="body-copy mt-6">
-          <Link className="font-medium underline underline-offset-4" href="/login?next=%2Fnotifications">Log in</Link> to see replies to your perspectives.
-        </p>
+        <div className="mt-8">
+          <p className="body-copy measure">
+            Replies to your perspectives are private to your account.
+          </p>
+          <Link href="/login?next=%2Fnotifications" className="btn-ink mt-8">Sign in</Link>
+        </div>
       )}
 
       {state === "ready" && (
         items.length === 0 ? (
-          <div className="mt-8 flex items-start gap-3 rounded-[24px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">
-            <Bell size={20} className="mt-0.5 shrink-0 text-[color:var(--color-text-muted)]" />
-            <div>
-              <p className="body-copy font-medium text-[color:var(--color-text-primary)]">No replies yet</p>
-              <p className="body-copy mt-1 text-[15px]">
-                When someone responds to a perspective you wrote, it will appear here.{" "}
-                <Link className="font-medium underline underline-offset-4" href="/explore">Find a book to write about</Link>.
-              </p>
-            </div>
-          </div>
+          <p className="body-copy measure mt-8">
+            Nothing yet. When somebody responds to a perspective you wrote, it appears here.{" "}
+            <Link className="text-[color:var(--ink)] underline decoration-[color:var(--rule-strong)] underline-offset-[5px]" href="/explore">Find a book to write about</Link>.
+          </p>
         ) : (
-          <ul className="mt-8 grid gap-3">
+          <ol className="records">
             {items.map((item) => {
               const isNew = !seenBefore || item.createdAt > seenBefore;
               return (
-                <li key={item.id}>
-                  <Link
-                    href={item.href}
-                    className={`block rounded-[22px] p-5 shadow-[var(--shadow-soft)] ring-1 transition hover:-translate-y-0.5 ${isNew ? "bg-white ring-[color:var(--color-gold)]/35" : "bg-white ring-black/[0.035]"}`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <MessageCircle size={15} className="shrink-0 text-[color:var(--color-text-muted)]" />
-                      <p className="caption">
-                        {item.kind === "reply_to_comment" ? "Replied to your comment" : "Replied to your perspective"} · {relativeTime(item.createdAt)}
-                      </p>
-                      {isNew && <span className="ml-auto rounded-full bg-[color:var(--color-gold)]/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-[color:var(--color-gold)]">New</span>}
-                    </div>
-                    <p className="mt-2 text-[15px] font-medium text-[color:var(--color-text-primary)]">
-                      {item.authorName} on &ldquo;{item.context}&rdquo;
+                <li key={item.id} className="record">
+                  <p className="caption record-stamp">
+                    {isNew ? "New" : relativeTime(item.createdAt)}
+                  </p>
+                  <div className="min-w-0">
+                    <h2 className="record-title">
+                      <Link href={item.href} className="transition-colors hover:text-[color:var(--accent)]">
+                        {item.authorName} on &ldquo;{item.context}&rdquo;
+                      </Link>
+                    </h2>
+                    <p className="record-text line-clamp-3">{item.body}</p>
+                    <p className="record-writer !mt-5">
+                      {item.kind === "reply_to_comment" ? "Replied to your reply" : "Replied to your perspective"}
+                      {isNew ? ` \u00b7 ${relativeTime(item.createdAt)}` : ""}
                     </p>
-                    <p className="body-copy mt-1 line-clamp-3 text-[15px]">{item.body}</p>
-                  </Link>
+                  </div>
                 </li>
               );
             })}
-          </ul>
+          </ol>
         )
       )}
     </div>
