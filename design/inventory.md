@@ -60,3 +60,20 @@ gold labels, pill buttons, lucide icons beside every word, a bottom tab bar. A s
 | Free, no account, sign in to write | Landing hero and FAQ; the write flow at the moment it binds | |
 | Books by genre and by path | `/search` | `/genres` is the long form of the same shelf list |
 | Editorial attribution (BookSphere Team) | Under every perspective it wrote | Never hidden, never dressed as a reader |
+
+---
+
+## Status at the end of the pass
+
+Every screen and every state listed above is **done**: audited, redesigned, re-rendered at
+390 / 640 / 1024 / 1440, scored on six axes, and committed. Scores are in `design/log.md`,
+the system in `design/system.md`, the fifteen open questions in `design/questions.md`, and the
+whole pass in `design/summary.md`.
+
+Two routes were examined and deliberately left alone:
+
+- `/create` - a redirect to `/feed`, no surface of its own.
+- `/api/card` - the social-carousel renderer. It is already ink on paper with one green, it is
+  a marketing tool rather than a product screen, and it agrees with the system.
+
+Final smoke test, every route at 390: all 200, no page errors, no console errors.
