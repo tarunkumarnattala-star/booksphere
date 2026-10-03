@@ -39,18 +39,18 @@ export default async function FeedPage({ searchParams }: { searchParams?: Promis
 
   return (
     <div className="editorial-page max-w-[980px]">
-      <header className="mb-6 border-b border-[color:var(--color-hairline)] pb-5 md:mb-7">
-        <p className="caption mb-2">Feed</p>
+      {/* The tab is already labelled Feed in the bar at the bottom of the screen, so the
+          eyebrow above the heading was the third time the word appeared. */}
+      <header className="mb-4 border-b border-[color:var(--color-hairline)] pb-4">
         <h1 className="title-1">What readers are learning, out loud.</h1>
-        <p className="mt-2 max-w-2xl text-[15px] font-medium leading-6 text-[color:var(--color-text-secondary)] md:text-base">
-          Something you learned, tried, changed your mind about, or still cannot settle. A book
-          can be the reason, but it is never required.
+        <p className="mt-2 max-w-2xl text-[15px] leading-6 text-[color:var(--color-text-secondary)]">
+          A book can be the reason, but it is never required.
         </p>
       </header>
 
       <FeedComposer initialTopic={initialTopic} />
 
-      <ul className="mt-4 grid gap-1.5 sm:grid-cols-3">
+      <ul className="mt-3 grid gap-1.5 sm:grid-cols-3">
         {starters.map((starter) => (
           <li
             key={starter}
@@ -61,11 +61,8 @@ export default async function FeedPage({ searchParams }: { searchParams?: Promis
         ))}
       </ul>
 
-      <section className="mt-8">
-        <div className="mb-4">
-          <p className="caption mb-2">Latest</p>
-          <h2 className="title-3">{posts.length ? "What readers are sharing" : "Nobody has posted yet"}</h2>
-        </div>
+      <section className="mt-6">
+        <h2 className="title-3 mb-3">{posts.length ? "What readers are sharing" : "Nobody has posted yet"}</h2>
         {posts.length ? (
           <KnowledgeFeed seedPosts={posts} variant="stream" />
         ) : (

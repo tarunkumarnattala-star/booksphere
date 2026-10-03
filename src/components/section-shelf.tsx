@@ -25,8 +25,8 @@ export function SectionShelf({
   if (!books.length) return null;
 
   return (
-    <section className="py-8 md:py-10">
-      <div className="mb-5 flex items-end justify-between gap-6 px-4 md:px-6 lg:px-8">
+    <section className="py-6 md:py-8">
+      <div className="mb-4 flex items-end justify-between gap-6 px-4 md:px-6 lg:px-8">
         <div>
           <h2 className="title-2">{title}</h2>
           {subtitle && <p className="subheadline mt-2 max-w-2xl">{subtitle}</p>}

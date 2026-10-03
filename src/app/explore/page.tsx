@@ -44,7 +44,7 @@ export default async function HomePage() {
   return (
     <div className="mx-auto max-w-[1560px]">
       {featured && (
-        <section data-onboarding="explore" className="container-page pb-2 pt-7 md:pt-9">
+        <section data-onboarding="explore" className="container-page pb-2 pt-4 md:pt-6">
           <div className="rounded-[28px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-8">
             <p className="caption mb-3">Nobody has answered this yet</p>
             <h1 className="text-[26px] font-medium leading-[1.12] tracking-[-0.035em] text-[color:var(--color-text-primary)] md:text-[34px]">
@@ -71,13 +71,12 @@ export default async function HomePage() {
         </section>
       )}
 
-      <section className={`container-page pb-6 ${featured ? "pt-8" : "pt-7 md:pt-9"}`}>
-        <p className="caption mb-3">Perspectives</p>
+      {/* The eyebrow said "Perspectives" directly above a heading that already says what
+          these are, and the line under it explained how to click a card. Both went: the
+          heading carries it alone. */}
+      <section className={`container-page pb-5 ${featured ? "pt-6" : "pt-5 md:pt-7"}`}>
         <h2 className="title-1 max-w-3xl">What readers made of these books</h2>
-        <p className="body-copy mt-3 max-w-2xl">
-          Open one to read it in full, ask the writer about it, or add your own.
-        </p>
-        <div className="mt-6 grid gap-2.5 lg:grid-cols-2">
+        <div className="mt-4 grid gap-2.5 lg:grid-cols-2">
           {stream.map((post, index) => (
             <PerspectiveCard key={post.id} post={post} priority={index === 0} />
           ))}

@@ -27,11 +27,13 @@ const intentCards = [
 export function SearchClient({
   initialQuery = "",
   persistedDiscussions = [],
-  persistedKnowledgePosts = []
+  persistedKnowledgePosts = [],
+  browse = null
 }: {
   initialQuery?: string;
   persistedDiscussions?: DiscussionPost[];
   persistedKnowledgePosts?: KnowledgePost[];
+  browse?: ReactNode;
 }) {
   const [query, setQuery] = useState(initialQuery);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -94,7 +96,7 @@ export function SearchClient({
   }
 
   return (
-    <div className={focusedConcept ? "" : "mt-7 md:mt-8"}>
+    <div className={focusedConcept ? "" : "mt-1"}>
       {focusedConcept ? (
         <Link href="/search" className="mb-5 inline-flex min-h-10 items-center gap-2 rounded-full px-2 text-sm font-medium text-[color:var(--color-text-secondary)] transition hover:text-[color:var(--color-text-primary)]">
           <ArrowLeft size={17} /> Trending ideas
@@ -111,13 +113,18 @@ export function SearchClient({
             value={query}
             onChange={(event) => updateQuery(event.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Search books, concepts, questions, or goals..."
+            placeholder="Search a book, idea, or question"
             className="min-w-0 flex-1 border-0 bg-transparent text-[18px] font-[400] tracking-[-0.02em] text-[color:var(--color-text-primary)] outline-none placeholder:text-[color:var(--color-text-muted)] md:text-[22px]"
           />
         </label>
       </form>}
 
-      {!hasQuery ? <DefaultSearchState onSelect={runIntentSearch} /> : (
+      {!hasQuery ? (
+        <>
+          {browse}
+          <DefaultSearchState onSelect={runIntentSearch} />
+        </>
+      ) : (
         <KnowledgeResults
           query={cleanQuery}
           results={results}
@@ -130,7 +137,7 @@ export function SearchClient({
 
 function DefaultSearchState({ onSelect }: { onSelect: (query: string) => void }) {
   return (
-    <section className="mt-8 max-w-[1080px] border-t border-[color:var(--color-hairline)] pt-6 md:mt-10 md:pt-7">
+    <section className="mt-6 max-w-[1080px] border-t border-[color:var(--color-hairline)] pt-5 md:mt-7">
       <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-end">
         <div>
           <p className="caption mb-2">Start with a goal</p>
@@ -190,7 +197,7 @@ function KnowledgeResults({
       )}
       {results.bestMatch && (
         <section id={results.bestMatch.type === "concept" ? "concept-result" : undefined}>
-          {results.bestMatch.type !== "concept" && <SectionIntro eyebrow="Best match" title="Start here" subtitle="The strongest useful match across BookSphere." />}
+          {results.bestMatch.type !== "concept" && <SectionIntro eyebrow="Best match" title="Start here" />}
           <div className={`${results.bestMatch.type === "concept" ? "" : "mt-8"} max-w-[960px]`}>
             <BestMatchCard result={results.bestMatch} />
           </div>
@@ -314,12 +321,12 @@ function KnowledgePostSearchResultCard({ result }: { result: KnowledgePostResult
   );
 }
 
-function SectionIntro({ eyebrow, title, subtitle }: { eyebrow: string; title: string; subtitle: string }) {
+function SectionIntro({ eyebrow, title, subtitle }: { eyebrow: string; title: string; subtitle?: string }) {
   return (
     <div>
-      <p className="caption mb-3">{eyebrow}</p>
+      <p className="caption mb-2">{eyebrow}</p>
       <h2 className="title-1">{title}</h2>
-      <p className="body-copy mt-3 max-w-[760px]">{subtitle}</p>
+      {subtitle && <p className="body-copy mt-2 max-w-[760px]">{subtitle}</p>}
     </div>
   );
 }

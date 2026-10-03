@@ -114,7 +114,7 @@ button:disabled {
 .editorial-page {
   width: min(100%, 1320px);
   margin-inline: auto;
-  padding: 56px 24px 96px;
+  padding: 30px 24px 80px;
 }
 
 .display-large {
@@ -289,7 +289,7 @@ html[data-onboarding-active="search"] [data-onboarding="search"] {
   }
 
   .editorial-page {
-    padding: 32px 16px calc(104px + env(safe-area-inset-bottom));
+    padding: 16px 16px calc(96px + env(safe-area-inset-bottom));
   }
 
   .body-copy {
@@ -303,12 +303,13 @@ html[data-onboarding-active="search"] [data-onboarding="search"] {
   }
 
   .large-title {
-    font-size: 40px;
-    line-height: 1.04;
+    font-size: 31px;
+    line-height: 1.08;
   }
 
   .title-1 {
-    font-size: 32px;
+    font-size: 26px;
+    line-height: 1.1;
   }
 }
 

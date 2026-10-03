@@ -32,51 +32,11 @@ export default async function SearchPage({ searchParams }: { searchParams?: Prom
 
   return (
     <div className={`editorial-page max-w-[1440px] ${focusedConcept ? "pt-6 md:pt-9" : ""}`}>
-      {!focusedConcept && <>
-        <p className="caption mb-3">Search</p>
-        <h1 className="large-title max-w-[1080px]">{adding ? "Choose the book behind your insight." : "Turn curiosity into knowledge."}</h1>
-        <p className="body-copy mt-4 max-w-[760px] text-[17px] leading-7 md:text-[18px]">
-          {adding
-            ? "BookSphere works best when every insight has context. Find the book first, then add the idea, application, question, or disagreement that helps another reader."
-            : "Search a book, concept, question, or goal. Understand the idea, check the context, and see the books and real perspectives behind it."}
-        </p>
-        {/* Genres were their own tab competing with this one. They are a way of browsing
-            books, so they live here, under the box that finds a book faster. */}
-        <div className="mt-6">
-          <p className="caption mb-3">Or browse by genre</p>
-          <div className="flex flex-wrap gap-2">
-            {genres.map((genre) => (
-              <Link
-                key={genre.slug}
-                href={`/genre/${genre.slug}`}
-                className="rounded-full bg-white px-3.5 py-2 text-sm font-medium text-[color:var(--color-text-secondary)] shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] transition hover:text-[color:var(--color-text-primary)]"
-              >
-                {genre.name}
-              </Link>
-            ))}
-          </div>
-        </div>
-        {/* Reading paths had no way in once Explore stopped listing them. They are a way of
-            choosing books, so they belong here with the genres. */}
-        {readingPaths.length > 0 && (
-          <div className="mt-8">
-            <p className="caption mb-3">Or follow a reading path</p>
-            <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
-              {readingPaths.map((path) => (
-                <Link
-                  key={path.slug}
-                  href={`/path/${path.slug}`}
-                  className="rounded-[20px] bg-white p-4 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] transition hover:bg-black/[0.015]"
-                >
-                  <p className="text-[15px] font-medium leading-snug tracking-[-0.02em] text-[color:var(--color-text-primary)]">{path.title}</p>
-                  <p className="mt-1.5 line-clamp-2 text-sm leading-[1.45] text-[color:var(--color-text-secondary)]">{path.description}</p>
-                  <p className="mt-2 text-[12px] text-[color:var(--color-text-muted)]">{path.bookIds.length} books in order</p>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
-      </>}
+      {!focusedConcept && (
+        <h1 className="large-title mb-4 max-w-[1080px]">
+          {adding ? "Choose the book behind your insight." : "Find a book, or the idea inside it."}
+        </h1>
+      )}
       {adding && !focusedConcept && (
         <div className="mt-6 rounded-[24px] bg-white p-4 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">
           <p className="text-sm font-medium leading-6 text-[color:var(--color-text-secondary)]">
@@ -92,6 +52,44 @@ export default async function SearchPage({ searchParams }: { searchParams?: Prom
         initialQuery={params?.q || ""}
         persistedDiscussions={persistedDiscussions}
         persistedKnowledgePosts={persistedKnowledgePosts}
+        /* Genres and paths are ways of browsing books, so they sit directly under the box
+           that finds one, instead of above it where they pushed the box off the screen.
+           Passed in rather than rendered inside SearchClient so this page still owns what
+           browsing looks like. They belong to the default state: once you type, the
+           results take the page. */
+        browse={
+          <div className="mt-5">
+            <div className="flex flex-wrap gap-2">
+              {genres.map((genre) => (
+                <Link
+                  key={genre.slug}
+                  href={`/genre/${genre.slug}`}
+                  className="rounded-full bg-white px-3.5 py-2 text-sm font-medium text-[color:var(--color-text-secondary)] shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] transition hover:text-[color:var(--color-text-primary)]"
+                >
+                  {genre.name}
+                </Link>
+              ))}
+            </div>
+            {readingPaths.length > 0 && (
+              <div className="mt-6">
+                <p className="caption mb-2.5">Reading paths</p>
+                <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                  {readingPaths.map((path) => (
+                    <Link
+                      key={path.slug}
+                      href={`/path/${path.slug}`}
+                      className="rounded-[20px] bg-white p-3.5 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] transition hover:bg-black/[0.015]"
+                    >
+                      <p className="text-[15px] font-medium leading-snug tracking-[-0.02em] text-[color:var(--color-text-primary)]">{path.title}</p>
+                      <p className="mt-1 line-clamp-2 text-sm leading-[1.45] text-[color:var(--color-text-secondary)]">{path.description}</p>
+                      <p className="mt-1.5 text-[12px] text-[color:var(--color-text-muted)]">{path.bookIds.length} books in order</p>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        }
       />
     </div>
   );
