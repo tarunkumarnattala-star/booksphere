@@ -38,48 +38,44 @@ export default async function FeedPage({ searchParams }: { searchParams?: Promis
   );
 
   return (
-    <div className="editorial-page max-w-[980px]">
-      <header className="mb-6 border-b border-[color:var(--color-hairline)] pb-5 md:mb-7">
-        <p className="caption mb-2">Feed</p>
-        <h1 className="title-1">What readers are learning, out loud.</h1>
-        <p className="mt-2 max-w-2xl text-[15px] font-medium leading-6 text-[color:var(--color-text-secondary)] md:text-base">
+    <div className="editorial-page">
+      <header>
+        <p className="caption">Feed</p>
+        <h1 className="title-1 mt-4 max-w-[18ch]">What readers are learning, out loud</h1>
+        <p className="body-copy measure mt-5">
           Something you learned, tried, changed your mind about, or still cannot settle. A book
           can be the reason, but it is never required.
         </p>
       </header>
 
-      <FeedComposer initialTopic={initialTopic} />
+      <div className="mt-8">
+        <FeedComposer initialTopic={initialTopic} />
+      </div>
 
-      <ul className="mt-4 grid gap-1.5 sm:grid-cols-3">
+      {/* Three ways in for the blank-page moment. They are prompts, not examples: nothing here
+          pretends to be something somebody wrote. */}
+      <ul className="mt-5 grid gap-5 sm:grid-cols-3">
         {starters.map((starter) => (
-          <li
-            key={starter}
-            className="rounded-[16px] bg-black/[0.025] px-3.5 py-3 text-[13px] leading-[1.4] text-[color:var(--color-text-secondary)]"
-          >
+          <li key={starter} className="footnote border-t border-[color:var(--rule)] pt-3">
             {starter}
           </li>
         ))}
       </ul>
 
-      <section className="mt-8">
-        <div className="mb-4">
-          <p className="caption mb-2">Latest</p>
-          <h2 className="title-3">{posts.length ? "What readers are sharing" : "Nobody has posted yet"}</h2>
-        </div>
+      <section className="section-rule">
+        <p className="caption">{posts.length ? "Latest" : "Nothing yet"}</p>
         {posts.length ? (
-          <KnowledgeFeed seedPosts={posts} variant="stream" />
+          <KnowledgeFeed seedPosts={posts} />
         ) : (
           // The feed used to render nothing at all when it was empty, which reads as a broken
           // page rather than an early one.
-          <div className="rounded-[24px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-8">
-            <p className="text-[15px] leading-[1.55] text-[color:var(--color-text-primary)]">
-              This is the first page of it. Write the thing you would have wanted to read after
-              finishing your last book &mdash; a few lines is enough.
+          <>
+            <h2 className="title-1 mt-4 max-w-[18ch]">This is the first page of it</h2>
+            <p className="body-copy measure mt-5">
+              Write the thing you would have wanted to read after finishing your last book. A few
+              lines is enough. Posts here are public, and anyone can reply to yours.
             </p>
-            <p className="mt-3 text-sm leading-6 text-[color:var(--color-text-secondary)]">
-              Posts here are public, and anyone can reply to yours.
-            </p>
-          </div>
+          </>
         )}
       </section>
     </div>
