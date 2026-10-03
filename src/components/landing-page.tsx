@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styles from "./landing-page.module.css";
+import type { LandingPerspective } from "@/lib/landing-evidence";
 
 // Reading needs no account, so the buttons open the product. Writing asks for sign-in at
 // the moment it is needed - a stranger from a link should never meet a login screen first.
@@ -11,48 +12,6 @@ const signInHref = "/login?next=%2Fexplore";
 // Nothing here is a mock-up. If one is edited or unpublished, edit or remove it here too -
 // an invented example on the front door would be worse than a shorter list.
 //
-// The heading below the list says "Fifty-one perspectives are written". That is the count of
-// published rows in discussion_posts at the time of writing. If the real number moves, move
-// the heading with it; a stale count is the same failure as an invented quote.
-const perspectives = [
-  {
-    type: "Insight",
-    title: "The value here is that it refuses to give you a formula",
-    excerpt:
-      "Horowitz says directly that there is no recipe for the hard things, and then spends the book on situations where every option is bad. Layoffs, demoting a loyal friend, telling the truth to people who will leave because of it.",
-    book: "The Hard Thing About Hard Things",
-    author: "Ben Horowitz",
-    writer: "BookSphere Team"
-  },
-  {
-    type: "Disagreement",
-    title: "Habit stacking assumes a stable life. Whose life is stable?",
-    excerpt:
-      "The advice to anchor a new habit to an existing one assumes your days have reliable structure to anchor to. That describes an office worker with a fixed commute. It does not describe a nurse on rotating shifts, a parent of a newborn, or anyone holding two jobs.",
-    book: "Atomic Habits",
-    author: "James Clear",
-    writer: "BookSphere Team"
-  },
-  {
-    type: "Question",
-    title: "Is deep work a skill, or a privilege dressed as a skill?",
-    excerpt:
-      "The conditions the book recommends — long uninterrupted blocks, control over your calendar, the ability to be unreachable — are largely determined by your seniority and what you do. A junior support engineer cannot decide to be unreachable.",
-    book: "Deep Work",
-    author: "Cal Newport",
-    writer: "BookSphere Team"
-  },
-  {
-    type: "Insight",
-    title: "I Learned Not to Trust Every Thought",
-    excerpt:
-      "Kahneman’s idea that we rely on two modes of thought — one fast and intuitive, the other slow and deliberate — made me realise how often I mistake an immediate feeling for a well-reasoned conclusion.",
-    book: "Thinking, Fast and Slow",
-    author: "Daniel Kahneman",
-    writer: "linno Andy"
-  }
-];
-
 // The exact four words a book page asks, quoted rather than paraphrased. Someone who follows
 // a link to one of those questions should meet the same wording there that they read here.
 const questions = [
@@ -93,7 +52,7 @@ function Wordmark() {
   );
 }
 
-export function LandingPage() {
+export function LandingPage({ perspectiveCount, perspectives }: { perspectiveCount: number | null; perspectives: LandingPerspective[] }) {
   return (
     <div className={styles.page}>
       <header className={styles.masthead}>
@@ -134,7 +93,10 @@ export function LandingPage() {
           <div className={styles.sectionHead}>
             <p className={styles.label}>What is actually here</p>
             <h2 id="evidence-title" className={styles.sectionTitle}>
-              Fifty-one perspectives are written. Here are four.
+              {/* Counted, never typed. With no count available the sentence claims no number. */}
+              {perspectiveCount === null
+                ? "What readers have written so far. Here are four."
+                : `${perspectiveCount} perspectives are written. Here are four.`}
             </h2>
           </div>
           {/* Unordered: these four are a sample, not a sequence. The four questions below
