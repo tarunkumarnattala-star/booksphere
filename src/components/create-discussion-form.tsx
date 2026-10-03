@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { CheckCircle2, Lightbulb } from "lucide-react";
 import { Book, PostType } from "@/lib/types";
 import { requireProfile } from "@/lib/auth-client";
 import { trackEvent } from "@/lib/analytics";
@@ -8,19 +9,22 @@ import { createSupabaseContribution } from "@/lib/contributions";
 import { addLocalDiscussion } from "@/lib/local-discussions";
 import { supabase } from "@/lib/supabase";
 import { LoginRequiredNotice } from "./login-required-notice";
-import { perspectiveGroups } from "@/lib/perspective-groups";
 
-// Grouped so the differentiated kinds lead, from the one list the book page also reads
-// (lib/perspective-groups.ts). A flat list of eleven put "Summary" beside "What Did Not
-// Work", which reads as though they are worth the same - and they are not. A summary is the
-// one thing a language model already does better than any reader will, while an account of
-// what actually happened when someone applied an idea, especially when it failed, exists
-// nowhere else.
+// Grouped so the differentiated kinds lead. A flat list of eleven put "Summary" beside
+// "What Did Not Work", which reads as though they are worth the same - and they are not.
+// A summary is the one thing a language model already does better than any reader will,
+// while an account of what actually happened when someone applied an idea, especially
+// when it failed, exists nowhere else. Leading with lived outcomes is the whole product
+// promise, so the composer should ask for that first.
 //
-// Quote is deliberately absent: it adds nothing a reader cannot get elsewhere and invites
-// pasting copyrighted passages. Existing posts of every type still render; this governs only
-// what can be written from here.
-const postTypeGroups = perspectiveGroups;
+// Quote is deliberately absent: it adds nothing a reader cannot get elsewhere and
+// invites pasting copyrighted passages. Existing posts of every type still render; this
+// governs only what can be written from here.
+const postTypeGroups: Array<{ label: string; types: PostType[] }> = [
+  { label: "What happened when you used it", types: ["Real-Life Result", "What Did Not Work", "Application", "Personal Experience"] },
+  { label: "Where it breaks down", types: ["Disagreement", "Limitation"] },
+  { label: "Understanding the idea", types: ["Insight", "Question", "Connection", "Summary"] }
+];
 const promptByType: Record<PostType, string> = {
   Insight: "What idea changed how you think?",
   Application: "How did you apply this in real life?",
@@ -209,159 +213,149 @@ export function CreateDiscussionForm({ book, initialPostType = "Insight", initia
 
   if (submitted) {
     return (
-      <div>
-        <p className="caption">Published</p>
-        <h2 className="title-1 mt-4 max-w-[20ch]">It is on the book&rsquo;s page now.</h2>
-        <p className="body-copy measure mt-5">
-          Anyone reading {book.title} can see what you made of it, and reply to you about it.
+      <div className="rounded-[32px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">
+        <CheckCircle2 className="text-[color:var(--color-green)]" />
+        <h2 className="title-2 mt-4">Perspective published</h2>
+        <p className="body-copy mt-2 text-[15px] leading-6">
+          Your perspective is now attached to this book so other readers can learn from the idea, application, question, or disagreement you shared.
         </p>
-        <a href={createdPostId ? `/discussion/${createdPostId}` : `/book/${book.id}#discussions`} className="btn-ink mt-8">
-          Read it back
+        <a href={createdPostId ? `/discussion/${createdPostId}` : `/book/${book.id}#discussions`} className="mt-5 inline-flex rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-medium !text-white transition hover:opacity-85">
+          View your perspective
         </a>
       </div>
     );
   }
 
   return (
-    <form onSubmit={submit}>
-      <p className="caption">New perspective</p>
-      <h1 className="large-title mt-4 max-w-[16ch]">Share a perspective on {book.title}</h1>
-      <p className="body-copy measure mt-5">
-        Not a blank text box. Say what you tried, what happened, what you would push back on,
-        or what you are still not sure about.
-      </p>
-      {restored && (
-        <p role="status" className="footnote mt-5 border-l-2 border-[color:var(--ink)] pl-4 text-[color:var(--ink)]">
-          The draft you started here is still in the fields below.
-        </p>
-      )}
-
-      {/* The kind of perspective was a native dropdown showing "Insight" - so the product's
-          own argument, that an account of what happened when you used a book is worth more
-          than a summary of it, was folded away behind a chevron. All eleven are on the page,
-          in their three groups, lived outcomes first. */}
-      <div className="section-rule">
-      <fieldset>
-        <legend className="caption">What kind is it?</legend>
-        <div className="mt-5 grid gap-5">
-          {postTypeGroups.map((group) => (
-            <div key={group.label} className="grid gap-2 border-t border-[color:var(--rule)] pt-4 md:grid-cols-[150px_minmax(0,1fr)] md:gap-5">
-              <p className="caption caption-muted pt-[3px]">{group.label}</p>
-              <div className="flex flex-wrap gap-x-5 gap-y-1">
-                {group.types.map((type) => (
-                  <label key={type} className="inline-flex min-h-11 items-center">
-                    <input
-                      type="radio"
-                      name="postType"
-                      value={type}
-                      checked={form.postType === type}
-                      onChange={() => setForm({ ...form, postType: type })}
-                      className="peer sr-only"
-                    />
-                    <span className="cursor-pointer text-[15px] text-[color:var(--ink-50)] transition-colors peer-checked:text-[color:var(--ink)] peer-checked:underline peer-checked:decoration-2 peer-checked:underline-offset-[6px] peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-4 peer-focus-visible:outline-[color:var(--ink)] hover:text-[color:var(--ink)]">
-                      {type}
-                    </span>
-                  </label>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </fieldset>
+    <form onSubmit={submit} className="rounded-[32px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-8">
+      <div className="mb-6">
+        <p className="caption">New perspective</p>
+        <h1 className="title-1 mt-2">Share a perspective on {book.title}.</h1>
+        <p className="body-copy mt-4 max-w-2xl text-[16px]">BookSphere is not a blank text box. Add the idea, reference, application, or disagreement that would help another reader understand the book better.</p>
+        {restored && (
+          <p role="status" className="mt-4 rounded-[16px] bg-black/[0.03] px-4 py-3 text-sm font-medium text-[color:var(--color-text-secondary)]">
+            We kept the draft you started here.
+          </p>
+        )}
       </div>
 
-      <p className="mt-8 border-l-2 border-[color:var(--ink)] pl-5">
-        <span className="caption caption-muted block">The question to answer</span>
-        <span className="lead mt-2 block text-[color:var(--ink)]">{activePrompt}</span>
-      </p>
+      <div className="mb-6 rounded-[24px] bg-[#f7f2e8] p-5">
+        <div className="flex items-start gap-3">
+          <Lightbulb className="mt-1 text-[color:var(--color-accent)]" size={18} />
+          <div>
+            <p className="caption text-[10px]">Prompt for {form.postType}</p>
+            <p className="headline mt-2 text-[color:var(--color-text-primary)]">{activePrompt}</p>
+          </div>
+        </div>
+      </div>
 
-      <div className="mt-8 grid gap-5">
-        <label className="field-label">
-          <span className="caption caption-muted">Title</span>
+      <div className="grid gap-4">
+        <label className="grid gap-2 text-sm font-medium">
+          Perspective type
+          <select
+            value={form.postType}
+            onChange={(event) => setForm({ ...form, postType: event.target.value as PostType })}
+            className="rounded-[20px] bg-black/[0.035] px-4 py-3 outline-none ring-1 ring-transparent focus:ring-black/20"
+          >
+            {postTypeGroups.map((group) => (
+              <optgroup key={group.label} label={group.label}>
+                {group.types.map((type) => <option key={type}>{type}</option>)}
+              </optgroup>
+            ))}
+          </select>
+        </label>
+        <label className="grid gap-2 text-sm font-medium">
+          Title
           <input
             maxLength={180}
             value={form.title}
             onChange={(event) => { setError(""); setForm({ ...form, title: event.target.value }); }}
             placeholder="The idea that changed how I think about..."
-            className="field"
+            className="rounded-[20px] bg-black/[0.035] px-4 py-3 outline-none ring-1 ring-transparent focus:ring-black/20"
           />
         </label>
-        <label className="field-label">
-          <span className="caption caption-muted">What you want to say</span>
+        <label className="grid gap-2 text-sm font-medium">
+          Body
           <textarea
             maxLength={10000}
             value={form.body}
             onChange={(event) => { setError(""); setForm({ ...form, body: event.target.value }); }}
-            rows={10}
-            placeholder="What you noticed, applied, questioned, challenged, connected, or would want another reader to understand."
-            className="field"
+            rows={8}
+            placeholder="Write the useful part: what you noticed, applied, questioned, challenged, connected, or would want another reader to understand."
+            className="rounded-[20px] bg-black/[0.035] px-4 py-3 outline-none ring-1 ring-transparent focus:ring-black/20"
           />
-          <span className="footnote numeral">
-            {bodyCount === 0
-              ? `${MIN_BODY_LENGTH} characters minimum`
-              : bodyCount < MIN_BODY_LENGTH
-                ? `${MIN_BODY_LENGTH - bodyCount} more characters`
-                : `${bodyCount} characters`}
-          </span>
+          <span className="text-xs font-medium text-[color:var(--color-text-muted)]">{bodyCount}/{MIN_BODY_LENGTH} minimum characters</span>
         </label>
-
         {isApplicationLike && (
-          // The four fields that make this product different from a review site, so they are
-          // labelled as one thing rather than dropped into a grey box.
-          <div className="border-t border-[color:var(--rule)] pt-5">
-            <p className="caption">What actually happened</p>
-            <div className="mt-5 grid gap-5 md:grid-cols-2">
-              <label className="field-label">
-                <span className="caption caption-muted">Where</span>
-                <select
-                  value={form.contextType}
-                  onChange={(event) => setForm({ ...form, contextType: event.target.value })}
-                  className="field"
-                >
-                  <option value="">Choose a context</option>
-                  {contextTags.map((tag) => <option key={tag}>{tag}</option>)}
-                </select>
-              </label>
-              <label className="field-label">
-                <span className="caption caption-muted">What you tried</span>
-                <input maxLength={500} value={form.actionTaken} onChange={(event) => setForm({ ...form, actionTaken: event.target.value })} placeholder="The thing you actually did" className="field" />
-              </label>
-              <label className="field-label">
-                <span className="caption caption-muted">What changed</span>
-                <input maxLength={500} value={form.outcome} onChange={(event) => setForm({ ...form, outcome: event.target.value })} placeholder="The result, as plainly as you can put it" className="field" />
-              </label>
-              <label className="field-label">
-                <span className="caption caption-muted">What did not work</span>
-                <input maxLength={500} value={form.whatFailed} onChange={(event) => setForm({ ...form, whatFailed: event.target.value })} placeholder="Where the idea broke down" className="field" />
-              </label>
-              <label className="field-label md:col-span-2">
-                <span className="caption caption-muted">What you would change</span>
-                <input maxLength={500} value={form.wouldChange} onChange={(event) => setForm({ ...form, wouldChange: event.target.value })} placeholder="What you would do differently next time" className="field" />
-              </label>
-            </div>
+          <div className="grid gap-4 rounded-[24px] bg-black/[0.025] p-4 md:grid-cols-2">
+            <label className="grid gap-2 text-sm font-medium">
+              Context tag
+              <select
+                value={form.contextType}
+                onChange={(event) => setForm({ ...form, contextType: event.target.value })}
+                className="rounded-[20px] bg-white px-4 py-3 outline-none ring-1 ring-transparent focus:ring-black/20"
+              >
+                <option value="">Choose a context</option>
+                {contextTags.map((tag) => <option key={tag}>{tag}</option>)}
+              </select>
+            </label>
+            <label className="grid gap-2 text-sm font-medium">
+              Action taken
+              <input
+                maxLength={500}
+                value={form.actionTaken}
+                onChange={(event) => setForm({ ...form, actionTaken: event.target.value })}
+                placeholder="What did you actually try?"
+                className="rounded-[20px] bg-white px-4 py-3 outline-none ring-1 ring-transparent focus:ring-black/20"
+              />
+            </label>
+            <label className="grid gap-2 text-sm font-medium">
+              Result
+              <input
+                maxLength={500}
+                value={form.outcome}
+                onChange={(event) => setForm({ ...form, outcome: event.target.value })}
+                placeholder="What changed?"
+                className="rounded-[20px] bg-white px-4 py-3 outline-none ring-1 ring-transparent focus:ring-black/20"
+              />
+            </label>
+            <label className="grid gap-2 text-sm font-medium">
+              What did not work
+              <input
+                maxLength={500}
+                value={form.whatFailed}
+                onChange={(event) => setForm({ ...form, whatFailed: event.target.value })}
+                placeholder="Where did the idea break down?"
+                className="rounded-[20px] bg-white px-4 py-3 outline-none ring-1 ring-transparent focus:ring-black/20"
+              />
+            </label>
+            <label className="grid gap-2 text-sm font-medium md:col-span-2">
+              What would you change?
+              <input
+                maxLength={500}
+                value={form.wouldChange}
+                onChange={(event) => setForm({ ...form, wouldChange: event.target.value })}
+                placeholder="What would you do differently next time?"
+                className="rounded-[20px] bg-white px-4 py-3 outline-none ring-1 ring-transparent focus:ring-black/20"
+              />
+            </label>
           </div>
         )}
-
-        <label className="field-label">
-          <span className="caption caption-muted">Chapter or reference, if any</span>
+        <label className="grid gap-2 text-sm font-medium">
+          Optional quote or reference
           <input
             maxLength={500}
             value={form.quoteReference}
             onChange={(event) => setForm({ ...form, quoteReference: event.target.value })}
-            placeholder="A chapter or an idea, not a long passage"
-            className="field"
+            placeholder="Chapter, idea, or short reference. Avoid copyrighted passages."
+            className="rounded-[20px] bg-black/[0.035] px-4 py-3 outline-none ring-1 ring-transparent focus:ring-black/20"
           />
         </label>
-
-        {error && <p role="alert" className="footnote border-l-2 border-[color:var(--color-rose)] pl-4 text-[color:var(--color-rose)]">{error}</p>}
+        {error && <p role="alert" className="rounded-[16px] bg-[color:var(--color-rose)]/10 px-4 py-3 text-sm font-medium text-[color:var(--color-rose)]">{error}</p>}
         {notice && <LoginRequiredNotice message={notice} onDismiss={() => setNotice("")} />}
-
-        <div className="mt-3 flex flex-col items-start gap-3">
-          <button disabled={publishing} className="btn-ink w-full sm:w-auto">
-            {publishing ? "Publishing" : "Publish perspective"}
-          </button>
-          <p className="footnote">Free. You sign in with Google at this step, not before it.</p>
-        </div>
+        <button disabled={publishing} className="min-h-11 rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-medium !text-white transition hover:opacity-85 disabled:cursor-not-allowed disabled:opacity-45">
+          {publishing ? "Publishing" : "Publish perspective"}
+        </button>
       </div>
     </form>
   );

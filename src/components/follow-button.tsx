@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { UserCheck, UserPlus } from "lucide-react";
 import { requireProfile } from "@/lib/auth-client";
 import { hasLocalItem, toggleLocalItem } from "@/lib/local-store";
 import { supabase } from "@/lib/supabase";
@@ -116,13 +117,15 @@ export function FollowButton({ initial = false, profileUsername, compact = false
         onClick={toggleFollow}
         disabled={syncing}
         aria-label={following ? "Unfollow this contributor" : "Follow this contributor"}
-        aria-pressed={following}
-        className={compact ? "control" : "btn-quiet btn-sm"}
+        className={`inline-flex items-center justify-center gap-2 rounded-full bg-[color:var(--color-text-primary)] font-medium !text-white transition duration-200 hover:opacity-85 disabled:opacity-55 ${
+          compact ? "min-h-9 px-3 py-1.5 text-xs" : "min-h-11 px-4 py-2 text-sm"
+        }`}
       >
+        {following ? <UserCheck size={compact ? 14 : 17} /> : <UserPlus size={compact ? 14 : 17} />}
         {following ? "Following" : "Follow"}
       </button>
       {notice && <LoginRequiredNotice message={notice} onDismiss={() => setNotice("")} />}
-      {error && <p role="alert" className="footnote mt-3 border-l-2 border-[color:var(--color-rose)] pl-4 text-[color:var(--color-rose)]">{error}</p>}
+      {error && <p role="alert" className="mt-3 rounded-[16px] bg-[color:var(--color-rose)]/10 px-4 py-3 text-sm font-medium text-[color:var(--color-rose)]">{error}</p>}
     </div>
   );
 }

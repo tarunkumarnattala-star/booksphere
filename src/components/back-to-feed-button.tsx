@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
 import { readFeedPosition } from "@/lib/feed-return";
 
 export function BackToFeedButton() {
@@ -15,8 +16,9 @@ export function BackToFeedButton() {
   }
 
   return (
-    <button type="button" onClick={goBack} className="caption caption-muted inline-flex min-h-11 items-center transition-colors hover:text-[color:var(--ink)]">
-      Back to the feed
+    <button type="button" onClick={goBack} className="mb-6 inline-flex min-h-11 items-center gap-2 rounded-full px-2 text-sm font-medium text-[color:var(--color-text-secondary)] transition hover:text-[color:var(--color-text-primary)]">
+      <ArrowLeft size={16} />
+      Back to feed
     </button>
   );
 }

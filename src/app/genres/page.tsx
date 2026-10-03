@@ -1,28 +1,28 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/metadata";
 import { GenreDirectory } from "@/components/genre-directory";
-import { books, genres, getBooksForGenre } from "@/lib/data";
+import { genres, getBooksForGenre } from "@/lib/data";
 
 export const metadata: Metadata = pageMetadata({
   title: "Genres",
-  description: "Every shelf in BookSphere, and how many books are on it.",
+  description: "Find the reading room that matches the idea you are chasing.",
   path: "/genres"
 });
 
+
 export default function GenresPage() {
   return (
-    <div className="editorial-page">
-      <header>
-        <p className="caption">Shelves</p>
-        <h1 className="large-title mt-4 max-w-[16ch]">
-          <span className="numeral">{genres.length}</span> shelves, <span className="numeral">{books.length}</span> books
+    <div className="mx-auto max-w-[1500px]">
+      <section className="container-page py-10 md:py-14">
+        <p className="caption mb-4">BookSphere Shelves</p>
+        <h1 className="large-title max-w-5xl">
+          Find the reading room that matches the idea you are chasing.
         </h1>
-        <p className="body-copy measure mt-5">
-          A shelf is a way into the catalogue, not a filing cabinet. Open one to see what is on it
-          and what people have written about it.
+        <p className="body-copy mt-5 max-w-2xl">
+          Genres are not filing cabinets here. They are focused discussion rooms built around books, questions, applications, and reader perspectives.
         </p>
-      </header>
-      <GenreDirectory genres={genres} booksByGenre={getBooksForGenre} />
+      </section>
+      <GenreDirectory genres={genres} booksByGenre={getBooksForGenre} heading="All Genres" subtitle="Choose a shelf to see top books, rising books, and the best insights inside it." />
     </div>
   );
 }

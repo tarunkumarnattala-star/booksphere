@@ -74,26 +74,20 @@ export function AuthNavButton() {
     // a reader who hit a dead link and logged in would land on another dead end.
     const returnable = pathname && !pathname.startsWith("/_") && pathname !== "/login";
     const loginHref = returnable ? `/login?next=${encodeURIComponent(pathname)}` : "/login";
-    // A filled black button in the corner of every screen made signing in the
-    // highest-contrast thing in the product, on a product whose whole stance is that
-    // reading never asks you to. It is a label, like the rest of the masthead.
     return (
-      <Link href={loginHref} className="caption caption-muted inline-flex min-h-11 items-center transition-colors hover:text-[color:var(--ink)]">
+      <Link href={loginHref} className="inline-flex min-h-11 items-center rounded-full bg-[color:var(--color-text-primary)] px-4 py-2 text-sm font-medium !text-white transition duration-200 hover:opacity-85">
         Log in
       </Link>
     );
   }
 
   return (
-    <div className="flex items-center gap-5">
+    <div className="flex items-center gap-2">
       <NotificationBell />
-      <Link
-        href={profileHref}
-        className="hidden max-w-[150px] truncate text-[14px] text-[color:var(--ink)] underline decoration-[color:var(--rule-strong)] decoration-1 underline-offset-[5px] transition hover:decoration-[color:var(--ink)] lg:block"
-      >
+      <Link href={profileHref} className="hidden max-w-[140px] truncate rounded-full bg-white px-4 py-2 text-sm font-medium text-[color:var(--color-text-primary)] ring-1 ring-black/[0.04] lg:block">
         {label}
       </Link>
-      <button type="button" onClick={signOut} className="caption caption-muted min-h-11 transition-colors hover:text-[color:var(--ink)]">
+      <button type="button" onClick={signOut} className="inline-flex min-h-11 items-center rounded-full bg-[color:var(--color-text-primary)] px-4 py-2 text-sm font-medium !text-white transition duration-200 hover:opacity-85">
         Log out
       </button>
     </div>

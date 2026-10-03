@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { Bell } from "lucide-react";
 import { requireProfile } from "@/lib/auth-client";
 import { countUnseen, getReplyNotifications } from "@/lib/notifications";
 import { supabase } from "@/lib/supabase";
@@ -50,13 +51,11 @@ export function NotificationBell() {
     <Link
       href="/notifications"
       aria-label={unseen ? `Replies to your writing, ${unseen} new` : "Replies to your writing"}
-      className="caption caption-muted inline-flex min-h-11 items-center gap-2 transition-colors hover:text-[color:var(--ink)]"
+      className="relative grid size-11 place-items-center rounded-full text-[color:var(--color-text-primary)] transition hover:bg-black/[0.05]"
     >
-      Replies
+      <Bell size={18} />
       {unseen > 0 && (
-        // The count is the reason to look. It is set in the mono label's own size, flush to
-        // the word, rather than in a coloured bubble floating over a bell.
-        <span className="numeral border-b-2 border-[color:var(--ink)] pb-px text-[color:var(--ink)]">
+        <span className="absolute right-1.5 top-1.5 grid min-w-[18px] place-items-center rounded-full bg-[color:var(--color-rose)] px-1 text-[10px] font-semibold leading-[18px] !text-white">
           {unseen > 9 ? "9+" : unseen}
         </span>
       )}

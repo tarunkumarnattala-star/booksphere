@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Bookmark, ThumbsDown, ThumbsUp } from "lucide-react";
 import { Book } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
 import { requireProfile } from "@/lib/auth-client";
@@ -156,45 +157,40 @@ export function BookCommunityActions({ book }: { book: Book }) {
 
   return (
     <div>
-      {/* Three quiet controls on one line, separated by rules. They are what a reader does
-          with a book they have not read yet, so they sit below the one action that matters -
-          writing - and are set in the label face rather than as three filled pills. */}
-      <div className="flex flex-wrap items-center gap-x-5 gap-y-2 border-y border-[color:var(--rule)] py-1">
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
         <button
           type="button"
           onClick={toggleSaved}
           disabled={syncing}
           aria-label={saved ? "Remove this book from saved books" : "Save this book to revisit later"}
-          aria-pressed={saved}
-          className={`caption min-h-11 transition-colors disabled:opacity-50 ${saved ? "text-[color:var(--ink)] underline decoration-2 underline-offset-[6px]" : "caption-muted hover:text-[color:var(--ink)]"}`}
+          className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-semibold !text-white transition duration-200 hover:opacity-85 disabled:opacity-55 sm:w-auto"
         >
-          {saved ? "Saved" : "Save"}{saveCount > 0 ? <span className="numeral"> {saveCount}</span> : null}
+          <Bookmark size={17} className={saved ? "fill-white" : ""} />
+          {saved ? "Saved" : "Save Book"}{saveCount > 0 ? ` · ${saveCount}` : ""}
         </button>
-        <span className="h-4 w-px bg-[color:var(--rule)]" aria-hidden="true" />
-        <button
-          type="button"
-          onClick={() => chooseRecommendation("yes")}
-          disabled={syncing}
-          aria-label="Recommend this book if it genuinely helped you"
-          aria-pressed={recommendation === "yes"}
-          className={`caption min-h-11 transition-colors disabled:opacity-50 ${recommendation === "yes" ? "text-[color:var(--ink)] underline decoration-2 underline-offset-[6px]" : "caption-muted hover:text-[color:var(--ink)]"}`}
-        >
-          Recommend
-        </button>
-        <span className="h-4 w-px bg-[color:var(--rule)]" aria-hidden="true" />
-        <button
-          type="button"
-          onClick={() => chooseRecommendation("no")}
-          disabled={syncing}
-          aria-label="Mark this book as not for me"
-          aria-pressed={recommendation === "no"}
-          className={`caption min-h-11 transition-colors disabled:opacity-50 ${recommendation === "no" ? "text-[color:var(--ink)] underline decoration-2 underline-offset-[6px]" : "caption-muted hover:text-[color:var(--ink)]"}`}
-        >
-          Not for me
-        </button>
+        <div className="flex w-full rounded-full bg-white p-1 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.04] sm:w-auto">
+          <button
+            type="button"
+            onClick={() => chooseRecommendation("yes")}
+            disabled={syncing}
+            aria-label="Recommend this book if it genuinely helped you"
+            className={`inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-full px-4 text-sm font-semibold transition duration-200 disabled:opacity-55 ${recommendation === "yes" ? "bg-[color:var(--color-text-primary)] !text-white" : "text-[color:var(--color-text-secondary)] hover:bg-black/[0.04]"}`}
+          >
+            <ThumbsUp size={16} /> Recommend
+          </button>
+          <button
+            type="button"
+            onClick={() => chooseRecommendation("no")}
+            disabled={syncing}
+            aria-label="Mark this book as not for me"
+            className={`inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-full px-4 text-sm font-semibold transition duration-200 disabled:opacity-55 ${recommendation === "no" ? "bg-[color:var(--color-text-primary)] !text-white" : "text-[color:var(--color-text-secondary)] hover:bg-black/[0.04]"}`}
+          >
+            <ThumbsDown size={16} /> Not for me
+          </button>
+        </div>
       </div>
       {notice && <LoginRequiredNotice message={notice} onDismiss={() => setNotice("")} />}
-      {error && <p role="alert" className="footnote mt-3 border-l-2 border-[color:var(--color-rose)] pl-4 text-[color:var(--color-rose)]">{error}</p>}
+      {error && <p role="alert" className="mt-3 rounded-[16px] bg-[color:var(--color-rose)]/10 px-4 py-3 text-sm font-medium text-[color:var(--color-rose)]">{error}</p>}
     </div>
   );
 }

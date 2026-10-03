@@ -1,5 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { BookOpen, Lightbulb, MessageCircle, ThumbsUp, UserCheck, Users } from "lucide-react";
+import { BookCover } from "@/components/book-cover";
+import { GenrePill } from "@/components/genre-pill";
 import { ProfilePrimaryAction } from "@/components/profile-primary-action";
 import {
   discussions,
@@ -12,6 +15,8 @@ import {
 import { contributionDestinationUrl } from "@/lib/contributions";
 import { getCanonicalProfileBundle } from "@/lib/profile-data";
 import type { Book, DiscussionPost, KnowledgePost } from "@/lib/types";
+import { formatCount, initials } from "@/lib/utils";
+import { bookCoverData } from "@/lib/book-cover-data";
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/metadata";
 
@@ -56,125 +61,164 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
   const isEditorialProfile = profile.username === "booksphere-team";
 
   return (
-    <div className="editorial-page">
-      <header>
-        <p className="caption">
-          @{profile.username}
-          {isEditorialProfile ? <span className="caption-muted">{" \u00b7 "}Editorial account</span> : null}
-        </p>
-        <h1 className="large-title mt-4">{profile.name}</h1>
-        {profile.bio && <p className="body-copy measure mt-5">{profile.bio}</p>}
-        <div className="mt-8">
-          <ProfilePrimaryAction profileId={profile.id} profileUsername={profile.username} />
-        </div>
-      </header>
+    <div className="editorial-page max-w-[1180px]">
+      <section className="rounded-[32px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-8">
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
+          <span className="grid size-20 shrink-0 place-items-center rounded-full bg-[color:var(--color-text-primary)] text-xl font-medium !text-white md:size-24">
+            {initials(profile.name)}
+          </span>
 
-      {/* Followers and Following used to lead this row as two large numerals. Both are real
-          counts of a table that is empty, so the page opened by telling every visitor that
-          nobody follows this person. What is actually here - what they wrote, and the books
-          behind it - is countable and worth counting. */}
-      <dl className="facts mt-8 border-t border-[color:var(--rule)] pt-5">
-        <div>
-          <dt className="caption caption-muted">Perspectives</dt>
-          <dd className="numeral">{userDiscussions.length}</dd>
-        </div>
-        <div>
-          <dt className="caption caption-muted">Notes</dt>
-          <dd className="numeral">{userKnowledge.length}</dd>
-        </div>
-        <div>
-          <dt className="caption caption-muted">Books referenced</dt>
-          <dd className="numeral">{referencedBooks.length}</dd>
-        </div>
-        {profile.topGenres.length > 0 && (
-          <div>
-            <dt className="caption caption-muted">Writes about</dt>
-            <dd>{profile.topGenres.slice(0, 3).join(", ")}</dd>
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+              <div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <p className="caption">@{profile.username}</p>
+                  {isEditorialProfile && (
+                    <span className="rounded-full bg-[color:var(--color-accent)]/10 px-2.5 py-1 text-[11px] font-medium text-[color:var(--color-text-primary)]">
+                      Editorial profile
+                    </span>
+                  )}
+                </div>
+                <h1 className="title-1 mt-2 text-balance">{profile.name}</h1>
+                <p className="body-copy mt-3 max-w-2xl">{profile.bio}</p>
+              </div>
+              <ProfilePrimaryAction profileId={profile.id} profileUsername={profile.username} />
+            </div>
+
+            {profile.topGenres.length > 0 && (
+              <div className="mt-5 flex flex-wrap gap-2">
+                {profile.topGenres.slice(0, 3).map((genre) => <GenrePill key={genre} name={genre} />)}
+              </div>
+            )}
           </div>
-        )}
-      </dl>
+        </div>
 
-      <section id="contributions" className="section-rule scroll-mt-24">
-        <p className="caption">Everything {profile.name} has written</p>
-        {contributions.length > 0 ? (
-          <ol className="records records-tight">
-            {contributions.slice(0, 20).map((contribution) => contribution.kind === "discussion" ? (
-              <DiscussionContributionRecord key={contribution.item.id} post={contribution.item} />
-            ) : (
-              <KnowledgeContributionRecord key={contribution.item.id} post={contribution.item} />
-            ))}
-          </ol>
-        ) : (
-          <p className="body-copy measure mt-5">
-            Nothing yet. What this reader applies, questions, challenges or learns will appear here.
-          </p>
-        )}
+        <div className="mt-7 grid grid-cols-2 gap-2 border-t border-[color:var(--color-hairline)] pt-5 sm:grid-cols-4">
+          <ProofItem label="Followers" value={formatCount(profile.followers)} href={`/profile/${profile.username}/connections?view=followers`} icon={<Users size={16} />} />
+          <ProofItem label="Following" value={formatCount(profile.following)} href={`/profile/${profile.username}/connections?view=following`} icon={<UserCheck size={16} />} />
+          <ProofItem label="Contributions" value={`${contributions.length}`} href="#contributions" icon={<Lightbulb size={16} />} />
+          <ProofItem label="Books referenced" value={`${referencedBooks.length}`} href="#books-referenced" icon={<BookOpen size={16} />} />
+        </div>
       </section>
 
-      {referencedBooks.length > 0 && (
-        <section id="books-referenced" className="section-rule scroll-mt-24">
-          <p className="caption">Books behind the writing</p>
-          <ul className="mt-5 grid gap-x-8 border-t border-[color:var(--rule-strong)] sm:grid-cols-2">
-            {referencedBooks.map((book) => (
-              <li key={book.id} className="border-b border-[color:var(--rule)]">
-                <Link href={`/book/${book.id}`} prefetch={false} className="block py-2.5 transition-colors hover:bg-[color:var(--band)]">
-                  <span className="block text-[15px] leading-snug text-[color:var(--ink)]">{book.title}</span>
-                  <span className="mt-1 block text-[13px] leading-snug text-[color:var(--ink-50)]">{book.author}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+      <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
+        <main id="contributions" className="scroll-mt-24">
+          <div className="mb-5">
+            <p className="caption">Contributions</p>
+            <h2 className="title-2 mt-2">Useful ideas shared</h2>
+            <p className="body-copy mt-2 max-w-2xl text-[15px]">
+              Ideas from life and books: what this reader learned, tried, questioned, or changed.
+            </p>
+          </div>
 
-      <p className="mt-8 border-t border-[color:var(--rule)] pt-4">
-        <Link href={`/profile/${profile.username}/connections?view=following`} className="caption caption-muted inline-flex min-h-11 items-center transition-colors hover:text-[color:var(--ink)]">
-          Who {profile.name} follows
-        </Link>
-      </p>
+          {contributions.length > 0 ? (
+            <div className="grid gap-4">
+              {contributions.slice(0, 8).map((contribution) => contribution.kind === "discussion" ? (
+                <DiscussionContributionCard key={contribution.item.id} post={contribution.item} />
+              ) : (
+                <KnowledgeContributionCard key={contribution.item.id} post={contribution.item} />
+              ))}
+            </div>
+          ) : (
+            <EmptyContributions />
+          )}
+        </main>
+
+        <aside id="books-referenced" className="scroll-mt-24 lg:sticky lg:top-24">
+          <div className="mb-5">
+            <p className="caption">Book trail</p>
+            <h2 className="title-3 mt-2">Books behind the ideas</h2>
+            <p className="body-copy mt-2 text-[15px]">Only books this reader has actually referenced.</p>
+          </div>
+
+          {referencedBooks.length > 0 ? (
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+              {referencedBooks.slice(0, 6).map((book) => <ReferencedBookRow key={book.id} book={book} />)}
+            </div>
+          ) : (
+            <div className="rounded-[24px] bg-white p-5 text-sm leading-6 text-[color:var(--color-text-secondary)] shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">
+              Referenced books will appear after this reader shares a contribution.
+            </div>
+          )}
+        </aside>
+      </div>
     </div>
   );
 }
 
-function DiscussionContributionRecord({ post }: { post: DiscussionPost }) {
-  const book = getBook(post.bookId);
+function ProofItem({ label, value, href, icon }: { label: string; value: string; href: string; icon: React.ReactNode }) {
   return (
-    <li className="record">
-      <p className="caption record-stamp">{post.postType}</p>
-      <div className="min-w-0">
-        <h3 className="record-title">
-          <Link href={contributionDestinationUrl(post)} className="transition-colors hover:text-[color:var(--accent)]">{post.title}</Link>
-        </h3>
-        <p className="record-text line-clamp-3">{post.body}</p>
-        {book && (
-          <p className="record-meta">
-            <Link href={`/book/${book.id}`} className="underline decoration-[color:var(--rule-strong)] underline-offset-[5px] transition hover:decoration-[color:var(--ink)]">{book.title}</Link>
-          </p>
-        )}
-        <p className={book ? "record-writer" : "record-writer !mt-5"}>{formatShortDate(post.createdAt)}</p>
-      </div>
-    </li>
+    <Link href={href} className="group block min-h-[76px] rounded-[18px] px-3 py-3 transition hover:bg-black/[0.035] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/20">
+      <span className="flex items-center gap-2 text-[11px] font-medium text-[color:var(--color-text-secondary)]">
+        <span className="text-[color:var(--color-accent-strong)]">{icon}</span>
+        {label}
+      </span>
+      <span className="mt-1.5 block text-lg font-semibold text-[color:var(--color-text-primary)] transition group-hover:translate-x-0.5">{value}</span>
+    </Link>
   );
 }
 
-function KnowledgeContributionRecord({ post }: { post: KnowledgePost }) {
+function DiscussionContributionCard({ post }: { post: DiscussionPost }) {
+  const book = getBook(post.bookId);
+  return (
+    <article className="rounded-[28px] bg-white p-5 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-6">
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="rounded-full bg-black/[0.04] px-3 py-1 text-xs font-medium text-[color:var(--color-text-secondary)]">{post.postType}</span>
+        {book && <Link href={`/book/${book.id}`} className="caption text-[10px] transition hover:opacity-70">{book.title}</Link>}
+        <span className="ml-auto text-xs font-medium text-[color:var(--color-text-muted)]">{formatShortDate(post.createdAt)}</span>
+      </div>
+      <Link href={contributionDestinationUrl(post)} className="group mt-4 block">
+        <h3 className="title-3 text-balance transition group-hover:opacity-75">{post.title}</h3>
+        <p className="body-copy mt-3 line-clamp-3 text-[15px] leading-7">{post.body}</p>
+      </Link>
+      <div className="mt-5 flex items-center gap-5 border-t border-[color:var(--color-hairline)] pt-4 text-sm font-medium text-[color:var(--color-text-secondary)]">
+        <span className="inline-flex items-center gap-1.5"><ThumbsUp size={15} /> {post.likes}</span>
+        <span className="inline-flex items-center gap-1.5"><MessageCircle size={15} /> {post.comments}</span>
+      </div>
+    </article>
+  );
+}
+
+function KnowledgeContributionCard({ post }: { post: KnowledgePost }) {
   const book = post.bookId ? getBook(post.bookId) : null;
   return (
-    <li className="record">
-      <p className="caption record-stamp">{post.topic || "Note"}</p>
-      <div className="min-w-0">
-        <h3 className="record-title">
-          <Link href={`/post/${post.id}`} className="transition-colors hover:text-[color:var(--accent)]">{post.title}</Link>
-        </h3>
-        <p className="record-text line-clamp-3">{post.body}</p>
-        {book && (
-          <p className="record-meta">
-            <Link href={`/book/${book.id}`} className="underline decoration-[color:var(--rule-strong)] underline-offset-[5px] transition hover:decoration-[color:var(--ink)]">{book.title}</Link>
-          </p>
-        )}
-        <p className={book ? "record-writer" : "record-writer !mt-5"}>{formatShortDate(post.createdAt)}</p>
+    <article className="rounded-[28px] bg-white p-5 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-6">
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="rounded-full bg-black/[0.04] px-3 py-1 text-xs font-medium text-[color:var(--color-text-secondary)]">{post.topic}</span>
+        {book && <Link href={`/book/${book.id}`} className="caption text-[10px] transition hover:opacity-70">{book.title}</Link>}
+        <span className="ml-auto text-xs font-medium text-[color:var(--color-text-muted)]">{formatShortDate(post.createdAt)}</span>
       </div>
-    </li>
+      <Link href={`/post/${post.id}`} className="group mt-4 block">
+        <h3 className="title-3 text-balance transition group-hover:opacity-75">{post.title}</h3>
+        <p className="body-copy mt-3 line-clamp-3 text-[15px] leading-7">{post.body}</p>
+      </Link>
+      <div className="mt-5 flex items-center gap-5 border-t border-[color:var(--color-hairline)] pt-4 text-sm font-medium text-[color:var(--color-text-secondary)]">
+        <span className="inline-flex items-center gap-1.5"><ThumbsUp size={15} /> {post.likes}</span>
+        <span className="inline-flex items-center gap-1.5"><MessageCircle size={15} /> {post.comments}</span>
+      </div>
+    </article>
+  );
+}
+
+function ReferencedBookRow({ book }: { book: Book }) {
+  return (
+    <Link href={`/book/${book.id}`} className="group grid grid-cols-[58px_1fr] items-center gap-3 rounded-[22px] bg-white p-3 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] transition hover:-translate-y-0.5">
+      <BookCover book={bookCoverData(book)} className="w-full rounded-[10px]" />
+      <div className="min-w-0">
+        <h3 className="line-clamp-2 text-sm font-semibold leading-5 text-[color:var(--color-text-primary)] group-hover:opacity-75">{book.title}</h3>
+        <p className="mt-1 line-clamp-1 text-xs font-medium text-[color:var(--color-text-secondary)]">{book.author}</p>
+      </div>
+    </Link>
+  );
+}
+
+function EmptyContributions() {
+  return (
+    <section className="rounded-[28px] bg-white p-7 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">
+      <span className="grid size-10 place-items-center rounded-full bg-black/[0.04] text-[color:var(--color-text-secondary)]"><BookOpen size={18} /></span>
+      <h3 className="title-3 mt-4">No contributions yet</h3>
+      <p className="body-copy mt-2 max-w-xl text-[15px]">Ideas, applications, questions, and disagreements will appear here after this reader shares them.</p>
+    </section>
   );
 }
 
@@ -187,5 +231,5 @@ function getReferencedBooks(userDiscussions: DiscussionPost[], userKnowledge: Kn
 }
 
 function formatShortDate(date: string) {
-  return new Date(date).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+  return new Date(date).toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }

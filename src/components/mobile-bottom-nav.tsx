@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Compass, LibraryBig, UserRound, UsersRound } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { getLocalProfile } from "@/lib/local-session";
@@ -13,10 +14,10 @@ import { canUseLocalCommunityFallback } from "@/lib/community-runtime";
 // the tab highlighted as though it were them. Send them to the door instead - /login knows
 // how to return them here afterwards.
 const baseMobileItems = [
-  { href: "/explore", label: "Home" },
-  { href: "/feed", label: "Feed" },
-  { href: "/search", label: "Books" },
-  { href: "/login?next=%2Fexplore", label: "You" }
+  { href: "/explore", label: "Home", icon: Compass },
+  { href: "/feed", label: "Feed", icon: UsersRound },
+  { href: "/search", label: "Books", icon: LibraryBig },
+  { href: "/login?next=%2Fexplore", label: "You", icon: UserRound }
 ];
 
 export function MobileBottomNav() {
@@ -77,15 +78,10 @@ export function MobileBottomNav() {
   });
 
   return (
-    // Four words on paper under a hairline, with the current one marked by a rule above it -
-    // the way a printed index marks the section you are in. The compass, the two-people
-    // glyph, the stack of books and the head-and-shoulders said nothing the words did not.
-    <nav
-      aria-label="Primary mobile navigation"
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-[color:var(--rule)] bg-[color:var(--paper)] pb-[env(safe-area-inset-bottom)] lg:hidden"
-    >
-      <div className="grid grid-cols-4">
+    <nav aria-label="Primary mobile navigation" className="fixed inset-x-0 bottom-0 z-50 border-t border-[color:var(--color-hairline)] bg-[#f5f5f7]/90 px-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] pt-2 backdrop-blur-2xl lg:hidden">
+      <div className="mx-auto grid max-w-md grid-cols-4 gap-1">
         {mobileItems.map((item) => {
+          const Icon = item.icon;
           const active = item.label === "Books"
             ? pathname === "/search" || pathname === "/genres" || pathname.startsWith("/genre/")
             : item.label === "You"
@@ -104,10 +100,11 @@ export function MobileBottomNav() {
               }}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "caption caption-muted -mt-px flex min-h-12 items-center justify-center border-t-2 border-transparent transition-colors duration-200",
-                active && "border-[color:var(--ink)] text-[color:var(--ink)]"
+                "flex min-h-12 flex-col items-center justify-center gap-1 rounded-[18px] px-1 py-1.5 text-[11px] font-medium text-[color:var(--color-text-muted)] transition duration-200 sm:px-2",
+                active && "bg-white text-[color:var(--color-text-primary)] shadow-[0_8px_22px_rgba(0,0,0,0.055)]"
               )}
             >
+              <Icon size={18} strokeWidth={2.1} />
               {item.label}
             </Link>
           );

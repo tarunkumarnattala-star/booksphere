@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/metadata";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import { BookCover } from "@/components/book-cover";
 import { CommentThread } from "@/components/comment-thread";
 import { PostActions } from "@/components/post-actions";
@@ -48,92 +49,68 @@ export default async function DiscussionPage({ params }: { params: Promise<{ id:
   const book = getBook(post.bookId);
   const paragraphs = post.body.split("\n").map((line) => line.trim()).filter(Boolean);
 
-  const written = new Date(post.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
-
   return (
-    <article className="editorial-page editorial-prose">
+    <div className="editorial-page max-w-3xl">
       {book && (
-        <p>
-          <Link
-            href={`/book/${book.id}`}
-            className="caption caption-muted inline-flex min-h-11 items-center transition-colors hover:text-[color:var(--ink)]"
-          >
-            Back to {book.title}
-          </Link>
-        </p>
+        <Link href={`/book/${book.id}`} className="inline-flex items-center gap-2 text-sm font-medium text-[color:var(--color-text-secondary)] transition hover:text-[color:var(--color-text-primary)]">
+          <ArrowLeft size={16} /> Back to {book.title}
+        </Link>
       )}
 
-      {/* The perspective is the page. No card, no fill: the type stamp, the title, who wrote
-          it and when, then the text set the way a book page is set - 17px, 1.72 leading,
-          68 characters to the line. */}
-      <header className="mt-5 border-t-2 border-[color:var(--ink)] pt-5">
+      <article className="mt-6 rounded-[32px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-8">
         <p className="caption">{post.postType}</p>
-        <h1 className="large-title mt-4 max-w-[20ch]">{post.title}</h1>
-        <p className="footnote mt-5">
+        <h1 className="title-1 mt-3 text-balance">{post.title}</h1>
+
+        <p className="mt-4 text-sm font-medium text-[color:var(--color-text-secondary)]">
           {post.authorName || "A reader"}
           {post.authorUsername ? (
             <>
-              {" \u00b7 "}
-              <Link href={`/profile/${post.authorUsername}`} className="underline decoration-[color:var(--rule-strong)] underline-offset-[5px] transition hover:decoration-[color:var(--ink)]">
-                @{post.authorUsername}
-              </Link>
+              {" · "}
+              <Link href={`/profile/${post.authorUsername}`} className="underline underline-offset-4">@{post.authorUsername}</Link>
             </>
           ) : null}
-          {" \u00b7 "}
-          {written}
         </p>
-      </header>
 
-      <div className="prose-perspective mt-8 space-y-5">
-        {paragraphs.map((line, index) => (
-          <p key={index}>{line}</p>
-        ))}
-      </div>
+        <div className="mt-6 space-y-4">
+          {paragraphs.map((line, index) => (
+            <p key={index} className="text-[17px] leading-8 text-[color:var(--color-text-primary)]">{line}</p>
+          ))}
+        </div>
 
-      {post.quoteReference && (
-        <p className="prose-perspective mt-8 border-l-2 border-[color:var(--rule-strong)] pl-5 text-[color:var(--ink-70)]">
-          {post.quoteReference}
-        </p>
-      )}
+        {post.quoteReference && (
+          <p className="mt-6 border-l-2 border-[color:var(--color-hairline)] pl-4 text-sm italic text-[color:var(--color-text-secondary)]">
+            {post.quoteReference}
+          </p>
+        )}
 
-      <PostActions
-        post={post}
-        targetId={post.id}
-        likes={post.likes}
-        comments={post.comments}
-        saves={post.saves}
-        follows={post.follows}
-        awards={post.awards}
-        usefulness={post.usefulness}
-      />
+        <PostActions
+          post={post}
+          targetId={post.id}
+          likes={post.likes}
+          comments={post.comments}
+          saves={post.saves}
+          follows={post.follows}
+          awards={post.awards}
+          usefulness={post.usefulness}
+        />
+      </article>
 
       {book && (
-        <section className="section-rule">
+        <section className="mt-8 rounded-[28px] bg-white p-5 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">
           <p className="caption">The book this is about</p>
-          <ol className="records records-tight">
-            <li className="record record-media">
-              <Link href={`/book/${book.id}`} className="block w-full md:w-[96px]" tabIndex={-1} aria-hidden="true">
-                <BookCover book={bookCoverData(book)} className="w-full" />
-              </Link>
-              <div className="min-w-0">
-                <h2 className="record-title">
-                  <Link href={`/book/${book.id}`} className="transition-colors hover:text-[color:var(--accent)]">{book.title}</Link>
-                </h2>
-                <p className="record-meta !mt-2">{book.author}</p>
-                <p className="mt-5">
-                  <Link href={`/book/${book.id}/create-discussion`} className="caption caption-muted inline-flex min-h-11 items-center transition-colors hover:text-[color:var(--ink)]">
-                    Write your own on this book
-                  </Link>
-                </p>
-              </div>
-            </li>
-          </ol>
+          <Link href={`/book/${book.id}`} className="mt-4 grid grid-cols-[64px_1fr] items-center gap-4">
+            <BookCover book={bookCoverData(book)} className="w-full rounded-[10px]" />
+            <span className="min-w-0">
+              <span className="block text-base font-semibold text-[color:var(--color-text-primary)]">{book.title}</span>
+              <span className="mt-1 block text-sm text-[color:var(--color-text-secondary)]">{book.author}</span>
+            </span>
+          </Link>
         </section>
       )}
 
-      <section className="section-rule">
+      <section id="comments" className="mt-8 scroll-mt-24">
         <CommentThread postId={post.id} mode={post.postType === "Question" ? "answers" : "comments"} />
       </section>
-    </article>
+    </div>
   );
 }

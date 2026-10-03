@@ -26,13 +26,13 @@ export function LocalDiscussionList({ bookId }: { bookId: string }) {
   if (!posts.length) return null;
 
   return (
-    <section className="mt-[52px]">
-      <p className="caption caption-muted">Written on this device, not yet published</p>
-      <ol className="records records-tight">
+    <section className="mb-5 rounded-[28px] bg-[#f7f2e8] p-4 ring-1 ring-black/[0.035]">
+      <p className="caption mb-3 text-[10px]">Your beta posts</p>
+      <div className="space-y-4">
         {posts.map((post) => (
           <DiscussionCard key={post.id} post={post} canDelete onDelete={() => deleteLocalDiscussion(post.id)} />
         ))}
-      </ol>
+      </div>
     </section>
   );
 }

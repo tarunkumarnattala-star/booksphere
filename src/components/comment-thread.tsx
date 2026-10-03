@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { Heart, Pencil, Reply, Trash2 } from "lucide-react";
 import { requireProfile } from "@/lib/auth-client";
 import { canUseLocalCommunityFallback, COMMUNITY_UNAVAILABLE_MESSAGE } from "@/lib/community-runtime";
 import {
@@ -304,107 +305,69 @@ export function CommentThread({
   }
 
   return (
-    <section id="comments" className="scroll-mt-24">
-      <div className="flex flex-wrap items-baseline justify-between gap-4">
-        <h3 className="caption">{mode === "answers" ? "Answers" : "Replies"}</h3>
-        {/* The Top / New pair only exists once there is more than one thing to order. */}
-        {comments.length > 1 && (
-          <div className="control-row">
-            <button type="button" aria-pressed={sort === "top"} onClick={() => setSort("top")} className="control">Top</button>
-            <button type="button" aria-pressed={sort === "new"} onClick={() => setSort("new")} className="control">New</button>
-          </div>
-        )}
+    <section id="comments" className="scroll-mt-24 rounded-[28px] bg-white p-4 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] sm:p-5">
+      <div className="flex items-center justify-between gap-4">
+        <h3 className="title-3">{mode === "answers" ? "Answers" : "Replies"}</h3>
+        <div className="rounded-full bg-black/[0.035] p-1 text-xs font-medium">
+          <button type="button" aria-pressed={sort === "top"} onClick={() => setSort("top")} className={`min-h-11 rounded-full px-3 py-1.5 ${sort === "top" ? "bg-[color:var(--color-text-primary)] !text-white" : "text-[color:var(--color-text-secondary)]"}`}>Top</button>
+          <button type="button" aria-pressed={sort === "new"} onClick={() => setSort("new")} className={`min-h-11 rounded-full px-3 py-1.5 ${sort === "new" ? "bg-[color:var(--color-text-primary)] !text-white" : "text-[color:var(--color-text-secondary)]"}`}>New</button>
+        </div>
       </div>
-
-      <div className="mt-4 grid gap-3 border-t border-[color:var(--rule-strong)] pt-5 sm:grid-cols-[minmax(0,1fr)_auto]">
-        <input
-          maxLength={4000}
-          value={body}
-          onChange={(event) => setBody(event.target.value)}
-          placeholder={mode === "answers" ? "Write a clear answer" : "Add something specific"}
-          aria-label={mode === "answers" ? "Write an answer" : "Write a reply"}
-          className="field"
-        />
-        <button type="button" disabled={body.trim().length < 3} onClick={submitTopLevel} className="btn-ink btn-sm">
-          {mode === "answers" ? "Answer" : "Reply"}
-        </button>
+      <div className="mt-4 grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]">
+        <input maxLength={4000} value={body} onChange={(event) => setBody(event.target.value)} placeholder={mode === "answers" ? "Write a clear answer..." : "Add a useful response..."} aria-label={mode === "answers" ? "Write an answer" : "Write a reply"} className="min-h-11 min-w-0 flex-1 rounded-full bg-black/[0.035] px-4 py-3 text-base font-medium outline-none ring-1 ring-transparent focus:ring-black/20" />
+        <button type="button" disabled={body.trim().length < 3} onClick={submitTopLevel} className="min-h-11 rounded-full bg-[color:var(--color-text-primary)] px-4 py-3 text-sm font-medium !text-white disabled:cursor-not-allowed disabled:opacity-35">{mode === "answers" ? "Answer" : "Reply"}</button>
       </div>
       {notice && <LoginRequiredNotice message={notice} onDismiss={() => setNotice("")} />}
-      {error && <p role="alert" className="footnote mt-4 border-l-2 border-[color:var(--color-rose)] pl-4 text-[color:var(--color-rose)]">{error}</p>}
-
-      <div className="mt-5">
-        {loading && <p className="footnote">Loading replies</p>}
-        {!loading && comments.length === 0 && (
-          <p className="body-copy measure">
-            {mode === "answers"
-              ? "No answers yet. An explanation, an example or a source would be the first."
-              : "No replies yet. Say what you would add, or where you think this is wrong."}
-          </p>
-        )}
+      {error && <p role="alert" className="mt-3 rounded-[16px] bg-[color:var(--color-rose)]/10 px-4 py-3 text-sm font-medium text-[color:var(--color-rose)]">{error}</p>}
+      <div className="mt-5 space-y-3">
+        {loading && <p className="text-sm font-medium text-[color:var(--color-text-secondary)]">Loading replies...</p>}
+        {!loading && comments.length === 0 && <p className="text-sm font-medium text-[color:var(--color-text-secondary)]">{mode === "answers" ? "No answers yet. Add a clear explanation, example, or source." : "No comments yet. Add a specific response to make the thread more useful."}</p>}
         {threadRows.map(({ comment, depth }) => (
           <article
             key={comment.id}
-            className={`border-t border-[color:var(--rule)] py-4 ${depth ? "border-l border-l-[color:var(--rule-strong)] pl-5" : ""}`}
-            style={{ marginLeft: `${Math.min(depth, 3) * 20}px` }}
+            className={`border-t border-[color:var(--color-hairline)] pt-3 ${depth ? "border-l-2 pl-3" : ""}`}
+            style={{ marginLeft: `${Math.min(depth, 3) * 12}px` }}
           >
-            {/* A person's name keeps its own capitals. Tracked caps are for labels, and a
-                name is not a label. */}
-            <p className="footnote text-[color:var(--ink)]">
-              {comment.name}
-              {comment.updatedAt && comment.updatedAt !== comment.createdAt ? " \u00b7 Edited" : ""}
-            </p>
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <p className="text-sm font-medium">{comment.name}</p>
+                <p className="mt-0.5 text-[11px] text-[color:var(--color-text-muted)]">
+                  {comment.updatedAt && comment.updatedAt !== comment.createdAt ? "Edited" : ""}
+                </p>
+              </div>
+              <div className="flex shrink-0 items-center gap-0.5">
+                <button type="button" onClick={() => toggleCommentLike(comment.id)} aria-label="Like this reply" className="flex min-h-9 min-w-9 items-center justify-center gap-1 rounded-full text-xs font-medium text-[color:var(--color-text-secondary)] hover:bg-black/[0.035]">
+                  <Heart size={14} className={likedCommentIds.includes(comment.id) ? "fill-[color:var(--color-rose)] text-[color:var(--color-rose)]" : ""} />
+                  {visibleLikeCount(comment)}
+                </button>
+                {comment.canEdit && (
+                  <button type="button" onClick={() => { setEditingId(comment.id); setEditBody(comment.body); setReplyingTo(null); }} className="grid size-9 place-items-center rounded-full text-[color:var(--color-text-secondary)] hover:bg-black/[0.035]" aria-label="Edit your reply"><Pencil size={14} /></button>
+                )}
+                {comment.canDelete && (
+                  <button type="button" onClick={() => deleteComment(comment.id)} className="grid size-9 place-items-center rounded-full text-[color:var(--color-rose)] hover:bg-[color:var(--color-rose)]/10" aria-label="Delete your reply"><Trash2 size={14} /></button>
+                )}
+              </div>
+            </div>
 
             {editingId === comment.id ? (
-              <div className="mt-3 grid gap-3">
-                <textarea maxLength={4000} rows={3} value={editBody} onChange={(event) => setEditBody(event.target.value)} aria-label="Edit reply" className="field" />
-                <div className="control-row">
-                  <button type="button" disabled={editBody.trim().length < 3} onClick={() => saveEdit(comment.id)} className="btn-ink btn-sm">Save</button>
-                  <button type="button" onClick={() => setEditingId(null)} className="control">Cancel</button>
+              <div className="mt-2 grid gap-2">
+                <textarea maxLength={4000} rows={3} value={editBody} onChange={(event) => setEditBody(event.target.value)} aria-label="Edit reply" className="w-full rounded-[14px] bg-black/[0.035] px-3 py-2 text-sm leading-6 outline-none ring-1 ring-transparent focus:ring-black/20" />
+                <div className="flex gap-2">
+                  <button type="button" disabled={editBody.trim().length < 3} onClick={() => saveEdit(comment.id)} className="min-h-9 rounded-full bg-[color:var(--color-text-primary)] px-4 text-xs font-medium !text-white disabled:cursor-not-allowed disabled:opacity-35">Save</button>
+                  <button type="button" onClick={() => setEditingId(null)} className="min-h-9 rounded-full bg-black/[0.035] px-4 text-xs font-medium">Cancel</button>
                 </div>
               </div>
             ) : (
-              <p className="body-copy measure mt-2 text-[color:var(--ink)]">{comment.body}</p>
+              <p className="mt-1 text-sm leading-6 text-[color:var(--color-text-secondary)]">{comment.body}</p>
             )}
 
-            <div className="control-row mt-1">
-              <button
-                type="button"
-                onClick={() => toggleCommentLike(comment.id)}
-                aria-label="Like this reply"
-                aria-pressed={likedCommentIds.includes(comment.id)}
-                className="control"
-              >
-                {likedCommentIds.includes(comment.id) ? "Liked" : "Like"}
-                {visibleLikeCount(comment) > 0 ? <span className="numeral">{visibleLikeCount(comment)}</span> : null}
-              </button>
-              <button
-                type="button"
-                onClick={() => { setReplyingTo((current) => current === comment.id ? null : comment.id); setReplyBody(""); setEditingId(null); }}
-                className="control"
-                aria-expanded={replyingTo === comment.id}
-              >
-                Reply
-              </button>
-              {comment.canEdit && (
-                <button type="button" onClick={() => { setEditingId(comment.id); setEditBody(comment.body); setReplyingTo(null); }} className="control" aria-label="Edit your reply">Edit</button>
-              )}
-              {comment.canDelete && (
-                <button type="button" onClick={() => deleteComment(comment.id)} className="control text-[color:var(--color-rose)] hover:!text-[color:var(--color-rose)]" aria-label="Delete your reply">Delete</button>
-              )}
-            </div>
-
+            <button type="button" onClick={() => { setReplyingTo((current) => current === comment.id ? null : comment.id); setReplyBody(""); setEditingId(null); }} className="mt-1.5 inline-flex min-h-9 items-center gap-1.5 rounded-full px-2 text-xs font-medium text-[color:var(--color-text-secondary)] hover:bg-black/[0.035]" aria-expanded={replyingTo === comment.id}>
+              <Reply size={13} /> Reply
+            </button>
             {replyingTo === comment.id && (
-              <div className="mt-3 grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto]">
-                <input
-                  autoFocus
-                  maxLength={4000}
-                  value={replyBody}
-                  onChange={(event) => setReplyBody(event.target.value)}
-                  placeholder={`Reply to ${comment.name}`}
-                  aria-label={`Reply to ${comment.name}`}
-                  className="field"
-                />
-                <button type="button" disabled={replyBody.trim().length < 3} onClick={() => submitReply(comment.id)} className="btn-ink btn-sm">Reply</button>
+              <div className="mt-2 grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]">
+                <input autoFocus maxLength={4000} value={replyBody} onChange={(event) => setReplyBody(event.target.value)} placeholder={`Reply to ${comment.name}`} aria-label={`Reply to ${comment.name}`} className="min-h-10 min-w-0 rounded-full bg-black/[0.035] px-3 text-sm font-medium outline-none ring-1 ring-transparent focus:ring-black/20" />
+                <button type="button" disabled={replyBody.trim().length < 3} onClick={() => submitReply(comment.id)} className="min-h-10 rounded-full bg-[color:var(--color-text-primary)] px-4 text-xs font-medium !text-white disabled:cursor-not-allowed disabled:opacity-35">Reply</button>
               </div>
             )}
           </article>

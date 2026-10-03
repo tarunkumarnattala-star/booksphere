@@ -27,22 +27,22 @@ export default async function DiscussionOpengraphImage({ params }: { params: Pro
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          backgroundColor: "#f6f7f2",
-          borderTop: "10px solid #121713",
-          padding: "64px 72px 56px",
+          backgroundColor: "#1e3a2f",
+          padding: "72px",
           fontFamily: "sans-serif"
         }}
       >
-        <div style={{ display: "flex", color: "#18392d", fontSize: "24px", fontWeight: 600, letterSpacing: "4px" }}>
+        <div style={{ display: "flex", color: "#a9bdb0", fontSize: "26px", letterSpacing: "0.08em" }}>
           {(post?.postType || "PERSPECTIVE").toUpperCase()}
         </div>
 
         <div
           style={{
             display: "flex",
-            color: "#121713",
-            fontSize: heading.length > 90 ? "54px" : "68px",
-            lineHeight: 1.08,
+            color: "#f4f1e8",
+            fontSize: heading.length > 90 ? "50px" : "62px",
+            lineHeight: 1.1,
+            fontWeight: 600,
             letterSpacing: "-0.03em",
             maxWidth: "1000px"
           }}
@@ -50,9 +50,9 @@ export default async function DiscussionOpengraphImage({ params }: { params: Pro
           {heading.slice(0, 150)}
         </div>
 
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", borderTop: "2px solid #121713", paddingTop: "20px" }}>
-          <div style={{ display: "flex", color: "#5f665e", fontSize: "26px" }}>{attribution}</div>
-          <div style={{ display: "flex", color: "#18392d", fontSize: "22px", fontWeight: 600, letterSpacing: "4px" }}>BOOKSPHERE</div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+          <div style={{ display: "flex", color: "#a9bdb0", fontSize: "28px" }}>{attribution}</div>
+          <div style={{ display: "flex", color: "#f4f1e8", fontSize: "26px", fontWeight: 600 }}>BookSphere</div>
         </div>
       </div>
     ),

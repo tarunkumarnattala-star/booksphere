@@ -1,16 +1,21 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
+import { PenLine } from "lucide-react";
+import { SectionShelf } from "@/components/section-shelf";
+import { BookCover } from "@/components/book-cover";
 import {
   authorProfileFor,
-  books,
-  getBook
+  getBook,
+  getDiscussionRankingLabel,
+  getMostDiscussed,
+  getTrendingDiscussionPosts
 } from "@/lib/data";
 import type { DiscussionPost } from "@/lib/types";
 import { getSupabaseFeedContributions } from "@/lib/contributions";
 import { getFeaturedQuestion } from "@/lib/featured-question";
 import { isSupabaseConfigured } from "@/lib/supabase";
-import { getTrendingDiscussionPosts } from "@/lib/data";
+import { bookCoverData } from "@/lib/book-cover-data";
 
 export const metadata: Metadata = pageMetadata({
   title: "Home",
@@ -37,99 +42,96 @@ export default async function HomePage() {
   const stream = perspectives.slice(0, 10);
 
   return (
-    <div className="editorial-page">
+    <div className="mx-auto max-w-[1560px]">
       {featured && (
-        // The question is the page. It sits on the paper with nothing around it - no card,
-        // no fill, no shadow - because anything drawn around it would make it one item among
-        // several instead of the thing you came to.
-        <section data-onboarding="explore" className="pb-[52px]">
-          <p className="caption">Nobody has answered this yet</p>
-          <h1 className="large-title mt-5 max-w-[16ch]">{featured.prompt.title}</h1>
-          <p className="footnote mt-5">
-            {featured.book.title} &middot; {featured.book.author}
-          </p>
-          {/* One action is boxed. The second is a line of text, because reading the book page
-              first is a smaller decision than writing and should not be offered at equal weight. */}
-          <div className="mt-8 flex flex-col items-start gap-3">
-            <Link
-              href={`/book/${featured.book.id}/create-discussion?prompt=${encodeURIComponent(featured.prompt.id)}`}
-              className="btn-ink w-full sm:w-auto"
-            >
-              Answer this
-            </Link>
-            <Link
-              href={`/book/${featured.book.id}`}
-              className="footnote inline-flex min-h-11 items-center text-[color:var(--ink)] underline decoration-[color:var(--rule-strong)] decoration-1 underline-offset-[5px] transition hover:decoration-[color:var(--ink)]"
-            >
-              Or read this book&rsquo;s page first
-            </Link>
+        <section data-onboarding="explore" className="container-page pb-2 pt-7 md:pt-9">
+          <div className="rounded-[28px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-8">
+            <p className="caption mb-3">Nobody has answered this yet</p>
+            <h1 className="text-[26px] font-medium leading-[1.12] tracking-[-0.035em] text-[color:var(--color-text-primary)] md:text-[34px]">
+              {featured.prompt.title}
+            </h1>
+            <p className="mt-3 text-sm text-[color:var(--color-text-secondary)] md:text-base">
+              {featured.book.title} · {featured.book.author}
+            </p>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <Link
+                href={`/book/${featured.book.id}/create-discussion?prompt=${encodeURIComponent(featured.prompt.id)}`}
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-medium !text-white transition hover:opacity-85"
+              >
+                <PenLine size={16} /> Answer this
+              </Link>
+              <Link
+                href={`/book/${featured.book.id}`}
+                className="inline-flex min-h-11 items-center justify-center rounded-full bg-black/[0.03] px-5 py-3 text-sm font-medium text-[color:var(--color-text-primary)] transition hover:bg-black/[0.06]"
+              >
+                Read this book&rsquo;s page
+              </Link>
+            </div>
           </div>
         </section>
       )}
 
-      <section className={`border-t-2 border-[color:var(--ink)] pt-8 ${featured ? "" : "mt-0 border-t-0 pt-0"}`}>
-        <p className="caption">Perspectives</p>
-        {stream.length ? (
-          <>
-            <h2 className="title-1 mt-4 max-w-[18ch]">What has been written so far</h2>
-            <p className="body-copy measure mt-5">
-              Each one is signed. Open one to read it in full, or reply to whoever wrote it.
-            </p>
-            {/* One record per perspective, separated by a rule: the same typographic pattern the
-                landing page uses for the same content, so arriving here from there is continuous. */}
-            <ol className="records">
-              {stream.map((post) => (
-                <PerspectiveRecord key={post.id} post={post} />
-              ))}
-            </ol>
-          </>
-        ) : (
-          <>
-            <h2 className="title-1 mt-4 max-w-[18ch]">Nothing has been written yet</h2>
-            <p className="body-copy measure mt-5">
-              {featured
-                ? "The question above is a real one, and answering it would make this the first entry."
-                : "Open any book and answer one of its questions. Yours would be the first entry."}
-            </p>
-          </>
+      <section className={`container-page pb-6 ${featured ? "pt-8" : "pt-7 md:pt-9"}`}>
+        <p className="caption mb-3">Perspectives</p>
+        <h2 className="title-1 max-w-3xl">What readers made of these books</h2>
+        <p className="body-copy mt-3 max-w-2xl">
+          Open one to read it in full, ask the writer about it, or add your own.
+        </p>
+        <div className="mt-6 grid gap-2.5 lg:grid-cols-2">
+          {stream.map((post, index) => (
+            <PerspectiveCard key={post.id} post={post} priority={index === 0} />
+          ))}
+        </div>
+        {!stream.length && (
+          <p className="mt-6 rounded-[20px] bg-black/[0.025] px-4 py-6 text-sm font-medium leading-6 text-[color:var(--color-text-secondary)]">
+            Nothing has been written yet. Pick a book and answer one of its questions.
+          </p>
         )}
       </section>
 
-      {/* The shelf that used to close this page labelled six covers MOST DISCUSSED while every
-          discussion count in the catalogue was zero, and the books it showed were already named
-          under the perspectives above it. One honest line replaces it. */}
-      <p className="mt-5">
-        <Link
-          href="/search"
-          className="footnote text-[color:var(--ink)] underline decoration-[color:var(--rule-strong)] decoration-1 underline-offset-[5px] transition hover:decoration-[color:var(--ink)]"
-        >
-          All <span className="numeral">{books.length}</span> books, by name, genre or reading path
-        </Link>
-      </p>
+      <SectionShelf
+        title="Books people are arguing about"
+        subtitle="The books with the most perspectives written on them so far."
+        books={getMostDiscussed()}
+        badge="Most discussed"
+        signal="insights"
+      />
     </div>
   );
 }
 
 // Cards carry the writer's own first words. A card describing a perspective says less than
 // the sentence it is describing.
-function PerspectiveRecord({ post }: { post: DiscussionPost }) {
+function PerspectiveCard({ post, priority = false }: { post: DiscussionPost; priority?: boolean }) {
   const book = getBook(post.bookId);
   const profile = authorProfileFor(post);
   if (!book) return null;
 
   return (
-    <li>
-      <Link href={`/discussion/${post.id}`} className="record interactive-lift hover:bg-[color:var(--band)]">
-        <p className="caption record-stamp">{post.postType}</p>
-        <div className="min-w-0">
-          <h3 className="record-title">{post.title}</h3>
-          <p className="record-text line-clamp-2">{post.body}</p>
-          <p className="record-meta">
-            {book.title} &middot; {book.author}
-          </p>
-          <p className="record-writer">Written by {profile.name}</p>
+    <Link
+      href={`/discussion/${post.id}`}
+      className="group flex min-w-0 items-start gap-3 rounded-[20px] p-3 transition hover:bg-black/[0.025]"
+    >
+      <BookCover
+        book={bookCoverData(book)}
+        priority={priority}
+        className="w-[52px] shrink-0 rounded-[11px] shadow-[0_10px_24px_rgba(0,0,0,0.10)]"
+      />
+      <div className="min-w-0 flex-1">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="rounded-full bg-black/[0.04] px-2.5 py-1 text-[11px] font-medium text-[color:var(--color-text-secondary)]">
+            {getDiscussionRankingLabel(post)}
+          </span>
+          <span className="caption text-[10px]">{post.postType}</span>
         </div>
-      </Link>
-    </li>
+        <h3 className="mt-1.5 line-clamp-2 text-[15px] font-medium leading-[1.18] tracking-[-0.025em] text-[color:var(--color-text-primary)]">
+          {post.title}
+        </h3>
+        <p className="mt-1.5 line-clamp-2 text-sm leading-[1.45] text-[color:var(--color-text-secondary)]">{post.body}</p>
+        <p className="mt-1.5 truncate text-[13px] text-[color:var(--color-text-muted)]">
+          {book.title} · {profile.name}
+        </p>
+      </div>
+    </Link>
   );
 }

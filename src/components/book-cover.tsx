@@ -55,14 +55,14 @@ export function BookCover({ book, priority = false, className = "" }: { book: Bo
 
   if (coverUrl && !failed) {
     return (
-      <div className={`relative aspect-[2/3] overflow-hidden bg-[color:var(--band)] ring-1 ring-[color:var(--rule)] ${className}`}>
+      <div className={`relative aspect-[2/3] overflow-hidden rounded-[18px] bg-white shadow-[var(--shadow-cover)] ring-1 ring-black/[0.04] ${className}`}>
         <Image
           src={coverUrl}
           alt={`${book.title} cover`}
           fill
           priority={priority}
           sizes="(max-width: 768px) 42vw, 220px"
-          className="object-cover"
+          className="object-cover transition duration-200 ease-out group-hover:scale-[1.018]"
           onError={() => setFailed(true)}
         />
       </div>
@@ -70,17 +70,10 @@ export function BookCover({ book, priority = false, className = "" }: { book: Bo
   }
 
   return (
-    // A cover we cannot find is set as a title page instead: the book's own title, ranged
-    // left on the band, with a rule under it. No shimmer, no placeholder graphic.
-    <div className={`relative flex aspect-[2/3] overflow-hidden bg-[color:var(--band)] ring-1 ring-[color:var(--rule)] ${className}`}>
-      <div className="flex h-full w-full flex-col justify-end p-[8%]">
-        <span className="h-px w-8 bg-[color:var(--rule-strong)]" aria-hidden="true" />
-        {/* The title prints whether the cover has failed or has simply not arrived yet. A
-            cover lookup can take a second or two per book, and an empty rectangle for that
-            long reads as a broken image; a title page does not. */}
-        <span className="mt-[6%] line-clamp-4 text-[11px] font-normal leading-[1.25] text-[color:var(--ink-70)]">
-          {book.title}
-        </span>
+    <div className={`relative flex aspect-[2/3] overflow-hidden rounded-[18px] bg-white shadow-[var(--shadow-cover)] ring-1 ring-black/[0.04] ${className}`}>
+      <div className={`absolute inset-0 bg-[linear-gradient(115deg,#ece8df,#f8f6f1_45%,#e8e1d6)] ${failed ? "" : "animate-pulse"}`} />
+      <div className="relative z-10 m-auto flex h-[72%] w-[72%] items-center justify-center rounded-[14px] border border-black/[0.06] bg-white/65 p-3 text-center text-xs font-medium leading-4 text-[color:var(--color-text-secondary)]">
+        {failed ? book.title : <span className="sr-only">Loading cover</span>}
       </div>
     </div>
   );

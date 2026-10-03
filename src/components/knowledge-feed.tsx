@@ -8,6 +8,8 @@ import { KnowledgeNoteCard } from "./knowledge-note-card";
 
 const LOCAL_KNOWLEDGE_POSTS_KEY = "booksphere.localKnowledgePosts";
 
+type KnowledgeFeedVariant = "grid" | "stream";
+
 function readLocalKnowledgePosts() {
   try {
     return JSON.parse(window.localStorage.getItem(LOCAL_KNOWLEDGE_POSTS_KEY) || "[]") as KnowledgePost[];
@@ -17,7 +19,7 @@ function readLocalKnowledgePosts() {
   }
 }
 
-export function KnowledgeFeed({ seedPosts }: { seedPosts: KnowledgePost[] }) {
+export function KnowledgeFeed({ seedPosts, variant = "grid" }: { seedPosts: KnowledgePost[]; variant?: KnowledgeFeedVariant }) {
   const [posts, setPosts] = useState(seedPosts);
   const restoredPosition = useRef(false);
 
@@ -77,14 +79,22 @@ export function KnowledgeFeed({ seedPosts }: { seedPosts: KnowledgePost[] }) {
     };
   }, [posts.length]);
 
-  // One form for both variants: a column of records. A two-column grid of notes of wildly
-  // different lengths made a ragged wall of boxes and no reading order.
+  if (variant === "stream") {
+    return (
+      <div className="space-y-5">
+        {posts.map((post) => (
+          <KnowledgeNoteCard key={post.id} post={post} />
+        ))}
+      </div>
+    );
+  }
+
   return (
-    <ol className="records records-tight">
+    <div className="grid gap-5 lg:grid-cols-2">
       {posts.map((post) => (
         <KnowledgeNoteCard key={post.id} post={post} />
       ))}
-    </ol>
+    </div>
   );
 }
 

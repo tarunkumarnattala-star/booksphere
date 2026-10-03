@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/metadata";
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { DiscussionCard } from "@/components/discussion-card";
+import { EmptyState } from "@/components/empty-state";
 import { GenreBookSearch } from "@/components/genre-book-search";
+import { ReadingPathCard } from "@/components/reading-path-card";
+import { SectionShelf } from "@/components/section-shelf";
 import { BookCover } from "@/components/book-cover";
-import { discussions, genres, getBooksForGenre, getGenre, getReadingPathsForGenre, getBookShelfBadge, sortDiscussions } from "@/lib/data";
+import { discussions, genres, getBooksForGenre, getGenre, getGenreDiscoveryShelves, getReadingPathsForGenre, sortDiscussions } from "@/lib/data";
 import { getSupabaseFeedContributions } from "@/lib/contributions";
 import { isSupabaseConfigured } from "@/lib/supabase";
 import { bookCoverData } from "@/lib/book-cover-data";
@@ -59,108 +61,70 @@ export default async function GenrePage({ params }: { params: Promise<{ slug: st
   const persistedPosts = await getSupabaseFeedContributions(100);
   const communityPosts = isSupabaseConfigured ? persistedPosts : discussions;
   const insightPosts = sortDiscussions(communityPosts.filter((post) => genreBookIds.has(post.bookId)), "hot");
+  const shelves = getGenreDiscoveryShelves(genre.name);
   const paths = getReadingPathsForGenre(genre.name);
 
-  // Six shelves used to sit here - Editor's Picks, Core Books, Beginner Essentials, Hidden
-  // Gems, Recently Added, Most Discussed - all drawn through `withFallback`, which pads any
-  // short shelf with the same editor's picks and then with every other book in the genre.
-  // On Personal Growth that printed Atomic Habits five times under five different labels.
-  // The editorial flags are real, so they are read directly, with no padding.
-  const picks = shelf.filter((book) => book.isEditorsPick).slice(0, 3);
-  const pickIds = new Set(picks.map((book) => book.id));
-  const rest = shelf.filter((book) => !pickIds.has(book.id));
-
   return (
-    <div className="editorial-page">
-      <header>
-        <p className="caption">Genre</p>
-        <h1 className="large-title mt-4">{genre.name}</h1>
-        <p className="body-copy measure mt-5">
-          {genreSubtitles[genre.name] || `Books and perspectives for readers exploring ${genre.name.toLowerCase()}.`}
-        </p>
-      </header>
+    <div className="mx-auto max-w-[1560px]">
+      <section className="container-page py-10 md:py-14">
+        <div className="grid gap-8 lg:grid-cols-[0.82fr_0.9fr] lg:items-end">
+          <div>
+            <p className="caption mb-4">Genre</p>
+            <h1 className="large-title">{genre.name}</h1>
+            <p className="body-copy mt-5 max-w-2xl">
+              {genreSubtitles[genre.name] || `Books and discussions for readers exploring ${genre.name.toLowerCase()}.`}
+            </p>
+          </div>
+          <div className="flex h-[220px] items-end gap-3 overflow-hidden rounded-[30px] bg-white p-4 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] sm:h-[260px] sm:gap-4 sm:p-6 md:h-[300px] lg:h-[320px]">
+            {shelf.slice(0, 5).map((book, index) => (
+              <BookCover key={book.id} book={bookCoverData(book)} priority={index < 2} className={`${index === 0 ? "w-[120px] sm:w-[150px] md:w-[170px] lg:w-[190px]" : "w-[80px] sm:w-[104px] md:w-[116px] lg:w-[132px]"} ${index % 2 ? "mb-5 sm:mb-8" : ""}`} />
+            ))}
+          </div>
+        </div>
+      </section>
 
       <GenreBookSearch genreName={genre.name} />
 
-      {picks.length > 0 && (
-        <section className="section-rule">
-          <p className="caption">Start here</p>
-          <ol className="records records-tight">
-            {picks.map((book) => (
-              <li key={book.id} className="record record-media">
-                <Link href={`/book/${book.id}`} className="block w-full md:w-[96px]" tabIndex={-1} aria-hidden="true">
-                  <BookCover book={bookCoverData(book)} className="w-full" />
-                </Link>
-                <div className="min-w-0">
-                  <h2 className="record-title">
-                    <Link href={`/book/${book.id}`} className="transition-colors hover:text-[color:var(--accent)]">{book.title}</Link>
-                  </h2>
-                  <p className="record-meta !mt-2">{book.author}</p>
-                  <p className="record-text">{book.whyMatters}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </section>
-      )}
-
-      {paths.length > 0 && (
-        <section className="section-rule">
-          <p className="caption">Reading paths in {genre.name}</p>
-          <ol className="records records-tight">
-            {paths.map((path) => (
-              <li key={path.id} className="record">
-                <p className="caption record-stamp numeral">{path.bookIds.length} books</p>
-                <div className="min-w-0">
-                  <h2 className="record-title">
-                    <Link href={`/path/${path.slug}`} className="transition-colors hover:text-[color:var(--accent)]">{path.title}</Link>
-                  </h2>
-                  <p className="record-text">{path.description}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </section>
-      )}
-
-      <section className="section-rule">
-        <p className="caption">Perspectives in {genre.name}</p>
-        {insightPosts.length ? (
-          <ol className="records records-tight">
-            {insightPosts.slice(0, 10).map((post) => <DiscussionCard key={post.id} post={post} showBook />)}
-          </ol>
-        ) : (
-          <p className="body-copy measure mt-5">
-            Nothing has been written about a {genre.name.toLowerCase()} book yet. Open any book above and
-            answer one of its questions.
-          </p>
-        )}
-      </section>
-      {/* The whole shelf, printed as an index: every book in the genre, once, with any real
-          editorial flag beside it. A reader can see the size and shape of the shelf without
-          scrolling through six carousels of the same six covers. */}
-      <section className="section-rule">
-        <p className="caption">
-          All <span className="numeral">{shelf.length}</span> books in {genre.name}
-        </p>
-        <ul className="mt-5 grid gap-x-8 border-t border-[color:var(--rule-strong)] sm:grid-cols-2">
-          {rest.map((book) => {
-            const badge = getBookShelfBadge(book, "");
-            return (
-              <li key={book.id} className="border-b border-[color:var(--rule)]">
-                <Link href={`/book/${book.id}`} prefetch={false} className="block py-2.5 transition-colors hover:bg-[color:var(--band)]">
-                  <span className="block text-[15px] leading-snug text-[color:var(--ink)]">{book.title}</span>
-                  <span className="mt-1 block text-[13px] leading-snug text-[color:var(--ink-50)]">
-                    {book.author}
-                    {badge ? <span className="caption caption-muted ml-3">{badge}</span> : null}
-                  </span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+      <section className="py-8 md:py-10">
+        <div className="mb-5 px-4 md:px-6 lg:px-8">
+          <p className="caption mb-2">Start Here</p>
+          <h2 className="title-2">Reading paths for {genre.name}</h2>
+          <p className="subheadline mt-2">Curated sequences that help readers know what to read next.</p>
+        </div>
+        <div className="shelf-scroll flex gap-5 overflow-x-auto px-4 pb-4 md:px-6 lg:px-8">
+          {paths.map((path) => <ReadingPathCard key={path.id} path={path} />)}
+        </div>
       </section>
 
+      {shelves.map((shelfItem) => (
+        <SectionShelf
+          key={shelfItem.key}
+          title={shelfItem.title}
+          subtitle={shelfItem.subtitle}
+          books={shelfItem.books}
+          badge={shelfItem.badge}
+          signal={shelfItem.signal}
+        />
+      ))}
+
+      <section className="py-8 md:py-12">
+        <div className="mb-5 px-4 md:px-6 lg:px-8">
+          <p className="caption mb-2">Reader Notes</p>
+          <h2 className="title-2">Questions readers are opening in {genre.name}</h2>
+          <p className="subheadline mt-2">Where readers apply, challenge, and explain the ideas behind these books.</p>
+        </div>
+        <div className="shelf-scroll flex gap-5 overflow-x-auto px-4 pb-4 md:px-6 lg:px-8">
+          {insightPosts.length ? insightPosts.slice(0, 10).map((post) => (
+            <div key={post.id} className="w-[86vw] max-w-[330px] shrink-0 snap-start md:w-[430px] md:max-w-none">
+              <DiscussionCard post={post} showBook compact />
+            </div>
+          )) : (
+            <div className="w-full">
+              <EmptyState title="No perspectives here yet" body={`The ${genre.name} shelf is ready. Perspectives appear here as readers share what they applied, questioned, or changed.`} />
+            </div>
+          )}
+        </div>
+      </section>
     </div>
   );
 }
