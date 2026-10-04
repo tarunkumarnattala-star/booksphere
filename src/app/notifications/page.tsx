@@ -110,7 +110,7 @@ export default function NotificationsPage() {
                       <p className="caption">
                         {item.kind === "reply_to_comment" ? "Replied to your comment" : "Replied to your perspective"} · {relativeTime(item.createdAt)}
                       </p>
-                      {isNew && <span className="ml-auto rounded-full bg-[color:var(--color-gold)]/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-[color:var(--color-gold)]">New</span>}
+                      {isNew && <span className="ml-auto rounded-full bg-[color:var(--color-gold)]/15 px-2 py-0.5 text-[11px] font-semibold text-[color:var(--color-gold)]">New</span>}
                     </div>
                     <p className="mt-2 text-[15px] font-medium text-[color:var(--color-text-primary)]">
                       {item.authorName} on &ldquo;{item.context}&rdquo;

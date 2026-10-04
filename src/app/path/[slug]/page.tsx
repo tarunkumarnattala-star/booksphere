@@ -41,7 +41,7 @@ export default async function ReadingPathPage({ params }: { params: Promise<{ sl
     <div className="editorial-page max-w-[1240px]">
       <section className="grid gap-10 lg:grid-cols-[0.9fr_1fr] lg:items-end">
         <div>
-          <p className="caption mb-4">Official Reading Path</p>
+          <p className="caption mb-4">Official reading path</p>
           <h1 className="large-title">{path.title}</h1>
           <p className="body-copy mt-5 max-w-2xl">{path.description}</p>
         </div>

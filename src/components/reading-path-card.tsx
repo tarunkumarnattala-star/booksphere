@@ -18,7 +18,7 @@ export function ReadingPathCard({ path }: { path: ReadingPath }) {
       <div className="mt-5">
         <div className="flex items-center gap-2 text-[color:var(--color-accent)]">
           <BookOpen size={16} />
-          <p className="caption text-[10px]">Official Path</p>
+          <p className="caption text-[10px]">Official path</p>
         </div>
         <h3 className="title-3 mt-2">{path.title}</h3>
         <p className="body-copy mt-2 line-clamp-2 text-[15px] leading-6">{path.description}</p>

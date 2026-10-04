@@ -150,7 +150,7 @@ export function LoginForm({ next }: { next?: string }) {
           >
             Continue with Google
           </button>
-          <div className="my-5 flex items-center gap-3 text-xs font-semibold uppercase text-[color:var(--color-text-muted)]">
+          <div className="my-5 flex items-center gap-3 text-xs font-medium text-[color:var(--color-text-muted)]">
             <span className="h-px flex-1 bg-[color:var(--color-hairline)]" />
             or use email
             <span className="h-px flex-1 bg-[color:var(--color-hairline)]" />

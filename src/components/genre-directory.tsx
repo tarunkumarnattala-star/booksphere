@@ -41,7 +41,7 @@ export function GenreDirectory({
   return (
     <section id="genres" className="py-8 md:py-12">
       <div data-onboarding="genres" className="container-page rounded-[24px]">
-        <p className="caption mb-3">Reading Rooms</p>
+        <p className="caption mb-3">Reading rooms</p>
         <h2 className="title-1 max-w-4xl">{heading}</h2>
         <p className="body-copy mt-4 max-w-2xl">{subtitle}</p>
       </div>
@@ -87,7 +87,7 @@ export function GenreDirectory({
                 <ArrowUpRight size={16} />
               </span>
             </div>
-            <p className="caption">Knowledge Search</p>
+            <p className="caption">Knowledge search</p>
             <h3 className="title-3 mt-3">Search by the idea you want to understand.</h3>
             <p className="body-copy mt-4 text-[15px] leading-6">
               Move from a problem to books, reading paths, and useful reader perspectives.

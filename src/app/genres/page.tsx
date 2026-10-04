@@ -14,7 +14,7 @@ export default function GenresPage() {
   return (
     <div className="mx-auto max-w-[1500px]">
       <section className="container-page py-10 md:py-14">
-        <p className="caption mb-4">BookSphere Shelves</p>
+        <p className="caption mb-4">BookSphere shelves</p>
         <h1 className="large-title max-w-5xl">
           Find the reading room that matches the idea you are chasing.
         </h1>
@@ -22,7 +22,7 @@ export default function GenresPage() {
           Genres are not filing cabinets here. They are focused discussion rooms built around books, questions, applications, and reader perspectives.
         </p>
       </section>
-      <GenreDirectory genres={genres} booksByGenre={getBooksForGenre} heading="All Genres" subtitle="Choose a shelf to see top books, rising books, and the best insights inside it." />
+      <GenreDirectory genres={genres} booksByGenre={getBooksForGenre} heading="All genres" subtitle="Choose a shelf to see top books, rising books, and the best insights inside it." />
     </div>
   );
 }

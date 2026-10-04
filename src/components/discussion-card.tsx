@@ -24,7 +24,7 @@ export function DiscussionCard({ post, showBook = false, compact = false, canDel
         </div>
         <div className="flex shrink-0 flex-wrap gap-2 sm:justify-end">
           <span className="rounded-full bg-black/[0.035] px-3 py-1.5 text-[11px] font-medium text-[color:var(--color-text-secondary)]">{ranking}</span>
-          <span className="rounded-full bg-black/[0.035] px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.08em] text-[color:var(--color-text-secondary)]">
+          <span className="rounded-full bg-black/[0.035] px-3 py-1.5 text-[11.5px] font-medium tracking-[0.002em] text-[color:var(--color-text-secondary)]">
             {post.postType}
           </span>
         </div>

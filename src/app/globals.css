@@ -185,12 +185,16 @@ button:disabled {
   color: var(--color-text-secondary);
 }
 
+/* This label appears 80 times across the product. Set in caps with 0.075em of
+   tracking it read as a system announcing its own sections rather than as a
+   person labelling something, and eighty of them made every page look
+   generated. Sentence case, normal tracking, and the accent kept - the warmth
+   was never the problem, the shouting was. */
 .caption {
-  font-size: 12px;
-  line-height: 1.25;
-  font-weight: 550;
-  letter-spacing: 0.075em;
-  text-transform: uppercase;
+  font-size: 12.5px;
+  line-height: 1.3;
+  font-weight: 560;
+  letter-spacing: 0.002em;
   color: var(--color-accent);
 }
 

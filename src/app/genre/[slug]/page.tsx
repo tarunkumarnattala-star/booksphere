@@ -87,7 +87,7 @@ export default async function GenrePage({ params }: { params: Promise<{ slug: st
 
       <section className="py-8 md:py-10">
         <div className="mb-5 px-4 md:px-6 lg:px-8">
-          <p className="caption mb-2">Start Here</p>
+          <p className="caption mb-2">Start here</p>
           <h2 className="title-2">Reading paths for {genre.name}</h2>
           <p className="subheadline mt-2">Curated sequences that help readers know what to read next.</p>
         </div>
@@ -109,7 +109,7 @@ export default async function GenrePage({ params }: { params: Promise<{ slug: st
 
       <section className="py-8 md:py-12">
         <div className="mb-5 px-4 md:px-6 lg:px-8">
-          <p className="caption mb-2">Reader Notes</p>
+          <p className="caption mb-2">Reader notes</p>
           <h2 className="title-2">Questions readers are opening in {genre.name}</h2>
           <p className="subheadline mt-2">Where readers apply, challenge, and explain the ideas behind these books.</p>
         </div>

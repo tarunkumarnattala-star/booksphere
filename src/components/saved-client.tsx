@@ -181,14 +181,14 @@ export function SavedClient() {
 
       {savedInsights.length > 0 && (
         <section className="mt-14">
-          <h2 className="title-2 mb-5">My Saved Perspectives</h2>
+          <h2 className="title-2 mb-5">My saved perspectives</h2>
           <div className="grid gap-5 lg:grid-cols-2">{savedInsights.map((post) => <DiscussionCard key={post.id} post={post} showBook compact />)}</div>
         </section>
       )}
 
       {savedNotes.length > 0 && (
         <section className="mt-14">
-          <h2 className="title-2 mb-5">My Saved Posts</h2>
+          <h2 className="title-2 mb-5">My saved posts</h2>
           <div className="grid gap-5 lg:grid-cols-2">{savedNotes.map((post) => <KnowledgeNoteCard key={post.id} post={post} />)}</div>
         </section>
       )}
