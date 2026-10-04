@@ -41,7 +41,9 @@ export function AppShell({ children }: { children: ReactNode }) {
             left 28px of visible nothing under the links on every page. */}
         <footer className="border-t border-black/[0.06] bg-black/[0.018] pb-[calc(4.5rem+env(safe-area-inset-bottom))] lg:mt-12 lg:pb-0">
         <div className="container-page flex flex-col gap-2.5 py-4 text-sm text-[color:var(--color-text-secondary)] sm:flex-row sm:items-center sm:justify-between sm:gap-6">
-          <p>BookSphere turns books into useful, human perspectives.</p>
+          {/* The old line ran 54 characters and broke after "human", leaving a ragged hole
+              beside the second line on a phone. Short enough to hold one line at 375px. */}
+          <p>Books, read through the people who read them.</p>
           <nav aria-label="BookSphere information" className="flex items-center gap-5">
             <Link href="/explore#about-booksphere" className="transition hover:text-[color:var(--color-text-primary)]">About</Link>
             <Link href="/privacy" className="transition hover:text-[color:var(--color-text-primary)]">Privacy</Link>

@@ -44,6 +44,30 @@ function isInAppBrowser() {
 
 const googleAuthEnabled = process.env.NEXT_PUBLIC_GOOGLE_AUTH_ENABLED === "true";
 
+// Supabase's own error strings went straight to the screen. Sign-in mail is rate limited per
+// hour, so the first burst of arrivals from one link is exactly when it trips - and the
+// person who gets turned away reads "Email rate limit exceeded", which sounds like they did
+// something wrong and tells them nothing to do next. Everything else still shows the real
+// error; only the cases a reader can act on are rewritten.
+function signInErrorMessage(error: { message?: string; status?: number }): string {
+  const raw = (error.message || "").toLowerCase();
+  const rateLimited = error.status === 429
+    || raw.includes("rate limit")
+    || raw.includes("too many")
+    || raw.includes("only request this after");
+  if (rateLimited) {
+    const wait = raw.match(/after (\d+) seconds?/)?.[1];
+    const when = wait ? `in about ${wait} seconds` : "in a minute";
+    return googleAuthEnabled
+      ? `Sign-in emails are backed up right now. Try again ${when}, or use Continue with Google above - that works straight away.`
+      : `Sign-in emails are backed up right now. Try again ${when} and it will go through. Nothing you did caused this.`;
+  }
+  if (raw.includes("invalid") && raw.includes("email")) {
+    return "That email address does not look right. Check it and try again.";
+  }
+  return error.message || "That did not go through. Try again in a moment.";
+}
+
 export function LoginForm({ next }: { next?: string }) {
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || (typeof location !== "undefined" ? location.origin : "");
   const returnPath = safeReturnPath(next);
@@ -108,7 +132,7 @@ export function LoginForm({ next }: { next?: string }) {
       options: { emailRedirectTo: `${appUrl}${returnPath}` }
     });
     setLoading(false);
-    setMessage(error ? error.message : "Check your email for your sign-in link. It works whether or not you have been here before.");
+    setMessage(error ? signInErrorMessage(error) : "Check your email for your sign-in link. It works whether or not you have been here before.");
   }
 
   return (

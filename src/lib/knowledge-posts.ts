@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import { supabase } from "./supabase";
 import type { KnowledgePost } from "./types";
 
@@ -143,16 +144,25 @@ export async function deleteSupabaseKnowledgePost(profileId: string, postId: str
   return { error: null };
 }
 
-export async function getSupabaseKnowledgePosts(limit = 30) {
-  if (!supabase) return [] as KnowledgePost[];
-  const { data, error } = await supabase
-    .from("knowledge_posts")
-    .select(knowledgePostSelect)
-    .order("created_at", { ascending: false })
-    .limit(limit);
-  if (error || !data?.length) return [];
-  return hydrateKnowledgePosts(data as DbKnowledgePost[]);
-}
+// The feed is force-dynamic, so this and its fan-out ran per view. Shared public rows, read
+// through the anon key with no session, so one fetch serves every reader for the window. The
+// feed inserts a writer's own post into its list on publish, so nobody waits to see their
+// own note appear.
+export const getSupabaseKnowledgePosts = (limit = 30) =>
+  unstable_cache(
+    async () => {
+      if (!supabase) return [] as KnowledgePost[];
+      const { data, error } = await supabase
+        .from("knowledge_posts")
+        .select(knowledgePostSelect)
+        .order("created_at", { ascending: false })
+        .limit(limit);
+      if (error || !data?.length) return [];
+      return hydrateKnowledgePosts(data as DbKnowledgePost[]);
+    },
+    ["knowledge-posts", String(limit)],
+    { revalidate: 20, tags: ["feed"] }
+  )();
 
 export async function getSupabaseKnowledgePostsByUser(userId: string, limit = 50) {
   if (!supabase) return [] as KnowledgePost[];

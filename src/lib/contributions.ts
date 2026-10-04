@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import { supabase } from "./supabase";
 import { books, getBook } from "./data";
 import { slugify } from "./utils";
@@ -217,36 +218,58 @@ export async function hydrateContributions(rows: DbContribution[], dbBooksById: 
   });
 }
 
-export async function getSupabaseContributionsForBook(book: Book) {
-  if (!supabase) return [] as DiscussionPost[];
-  const dbBook = await resolveDbBook(book);
-  if (!dbBook) return [];
-  const { data, error } = await supabase
-    .from("discussion_posts")
-    .select(contributionSelect)
-    .eq("book_id", dbBook.id)
-    .eq("status", "published")
-    .order("created_at", { ascending: false });
+// A book page cannot be prerendered because it reads ?sort and ?thread, so this ran on every
+// single view - and it is not one query but seven, counting the fan-out in
+// hydrateContributions for likes, comments, counts, reactions, awards and profiles. One
+// link shared widely would turn a few hundred readers into a few thousand queries.
+//
+// Caching it is safe because the server's Supabase client is built from the anon key with no
+// cookies and no session: every visitor gets the identical public row set, so there is
+// nothing per-reader to leak. Thirty seconds is short enough that a new perspective shows up
+// while the writer is still looking at the page, and the writer's own post is echoed locally
+// before that anyway.
+const BOOK_PERSPECTIVES_TTL_SECONDS = 30;
 
-  if (error || !data) return [];
-  return hydrateContributions(data as DbContribution[], { [dbBook.id]: dbBook });
-}
+export const getSupabaseContributionsForBook = (book: Book) =>
+  unstable_cache(
+    async () => {
+      if (!supabase) return [] as DiscussionPost[];
+      const dbBook = await resolveDbBook(book);
+      if (!dbBook) return [];
+      const { data, error } = await supabase
+        .from("discussion_posts")
+        .select(contributionSelect)
+        .eq("book_id", dbBook.id)
+        .eq("status", "published")
+        .order("created_at", { ascending: false });
 
-export async function getSupabaseFeedContributions(limit = 20) {
-  if (!supabase) return [] as DiscussionPost[];
-  const { data, error } = await supabase
-    .from("discussion_posts")
-    .select(contributionSelect)
-    .eq("status", "published")
-    .order("created_at", { ascending: false })
-    .limit(limit);
+      if (error || !data) return [];
+      return hydrateContributions(data as DbContribution[], { [dbBook.id]: dbBook });
+    },
+    ["book-perspectives", book.id],
+    { revalidate: BOOK_PERSPECTIVES_TTL_SECONDS, tags: ["perspectives", `book:${book.id}`] }
+  )();
 
-  if (error || !data?.length) return [];
-  const bookIds = [...new Set((data as DbContribution[]).map((row) => row.book_id))];
-  const { data: dbBooks } = await supabase.from("books").select("id,title,author,slug").in("id", bookIds);
-  const dbBooksById = Object.fromEntries(((dbBooks || []) as DbBookRef[]).map((book) => [book.id, book]));
-  return hydrateContributions(data as DbContribution[], dbBooksById);
-}
+export const getSupabaseFeedContributions = (limit = 20) =>
+  unstable_cache(
+    async () => {
+      if (!supabase) return [] as DiscussionPost[];
+      const { data, error } = await supabase
+        .from("discussion_posts")
+        .select(contributionSelect)
+        .eq("status", "published")
+        .order("created_at", { ascending: false })
+        .limit(limit);
+
+      if (error || !data?.length) return [];
+      const bookIds = [...new Set((data as DbContribution[]).map((row) => row.book_id))];
+      const { data: dbBooks } = await supabase.from("books").select("id,title,author,slug").in("id", bookIds);
+      const dbBooksById = Object.fromEntries(((dbBooks || []) as DbBookRef[]).map((book) => [book.id, book]));
+      return hydrateContributions(data as DbContribution[], dbBooksById);
+    },
+    ["feed-contributions", String(limit)],
+    { revalidate: 20, tags: ["feed", "perspectives"] }
+  )();
 
 export async function createSupabaseContribution(input: {
   profileId: string;
