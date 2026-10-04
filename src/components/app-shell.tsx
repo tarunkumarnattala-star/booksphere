@@ -25,13 +25,19 @@ export function AppShell({ children }: { children: ReactNode }) {
       >
         Skip to content
       </a>
-      <TopNav />
-      {/* Both main and the footer were reserving clearance for the fixed tab bar, so every
-          page ended with 162px of empty space, a hairline, and then another 96px - about
-          two thirds of a phone screen of nothing - to clear a bar 68px tall. The footer is
-          what actually sits above the bar, so it keeps the clearance and main gives it up. */}
-      <main id="main-content" className="page-enter min-h-dvh pb-0 lg:pb-12">{children}</main>
-      <footer className="border-t border-black/[0.06] bg-black/[0.018] pb-[calc(5rem+env(safe-area-inset-bottom))] lg:mt-12 lg:pb-0">
+      {/* Two fixes live in this wrapper.
+          main and the footer were each reserving clearance for the fixed tab bar, so every
+          page ended with 162px of dead space, a hairline, then another 96px - to clear a bar
+          68px tall. The footer is what sits above the bar, so it keeps the clearance alone.
+          And main was min-h-dvh, which on a short page (log in, an empty shelf, a 404) left
+          a void under the content and pushed the footer below the fold: a half-empty screen
+          that still had to be scrolled to reach anything. The column is the full height now
+          and main grows inside it, so the footer lands on the bottom of the screen and a
+          short page reads as finished instead of cut off. */}
+      <div className="flex min-h-dvh flex-col">
+        <TopNav />
+        <main id="main-content" className="page-enter flex-1 pb-0 lg:pb-12">{children}</main>
+        <footer className="border-t border-black/[0.06] bg-black/[0.018] pb-[calc(5rem+env(safe-area-inset-bottom))] lg:mt-12 lg:pb-0">
         <div className="container-page flex flex-col gap-3 py-5 text-sm text-[color:var(--color-text-secondary)] sm:flex-row sm:items-center sm:justify-between sm:gap-6">
           <p>BookSphere turns books into useful, human perspectives.</p>
           <nav aria-label="BookSphere information" className="flex items-center gap-5">
@@ -49,7 +55,8 @@ export function AppShell({ children }: { children: ReactNode }) {
             </a>
           </nav>
         </div>
-      </footer>
+        </footer>
+      </div>
       <Suspense fallback={null}>
         <MobileBottomNav />
       </Suspense>

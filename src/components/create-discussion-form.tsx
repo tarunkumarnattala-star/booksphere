@@ -286,8 +286,21 @@ export function CreateDiscussionForm({ book, initialPostType = "Insight", initia
           />
           <span className="text-xs font-medium text-[color:var(--color-text-muted)]">{bodyCount}/{MIN_BODY_LENGTH} minimum characters</span>
         </label>
+        {/* These five inputs used to appear as a bare grey panel the moment you picked an
+            applied perspective type: no heading, no explanation, and no sign that every one
+            of them is optional. You had written your perspective and were then faced with
+            five more empty boxes. They are opt-in now, and say what they do - which is
+            append themselves to the end of the body you already wrote. */}
         {isApplicationLike && (
-          <div className="grid gap-4 rounded-[24px] bg-black/[0.025] p-4 md:grid-cols-2">
+          <details className="rounded-[24px] bg-black/[0.025] p-4">
+            <summary className="cursor-pointer list-none text-sm font-medium text-[color:var(--color-text-primary)] marker:hidden">
+              Add the specifics
+              <span className="font-normal text-[color:var(--color-text-muted)]"> &mdash; optional</span>
+            </summary>
+            <p className="mt-2 text-sm leading-6 text-[color:var(--color-text-secondary)]">
+              Anything you fill in is added to the end of your perspective. Skip the rest.
+            </p>
+            <div className="mt-4 grid gap-4 md:grid-cols-2">
             <label className="grid gap-2 text-sm font-medium">
               Context tag
               <select
@@ -339,7 +352,8 @@ export function CreateDiscussionForm({ book, initialPostType = "Insight", initia
                 className="rounded-[20px] bg-white px-4 py-3 outline-none ring-1 ring-transparent focus:ring-black/20"
               />
             </label>
-          </div>
+            </div>
+          </details>
         )}
         <label className="grid gap-2 text-sm font-medium">
           Optional quote or reference

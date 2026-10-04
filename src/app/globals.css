@@ -114,7 +114,10 @@ button:disabled {
 .editorial-page {
   width: min(100%, 1320px);
   margin-inline: auto;
-  padding: 30px 24px 80px;
+  /* The bottom padding here was a third place reserving room for the fixed tab bar, after
+     main and the footer. The footer carries that clearance now, so this is page rhythm
+     only. */
+  padding: 30px 24px 44px;
 }
 
 .display-large {
@@ -293,7 +296,7 @@ html[data-onboarding-active="search"] [data-onboarding="search"] {
   }
 
   .editorial-page {
-    padding: 16px 16px calc(96px + env(safe-area-inset-bottom));
+    padding: 16px 16px 26px;
   }
 
   .body-copy {
