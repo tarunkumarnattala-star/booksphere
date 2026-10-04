@@ -205,6 +205,15 @@ export function LoginForm({ next }: { next?: string }) {
             <GoogleMark />
             Continue with Google
           </button>
+          {/* Google's own screen says "to continue to dhsophbjhaamucatumqr.supabase.co",
+              because it names the address that handles the sign-in and ours is still the
+              Supabase project's. A stranger reads a random string at the exact moment they
+              decide whether to trust us. Naming it here first makes it recognisable instead
+              of alarming. Delete this line once the consent screen says BookSphere. */}
+          <p className="mt-2.5 text-center text-[12.5px] leading-5 text-[color:var(--color-text-muted)]">
+            Google&rsquo;s next screen will say <span className="font-medium">supabase.co</span> &mdash; that is the
+            service that runs our sign-in, not another site.
+          </p>
           <div className="my-5 flex items-center gap-3 text-xs font-medium text-[color:var(--color-text-muted)]">
             <span className="h-px flex-1 bg-[color:var(--color-hairline)]" />
             or use email
