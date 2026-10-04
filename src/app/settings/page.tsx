@@ -7,6 +7,7 @@ import { requireProfile } from "@/lib/auth-client";
 import { canUseLocalCommunityFallback } from "@/lib/community-runtime";
 import { getLocalProfile } from "@/lib/local-session";
 import { supabase } from "@/lib/supabase";
+import { LoginRequiredNotice } from "@/components/login-required-notice";
 
 const SETTINGS_KEY = "booksphere.profileDraft";
 const emptyDraft = { name: "", username: "", bio: "" };
@@ -137,7 +138,10 @@ export default function SettingsPage() {
       <h1 className="large-title">Profile settings.</h1>
       <p className="body-copy mt-5 max-w-2xl">Keep your public identity clear so readers understand who is contributing and what perspective you bring.</p>
       {loadState === "loading" && <p className="body-copy mt-8">Loading your profile...</p>}
-      {loadState === "unavailable" && <p role="alert" className="mt-8 rounded-[20px] bg-white p-5 text-sm font-medium shadow-[var(--shadow-soft)]">{message}</p>}
+      {/* This printed the "log in to do that" sentence as a flat card with nothing to press,
+          on a page a signed-out reader can reach from the menu. Same notice the rest of the
+          product uses, which carries the button and returns here. */}
+      {loadState === "unavailable" && <LoginRequiredNotice message={message} />}
       {loadState === "ready" && (
         <form onSubmit={saveProfile} className="mt-8 grid gap-4 rounded-[28px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035]">
           <label className="grid gap-2 text-sm font-medium">Display name<input required minLength={2} maxLength={80} value={draft.name} onChange={(event) => setDraft({ ...draft, name: event.target.value })} placeholder="Display name" className="rounded-[18px] bg-black/[0.035] px-4 py-3 font-medium outline-none ring-1 ring-transparent focus:ring-black/20" /></label>

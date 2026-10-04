@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { LoginRequiredNotice } from "@/components/login-required-notice";
 import Link from "next/link";
 import { Bell, MessageCircle } from "lucide-react";
 import { requireProfile } from "@/lib/auth-client";
@@ -77,10 +78,12 @@ export default function NotificationsPage() {
         </p>
       )}
 
+      {/* A signed-out reader got one sentence with an underlined word in it on an otherwise
+          empty screen - no button, nothing to do, and most people arriving from a shared
+          link are signed out. This is the same card the rest of the product uses when
+          something needs an account, and it comes back here afterwards. */}
       {state === "signed-out" && (
-        <p className="body-copy mt-6">
-          <Link className="font-medium underline underline-offset-4" href="/login?next=%2Fnotifications">Log in</Link> to see replies to your perspectives.
-        </p>
+        <LoginRequiredNotice message="Replies to your perspectives land here. Log in to see them - you will come straight back." />
       )}
 
       {state === "ready" && (
