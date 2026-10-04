@@ -44,6 +44,20 @@ function isInAppBrowser() {
 
 const googleAuthEnabled = process.env.NEXT_PUBLIC_GOOGLE_AUTH_ENABLED === "true";
 
+// Google's own mark, so the primary button is recognisable at a glance rather than being a
+// dark pill with the word Google on it.
+function GoogleMark() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+      <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.9 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.0 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.2-.1-2.4-.4-3.5z"/>
+      <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.0 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
+      <path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.3 0-9.7-3.1-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/>
+      <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.1-4.1 5.6l6.2 5.2C37.1 40.2 44 35 44 24c0-1.2-.1-2.4-.4-3.5z"/>
+    </svg>
+  );
+}
+
+
 // Supabase's own error strings went straight to the screen. Sign-in mail is rate limited per
 // hour, so the first burst of arrivals from one link is exactly when it trips - and the
 // person who gets turned away reads "Email rate limit exceeded", which sounds like they did
@@ -79,6 +93,9 @@ export function LoginForm({ next }: { next?: string }) {
   // snapshot is false and the client snapshot is the real answer, with no setState during an
   // effect and no hydration mismatch.
   const inApp = useSyncExternalStore(() => () => {}, isInAppBrowser, () => false);
+  // Both paths stay on the screen either way; this only decides which one is the filled
+  // button and which sentence the card opens with.
+  const googlePrimary = googleAuthEnabled && !inApp;
   const [copied, setCopied] = useState(false);
 
   async function copyLink() {
@@ -143,9 +160,18 @@ export function LoginForm({ next }: { next?: string }) {
           that actually matters went unsaid: with magic links, entering an email is how you
           join. */}
       <p className="caption">New here or returning</p>
-      <h2 className="title-2 mt-2">Enter your email to join or log in.</h2>
+      {/* Google leads because it is one tap, needs no password, and sends no mail - sign-in
+          mail is rate limited per hour, which is exactly what a burst of arrivals from one
+          shared link runs into. Inside an app's own browser Google cannot finish at all, so
+          there the working path is email and the emphasis swaps rather than pointing people
+          at a button that will fail. */}
+      <h2 className="title-2 mt-2">
+        {googlePrimary ? "One tap with Google, or use your email." : "Enter your email to join or log in."}
+      </h2>
       <p className="body-copy mt-2 text-[15px] leading-6">
-        No password needed. If this is your first time, your email creates your account.
+        {googlePrimary
+          ? "No password either way. Google signs you in straight away; email sends you a link instead."
+          : "No password needed. If this is your first time, your email creates your account."}
       </p>
       {googleAuthEnabled && inApp && (
         <div className="mt-6 rounded-[16px] bg-black/[0.045] p-4">
@@ -170,8 +196,13 @@ export function LoginForm({ next }: { next?: string }) {
             type="button"
             onClick={signInWithGoogle}
             disabled={loading}
-            className="mt-6 flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-[color:var(--color-text-primary)] px-4 py-3 text-sm font-medium !text-white transition hover:opacity-85"
+            className={`mt-6 flex min-h-12 w-full items-center justify-center gap-2.5 rounded-full px-4 py-3 text-sm font-semibold transition ${
+              googlePrimary
+                ? "bg-[color:var(--color-text-primary)] !text-white hover:opacity-85"
+                : "border border-black/10 bg-white text-[color:var(--color-text-primary)] hover:bg-black/[0.035]"
+            }`}
           >
+            <GoogleMark />
             Continue with Google
           </button>
           <div className="my-5 flex items-center gap-3 text-xs font-medium text-[color:var(--color-text-muted)]">
@@ -195,7 +226,11 @@ export function LoginForm({ next }: { next?: string }) {
           placeholder="you@example.com"
           className="min-h-12 w-full rounded-[16px] bg-black/[0.035] px-4 text-base font-medium outline-none ring-1 ring-transparent transition focus:bg-white focus:ring-black/20"
         />
-        <button disabled={loading} className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-black/10 bg-white px-5 text-sm font-semibold text-[color:var(--color-text-primary)] transition hover:bg-black/[0.035] disabled:opacity-60">
+        <button disabled={loading} className={`inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold transition disabled:opacity-60 ${
+          googlePrimary
+            ? "border border-black/10 bg-white text-[color:var(--color-text-primary)] hover:bg-black/[0.035]"
+            : "bg-[color:var(--color-text-primary)] !text-white hover:opacity-85"
+        }`}>
           <Mail size={17} />
           {loading ? "Sending link..." : "Email me a sign-in link"}
         </button>
