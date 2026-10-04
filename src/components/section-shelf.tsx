@@ -25,7 +25,7 @@ export function SectionShelf({
   if (!books.length) return null;
 
   return (
-    <section className="py-6 md:py-8">
+    <section className="pt-6 pb-3 md:pt-8 md:pb-4">
       <div className="mb-4 flex items-end justify-between gap-6 px-4 md:px-6 lg:px-8">
         <div>
           <h2 className="title-2">{title}</h2>
@@ -37,7 +37,7 @@ export function SectionShelf({
           </Link>
         )}
       </div>
-      <div className="shelf-scroll flex gap-5 overflow-x-auto px-4 pb-4 md:gap-6 md:px-6 lg:px-8">
+      <div className="shelf-scroll flex gap-5 overflow-x-auto px-4 pb-2 md:gap-6 md:px-6 lg:px-8">
         {books.slice(0, maxItems).map((book, index) => (
           <BookCard key={`${title}-${book.id}`} book={book} compact={compact} priority={index < 4} badge={badge} signal={signal} />
         ))}

@@ -85,13 +85,13 @@ export default async function GenrePage({ params }: { params: Promise<{ slug: st
 
       <GenreBookSearch genreName={genre.name} />
 
-      <section className="py-8 md:py-10">
+      <section className="pt-8 pb-3 md:pt-10 md:pb-4">
         <div className="mb-5 px-4 md:px-6 lg:px-8">
           <p className="caption mb-2">Start here</p>
           <h2 className="title-2">Reading paths for {genre.name}</h2>
           <p className="subheadline mt-2">Curated sequences that help readers know what to read next.</p>
         </div>
-        <div className="shelf-scroll flex gap-5 overflow-x-auto px-4 pb-4 md:px-6 lg:px-8">
+        <div className="shelf-scroll flex gap-5 overflow-x-auto px-4 pb-2 md:px-6 lg:px-8">
           {paths.map((path) => <ReadingPathCard key={path.id} path={path} />)}
         </div>
       </section>
@@ -107,13 +107,13 @@ export default async function GenrePage({ params }: { params: Promise<{ slug: st
         />
       ))}
 
-      <section className="py-8 md:py-12">
+      <section className="pt-8 pb-3 md:pt-10 md:pb-4">
         <div className="mb-5 px-4 md:px-6 lg:px-8">
           <p className="caption mb-2">Reader notes</p>
           <h2 className="title-2">Questions readers are opening in {genre.name}</h2>
           <p className="subheadline mt-2">Where readers apply, challenge, and explain the ideas behind these books.</p>
         </div>
-        <div className="shelf-scroll flex gap-5 overflow-x-auto px-4 pb-4 md:px-6 lg:px-8">
+        <div className="shelf-scroll flex gap-5 overflow-x-auto px-4 pb-2 md:px-6 lg:px-8">
           {insightPosts.length ? insightPosts.slice(0, 10).map((post) => (
             <div key={post.id} className="w-[86vw] max-w-[330px] shrink-0 snap-start md:w-[430px] md:max-w-none">
               <DiscussionCard post={post} showBook compact />

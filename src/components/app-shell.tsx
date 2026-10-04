@@ -37,8 +37,10 @@ export function AppShell({ children }: { children: ReactNode }) {
       <div className="flex min-h-dvh flex-col">
         <TopNav />
         <main id="main-content" className="page-enter flex-1 pb-0 lg:pb-12">{children}</main>
-        <footer className="border-t border-black/[0.06] bg-black/[0.018] pb-[calc(5rem+env(safe-area-inset-bottom))] lg:mt-12 lg:pb-0">
-        <div className="container-page flex flex-col gap-3 py-5 text-sm text-[color:var(--color-text-secondary)] sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+        {/* 4.5rem is the 68px tab bar plus 4px, measured rather than guessed - the old 6rem
+            left 28px of visible nothing under the links on every page. */}
+        <footer className="border-t border-black/[0.06] bg-black/[0.018] pb-[calc(4.5rem+env(safe-area-inset-bottom))] lg:mt-12 lg:pb-0">
+        <div className="container-page flex flex-col gap-2.5 py-4 text-sm text-[color:var(--color-text-secondary)] sm:flex-row sm:items-center sm:justify-between sm:gap-6">
           <p>BookSphere turns books into useful, human perspectives.</p>
           <nav aria-label="BookSphere information" className="flex items-center gap-5">
             <Link href="/explore#about-booksphere" className="transition hover:text-[color:var(--color-text-primary)]">About</Link>

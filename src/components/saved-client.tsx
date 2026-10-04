@@ -196,7 +196,7 @@ export function SavedClient() {
       {savedBooks.length > 0 && (
         <section className="mt-14">
           <h2 className="title-2 mb-5">{savedBookIds.length ? "My Saved Books" : "Books readers save most"}</h2>
-          <div className="shelf-scroll flex gap-5 overflow-x-auto pb-4">{savedBooks.map((book) => <BookCard key={book.id} book={book} badge={savedBookIds.length ? "Saved" : "Most Saved"} signal="saves" />)}</div>
+          <div className="shelf-scroll flex gap-5 overflow-x-auto pb-2">{savedBooks.map((book) => <BookCard key={book.id} book={book} badge={savedBookIds.length ? "Saved" : "Most Saved"} signal="saves" />)}</div>
         </section>
       )}
     </>

@@ -39,7 +39,7 @@ export function GenreDirectory({
   subtitle?: string;
 }) {
   return (
-    <section id="genres" className="py-8 md:py-12">
+    <section id="genres" className="pt-8 pb-3 md:pt-10 md:pb-4">
       <div data-onboarding="genres" className="container-page rounded-[24px]">
         <p className="caption mb-3">Reading rooms</p>
         <h2 className="title-1 max-w-4xl">{heading}</h2>

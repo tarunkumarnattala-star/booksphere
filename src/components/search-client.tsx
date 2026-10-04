@@ -490,7 +490,7 @@ function ReadersAlsoContinuedWith({ books: continuedBooks }: { books: KnowledgeB
   return (
     <section>
       <SectionIntro eyebrow="Learning journey" title="Readers also continued with..." subtitle="Not similar books. More like the next useful step in the same learning path." />
-      <div className="shelf-scroll mt-8 flex gap-5 overflow-x-auto pb-4">
+      <div className="shelf-scroll mt-8 flex gap-5 overflow-x-auto pb-2">
         {continuedBooks.map((result) => (
           <Link key={result.id} href={result.destinationUrl} className="interactive-lift w-[190px] shrink-0 snap-start">
             <BookCover book={result.book} className="w-full" />
