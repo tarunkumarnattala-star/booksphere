@@ -60,6 +60,19 @@ export function GoogleIdButton({
   const holder = useRef<HTMLDivElement>(null);
   const rawNonce = useRef<string>("");
   const [ready, setReady] = useState(false);
+  // The parent passes these as inline arrows, so they are new objects on every render. As
+  // effect dependencies they re-ran this whole routine each time, and because renderButton
+  // materialises its button asynchronously, each pass added another one: two Google buttons
+  // stacked on the sign-in card. Held in refs the effect can run exactly once.
+  const onErrorRef = useRef(onError);
+  const onUnavailableRef = useRef(onUnavailable);
+  const returnPathRef = useRef(returnPath);
+  const startedRef = useRef(false);
+  useEffect(() => {
+    onErrorRef.current = onError;
+    onUnavailableRef.current = onUnavailable;
+    returnPathRef.current = returnPath;
+  });
 
   const handleCredential = useCallback(
     async (response: CredentialResponse) => {
@@ -70,17 +83,19 @@ export function GoogleIdButton({
         nonce: rawNonce.current
       });
       if (error) {
-        onError(error.message);
+        onErrorRef.current(error.message);
         return;
       }
-      router.push(returnPath);
+      router.push(returnPathRef.current);
       router.refresh();
     },
-    [onError, returnPath, router]
+    [router]
   );
 
   useEffect(() => {
     let cancelled = false;
+    if (startedRef.current) return;
+    startedRef.current = true;
 
     async function start() {
       const { raw, hashed } = await makeNonce();
@@ -112,7 +127,7 @@ export function GoogleIdButton({
       // blank space where the main way in should be, hand back to the redirect button. It
       // shows an ugly address on Google's screen but it does work.
       if (!window.google || !holder.current) {
-        onUnavailable();
+        onUnavailableRef.current();
         return;
       }
       window.google.accounts.id.initialize({
@@ -133,7 +148,7 @@ export function GoogleIdButton({
         width: Math.min(Math.round(holder.current.getBoundingClientRect().width) || 320, 400)
       });
       } catch {
-        onUnavailable();
+        onUnavailableRef.current();
         return;
       }
       setReady(true);
@@ -143,7 +158,7 @@ export function GoogleIdButton({
     return () => {
       cancelled = true;
     };
-  }, [handleCredential, onUnavailable]);
+  }, [handleCredential]);
 
   return (
     <div className="mt-6">
