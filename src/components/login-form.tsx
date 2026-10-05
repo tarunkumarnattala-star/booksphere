@@ -7,6 +7,7 @@ import { trackEvent } from "@/lib/analytics";
 import { createLocalProfile } from "@/lib/local-session";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 import { canUseLocalCommunityFallback, COMMUNITY_UNAVAILABLE_MESSAGE } from "@/lib/community-runtime";
+import { GoogleIdButton, googleIdFlowEnabled } from "./google-id-button";
 
 // Prefix checks miss what a URL parser accepts: `/\evil.com` and `/<tab>/evil.com` both
 // resolve to https://evil.com/ under WHATWG parsing. Neither is exploitable today - the two
@@ -95,7 +96,11 @@ export function LoginForm({ next }: { next?: string }) {
   const inApp = useSyncExternalStore(() => () => {}, isInAppBrowser, () => false);
   // Both paths stay on the screen either way; this only decides which one is the filled
   // button and which sentence the card opens with.
-  const googlePrimary = googleAuthEnabled && !inApp;
+  const [idFlowFailed, setIdFlowFailed] = useState(false);
+  const showGoogleIdFlow = googleIdFlowEnabled && !inApp && !idFlowFailed;
+  const showLegacyGoogle = googleAuthEnabled && !showGoogleIdFlow;
+  const showAnyGoogle = showGoogleIdFlow || showLegacyGoogle;
+  const googlePrimary = (googleAuthEnabled || googleIdFlowEnabled) && !inApp;
   const [copied, setCopied] = useState(false);
 
   async function copyLink() {
@@ -190,7 +195,13 @@ export function LoginForm({ next }: { next?: string }) {
           </button>
         </div>
       )}
-      {googleAuthEnabled && (
+      {/* The ID-token flow keeps the reader on this site, so Google's screen names BookSphere
+          instead of the Supabase project. It needs only the public client id, so when that is
+          not set we fall back to the redirect flow rather than losing Google sign-in. */}
+      {showGoogleIdFlow && (
+        <GoogleIdButton returnPath={returnPath} onError={(text) => setMessage(text)} onUnavailable={() => setIdFlowFailed(true)} />
+      )}
+      {showLegacyGoogle && (
         <>
           <button
             type="button"
@@ -214,14 +225,16 @@ export function LoginForm({ next }: { next?: string }) {
             Google&rsquo;s next screen will say <span className="font-medium">supabase.co</span> &mdash; that is the
             service that runs our sign-in, not another site.
           </p>
-          <div className="my-5 flex items-center gap-3 text-xs font-medium text-[color:var(--color-text-muted)]">
-            <span className="h-px flex-1 bg-[color:var(--color-hairline)]" />
-            or use email
-            <span className="h-px flex-1 bg-[color:var(--color-hairline)]" />
-          </div>
         </>
       )}
-      <form onSubmit={signInWithEmail} className={`grid gap-3 ${googleAuthEnabled ? "" : "mt-6"}`}>
+      {showAnyGoogle && (
+        <div className="my-5 flex items-center gap-3 text-xs font-medium text-[color:var(--color-text-muted)]">
+          <span className="h-px flex-1 bg-[color:var(--color-hairline)]" />
+          or use email
+          <span className="h-px flex-1 bg-[color:var(--color-hairline)]" />
+        </div>
+      )}
+      <form onSubmit={signInWithEmail} className={`grid gap-3 ${showAnyGoogle ? "" : "mt-6"}`}>
         <label htmlFor="login-email" className="text-sm font-medium text-[color:var(--color-text-primary)]">
           Email address
         </label>

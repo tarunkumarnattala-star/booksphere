@@ -4,11 +4,15 @@ const isProduction = process.env.NODE_ENV === "production";
 const isHttpsDeployment = process.env.NEXT_PUBLIC_APP_URL?.startsWith("https://") === true;
 const contentSecurityPolicy = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${isProduction ? "" : " 'unsafe-eval'"}`,
+  // Google Identity Services is loaded from accounts.google.com and renders its button in a
+  // frame there. Without these three the script is blocked by the policy and the button
+  // simply never appears - with the failure only visible in the console.
+  `script-src 'self' 'unsafe-inline' https://accounts.google.com${isProduction ? "" : " 'unsafe-eval'"}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https://covers.openlibrary.org https://books.google.com https://books.googleusercontent.com",
   "font-src 'self' data:",
-  "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.googleapis.com https://openlibrary.org",
+  "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.googleapis.com https://openlibrary.org https://accounts.google.com",
+  "frame-src https://accounts.google.com",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
