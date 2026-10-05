@@ -40,7 +40,12 @@ function safeReturnPath(next?: string) {
 function isInAppBrowser() {
   if (typeof navigator === "undefined") return false;
   const ua = navigator.userAgent || "";
-  return /FBAN|FBAV|Instagram|LinkedInApp|Line\/|MicroMessenger|Snapchat|Pinterest|Twitter|; wv\)/i.test(ua);
+  // Reddit is the one that matters most right now and was missing. Its Android app matches
+  // "; wv)" already, but the iOS app does not - it identifies itself as Reddit. Without this
+  // those readers are offered the Google button, which cannot complete inside an app's own
+  // browser, and it fails with nothing explaining why. Telegram and TikTok for the same
+  // reason: they are link-openers too.
+  return /FBAN|FBAV|Instagram|LinkedInApp|Line\/|MicroMessenger|Snapchat|Pinterest|Twitter|Reddit|Telegram|TikTok|BytedanceWebview|; wv\)/i.test(ua);
 }
 
 const googleAuthEnabled = process.env.NEXT_PUBLIC_GOOGLE_AUTH_ENABLED === "true";
