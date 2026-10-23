@@ -500,6 +500,880 @@ const entries: BookEditorial[] = [
       }
     ]
   },
+  {
+    bookId: "make-time",
+    inOneLine: "Win the day by choosing one thing for it, not by squeezing more into it.",
+    forWhom: "People whose days vanish into other people's priorities and who want a light fix, not a system.",
+    cards: [
+      {
+        id: "make-time:argument-highlight",
+        kind: "argument",
+        claim: "A day is won by picking one thing for it in advance.",
+        body: "Knapp and Zeratsky argue that a day without a chosen focus gets filled by whatever arrives, and you end it unable to say what it was for. Naming a single highlight is less about output than about having something to measure the day against."
+      },
+      {
+        id: "make-time:argument-defaults",
+        kind: "argument",
+        claim: "The defaults on your devices and calendar were not designed in your interest.",
+        body: "Apps default to notifications on and feeds infinite because engagement is their business; calendars default to open because other people's time requests are easier to accept than refuse. Their point is that staying on defaults is a choice with consequences."
+      },
+      {
+        id: "make-time:practice-pick-tonight",
+        kind: "practice",
+        claim: "Choose tomorrow's highlight tonight.",
+        body: "Chosen in the morning, the highlight competes with everything already shouting. Chosen the night before, it is waiting when you arrive and the first hour has somewhere to go.",
+        tryIt: "Before you stop work today, write one sentence: tomorrow's highlight is ___."
+      },
+      {
+        id: "make-time:practice-boring-phone",
+        kind: "practice",
+        claim: "Make the phone boring rather than relying on restraint.",
+        body: "Removing the few apps that absorb the most time changes the outcome more reliably than deciding to use them less, because it moves the fight from every idle moment to one decision made once.",
+        tryIt: "Delete the single app you open most without deciding to. You can reinstall it tomorrow if you genuinely miss it."
+      },
+      {
+        id: "make-time:limit-discretionary",
+        kind: "limit",
+        claim: "It assumes a day with some slack in it.",
+        body: "Choosing a highlight works when a few hours are yours to direct. In jobs scheduled minute by minute, or at home with a newborn, the highlight is chosen for you, and the book's cheerful framing can land as one more thing you are failing at."
+      },
+      {
+        id: "make-time:contested-tactics",
+        kind: "contested",
+        claim: "Whether a menu of tactics beats a single system.",
+        body: "This book offers dozens of small tricks to pick from; Getting Things Done argues that only a complete trusted system actually relieves the pressure. Light tactics are easier to start and easier to abandon, and which failure mode you are prone to decides which is right for you.",
+        argumentWith: "getting-things-done"
+      },
+      {
+        id: "make-time:misread-all-of-them",
+        kind: "misread",
+        claim: "People try to adopt the whole list at once.",
+        body: "The book explicitly offers its tactics as a menu to sample from, a few at a time. Treated as a checklist to implement completely, it becomes the overload it was written to relieve."
+      }
+    ]
+  },
+  {
+    bookId: "digital-minimalism",
+    inOneLine: "Tools should have to earn their place against what you actually care about.",
+    forWhom: "Anyone who has tried to use their phone less by deciding to, and failed.",
+    cards: [
+      {
+        id: "digital-minimalism:argument-earn",
+        kind: "argument",
+        claim: "A tool offering some benefit is not a reason to keep it.",
+        body: "Newport's standard is not whether an app does anything useful - almost all of them do - but whether it is the best way to serve something you deeply value. Most pass the first test and fail the second, which is why the usual cost-benefit reasoning never removes anything."
+      },
+      {
+        id: "digital-minimalism:argument-solitude",
+        kind: "argument",
+        claim: "Time alone with your own thoughts is a need, not a gap to fill.",
+        body: "He calls the modern condition solitude deprivation: never being alone with your own mind because every queue, walk and pause is filled with input. The claim is that the thinking which only happens in those gaps stops happening."
+      },
+      {
+        id: "digital-minimalism:practice-declutter",
+        kind: "practice",
+        claim: "Take thirty days off the optional tools, then let them back in one at a time.",
+        body: "Cutting and then deliberately reintroducing works better than trimming, because the break shows you what you actually missed rather than what you assumed you would. Most people reinstate far less than they expected to.",
+        tryIt: "List your optional apps. Put them away for thirty days, and write down which one you genuinely reach for."
+      },
+      {
+        id: "digital-minimalism:practice-replace",
+        kind: "practice",
+        claim: "Put something in the hole before you make it.",
+        body: "Removing a habit without a replacement leaves an empty evening that the old habit reliably refills. Having a specific thing to do with the reclaimed time - a craft, a walk, a person to call - is what makes the removal hold.",
+        tryIt: "Pick one activity for the time you are about to free up, and schedule it before you delete anything."
+      },
+      {
+        id: "digital-minimalism:limit-social-cost",
+        kind: "limit",
+        claim: "For many people the platforms are where the work, the family and the friends are.",
+        body: "Leaving is cheap if your income, your community and your relationships live elsewhere. For freelancers, migrants, carers and anyone whose group organises on a feed, the cost of opting out is real and lands on them, not on the platform."
+      },
+      {
+        id: "digital-minimalism:contested-harm",
+        kind: "contested",
+        claim: "How much of the harm is established, and how much is a reasonable worry.",
+        body: "That attention is being deliberately captured is well evidenced. The stronger claims about what this does to minds over time are argued hard in both directions, and the honest position is that the design intent is proven while the long-run effect is still being fought over.",
+        argumentWith: "the-shallows"
+      },
+      {
+        id: "digital-minimalism:misread-asceticism",
+        kind: "misread",
+        claim: "It gets taken as giving up technology.",
+        body: "The argument is selective and deliberate use, not abstinence, and the declutter is a diagnostic rather than the destination. Read as digital monasticism, it sets a bar nobody holds and collapses within a month."
+      }
+    ]
+  },
+  {
+    bookId: "the-war-of-art",
+    inOneLine: "The thing stopping you is predictable, has a name, and shows up strongest before the work that matters most.",
+    forWhom: "Anyone who knows what they should be making and keeps not making it.",
+    cards: [
+      {
+        id: "the-war-of-art:argument-resistance",
+        kind: "argument",
+        claim: "The force stopping you is not laziness and it is not random.",
+        body: "Pressfield names it Resistance and argues it is predictable: it is strongest in front of the work that would matter most to you, and it arrives disguised as reasonable things - research to do first, a tidier desk, a better time to start."
+      },
+      {
+        id: "the-war-of-art:argument-professional",
+        kind: "argument",
+        claim: "Amateurs wait to feel ready, professionals turn up anyway.",
+        body: "The distinction is not skill or income but relationship to feeling. A professional treats the work as a job that happens on schedule whether or not inspiration arrived, which removes the daily referendum on whether you are in the mood."
+      },
+      {
+        id: "the-war-of-art:practice-same-time",
+        kind: "practice",
+        claim: "Fix the time, and stop negotiating with yourself about it.",
+        body: "Deciding each day whether to work is a decision you will eventually lose, because Resistance only has to win once to break the run. A fixed slot converts it from a choice into a default.",
+        tryIt: "Pick the time you will sit down tomorrow. Not how long, not how much - just the time."
+      },
+      {
+        id: "the-war-of-art:practice-name-it",
+        kind: "practice",
+        claim: "Say out loud what you are avoiding, as it happens.",
+        body: "Resistance works by seeming like something else - a genuine priority, a reasonable delay. Naming the avoidance in the moment strips the disguise, and the pull weakens noticeably once it has been identified.",
+        tryIt: "Next time you drift from the work, write one line: I am avoiding ___ by doing ___."
+      },
+      {
+        id: "the-war-of-art:limit-burnout",
+        kind: "limit",
+        claim: "It has no way to tell avoidance apart from exhaustion or illness.",
+        body: "Everything that stops you is cast as Resistance to be overcome, which is useful against procrastination and harmful against burnout, depression or grief. Applied to a person who genuinely needs rest or treatment, the book supplies a reason to push through, and that is the wrong answer."
+      },
+      {
+        id: "the-war-of-art:contested-muse",
+        kind: "contested",
+        claim: "The last third turns mystical, and readers split on it.",
+        body: "Pressfield moves from practical discipline to Muses, angels and a territory-versus-hierarchy metaphysics. Some find it the heart of the book and others find the earlier, concrete argument stands perfectly well without any of it."
+      },
+      {
+        id: "the-war-of-art:misread-shame",
+        kind: "misread",
+        claim: "It becomes a stick to beat yourself with.",
+        body: "The framing of a daily war against an enemy inside you reads, on a bad week, as proof that you are the enemy. The usable part is the structure - fixed time, show up regardless - and that part does not require the self-contempt."
+      }
+    ]
+  },
+  {
+    bookId: "drive",
+    inOneLine: "For work that needs judgment, rewards and punishments do less than you think and sometimes make it worse.",
+    forWhom: "Anyone designing how other people work, or wondering why their own motivation drained.",
+    cards: [
+      {
+        id: "drive:argument-crowding",
+        kind: "argument",
+        claim: "Paying for something people already wanted to do can make them want it less.",
+        body: "Pink's central finding is that external rewards reliably improve narrow, mechanical tasks and can degrade performance on work needing creativity or judgment. Attaching a payment reframes a chosen activity as a transaction, and the original interest does not always survive the reframing."
+      },
+      {
+        id: "drive:argument-three",
+        kind: "argument",
+        claim: "Autonomy, mastery and purpose do the work carrots cannot.",
+        body: "Control over how you work, visible progress at something hard, and a reason that reaches past yourself are what sustain effort on complex work. Pink's case is that these are not perks but the actual mechanism."
+      },
+      {
+        id: "drive:practice-autonomy",
+        kind: "practice",
+        claim: "Give away control of one of the four: task, time, technique or team.",
+        body: "Autonomy is not all-or-nothing and most roles can concede one dimension without anything breaking. Choosing which to hand over makes it a concrete management decision rather than a value statement.",
+        tryIt: "Pick one thing you currently dictate - how, when, with whom, or what - and stop dictating it for a month."
+      },
+      {
+        id: "drive:practice-progress",
+        kind: "practice",
+        claim: "Make progress visible, because mastery is felt through feedback.",
+        body: "Effort at something hard sustains itself only when improvement can be seen, and most knowledge work hides it. A record of what was difficult last month and is routine now supplies the signal the work itself does not.",
+        tryIt: "Keep one line a day on what you did that was hard. Read a month of it in one sitting."
+      },
+      {
+        id: "drive:limit-pay",
+        kind: "limit",
+        claim: "The whole argument sits on top of paying people properly, which is the part that gets skipped.",
+        body: "Pink is explicit that fair pay has to take money off the table before intrinsic motivation can do anything. Quoted in organisations that have not done that, the book becomes a justification for low pay dressed as enlightened management, which inverts his argument."
+      },
+      {
+        id: "drive:contested-breadth",
+        kind: "contested",
+        claim: "How far the finding generalises is genuinely disputed.",
+        body: "The effect is well demonstrated in specific experimental settings, and the step from there to most modern workplaces is an extrapolation. Critics argue the real-world picture is messier and more dependent on context than the book's confident framing suggests."
+      },
+      {
+        id: "drive:misread-no-money",
+        kind: "misread",
+        claim: "It gets used to argue that money does not matter.",
+        body: "The claim is that money stops being a useful lever above a sufficient level, not that compensation is irrelevant. Used to justify underpaying people who care about the mission, it is being read precisely backwards."
+      }
+    ]
+  },
+  {
+    bookId: "flow",
+    inOneLine: "The best moments are not relaxing ones, they are the ones where you disappeared into something difficult.",
+    forWhom: "People whose leisure leaves them flat and who suspect the problem is not needing more rest.",
+    cards: [
+      {
+        id: "flow:argument-absorption",
+        kind: "argument",
+        claim: "Enjoyment comes from absorption, not from ease.",
+        body: "Csikszentmihalyi's research found people reporting their best experiences during effortful, voluntary activity rather than during rest. The implication is uncomfortable: free time spent on things that ask nothing of you tends to be remembered as empty."
+      },
+      {
+        id: "flow:argument-conditions",
+        kind: "argument",
+        claim: "Flow has conditions, and they can be arranged.",
+        body: "It needs a clear goal, feedback quick enough to adjust by, and difficulty sitting just above current ability. Missing any one of them, attention wanders - which reframes flow as something you engineer rather than something that visits you."
+      },
+      {
+        id: "flow:practice-tune-difficulty",
+        kind: "practice",
+        claim: "Adjust the difficulty until it stops being boring or frightening.",
+        body: "Boredom means the challenge is beneath you; anxiety means it is beyond you. Both are signals to change the task rather than your attitude, and small adjustments to constraints usually move it into range.",
+        tryIt: "Take something that bores you and add a constraint - a time limit, a restriction - until it needs your attention."
+      },
+      {
+        id: "flow:practice-feedback",
+        kind: "practice",
+        claim: "Build feedback into work that does not come with any.",
+        body: "Sport and music supply immediate signals; most jobs supply one every quarter. Inventing an interim measure you can see within the hour is what makes a long task absorbing rather than vague.",
+        tryIt: "Define what 'going well' looks like at the end of the next hour, specifically enough to check."
+      },
+      {
+        id: "flow:limit-control",
+        kind: "limit",
+        claim: "It needs a task whose difficulty you can set.",
+        body: "Flow conditions are hard to meet in work that is designed to be either repetitive or permanently overwhelming, and in jobs interrupted by other people at will. Where the constraint is the job itself, the advice becomes a description of what you are missing."
+      },
+      {
+        id: "flow:contested-neutral",
+        kind: "contested",
+        claim: "Flow is a state, not a virtue, and bad things produce it too.",
+        body: "Gambling machines, infinite feeds and compulsive games are engineered to hit exactly these conditions. That the same mechanism underlies both deep work and the things keeping you up at 2am is a real tension the book does not fully resolve.",
+        argumentWith: "hooked"
+      },
+      {
+        id: "flow:misread-passion",
+        kind: "misread",
+        claim: "It gets collapsed into 'find your passion'.",
+        body: "The research points the other way: absorption is produced by the structure of an activity rather than by finding the one true calling. People report flow in ordinary work once the conditions are arranged, which is a far more useful finding than being told to search."
+      }
+    ]
+  },
+  {
+    bookId: "thinking-fast-and-slow",
+    inOneLine: "Your fast, confident judgment is wrong in specific, repeatable ways - and knowing that barely helps.",
+    forWhom: "Anyone who makes consequential decisions and would like to be wrong less often.",
+    cards: [
+      {
+        id: "thinking-fast-and-slow:argument-two-systems",
+        kind: "argument",
+        claim: "Two modes of thought, and the fast one answers first.",
+        body: "Kahneman describes a fast, automatic process that produces an answer before you have decided to think, and a slow, effortful one that is lazy about checking it. Most errors are not failures of intelligence but the second system accepting the first system's work."
+      },
+      {
+        id: "thinking-fast-and-slow:argument-substitution",
+        kind: "argument",
+        claim: "When a question is hard, you quietly answer an easier one.",
+        body: "Asked whether an investment is wise, people often answer whether they like the company. The substitution is invisible from the inside, which is what makes it dangerous - the confident feeling attaches to the easy question you actually answered."
+      },
+      {
+        id: "thinking-fast-and-slow:practice-outside-view",
+        kind: "practice",
+        claim: "Ask how similar things have actually gone, before reasoning about this one.",
+        body: "Plans built from the inside are built from intentions and best cases. Finding the base rate - how long this normally takes, how often this normally works - corrects the estimate more than any amount of careful thinking about your specific situation.",
+        tryIt: "Before your next estimate, find three comparable cases and write down what actually happened to them."
+      },
+      {
+        id: "thinking-fast-and-slow:practice-premortem",
+        kind: "practice",
+        claim: "Assume it failed, then explain why.",
+        body: "Asking a group for risks invites loyalty and gets silence. Telling them it is a year later and the thing failed, then asking what happened, gives permission to say the thing everybody already suspects.",
+        tryIt: "Before committing, write the post-mortem for the failure as if it already happened."
+      },
+      {
+        id: "thinking-fast-and-slow:limit-self-correction",
+        kind: "limit",
+        claim: "Knowing about a bias does almost nothing to stop you having it.",
+        body: "Kahneman is unusually honest that decades of study left his own intuitions largely unimproved. The biases are features of how perception works, not errors to be argued away, which is why the usable remedies are procedures and outside checks rather than resolve."
+      },
+      {
+        id: "thinking-fast-and-slow:contested-replication",
+        kind: "contested",
+        claim: "Parts of the book did not survive later testing.",
+        body: "Several studies it draws on, particularly in the priming chapter, failed to replicate in subsequent work, and Kahneman publicly acknowledged that he had placed too much confidence in that literature. The core account of fast and slow thinking stands; specific demonstrations within it do not."
+      },
+      {
+        id: "thinking-fast-and-slow:misread-others",
+        kind: "misread",
+        claim: "It becomes a vocabulary for diagnosing other people.",
+        body: "Having names for the errors makes them easy to spot in colleagues and no easier to spot in yourself - which is itself one of the effects the book describes. Read correctly, it is uncomfortable rather than satisfying."
+      }
+    ]
+  },
+  {
+    bookId: "the-7-habits-of-highly-effective-people",
+    inOneLine: "Work on your character before your tactics, and start with what you can actually control.",
+    forWhom: "People who have optimised their methods and still feel they are getting nowhere.",
+    cards: [
+      {
+        id: "the-7-habits-of-highly-effective-people:argument-character",
+        kind: "argument",
+        claim: "Technique on top of a weak foundation stops working under pressure.",
+        body: "Covey separates the character ethic - integrity, patience, keeping your word - from the personality ethic of influence tactics and presentation. His claim is that the second only holds while things are easy, and that most self-improvement sells the second because it is faster."
+      },
+      {
+        id: "the-7-habits-of-highly-effective-people:argument-influence",
+        kind: "argument",
+        claim: "Spend attention on what you can affect, and it grows.",
+        body: "The circle of concern holds everything you worry about; the circle of influence holds what you can act on. Covey's observation is that people who work inside the smaller circle tend to find it widening, while those preoccupied with the larger one tend to find theirs shrinking."
+      },
+      {
+        id: "the-7-habits-of-highly-effective-people:practice-quadrant",
+        kind: "practice",
+        claim: "Schedule what is important before what is urgent arrives.",
+        body: "Important work that is not yet urgent - planning, maintenance, relationships, learning - never announces itself, so it loses every day to things that do. Giving it a place in the week before the week starts is the only reliable defence.",
+        tryIt: "Put one important, non-urgent thing in next week's calendar now, before anything else claims the slot."
+      },
+      {
+        id: "the-7-habits-of-highly-effective-people:practice-understand",
+        kind: "practice",
+        claim: "Be able to state their case better than they can, before you make yours.",
+        body: "Most disagreement is two people waiting to talk. Committing to restate the other position until they agree you have it right changes what you argue about, and frequently changes your own mind on the way.",
+        tryIt: "In your next disagreement, say their position back first and ask whether you got it right."
+      },
+      {
+        id: "the-7-habits-of-highly-effective-people:limit-abstraction",
+        kind: "limit",
+        claim: "It is long, abstract, and dated in its examples.",
+        body: "The habits are principles rather than procedures, which makes them hard to act on without a lot of translation, and the corporate and family scenarios come from a world of 1989. Readers wanting to do something on Monday often extract two ideas and abandon the rest."
+      },
+      {
+        id: "the-7-habits-of-highly-effective-people:contested-history",
+        kind: "contested",
+        claim: "The historical claim underneath the book is an assertion, not a finding.",
+        body: "Covey's story - that success literature shifted from character to personality around the early twentieth century - is presented as established history based on his own reading. It is a persuasive frame and it is not an evidenced one, and the practical advice does not depend on it being true."
+      },
+      {
+        id: "the-7-habits-of-highly-effective-people:misread-productivity",
+        kind: "misread",
+        claim: "It gets shelved as a time-management book.",
+        body: "Only one habit is about scheduling. The first three are about self-command and the next three about working with other people, which is why readers who arrive for a planning system find it strangely slow and put it down."
+      }
+    ]
+  },
+  {
+    bookId: "can-t-hurt-me",
+    inOneLine: "Most people stop long before their actual limit, and that gap can be trained.",
+    forWhom: "People who quit at the first real resistance and already suspect it.",
+    cards: [
+      {
+        id: "can-t-hurt-me:argument-reserve",
+        kind: "argument",
+        claim: "The point where you want to stop is not the point where you must.",
+        body: "Goggins's central claim, drawn from his own extremes, is that the urge to quit arrives far ahead of actual capacity. Learning that the feeling is not the limit is the thing he is trying to transmit."
+      },
+      {
+        id: "can-t-hurt-me:argument-callus",
+        kind: "argument",
+        claim: "Difficulty tolerated on purpose makes later difficulty smaller.",
+        body: "He argues for deliberately seeking discomfort so that hardship you did not choose finds you already practised. The mechanism is psychological rather than physical: a bank of evidence that you have continued before."
+      },
+      {
+        id: "can-t-hurt-me:practice-mirror",
+        kind: "practice",
+        claim: "Write your actual failings where you will see them.",
+        body: "The accountability mirror is notes on the glass naming what you are avoiding and what you intend to do, in plain words. It works by removing the comfortable vagueness that lets a problem stay general.",
+        tryIt: "Write one specific thing you are dodging on a note, and put it where you brush your teeth."
+      },
+      {
+        id: "can-t-hurt-me:practice-one-hard-thing",
+        kind: "practice",
+        claim: "Do one thing a day you would rather not.",
+        body: "The size is unimportant and the voluntariness is the point: a small chosen discomfort daily builds the evidence that discomfort is survivable. It is the sustainable version of a book that mostly describes unsustainable extremes.",
+        tryIt: "Pick the smallest thing you have been putting off and do it before anything else tomorrow."
+      },
+      {
+        id: "can-t-hurt-me:limit-one-life",
+        kind: "limit",
+        claim: "It is one extraordinary person's biography offered as a method.",
+        body: "The book generalises from a single extreme case with no comparison to the people who followed similar paths into injury, breakdown or worse. Applied literally to an ordinary body - running on fractures, training through illness - the advice is physically dangerous, and nothing in the book provides the brake."
+      },
+      {
+        id: "can-t-hurt-me:contested-forty-percent",
+        kind: "contested",
+        claim: "The forty per cent rule is a motivational figure, not a measurement.",
+        body: "That people stop before their physiological limit is well supported in exercise science; that the limit sits reliably at forty per cent of capacity is a number from the book, not from research. Useful as a prompt, misleading as a quantity to plan around."
+      },
+      {
+        id: "can-t-hurt-me:misread-ignore-pain",
+        kind: "misread",
+        claim: "It gets read as overriding every pain signal.",
+        body: "Some pain is information about damage and some is reluctance, and conflating them produces injuries that end training altogether. The transferable part is persisting past the urge to quit, not past a body telling you something is torn."
+      }
+    ]
+  },
+  {
+    bookId: "the-obstacle-is-the-way",
+    inOneLine: "The thing in your way is usually also the material you have to work with.",
+    forWhom: "People stuck on a situation they cannot change and spending their energy on the wrong half of it.",
+    cards: [
+      {
+        id: "the-obstacle-is-the-way:argument-perception",
+        kind: "argument",
+        claim: "The event and your judgment of it are two different things.",
+        body: "Holiday's Stoic core is that most of the distress in a setback comes from the story attached to it rather than the facts of it. Separating the two does not make the problem smaller, but it stops you solving the wrong one."
+      },
+      {
+        id: "the-obstacle-is-the-way:argument-material",
+        kind: "argument",
+        claim: "An obstacle often contains the only available path.",
+        body: "The claim inherited from Marcus Aurelius is that what blocks the action can become the action - the constraint forcing a better approach, the rejection redirecting the work. It is a reframe rather than a technique, and it is doing real work when it stops you waiting for conditions to improve."
+      },
+      {
+        id: "the-obstacle-is-the-way:practice-two-columns",
+        kind: "practice",
+        claim: "Split the situation into what you control and what you do not, on paper.",
+        body: "Done in your head this stays a comforting idea; written out it becomes a short list of actions and a longer list to stop spending attention on. The second list is usually where most of the week was going.",
+        tryIt: "Take the thing weighing on you, and write two columns: mine to act on, not mine."
+      },
+      {
+        id: "the-obstacle-is-the-way:practice-premeditation",
+        kind: "practice",
+        claim: "Rehearse the setback before it arrives.",
+        body: "Imagining what could go wrong, specifically, converts a future shock into a plan and removes much of the paralysis. The Stoics treated this as routine preparation rather than pessimism.",
+        tryIt: "Before the next thing that matters, write the three most likely ways it goes wrong and what you would do."
+      },
+      {
+        id: "the-obstacle-is-the-way:limit-material",
+        kind: "limit",
+        claim: "Reframing a constraint does not remove it.",
+        body: "Illness, poverty, discrimination and grief are not perceptions, and a philosophy of acceptance applied to them can slide into telling people their circumstances are a thinking error. The approach earns its keep on what is genuinely in your control, and overreaches the moment it is offered as a universal answer."
+      },
+      {
+        id: "the-obstacle-is-the-way:contested-selective",
+        kind: "contested",
+        claim: "The self-help version of Stoicism keeps the resilience and drops the ethics.",
+        body: "Classical Stoicism was a whole philosophy with strong commitments about justice and duty to others. The modern productivity reading takes the personal fortitude and leaves most of that behind, which critics argue turns a moral philosophy into a performance technique."
+      },
+      {
+        id: "the-obstacle-is-the-way:misread-suppression",
+        kind: "misread",
+        claim: "It gets used to shut feelings down rather than look at them.",
+        body: "Examining a reaction to see what is actually true in it is not the same as refusing to have one. Read as instruction to feel nothing, it produces a brittleness that looks like composure right up until it fails."
+      }
+    ]
+  },
+  {
+    bookId: "why-we-sleep",
+    inOneLine: "Sleep is not the gap between the things that matter, it is one of them.",
+    forWhom: "Anyone quietly treating sleep as the flexible part of their schedule.",
+    cards: [
+      {
+        id: "why-we-sleep:argument-not-idle",
+        kind: "argument",
+        claim: "Sleep is active work, not an absence of activity.",
+        body: "Walker's case is that memory consolidation, emotional processing and physical repair are things sleep does rather than things that pause while you are unconscious. Cutting it is therefore not borrowing time, it is skipping a process."
+      },
+      {
+        id: "why-we-sleep:argument-debt",
+        kind: "argument",
+        claim: "You are a poor judge of how impaired you are.",
+        body: "Self-assessed alertness recovers long before actual performance does, which is why chronic short sleep feels sustainable to the person doing it. The subjective sense of coping is the least reliable signal available."
+      },
+      {
+        id: "why-we-sleep:practice-fixed-wake",
+        kind: "practice",
+        claim: "Hold the wake time steady, including at weekends.",
+        body: "A consistent rising time anchors the body clock more effectively than a consistent bedtime, which is largely outside your direct control. Sleeping in to repay a deficit tends to move the clock and cost you the following night.",
+        tryIt: "Set one wake time for every day of the next week, and keep it on Saturday."
+      },
+      {
+        id: "why-we-sleep:practice-light-and-caffeine",
+        kind: "practice",
+        claim: "Use morning light, and move caffeine earlier than feels necessary.",
+        body: "Daylight soon after waking strengthens the timing signal, and caffeine has a long enough half-life that an afternoon cup is still present at bedtime. Both are small adjustments with disproportionate effect on sleep that is otherwise hard to change.",
+        tryIt: "Get outside within an hour of waking, and make your last caffeine eight hours before bed."
+      },
+      {
+        id: "why-we-sleep:limit-unreachable",
+        kind: "limit",
+        claim: "The prescription is out of reach for the people who need it most.",
+        body: "Shift workers, new parents, carers and anyone holding two jobs cannot choose a consistent eight hours, and a book stating the costs in stark terms gives them alarm without remedy. Anxiety about sleep also reliably worsens sleep, so the framing itself can backfire."
+      },
+      {
+        id: "why-we-sleep:contested-specifics",
+        kind: "contested",
+        claim: "A detailed public critique found overstated claims and errors in parts of the book.",
+        body: "That sleep matters enormously is not in dispute and is supported well beyond this book. Several specific claims and the strength of certain statistics were challenged in a widely read analysis, with some corrections acknowledged. Take the direction seriously and treat individual numbers as needing their own source."
+      },
+      {
+        id: "why-we-sleep:misread-eight-hours",
+        kind: "misread",
+        claim: "Eight hours gets taken as a precise universal requirement.",
+        body: "Need varies between people and across a life, and the figure is a population guide rather than a target to hit nightly. Treated as a pass mark, it produces people lying awake calculating their shortfall, which is the opposite of the intent."
+      }
+    ]
+  },
+  {
+    bookId: "hooked",
+    inOneLine: "A manual for building products people cannot put down, which is also a description of what is being done to you.",
+    forWhom: "Anyone building something people should return to, and anyone wondering why they keep returning to things.",
+    cards: [
+      {
+        id: "hooked:argument-four-steps",
+        kind: "argument",
+        claim: "Habit-forming products run the same four-step loop.",
+        body: "A trigger, an easy action, a reward that varies, and an investment that makes the next loop more likely. Eyal's argument is that this sequence is what separates products people use from products people need, and that it can be designed deliberately."
+      },
+      {
+        id: "hooked:argument-variable",
+        kind: "argument",
+        claim: "Unpredictable rewards hold attention far better than reliable ones.",
+        body: "A consistent payoff gets evaluated and eventually ignored; an uncertain one keeps the loop open. This is why feeds refresh into something unknown rather than showing a predictable list, and it is the most powerful element in the book."
+      },
+      {
+        id: "hooked:practice-map-the-hook",
+        kind: "practice",
+        claim: "Write out the loop your own product actually runs.",
+        body: "Most teams can name the action and the reward, and stall on what the external trigger is and what the user invests. Naming all four exposes which step is missing and why retention is not happening.",
+        tryIt: "Write your four steps in one line each. The one that is hardest to fill in is your problem."
+      },
+      {
+        id: "hooked:practice-spot-it",
+        kind: "practice",
+        claim: "Run the same four steps on the app that has you.",
+        body: "Identifying your own trigger, the action it leads to, what the unpredictable reward is and what you have invested makes a compulsion legible. The trigger is usually the only step you can actually remove.",
+        tryIt: "Take the app you open most without deciding to, name its four steps, and delete its trigger."
+      },
+      {
+        id: "hooked:limit-ethics",
+        kind: "limit",
+        claim: "The ethics get one chapter and the techniques get the rest.",
+        body: "Eyal does include a framework for whether you should build a given hook, and it sits beside a detailed, effective manual for building one regardless. A reader who wants the mechanics can take them and leave the restraint, and in practice many did."
+      },
+      {
+        id: "hooked:contested-publication",
+        kind: "contested",
+        claim: "Whether writing the playbook down made things worse.",
+        body: "The techniques were already in use at the companies that could afford to discover them; the book made them available to everyone else. Eyal later wrote a book about resisting distraction, which some read as a correction and others as having it both ways.",
+        argumentWith: "digital-minimalism"
+      },
+      {
+        id: "hooked:misread-neutral",
+        kind: "misread",
+        claim: "It gets read as description when it is instruction.",
+        body: "This is a how-to for builders, not a neutral account of how attention works. Read as the latter, its confident tone about manufacturing compulsion sounds like an observation rather than the recommendation it is."
+      }
+    ]
+  },
+  {
+    bookId: "the-shallows",
+    inOneLine: "The medium you read in changes how you think, not just what you know.",
+    forWhom: "People who used to finish books and now cannot get through an article.",
+    cards: [
+      {
+        id: "the-shallows:argument-medium",
+        kind: "argument",
+        claim: "A tool for thinking reshapes the thinking.",
+        body: "Carr's argument is that technologies of the mind - the clock, the map, the printed page, the web - change the habits of attention of the people who use them. The content you consume matters less, on this account, than the form it arrives in."
+      },
+      {
+        id: "the-shallows:argument-deep-reading",
+        kind: "argument",
+        claim: "Sustained reading is learned, and it can be lost.",
+        body: "Following a long argument is not natural but trained over years, and training can go the other way. His claim is that a habit of scanning, linking and skimming gradually replaces the capacity it was built on."
+      },
+      {
+        id: "the-shallows:practice-one-medium",
+        kind: "practice",
+        claim: "Read long things somewhere that cannot interrupt you.",
+        body: "The interruption does not have to be taken to cost you - the possibility of one is enough to keep attention shallow. Paper, or a device with no other capability, removes the question rather than asking you to resist it.",
+        tryIt: "Read the next long piece on paper or an e-reader with no browser, and notice where you first reach to switch."
+      },
+      {
+        id: "the-shallows:practice-rebuild",
+        kind: "practice",
+        claim: "Treat attention span as trainable and start below your old level.",
+        body: "If the capacity degraded through practice it can be rebuilt the same way, and starting at the length you used to manage guarantees failure. Short, daily, uninterrupted reading rebuilds it faster than occasional ambitious attempts.",
+        tryIt: "Twenty minutes of uninterrupted reading daily, with the phone in another room."
+      },
+      {
+        id: "the-shallows:limit-dated",
+        kind: "limit",
+        claim: "It describes the web of 2010, before any of this got serious.",
+        body: "Carr was writing about hyperlinks and browser tabs, before the smartphone was universal and before feeds were algorithmically optimised against you. His concerns read as mild now, which is either a point in his favour or a sign the analysis was about something else."
+      },
+      {
+        id: "the-shallows:contested-neuroscience",
+        kind: "contested",
+        claim: "The cultural observation has aged better than the brain science.",
+        body: "The strongest neurological claims leaned on preliminary research and were contested at the time, and plasticity is routinely invoked more confidently than the evidence supports. Many readers who reject the mechanism still recognise the experience he describes, which is the part that endures."
+      },
+      {
+        id: "the-shallows:misread-stupid",
+        kind: "misread",
+        claim: "It gets summarised as the internet making people stupid.",
+        body: "Carr's claim is about a trade: real gains in breadth, recall and access, paid for with depth and sustained concentration. Flattened into a verdict on intelligence, it becomes easy to dismiss and loses the trade-off that was the actual argument."
+      }
+    ]
+  },
+  {
+    bookId: "eat-that-frog",
+    inOneLine: "You will procrastinate on something today, so choose what it is.",
+    forWhom: "People who clear small tasks all morning and never reach the one that counts.",
+    cards: [
+      {
+        id: "eat-that-frog:argument-selective",
+        kind: "argument",
+        claim: "Procrastination is not avoiding work, it is choosing which work to avoid.",
+        body: "Tracy's observation is that busy people are rarely idle - they are doing the easy items while the significant one waits. Since something will be deferred regardless, the only real decision is whether the deferred thing is the important one."
+      },
+      {
+        id: "eat-that-frog:argument-first-hour",
+        kind: "argument",
+        claim: "The hardest task gets easier the earlier you take it.",
+        body: "Difficulty grows while a task is pending: it gathers dread, and the day accumulates reasons to postpone. Taking it first removes both the dread and the chance for the day to intervene."
+      },
+      {
+        id: "eat-that-frog:practice-pick-tonight",
+        kind: "practice",
+        claim: "Identify tomorrow's hardest task before you finish today.",
+        body: "Chosen in the morning, the difficult task has to win an argument against everything already waiting. Chosen the night before, it is simply what happens first.",
+        tryIt: "Write down tomorrow's frog before you close your laptop, and start on it before opening anything else."
+      },
+      {
+        id: "eat-that-frog:practice-abcde",
+        kind: "practice",
+        claim: "Rank by consequence, not by how overdue something feels.",
+        body: "Sorting a list by what happens if each item is not done separates genuine priorities from things that are merely late. Most lists shrink sharply under that question.",
+        tryIt: "Beside each item on today's list, write what actually happens if it is not done. Then reorder."
+      },
+      {
+        id: "eat-that-frog:limit-order",
+        kind: "limit",
+        claim: "It assumes you choose the order of your own day.",
+        body: "In reactive work - support queues, clinical rounds, anything where other people's requests set the sequence - the frog cannot be moved to first. The advice then becomes a reminder of a freedom you do not have."
+      },
+      {
+        id: "eat-that-frog:contested-worst-first",
+        kind: "contested",
+        claim: "Whether hardest-first actually beats building momentum.",
+        body: "Starting with the difficult task uses your best attention on what matters most. Starting with two quick wins gets some people moving who would otherwise stall at the frog and do nothing at all. The evidence does not settle it, and which works depends on whether your failure mode is avoidance or inertia.",
+        argumentWith: "atomic-habits"
+      },
+      {
+        id: "eat-that-frog:misread-twenty-one",
+        kind: "misread",
+        claim: "The twenty-one methods get treated as twenty-one requirements.",
+        body: "The book is one idea with many restatements, and the central one works on its own. Attempting the full list produces a system heavier than the problem it was meant to solve."
+      }
+    ]
+  },
+  {
+    bookId: "the-80-20-principle",
+    inOneLine: "Effort and results are not proportionate, and almost nobody checks which of theirs is which.",
+    forWhom: "People working hard across everything and getting results in only a few places.",
+    cards: [
+      {
+        id: "the-80-20-principle:argument-imbalance",
+        kind: "argument",
+        claim: "A small part of what you do produces most of what you get.",
+        body: "Koch's case is that the imbalance between input and output recurs across sales, customers, faults and time, and that most planning assumes a proportionality that does not hold. The ratio is not the point; the asymmetry is."
+      },
+      {
+        id: "the-80-20-principle:argument-counterintuitive",
+        kind: "argument",
+        claim: "You cannot guess which fifth it is.",
+        body: "People reliably nominate the work that felt hardest or took longest rather than the work that produced the result. The principle only pays once the split is measured, which is why so few people who quote it have actually applied it."
+      },
+      {
+        id: "the-80-20-principle:practice-measure",
+        kind: "practice",
+        claim: "Measure one month before you cut anything.",
+        body: "Identifying the productive fifth requires data on where results actually came from, kept over long enough to be more than a story. A month of rough records beats any amount of reasoning about it.",
+        tryIt: "For four weeks, log where results came from - clients, channels, tasks. Then look at the distribution."
+      },
+      {
+        id: "the-80-20-principle:practice-subtract",
+        kind: "practice",
+        claim: "Remove one of the unproductive items rather than adding to the productive ones.",
+        body: "The obvious move is to do more of what works, which requires capacity you do not have. Taking something away first creates the room, and is the step people skip.",
+        tryIt: "From your measured bottom half, stop one thing entirely for a month and watch what breaks."
+      },
+      {
+        id: "the-80-20-principle:limit-data",
+        kind: "limit",
+        claim: "Most people never collect the data it needs.",
+        body: "The principle is only actionable with a record of inputs against outputs, and for individual knowledge work that record is tedious and often ambiguous. Without it the idea becomes a justification for dropping whatever was already disliked."
+      },
+      {
+        id: "the-80-20-principle:contested-law",
+        kind: "contested",
+        claim: "It is a recurring pattern, not a law, and gets applied where it does not hold.",
+        body: "The distribution genuinely appears across many domains and is absent in many others. Treated as arithmetic that must apply, it produces confident cuts in places where contribution is actually spread evenly, and the damage shows up later."
+      },
+      {
+        id: "the-80-20-principle:misread-cut-support",
+        kind: "misread",
+        claim: "It gets used to cut the work that prevents disasters.",
+        body: "Maintenance, testing, documentation and relationship work produce no measurable output precisely when they are working. Judged by a method that counts visible results, they look like the unproductive eighty per cent right up until something fails."
+      }
+    ]
+  },
+  {
+    bookId: "the-comfort-crisis",
+    inOneLine: "Modern life removed the hardship humans were shaped by, and some of it is worth putting back deliberately.",
+    forWhom: "People who are comfortable, vaguely flat, and suspect the two are related.",
+    cards: [
+      {
+        id: "the-comfort-crisis:argument-missing-stress",
+        kind: "argument",
+        claim: "Comfort removed stressors the body expected to meet.",
+        body: "Easter's argument is that constant temperature, constant food and constant stimulation took away physical and mental challenges humans developed alongside. His claim is not that hardship is good but that its complete absence is itself a condition with effects."
+      },
+      {
+        id: "the-comfort-crisis:argument-boredom",
+        kind: "argument",
+        claim: "Boredom is a state with a function, and it has been abolished.",
+        body: "Every gap is now fillable, so the mind rarely sits unoccupied. He connects that to a loss of the reflection, planning and restlessness-into-action that used to happen in those gaps."
+      },
+      {
+        id: "the-comfort-crisis:practice-long-walk",
+        kind: "practice",
+        claim: "Go somewhere far on foot with nothing to listen to.",
+        body: "A long walk with no audio supplies physical effort, unfilled time and mild discomfort together, which is most of the book's prescription in one accessible activity. Several hours is where the effect reported starts to appear.",
+        tryIt: "Walk for two hours this week with no podcast, no music and no destination you need to reach."
+      },
+      {
+        id: "the-comfort-crisis:practice-one-discomfort",
+        kind: "practice",
+        claim: "Choose one small discomfort and keep it.",
+        body: "Cold water, being hungry for a few hours, carrying something heavy - a single repeated stressor you chose. The value is in it being voluntary and regular rather than extreme.",
+        tryIt: "Pick one: a cold finish to your shower, or the stairs every time. Hold it for a month."
+      },
+      {
+        id: "the-comfort-crisis:limit-chosen",
+        kind: "limit",
+        claim: "Chosen hardship and imposed hardship are not the same thing.",
+        body: "Voluntary discomfort with a warm house waiting is a different experience from cold you cannot escape or hunger you did not plan. People with genuinely hard circumstances do not get the benefit the book describes, and framing discomfort as uniformly strengthening is a comfortable position to write from."
+      },
+      {
+        id: "the-comfort-crisis:contested-mismatch",
+        kind: "contested",
+        claim: "Evolutionary-mismatch reasoning explains a lot and predicts very little.",
+        body: "The story - we evolved for scarcity and live in abundance - fits almost any modern complaint, which is a weakness rather than a strength in an explanation. Individual interventions like cold exposure and fasting have their own evidence, of varying quality, independent of the frame.",
+        argumentWith: "four-thousand-weeks"
+      },
+      {
+        id: "the-comfort-crisis:misread-suffering",
+        kind: "misread",
+        claim: "It becomes a case that suffering is virtuous.",
+        body: "The argument is for specific stressors followed by recovery, not for a life of self-denial. Taken as proof that harder is always better, it produces people grinding without rest, which the book's own sources do not support."
+      }
+    ]
+  },
+  {
+    bookId: "make-your-bed",
+    inOneLine: "Finish one small thing properly at the start, and the day has a floor under it.",
+    forWhom: "Anyone whose days collapse early and who needs somewhere small to start.",
+    cards: [
+      {
+        id: "make-your-bed:argument-first-task",
+        kind: "argument",
+        claim: "One completed task early changes the shape of the day after it.",
+        body: "McRaven's claim, from military training, is that a small thing finished properly provides evidence that you are someone who finishes things, before the day has had a chance to argue otherwise. On a day that then goes badly, you come home to one thing done."
+      },
+      {
+        id: "make-your-bed:argument-together",
+        kind: "argument",
+        claim: "Nobody gets through anything hard alone.",
+        body: "Much of the book is about crews, partners and the people who carried you. It is an unusual emphasis in a genre built on individual discipline, and it is the part most readers remember least."
+      },
+      {
+        id: "make-your-bed:practice-one-thing",
+        kind: "practice",
+        claim: "Complete one small thing before the day starts making demands.",
+        body: "The bed is a stand-in for any small, visible, completed task. What matters is that it is finished rather than started, and that it happens before the first interruption.",
+        tryIt: "Choose one two-minute task to complete every morning before you touch your phone."
+      },
+      {
+        id: "make-your-bed:practice-ask",
+        kind: "practice",
+        claim: "Name who you would actually ask, before you need them.",
+        body: "Deciding who to call is far harder in the middle of a bad stretch than in advance. Knowing the name ahead of time is what turns the book's point about other people into something usable.",
+        tryIt: "Write down two people you would call if this month went badly. Tell one of them."
+      },
+      {
+        id: "make-your-bed:limit-thin",
+        kind: "limit",
+        claim: "It is a short speech expanded into a short book.",
+        body: "There are ten lessons, each a story with a moral, and no method connecting them. As encouragement it works; as a practical guide there is less here than the reputation implies, and an hour reading it is most of what it has."
+      },
+      {
+        id: "make-your-bed:contested-transfer",
+        kind: "contested",
+        claim: "Whether small discipline actually spreads to larger things.",
+        body: "The idea that a tidy bed leads to better decisions later is intuitive and not well established - it sits close to the keystone-habit claim, which has the same problem of being argued from stories after the fact. The morale effect of finishing something is on firmer ground than the transfer.",
+        argumentWith: "the-power-of-habit"
+      },
+      {
+        id: "make-your-bed:misread-method",
+        kind: "misread",
+        claim: "It gets treated as a system rather than a set of reminders.",
+        body: "There is no programme here to follow, and reading it expecting one produces disappointment with a book that was never attempting it. It is a commencement address, and judged as one it is a good one."
+      }
+    ]
+  },
+  {
+    bookId: "the-checklist-manifesto",
+    inOneLine: "Experts fail less from not knowing than from not applying what they already know.",
+    forWhom: "Anyone whose work is complex, repeated, and occasionally goes wrong in avoidable ways.",
+    cards: [
+      {
+        id: "the-checklist-manifesto:argument-ineptitude",
+        kind: "argument",
+        claim: "Most avoidable failure is skipped steps, not missing knowledge.",
+        body: "Gawande separates ignorance, where the knowledge does not exist, from ineptitude, where it exists and was not applied. His claim is that modern professional failure is overwhelmingly the second, and that it is therefore addressable."
+      },
+      {
+        id: "the-checklist-manifesto:argument-attention",
+        kind: "argument",
+        claim: "A checklist protects attention for the part that needs judgment.",
+        body: "Handling the known steps mechanically frees expertise for the unexpected, which is where it is actually needed. The resistance from experts comes from reading a checklist as doubt about their competence rather than as a way to spend it better."
+      },
+      {
+        id: "the-checklist-manifesto:practice-short",
+        kind: "practice",
+        claim: "Write a short one for the thing that goes wrong most.",
+        body: "An effective checklist is five to nine items, covers only steps that are skipped under pressure, and attaches to a specific pause point. Longer ones get read less carefully, which makes them worse than none.",
+        tryIt: "Take the task that last went avoidably wrong and write six lines for it. No more than six."
+      },
+      {
+        id: "the-checklist-manifesto:practice-speak-up",
+        kind: "practice",
+        claim: "Put a moment in it where everyone says something.",
+        body: "In the surgical version the team states names and roles aloud before starting. The function is social rather than informational: a person who has spoken once is measurably more likely to speak again when something looks wrong.",
+        tryIt: "Add one line at the top: everyone present names what they are responsible for today."
+      },
+      {
+        id: "the-checklist-manifesto:limit-culture",
+        kind: "limit",
+        claim: "Imposed without the team's agreement, it becomes paperwork.",
+        body: "Checklists work when the people using them believe in them and can change them; mandated from above they get ticked without being read, which adds effort and removes nothing. The tool is easy to copy and the conditions that make it work are not."
+      },
+      {
+        id: "the-checklist-manifesto:contested-results",
+        kind: "contested",
+        claim: "Later large rollouts produced much weaker results than the original trial.",
+        body: "The initial study showed striking reductions in complications; several subsequent population-wide implementations found little or no effect. The most common reading is that the checklist was never the active ingredient on its own - how it was introduced was - which is a genuinely harder thing to export."
+      },
+      {
+        id: "the-checklist-manifesto:misread-longer",
+        kind: "misread",
+        claim: "People think a more thorough checklist is a better one.",
+        body: "Every item added lowers the attention paid to all the others, and a comprehensive list is reliably ticked without reading. The discipline the book describes is deciding what to leave out."
+      }
+    ]
+  }
 ];
 
 const byBook = new Map(entries.map((entry) => [entry.bookId, entry]));
