@@ -1,11 +1,19 @@
 "use client";
 
 import { useEffect } from "react";
+import * as Sentry from "@sentry/nextjs";
 import { trackEvent } from "@/lib/analytics";
 
 export default function GlobalError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
     console.error("BookSphere route error", { message: error.message, digest: error.digest });
+    // This boundary catches the ordinary breakages - a page that threw while rendering. Those
+    // are the ones a reader hits and never mentions.
+    try {
+      Sentry.captureException(error);
+    } catch {
+      // best effort
+    }
     // Record the failure somewhere durable. Until now a production error existed only in
     // the reader's own console, so a route could break for everyone and leave no trace an
     // operator could ever see. Routed through analytics_events rather than a new service:

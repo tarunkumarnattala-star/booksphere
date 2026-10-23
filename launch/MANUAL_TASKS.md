@@ -10,10 +10,26 @@ verified. `booksphere.io`, `getbooksphere.com` and `readbooksphere.com` were fre
 checked - confirm before buying. Tell me which one and I will wire it through Vercel, the
 Supabase redirect URLs, `NEXT_PUBLIC_APP_URL` and Resend in one pass.
 
-## 2. Turn on error tracking (free tier, about fifteen minutes)
-Sentry's free plan covers a project this size. Create the project, give me the DSN, and I will
-wire it up. Without it, the first you hear of a broken site is somebody telling you - and you
-have nobody testing it.
+## 2. Turn on error tracking - the wiring is done, it needs one value
+Everything is built and verified; it is switched off until a DSN exists.
+
+1. Go to sentry.io and create a free account, then a project. Pick **Next.js** as the platform.
+2. Sentry shows you a DSN - a line like `https://abc123@o4500000.ingest.us.sentry.io/4509999`.
+   It is not a secret; it is designed to sit in the browser.
+3. In Vercel → booksphere → Settings → Environment Variables, add
+   `NEXT_PUBLIC_SENTRY_DSN` with that value, for Production. Then redeploy.
+
+That is the whole job. Deleting the variable turns it off again with no code change.
+
+Verified with a fake DSN before handing it over: the client initialises, an error produces
+three requests to the ingest host, and there are zero Content-Security-Policy violations -
+the policy allows the exact origin inside your DSN, derived from it rather than typed in. A
+wrong entry there would not break the site, it would silently drop every report, which is the
+worst way for this particular thing to fail.
+
+Optional, later: stack traces will be minified until source maps are uploaded. That needs a
+`SENTRY_AUTH_TOKEN` from Sentry's settings; add it as a Vercel variable and uploads turn
+themselves on.
 
 ## 3. Check the Supabase sign-in mail settings
 Project Settings → Authentication → SMTP: confirm custom SMTP is on and pointed at Resend.

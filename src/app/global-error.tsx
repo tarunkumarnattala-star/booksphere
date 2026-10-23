@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import * as Sentry from "@sentry/nextjs";
 
 // error.tsx cannot catch a failure in the root layout itself - when that breaks, the reader
 // gets Next's unstyled default, which does not look like this product at all. This is the
@@ -10,6 +11,15 @@ import { useEffect } from "react";
 export default function GlobalError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
     console.error("BookSphere root error", { message: error.message, digest: error.digest });
+    // The comment above argues that this boundary should not depend on the app, and it is
+    // right. But a root-layout failure is exactly the break nobody would otherwise hear
+    // about, so it is reported - inside a try, so that a problem reaching Sentry can never
+    // be what stops the reader seeing this screen.
+    try {
+      Sentry.captureException(error);
+    } catch {
+      // Reporting is best effort. Showing the reader something is not.
+    }
   }, [error]);
 
   return (

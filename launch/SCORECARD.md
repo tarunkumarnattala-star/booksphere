@@ -12,7 +12,7 @@ Green means a check ran and passed, and the command is in FINDINGS.md. "Not chec
 | Content integrity | **GREEN** | 26 books, 179 cards, no card written in a reader's voice |
 | Database reachable | **GREEN** | `/api/health` |
 | Does the product have anything to read | **GREEN** | Was 89% empty this morning; 26 books now furnished |
-| Monitoring and alerting | **RED** | Nothing exists. A break is invisible |
+| Monitoring and alerting | **AMBER** | Wired and proved to send; inert until a DSN is set in Vercel (MANUAL_TASKS #2) |
 | Automated journey tests | **GREEN** | 7 journeys in a real browser, inside `launch/gates.sh`; proved to fail on a reintroduced bug |
 | Sign-up from a phone, from Reddit or LinkedIn | **RED** | Blocked: no sending domain |
 | Correct 404s | **GREEN** | Unknown and malformed books, genres, profiles and perspectives all answer 404 |

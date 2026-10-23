@@ -72,15 +72,28 @@ journeys() {
   local port=3123
   rm -rf .next-gate
   NEXT_DIST_DIR=.next-gate npm run --silent build >/dev/null 2>&1 || return 1
+  # A previous run could still be holding the port. The server used to be started inside a
+  # background subshell, so the pid captured was the subshell's and `next start` outlived the
+  # kill - the next run then failed to bind and every journey "failed" while the product was
+  # perfectly fine. exec replaces the subshell so the pid is the server itself.
+  local stale
+  stale=$(lsof -ti ":$port" 2>/dev/null)
+  [ -n "$stale" ] && kill $stale 2>/dev/null && sleep 1
   ( set -a; [ -f .env.local ] && . ./.env.local; set +a
-    NEXT_DIST_DIR=.next-gate npx next start -p "$port" >/tmp/gate-server.log 2>&1 ) &
+    exec env NEXT_DIST_DIR=.next-gate npx next start -p "$port" >/tmp/gate-server.log 2>&1 ) &
   local server=$!
-  trap 'kill '"$server"' 2>/dev/null; rm -rf .next-gate' RETURN
+  trap 'kill '"$server"' 2>/dev/null; wait '"$server"' 2>/dev/null; rm -rf .next-gate' RETURN
   local i
+  local up=""
   for i in $(seq 1 45); do
-    curl -s -o /dev/null "http://localhost:$port/api/health" && break
+    if curl -s -o /dev/null "http://localhost:$port/api/health"; then up=1; break; fi
     sleep 2
   done
+  if [ -z "$up" ]; then
+    echo "the journey server never started - this is the harness, not the product:"
+    tail -5 /tmp/gate-server.log
+    return 1
+  fi
   node scripts/test-journeys.mjs "http://localhost:$port"
 }
 run "user journeys"        journeys

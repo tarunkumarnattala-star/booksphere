@@ -23,7 +23,7 @@ Specifically tested and clear:
 
 ## S1 — must fix before launch
 
-1. **Nothing is watching. If the site breaks for a real reader, nobody finds out.**
+1. **Nothing is watching.** **WIRED - needs one value from you.**
    No error tracking, no alerting, no uptime check (`grep -rliE 'sentry|datadog|posthog'` finds
    nothing). You would learn about an outage from a person telling you, or never. The harness
    treats missing monitoring as a launch blocker, and with no friends testing it, you have no
@@ -101,3 +101,19 @@ there (the regression to guard is duplication, so it now asserts no more than on
 correctly answering 404 makes the browser log a failed resource which was being counted as an
 error, and `innerText` omits the landing hero entirely - 3290 characters that do not contain
 it - while reporting CSS-uppercased text elsewhere, so assertions read `textContent`.
+
+**S1 #1 - nothing watching. Wired, awaiting a DSN.** Sentry is installed and configured on the
+client, the server and both error boundaries, and stays completely off unless
+`NEXT_PUBLIC_SENTRY_DSN` is set - the same switch the Google client id uses. Deliberately lean:
+no session replay and no performance tracing, because both are heavy for a reading product and
+both burn a free plan's quota. Keystroke breadcrumbs are dropped before anything leaves the
+browser, since the composer holds unpublished writing.
+
+Proved rather than assumed, using a fake DSN: the client initialises, a thrown error produces
+three requests to the ingest host, and there are zero CSP violations. That last one mattered -
+the policy had to allow the exact ingest origin, and it is derived from the DSN rather than
+typed, because a wrong entry would not break the site, it would silently drop every report.
+
+The v11 SDK moved three things the documentation for older versions still shows:
+`withSentryConfig` now lives at `@sentry/nextjs/config`, `captureRouterTransitionStart` is
+gone, and `sendDefaultPii` no longer exists. All three were caught by the typechecker.
