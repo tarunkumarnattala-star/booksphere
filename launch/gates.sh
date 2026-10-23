@@ -64,6 +64,27 @@ launch_config() {
 run "launch config"        launch_config
 run "production build"     npm run --silent build
 
+# The journeys need something running. They are the only check here that exercises the product
+# rather than the code: every gate above was green while fifty cards were telling strangers
+# that BookSphere's own writing was a reader's, and while two Google buttons were stacked on
+# the sign-in card. Both were caught only by opening a browser.
+journeys() {
+  local port=3123
+  rm -rf .next-gate
+  NEXT_DIST_DIR=.next-gate npm run --silent build >/dev/null 2>&1 || return 1
+  ( set -a; [ -f .env.local ] && . ./.env.local; set +a
+    NEXT_DIST_DIR=.next-gate npx next start -p "$port" >/tmp/gate-server.log 2>&1 ) &
+  local server=$!
+  trap 'kill '"$server"' 2>/dev/null; rm -rf .next-gate' RETURN
+  local i
+  for i in $(seq 1 45); do
+    curl -s -o /dev/null "http://localhost:$port/api/health" && break
+    sleep 2
+  done
+  node scripts/test-journeys.mjs "http://localhost:$port"
+}
+run "user journeys"        journeys
+
 printf '\n========================================\n'
 if [ ${#FAILED[@]} -eq 0 ]; then
   printf 'ALL GATES PASSED\n'

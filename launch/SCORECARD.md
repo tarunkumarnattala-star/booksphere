@@ -13,9 +13,9 @@ Green means a check ran and passed, and the command is in FINDINGS.md. "Not chec
 | Database reachable | **GREEN** | `/api/health` |
 | Does the product have anything to read | **GREEN** | Was 89% empty this morning; 26 books now furnished |
 | Monitoring and alerting | **RED** | Nothing exists. A break is invisible |
-| Automated journey tests | **RED** | None. No gate would notice sign-in breaking |
+| Automated journey tests | **GREEN** | 7 journeys in a real browser, inside `launch/gates.sh`; proved to fail on a reintroduced bug |
 | Sign-up from a phone, from Reddit or LinkedIn | **RED** | Blocked: no sending domain |
-| Correct 404s | **AMBER** | Books and genres right; profiles and discussions answer 200 |
+| Correct 404s | **GREEN** | Unknown and malformed books, genres, profiles and perspectives all answer 404 |
 | Backup and restore | **AMBER** | Backups exist, a restore has never been attempted |
 | Capacity under launch load | **AMBER** | Reasoned, not measured; no staging to test against |
 | Money | **n/a** | The product takes no payments |

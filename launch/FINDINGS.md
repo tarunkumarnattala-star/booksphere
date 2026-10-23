@@ -29,7 +29,7 @@ Specifically tested and clear:
    treats missing monitoring as a launch blocker, and with no friends testing it, you have no
    informal alarm either.
 
-2. **No automated test walks a single user journey.**
+2. ~~**No automated test walks a single user journey.**~~ **FIXED.**
    There is no e2e suite anywhere in the repo. Eight gates pass and every one of them checks the
    code rather than the product: none of them would notice if signing in, writing a perspective
    or opening a book stopped working. Today a human has to click it.
@@ -84,3 +84,20 @@ book and /explore all still answer 200.
 **S2 #5 - the QA probe account.** `booksphere-qa-probe-tri-a71c6f` now answers 404. It owns no
 posts, comments, likes or follows, so nothing is orphaned. The database row still exists and
 deleting it needs the dashboard - MANUAL_TASKS #5.
+
+**S1 #2 - no test walked a user journey. Fixed.** `scripts/test-journeys.mjs` drives a real
+browser through seven journeys and runs inside `launch/gates.sh`: a stranger reading without an
+account, no card claiming a reader wrote what BookSphere wrote, an idea leading to a way to
+answer it, a book page worth opening, sign-in offering both routes without duplicating the
+Google button, pages that do not exist answering 404, and the landing promising only as many
+books as the shelf holds. Each one also fails if our own code logs a console error.
+
+It was proved to bite rather than assumed to: the house-as-reader bug was deliberately
+reintroduced, the production build went green, and the suite failed on exactly that journey.
+
+Three of the seven failed on first run and all three were the test being wrong, not the
+product: Google is not configured on a dev machine so "exactly one button" could never hold
+there (the regression to guard is duplication, so it now asserts no more than one), a page
+correctly answering 404 makes the browser log a failed resource which was being counted as an
+error, and `innerText` omits the landing hero entirely - 3290 characters that do not contain
+it - while reporting CSS-uppercased text elsewhere, so assertions read `textContent`.
