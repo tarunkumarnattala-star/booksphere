@@ -11,7 +11,8 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "audit:prompts": "node scripts/audit-prompts.mjs",
-    "test:prompts": "node scripts/test-prompt-selection.mjs"
+    "test:prompts": "node scripts/test-prompt-selection.mjs",
+    "audit:editorial": "node scripts/audit-editorial.mjs"
   },
   "keywords": [],
   "author": "",
