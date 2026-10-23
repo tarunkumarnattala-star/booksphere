@@ -42,9 +42,14 @@ export default async function FeedPage({ searchParams }: { searchParams?: Promis
       {/* The tab is already labelled Feed in the bar at the bottom of the screen, so the
           eyebrow above the heading was the third time the word appeared. */}
       <header className="mb-4 border-b border-[color:var(--color-hairline)] pb-4">
-        <h1 className="title-1">What readers are learning, out loud.</h1>
+        {/* The two surfaces do different jobs and neither said so, which is how the Feed came
+            to look like a duplicate of Home worth removing. Home is anchored to a book: one
+            idea, one title. This is for thinking that is not about a single book - something
+            you worked out across several, or arrived at on your own and are testing. */}
+        <h1 className="title-1">What readers are working out.</h1>
         <p className="mt-2 max-w-2xl text-[15px] leading-6 text-[color:var(--color-text-secondary)]">
-          A book can be the reason, but it is never required.
+          Ideas that are not about one book: what you pieced together across several, or figured
+          out yourself and are still testing. A book can be the reason, and it is never required.
         </p>
       </header>
 

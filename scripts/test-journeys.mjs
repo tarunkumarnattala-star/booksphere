@@ -116,6 +116,31 @@ await journey("reading an idea leads to a way to answer it", async (page) => {
   assert.equal(await page.locator("select").first().inputValue(), "Real-Life Result", "wrong perspective type preset");
 });
 
+await journey("every place a reader can write is reachable from the tab bar", async (page) => {
+  await page.goto(`${BASE}/explore`, { waitUntil: "domcontentloaded" });
+  // The tab bar is a client component that reads the current path, so it is not there at
+  // domcontentloaded. Asserting immediately reported every tab as missing while all four were
+  // present - the test racing hydration, not the nav being broken.
+  await page.waitForSelector('nav[aria-label="Primary mobile navigation"] a');
+  await settle(page);
+  const tabs = await page.evaluate(() =>
+    [...document.querySelectorAll('nav[aria-label="Primary mobile navigation"] a')].map((a) => a.textContent.trim())
+  );
+  // The Feed tab was removed on the belief that its writing had been folded into the scroll.
+  // It had not: the scroll carries discussion_posts and the Feed carries knowledge_posts, so
+  // three people's notes sat on no tab at all and were reachable only by typing the URL.
+  for (const tab of ["Home", "Feed", "Books", "You"]) {
+    assert.ok(tabs.includes(tab), `the ${tab} tab is missing - its content is unreachable`);
+  }
+
+  // And the Feed must actually carry what it claims to.
+  await page.goto(`${BASE}/feed`, { waitUntil: "domcontentloaded" });
+  await page.waitForTimeout(1500);
+  await settle(page);
+  const text = await page.evaluate(() => document.body.textContent || "");
+  assert.ok(!/could not be loaded|something went wrong/i.test(text), "the feed failed to load");
+});
+
 await journey("a book page shows the writing it is stocked on", async (page) => {
   await page.goto(`${BASE}/book/atomic-habits`, { waitUntil: "domcontentloaded" });
   await settle(page);

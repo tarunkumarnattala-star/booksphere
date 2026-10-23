@@ -25,8 +25,9 @@ export default async function HomePage() {
       <header className="mb-5">
         <h1 className="title-1">Ten minutes, and you come out with something.</h1>
         <p className="mt-2 text-[15px] leading-6 text-[color:var(--color-text-secondary)]">
-          One idea at a time from the books people actually use. What they argue, what you can do
-          with them, where they stop working, and what is still being fought over.
+          One idea at a time, each one from a book. What it argues, what you can do with it,
+          where it stops working, and what is still being fought over. For thinking that is not
+          about one book, go to the Feed.
         </p>
       </header>
 
