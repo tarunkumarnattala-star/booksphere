@@ -1,136 +1,41 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/metadata";
-import Link from "next/link";
-import { PenLine } from "lucide-react";
-import { SectionShelf } from "@/components/section-shelf";
-import { BookCover } from "@/components/book-cover";
-import {
-  authorProfileFor,
-  getBook,
-  getDiscussionRankingLabel,
-  getMostDiscussed,
-  getTrendingDiscussionPosts
-} from "@/lib/data";
-import type { DiscussionPost } from "@/lib/types";
+import { KnowledgeScroll } from "@/components/knowledge-scroll";
 import { getSupabaseFeedContributions } from "@/lib/contributions";
-import { getFeaturedQuestion } from "@/lib/featured-question";
-import { isSupabaseConfigured } from "@/lib/supabase";
-import { bookCoverData } from "@/lib/book-cover-data";
 
 export const metadata: Metadata = pageMetadata({
   title: "Home",
-  description: "An open question, and what readers made of these books.",
+  description: "Ten minutes of what people actually took from the books - what works, what does not, and what is still argued about.",
   path: "/explore"
 });
 
-// Was 826 KB and uncacheable: a greeting, a value proposition, an FAQ, three shelves, the
-// reading paths, the whole genre directory, and a search box carrying all 394 books. It now
-// opens with one unanswered question and shows what readers wrote - and caches, because a
-// perspective arriving a few minutes late costs nobody anything.
+// Home used to open on a featured question and a list of perspective cards, which described
+// the product rather than being it. The thing a time-poor reader came for is the scroll, so
+// the scroll is what the app opens on.
+//
+// Five minutes of cache: the editorial half never changes between deploys and the reader half
+// is shared by everyone, so a crowd arriving on one link costs the database almost nothing.
 export const revalidate = 300;
 
 export default async function HomePage() {
-  const [persistedPosts, featured] = await Promise.all([
-    getSupabaseFeedContributions(12),
-    getFeaturedQuestion()
-  ]);
-  const trendingPosts = isSupabaseConfigured ? persistedPosts : getTrendingDiscussionPosts(12);
-  const perspectives = trendingPosts.filter((post) => Boolean(getBook(post.bookId)));
-
-  // Notes without a book live in the Feed, which is its own destination: that is where
-  // readers talk about what they are learning. Home stays about the books.
-  const stream = perspectives.slice(0, 10);
+  const perspectives = await getSupabaseFeedContributions(24);
 
   return (
-    <div className="mx-auto max-w-[1560px]">
-      {featured && (
-        <section data-onboarding="explore" className="container-page pb-2 pt-4 md:pt-6">
-          <div className="rounded-[28px] bg-white p-6 shadow-[var(--shadow-soft)] ring-1 ring-black/[0.035] md:p-8">
-            <p className="caption mb-3">Nobody has answered this yet</p>
-            <h1 className="text-[26px] font-medium leading-[1.12] tracking-[-0.035em] text-[color:var(--color-text-primary)] md:text-[34px]">
-              {featured.prompt.title}
-            </h1>
-            <p className="mt-3 text-sm text-[color:var(--color-text-secondary)] md:text-base">
-              {featured.book.title} · {featured.book.author}
-            </p>
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href={`/book/${featured.book.id}/create-discussion?prompt=${encodeURIComponent(featured.prompt.id)}`}
-                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[color:var(--color-text-primary)] px-5 py-3 text-sm font-medium !text-white transition hover:opacity-85"
-              >
-                <PenLine size={16} /> Answer this
-              </Link>
-              <Link
-                href={`/book/${featured.book.id}`}
-                className="inline-flex min-h-11 items-center justify-center rounded-full bg-black/[0.03] px-5 py-3 text-sm font-medium text-[color:var(--color-text-primary)] transition hover:bg-black/[0.06]"
-              >
-                Read this book&rsquo;s page
-              </Link>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* The eyebrow said "Perspectives" directly above a heading that already says what
-          these are, and the line under it explained how to click a card. Both went: the
-          heading carries it alone. */}
-      <section className={`container-page pb-5 ${featured ? "pt-6" : "pt-5 md:pt-7"}`}>
-        <h2 className="title-1 max-w-3xl">What readers made of these books</h2>
-        <div className="mt-4 grid gap-2.5 lg:grid-cols-2">
-          {stream.map((post, index) => (
-            <PerspectiveCard key={post.id} post={post} priority={index === 0} />
-          ))}
-        </div>
-        {!stream.length && (
-          <p className="mt-6 rounded-[20px] bg-black/[0.025] px-4 py-6 text-sm font-medium leading-6 text-[color:var(--color-text-secondary)]">
-            Nothing has been written yet. Pick a book and answer one of its questions.
-          </p>
-        )}
-      </section>
-
-      <SectionShelf
-        title="Books people are arguing about"
-        subtitle="The books with the most perspectives written on them so far."
-        books={getMostDiscussed()}
-        badge="Most discussed"
-        signal="insights"
-      />
-    </div>
-  );
-}
-
-// Cards carry the writer's own first words. A card describing a perspective says less than
-// the sentence it is describing.
-function PerspectiveCard({ post, priority = false }: { post: DiscussionPost; priority?: boolean }) {
-  const book = getBook(post.bookId);
-  const profile = authorProfileFor(post);
-  if (!book) return null;
-
-  return (
-    <Link
-      href={`/discussion/${post.id}`}
-      className="group flex min-w-0 items-start gap-3 rounded-[20px] p-3 transition hover:bg-black/[0.025]"
-    >
-      <BookCover
-        book={bookCoverData(book)}
-        priority={priority}
-        className="w-[52px] shrink-0 rounded-[11px] shadow-[0_10px_24px_rgba(0,0,0,0.10)]"
-      />
-      <div className="min-w-0 flex-1">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="rounded-full bg-black/[0.04] px-2.5 py-1 text-[11px] font-medium text-[color:var(--color-text-secondary)]">
-            {getDiscussionRankingLabel(post)}
-          </span>
-          <span className="caption text-[10px]">{post.postType}</span>
-        </div>
-        <h3 className="mt-1.5 line-clamp-2 text-[15px] font-medium leading-[1.18] tracking-[-0.025em] text-[color:var(--color-text-primary)]">
-          {post.title}
-        </h3>
-        <p className="mt-1.5 line-clamp-2 text-sm leading-[1.45] text-[color:var(--color-text-secondary)]">{post.body}</p>
-        <p className="mt-1.5 truncate text-[13px] text-[color:var(--color-text-muted)]">
-          {book.title} · {profile.name}
+    <div className="editorial-page max-w-[680px]">
+      <header className="mb-5">
+        <h1 className="title-1">Ten minutes, and you come out with something.</h1>
+        <p className="mt-2 text-[15px] leading-6 text-[color:var(--color-text-secondary)]">
+          One idea at a time from the books people actually use. What they argue, what you can do
+          with them, where they stop working, and what is still being fought over.
         </p>
-      </div>
-    </Link>
+      </header>
+
+      <KnowledgeScroll perspectives={perspectives} />
+
+      <p className="mt-6 text-center text-[14px] leading-6 text-[color:var(--color-text-secondary)]">
+        The shelf is being built out book by book. What readers write themselves sits in here
+        alongside it, and becomes the reason to come back.
+      </p>
+    </div>
   );
 }

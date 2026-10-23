@@ -63,9 +63,14 @@ for (const chunk of entries) {
 
 // The one thing that would destroy the product's credibility: editorial writing in a reader's
 // voice. These cards are BookSphere's, and are labelled as such on screen.
+//
+// Only the text a reader actually sees is checked. Scanning the whole file flagged the word
+// "I tried" inside a comment explaining the "I tried this" button, which is the check crying
+// wolf rather than a real finding - and a gate that cries wolf gets switched off.
 const impersonation = [/\bI tried\b/i, /\bI started\b/i, /\bwhen I read\b/i, /\bfor me,? it\b/i, /\bmy own experience\b/i];
+const visibleText = [...entryBlock.matchAll(/(?:claim|body|tryIt):\s*"((?:[^"\\]|\\.)*)"/g)].map((m) => m[1]).join("\n");
 for (const pattern of impersonation) {
-  const hit = editorial.match(pattern);
+  const hit = visibleText.match(pattern);
   if (hit) problems.push(`editorial card speaks as a reader ("${hit[0]}") - these are BookSphere's, never a person's`);
 }
 

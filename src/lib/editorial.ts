@@ -508,6 +508,13 @@ export function editorialForBook(bookId: string): BookEditorial | undefined {
   return byBook.get(bookId);
 }
 
+// Resolved by id, never passed through from a URL as free text. "I tried this" carries only a
+// card id; the claim shown in the composer is looked up from this book's own cards, so a
+// crafted link cannot put words of its own choosing into the page.
+export function editorialCardFor(bookId: string, cardId: string): EditorialCard | undefined {
+  return byBook.get(bookId)?.cards.find((card) => card.id === cardId);
+}
+
 export function hasEditorial(bookId: string): boolean {
   return byBook.has(bookId);
 }

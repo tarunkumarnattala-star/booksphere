@@ -55,7 +55,7 @@ function draftKey(bookId: string) {
   return `booksphere.perspectiveDraft.${bookId}`;
 }
 
-export function CreateDiscussionForm({ book, initialPostType = "Insight", initialTitle = "", starterPromptId = "" }: { book: Book; initialPostType?: PostType; initialTitle?: string; starterPromptId?: string }) {
+export function CreateDiscussionForm({ book, initialPostType = "Insight", initialTitle = "", starterPromptId = "", reportingOn = "" }: { book: Book; initialPostType?: PostType; initialTitle?: string; starterPromptId?: string; reportingOn?: string }) {
   const [submitted, setSubmitted] = useState(false);
   // This is the product's core action and it had no double-submit guard at all: the button
   // was never disabled, and requireProfile() plus the insert is several seconds on a phone,
@@ -239,15 +239,35 @@ export function CreateDiscussionForm({ book, initialPostType = "Insight", initia
         )}
       </div>
 
-      <div className="mb-6 rounded-[24px] bg-[#f7f2e8] p-5">
-        <div className="flex items-start gap-3">
-          <Lightbulb className="mt-1 text-[color:var(--color-accent)]" size={18} />
-          <div>
-            <p className="caption text-[10px]">Prompt for {form.postType}</p>
-            <p className="headline mt-2 text-[color:var(--color-text-primary)]">{activePrompt}</p>
+      {/* Arriving from "I tried this" on a scroll card, the writer is answering something
+          specific, not facing a blank page - which is the whole reason anyone writes here at
+          all. Showing the idea back to them replaces the generic prompt, because the generic
+          prompt would ask a different question than the one they just clicked. */}
+      {reportingOn ? (
+        <div className="mb-6 rounded-[24px] bg-[#f7f2e8] p-5">
+          <div className="flex items-start gap-3">
+            <Lightbulb className="mt-1 text-[color:var(--color-accent)]" size={18} />
+            <div>
+              <p className="caption text-[10px]">You tried this</p>
+              <p className="headline mt-2 text-[color:var(--color-text-primary)]">{reportingOn}</p>
+              <p className="mt-2 text-sm leading-6 text-[color:var(--color-text-secondary)]">
+                What actually happened? What you changed, what worked, what did not. Two honest
+                sentences are worth more here than an essay.
+              </p>
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="mb-6 rounded-[24px] bg-[#f7f2e8] p-5">
+          <div className="flex items-start gap-3">
+            <Lightbulb className="mt-1 text-[color:var(--color-accent)]" size={18} />
+            <div>
+              <p className="caption text-[10px]">Prompt for {form.postType}</p>
+              <p className="headline mt-2 text-[color:var(--color-text-primary)]">{activePrompt}</p>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="grid gap-4">
         <label className="grid gap-2 text-sm font-medium">
