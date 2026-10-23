@@ -27,6 +27,13 @@ That is not a bug and I cannot fix it by writing more - more editorial does not 
 community. It is a judgement about whether you launch now and use the launch to get the first
 real writers, or recruit a handful first. I would launch; you should know you are choosing it.
 
-## 5. Get one technical person to read the branch before trusting it
+## 5. Delete the QA account row (two minutes, optional)
+`booksphere-qa-probe-tri-a71c6f` is no longer reachable - the proxy answers 404 for it - but
+the row is still in the database and only you can remove it. Supabase dashboard → Table editor
+→ `profiles` → find that username → delete the row. It owns no posts, comments, likes or
+follows, so nothing else is affected. If that account also exists under Authentication → Users,
+delete it there too.
+
+## 6. Get one technical person to read the branch before trusting it
 Your own harness asks for this and it has not happened. I am the only reviewer of every line
 merged today.

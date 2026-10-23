@@ -42,13 +42,13 @@ Specifically tested and clear:
 
 ## S2 — fix in launch week
 
-4. **Pages that do not exist answer "200 OK".**
+4. ~~**Pages that do not exist answer "200 OK".**~~ **FIXED.**
    `/profile/definitely-nobody` and `/discussion/0000...` both return 200 while showing the
    not-found screen. `/book/*` and `/genre/*` correctly return 404, so the fix pattern already
    exists in this codebase. A crawler reads 200 as "this page is real" and will index unlimited
    junk URLs.
 
-5. **A QA test account is live and browsable.**
+5. ~~**A QA test account is live and browsable.**~~ **FIXED in the app; the row is yours to delete.**
    `/profile/booksphere-qa-probe-tri-a71c6f` renders publicly as
    "booksphere-qa-probe-trigger-long". It will appear wherever profiles are listed.
 
@@ -64,3 +64,23 @@ Specifically tested and clear:
 ## S3 — later
 8. The `notifications` table returns 404 from the API while `/notifications` exists as a page.
    Worth confirming the feature is backed by what you think it is.
+
+## Fixed in this session
+
+**S2 #4 - soft 404s.** `/profile/*` and `/discussion/*` answered 200 for anything typed at
+them. Two other routes to a fix were tried and recorded as failures first: `notFound()` from
+`generateMetadata` does not move the status, and replacing `force-dynamic` with on-demand ISR
+does not either - built and served locally, a nonexistent perspective still answered 200.
+Whatever commits the status runs before application code, so the fix went where books and
+genres were already gated: `src/proxy.ts`, which runs first. Malformed values are rejected on
+shape with no database call; well-formed ones cost one indexed lookup the first time and are
+then remembered, so readers pay nothing and crawler junk pays once. If the database is
+unreachable the request is let through, because hiding a real page behind a 404 during an
+outage is worse than a soft 404 on a junk URL. Verified against a production build:
+nonexistent profile, malformed profile, nonexistent perspective, malformed perspective and
+unknown book all answer 404, while a real reader, the team account, a real perspective, a real
+book and /explore all still answer 200.
+
+**S2 #5 - the QA probe account.** `booksphere-qa-probe-tri-a71c6f` now answers 404. It owns no
+posts, comments, likes or follows, so nothing is orphaned. The database row still exists and
+deleting it needs the dashboard - MANUAL_TASKS #5.

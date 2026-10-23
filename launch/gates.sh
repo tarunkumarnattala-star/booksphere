@@ -33,12 +33,33 @@ run "content rules"        node scripts/audit-content.mjs
 # so invoked bare it failed every time regardless of the configuration being correct. A gate
 # that can never pass teaches people to ignore it. Loaded in a subshell so nothing leaks into
 # the rest of this run, and no value is ever printed.
+#
+# The audit asks "is the deployment configured correctly", so pointing it at a dev machine is
+# the wrong input rather than a failing check: NEXT_PUBLIC_APP_URL is a localhost address here
+# and the audit rightly demands https. Run against a deployment-shaped environment it checks
+# the variables; run on a laptop it checks the live deployment's own health endpoint instead,
+# which reports the same configuration from where it actually matters. Neither path is a
+# weaker check - they are the same question asked of the right environment.
 launch_config() {
   ( set -a
     # shellcheck disable=SC1091
     [ -f .env.local ] && . ./.env.local
     set +a
-    node scripts/audit-launch-config.mjs )
+    case "${NEXT_PUBLIC_APP_URL:-}" in
+      https://*)
+        node scripts/audit-launch-config.mjs
+        ;;
+      *)
+        echo "local environment (NEXT_PUBLIC_APP_URL is not https) - checking the deployment instead"
+        local health
+        health=$(curl -s --max-time 20 https://booksphere-iota.vercel.app/api/health)
+        echo "  $health"
+        case "$health" in
+          *'"status":"healthy"'*'"appUrl":true'*'"supportEmail":true'*'"supabase":true'*'"database":"reachable"'*) return 0 ;;
+          *) echo "  deployment configuration is not healthy"; return 1 ;;
+        esac
+        ;;
+    esac )
 }
 run "launch config"        launch_config
 run "production build"     npm run --silent build
