@@ -13,6 +13,7 @@ import { EmptyState } from "@/components/empty-state";
 import { GenrePill } from "@/components/genre-pill";
 import { LocalDiscussionList } from "@/components/local-discussion-list";
 import { PerspectivePrompts } from "@/components/perspective-prompts";
+import { BookEditorial } from "@/components/book-editorial";
 import { SectionShelf } from "@/components/section-shelf";
 import { DiscussionSort } from "@/lib/types";
 import { books, discussionSortOptions, getBook, getBookConcepts, getBookIdeas, getBookKnowledgePreview, getDiscussionsForBook, getOftenReadNext, getPerspectiveClustersForBook, sortDiscussions } from "@/lib/data";
@@ -119,6 +120,13 @@ export default async function BookPage({ params, searchParams }: { params: Promi
         <BookOutcomeLink href="#perspective-map" icon={<MessageCircle size={17} />} label="Perspective map" />
         {preview && <BookOutcomeLink href="#full-book-decision" icon={<Scale size={17} />} label="Worth reading?" />}
       </section>
+
+      {/* The editorial layer was written, gated the whole catalogue on its existence, and was
+          rendered nowhere on the page it describes. A reader tapped a card in the scroll,
+          arrived at that book, and found none of what they had just been reading - only the
+          one or two perspectives. Twenty-six books counted as stocked on the strength of
+          writing this page never showed. */}
+      <BookEditorial bookId={book.id} />
 
       {preview && (
         <section id="knowledge-preview" className="mt-8 scroll-mt-24">

@@ -50,7 +50,7 @@ async function journey(name, fn) {
 // Layout is read after forcing a reflow. Reading geometry straight after load reported every
 // card as zero-height and the page as 926px during this work, which looked like a catastrophic
 // bug and was stale layout in the measurement.
-const settle = (page) => page.evaluate(() => { document.documentElement.offsetHeight; return true; });
+const settle = (page) => page.evaluate(() => { void document.documentElement.offsetHeight; return true; });
 
 await journey("a stranger can read without an account", async (page) => {
   await page.goto(`${BASE}/explore`, { waitUntil: "domcontentloaded" });
@@ -116,12 +116,26 @@ await journey("reading an idea leads to a way to answer it", async (page) => {
   assert.equal(await page.locator("select").first().inputValue(), "Real-Life Result", "wrong perspective type preset");
 });
 
-await journey("a book page is worth opening", async (page) => {
+await journey("a book page shows the writing it is stocked on", async (page) => {
   await page.goto(`${BASE}/book/atomic-habits`, { waitUntil: "domcontentloaded" });
   await settle(page);
   const text = await page.evaluate(() => document.body.textContent || "");
   assert.ok(text.includes("Atomic Habits"), "the book page does not name the book");
   assert.ok(!/nothing has been written|no perspectives here yet/i.test(text), "a stocked book still shows an empty state");
+
+  // This assertion exists because the earlier version of it did not. It checked only that an
+  // empty-state message was absent, and passed for weeks while the book page rendered none of
+  // the editorial the whole catalogue was gated on - a reader tapped a card in the scroll,
+  // arrived here, and found nothing they had just been reading.
+  for (const kind of ["What it argues", "Where it stops working", "What's disputed", "What people get wrong"]) {
+    assert.ok(text.includes(kind), `the book page is missing its "${kind}" writing`);
+  }
+  const { editorialForBook } = await import("../src/lib/editorial.ts");
+  const first = editorialForBook("atomic-habits").cards[0].claim;
+  assert.ok(text.includes(first), "the book page does not render its own editorial cards");
+
+  const tried = await page.locator('a[href*="create-discussion?idea="]').count();
+  assert.ok(tried > 0, "no way to report trying an idea from the book page");
 });
 
 await journey("sign-in offers both routes, once each", async (page) => {
