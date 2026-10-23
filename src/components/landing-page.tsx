@@ -1,6 +1,10 @@
 "use client";
 
 import Link from "next/link";
+// Derived, never typed in. The landing promised 394 books while the browsable shelf was 26,
+// which is the kind of claim a visitor checks in thirty seconds and never forgives. Counting
+// the shelf means the number cannot drift away from the product again.
+import { editorialBookIds } from "@/lib/editorial";
 import {
   ArrowDown,
   ArrowRight,
@@ -36,7 +40,7 @@ const faqs = [
   {
     question: "What do I get when I sign in?",
     answer:
-      "The full product: 394 books, the perspectives readers have written on them, concept search, and reading paths. It is early and deliberately small, so what you write shapes what this becomes. There is no waiting list and nothing to pay."
+      `The whole shelf: ${editorialBookIds.length} books read in depth, the perspectives readers have written on them, and search across the lot. It is early and deliberately small, so what you write shapes what this becomes. There is no waiting list and nothing to pay.`
   }
 ];
 
@@ -108,7 +112,7 @@ export function LandingPage() {
             not, then the proof. */}
         <section className={styles.hero} aria-labelledby="landing-title">
           <div className={styles.heroContent}>
-            <p className={styles.heroEyebrow}>Early access · 394 books</p>
+            <p className={styles.heroEyebrow}>Early access · {editorialBookIds.length} books, read properly</p>
             <h1 id="landing-title">
               You&rsquo;ll never read them all. <em>Read the people who did.</em>
             </h1>
@@ -302,8 +306,9 @@ export function LandingPage() {
             <p className={styles.kicker}>Start here</p>
             <h2>Start with a book you have already read.</h2>
             <p>
-              394 books, read through what people took from them, questioned, and argued
-              with. It is early, and the first readers shape what this becomes.
+              {editorialBookIds.length} books, each one read through what works in it, where it
+              stops working, and what is still argued about. It is early, and the first readers
+              shape what this becomes.
             </p>
             <BetaLink />
           </div>

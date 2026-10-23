@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Compass, LibraryBig, UserRound, UsersRound } from "lucide-react";
+import { Compass, LibraryBig, UserRound } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { getLocalProfile } from "@/lib/local-session";
@@ -14,8 +14,10 @@ import { canUseLocalCommunityFallback } from "@/lib/community-runtime";
 // the tab highlighted as though it were them. Send them to the door instead - /login knows
 // how to return them here afterwards.
 const baseMobileItems = [
+  // Home and Feed were both "things to read", split across two destinations, so neither one
+  // ever looked full. Reader perspectives are mixed into the scroll on Home now, which also
+  // stops what readers write from sitting in a side room. /feed still works for old links.
   { href: "/explore", label: "Home", icon: Compass },
-  { href: "/feed", label: "Feed", icon: UsersRound },
   { href: "/search", label: "Books", icon: LibraryBig },
   { href: "/login?next=%2Fexplore", label: "You", icon: UserRound }
 ];

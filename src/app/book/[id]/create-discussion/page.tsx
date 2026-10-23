@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { CreateDiscussionForm } from "@/components/create-discussion-form";
 import { books, getBook } from "@/lib/data";
 import { promptPoolForBook } from "@/lib/perspective-prompts";
+import { editorialCardFor } from "@/lib/editorial";
 import type { PostType } from "@/lib/types";
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/metadata";
@@ -38,7 +39,7 @@ export default async function CreateBookDiscussionPage({
   searchParams
 }: {
   params: Promise<{ id: string }>;
-  searchParams?: Promise<{ type?: string; title?: string; prompt?: string }>;
+  searchParams?: Promise<{ type?: string; title?: string; prompt?: string; idea?: string }>;
 }) {
   const { id } = await params;
   const query = searchParams ? await searchParams : {};
@@ -53,9 +54,16 @@ export default async function CreateBookDiscussionPage({
   // so the writer starts from a question instead of a blank field.
   const initialTitle = prompt?.title || (typeof query.title === "string" ? query.title.slice(0, 180) : "");
 
+  // "I tried this" on a scroll card arrives here carrying only the card's id. The sentence
+  // shown to the writer is resolved from this book's own editorial cards, so a crafted link
+  // cannot put words into the composer - the same reason the prompt above is looked up rather
+  // than trusted. Reporting what happened is a Real-Life Result, so the type is set for them.
+  const idea = typeof query.idea === "string" ? editorialCardFor(book.id, query.idea) : undefined;
+  const resolvedPostType: PostType = idea ? "Real-Life Result" : postType;
+
   return (
     <div className="editorial-page max-w-5xl">
-      <CreateDiscussionForm book={book} initialPostType={postType} initialTitle={initialTitle} starterPromptId={prompt?.id} />
+      <CreateDiscussionForm book={book} initialPostType={resolvedPostType} initialTitle={initialTitle} starterPromptId={prompt?.id} reportingOn={idea?.claim} />
     </div>
   );
 }

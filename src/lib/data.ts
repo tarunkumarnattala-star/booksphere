@@ -1,6 +1,7 @@
 import { Book, BookChapter, BookConcept, BookIdea, BookKnowledgePreview, DiscoveryShelf, DiscussionPost, DiscussionRankingLabel, DiscussionSort, EditorialPick, Genre, KnowledgePost, PerspectiveCluster, Profile, ReadingPath } from "./types";
 import { searchEverything, searchKnowledge } from "./search";
 import { slugify } from "./utils";
+import { editorialBookIds } from "./editorial";
 
 const SEED_NOW = Date.UTC(2026, 5, 29, 12, 0, 0);
 
@@ -813,6 +814,18 @@ const allBooks: Book[] = bookRows.map(([title, author, publishedYear, genreNames
 
 export const books: Book[] = allBooks;
 
+// A book is "stocked" when there is something to read on it. Of 394 titles, 349 had nothing at
+// all, so a visitor tapping almost any shelf, genre or search result arrived at an empty page -
+// the single worst thing a stranger can meet on their first visit. The catalogue is not cut
+// down: unstocked books keep their route, so any link already shared still resolves. They are
+// simply not offered until there is a reason to open them, and the shelf grows itself as the
+// editorial layer is written.
+const stockedIds = new Set<string>(editorialBookIds);
+export function isStocked(book: Book) {
+  return stockedIds.has(book.id);
+}
+export const stockedBooks: Book[] = allBooks.filter(isStocked);
+
 // Genres are derived from the shelf rather than declared, so narrowing the catalog can
 // never leave a browsable genre with one book or none in it - which would recreate the
 // abandoned feeling the narrow shelf exists to fix. Three is the floor for a genre page
@@ -820,7 +833,7 @@ export const books: Book[] = allBooks;
 const MIN_BOOKS_PER_GENRE = 3;
 
 export const genres: Genre[] = allGenres.filter(
-  (genre) => books.filter((book) => book.genres.includes(genre.name)).length >= MIN_BOOKS_PER_GENRE
+  (genre) => allBooks.filter((book) => stockedIds.has(book.id) && book.genres.includes(genre.name)).length >= MIN_BOOKS_PER_GENRE
 );
 
 const previewByGenre: Record<string, string> = {
@@ -1394,6 +1407,18 @@ export function getProfileById(id: string) {
 // editorial account, and otherwise the author carried on the row itself. Attribution is
 // not cosmetic here - a reader who writes something and sees another name on it has been
 // told, correctly, that this is not a place to put their thinking.
+// The house account. Anything it wrote is BookSphere's own writing, and must never be shown
+// to a stranger as something "a reader" did - that is the one claim this product cannot make
+// falsely and survive. The scroll uses this to keep the house out of the reader stream rather
+// than relabelling it, because a reader slot filled by the house is still a false impression.
+export const HOUSE_PROFILE_ID = "team";
+export const HOUSE_PROFILE_NAME = "BookSphere Team";
+
+export function isHouseAuthored(post: { userId: string; authorName?: string }) {
+  const profile = authorProfileFor(post);
+  return profile.id === HOUSE_PROFILE_ID || profile.name === HOUSE_PROFILE_NAME;
+}
+
 export function authorProfileFor(post: {
   userId: string;
   authorName?: string;
@@ -1416,7 +1441,7 @@ export function authorProfileFor(post: {
 }
 
 export function getBooksForGenre(genreName: string) {
-  return books.filter((book) => book.genres.includes(genreName));
+  return stockedBooks.filter((book) => book.genres.includes(genreName));
 }
 
 function inGenre(book: Book, genre?: string) {
@@ -1488,7 +1513,7 @@ export function getTrendingDiscussions(genre?: string, max = 10) {
 
 export function getMostDiscussed(genre?: string, max = 10) {
   return withFallback(
-    books.filter((book) => inGenre(book, genre)).sort((a, b) => b.discussionCount - a.discussionCount),
+    stockedBooks.filter((book) => inGenre(book, genre)).sort((a, b) => b.discussionCount - a.discussionCount),
     genre,
     max
   );
@@ -1496,7 +1521,7 @@ export function getMostDiscussed(genre?: string, max = 10) {
 
 export function getMostSaved(genre?: string, max = 10) {
   return withFallback(
-    books.filter((book) => inGenre(book, genre)).sort((a, b) => b.saveCount - a.saveCount),
+    stockedBooks.filter((book) => inGenre(book, genre)).sort((a, b) => b.saveCount - a.saveCount),
     genre,
     max
   );
