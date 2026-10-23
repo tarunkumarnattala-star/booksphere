@@ -1,0 +1,66 @@
+# Findings
+
+Severity follows LAUNCH_LOOP.md. Every line here was produced by running something, and the
+command is named so it can be re-run.
+
+## S0 — stop everything
+None found.
+
+Specifically tested and clear:
+- **A stranger cannot write to the database.** The anon key is public in every browser, so row
+  level security is the only thing standing between a visitor and your data. Attempted inserts
+  as an anonymous caller against discussion_posts, knowledge_posts, profiles, likes,
+  discussion_comments, saved_books and post_awards all returned `401 permission denied`.
+  Nothing was written to do this: a refused request never reaches the table.
+- **Private data is private.** saved_books, saved_insights, saved_knowledge_posts and reports
+  all refuse anonymous reads (401).
+- **No email addresses are exposed.** The readable tables carry no email column, and `profiles`
+  only answers for name/username columns, not `select=*`.
+- **No server secret is deployed.** Every variable the app reads is `NEXT_PUBLIC_`; there is no
+  service-role key in the deployment to leak.
+- **The database is reachable and the app says so.** `/api/health` returns
+  `{"status":"healthy","database":"reachable"}`.
+
+## S1 — must fix before launch
+
+1. **Nothing is watching. If the site breaks for a real reader, nobody finds out.**
+   No error tracking, no alerting, no uptime check (`grep -rliE 'sentry|datadog|posthog'` finds
+   nothing). You would learn about an outage from a person telling you, or never. The harness
+   treats missing monitoring as a launch blocker, and with no friends testing it, you have no
+   informal alarm either.
+
+2. **No automated test walks a single user journey.**
+   There is no e2e suite anywhere in the repo. Eight gates pass and every one of them checks the
+   code rather than the product: none of them would notice if signing in, writing a perspective
+   or opening a book stopped working. Today a human has to click it.
+
+3. **Most people arriving from Reddit or LinkedIn on a phone cannot sign up.**
+   Both apps open links in their own in-app browser, where Google sign-in cannot complete - this
+   is correctly detected and Google is hidden there. That leaves email, and email to a stranger's
+   address needs a verified sending domain, which does not exist yet. They can read everything
+   and cannot make an account. Unchanged since 2026-10-04.
+
+## S2 — fix in launch week
+
+4. **Pages that do not exist answer "200 OK".**
+   `/profile/definitely-nobody` and `/discussion/0000...` both return 200 while showing the
+   not-found screen. `/book/*` and `/genre/*` correctly return 404, so the fix pattern already
+   exists in this codebase. A crawler reads 200 as "this page is real" and will index unlimited
+   junk URLs.
+
+5. **A QA test account is live and browsable.**
+   `/profile/booksphere-qa-probe-tri-a71c6f` renders publicly as
+   "booksphere-qa-probe-trigger-long". It will appear wherever profiles are listed.
+
+6. **Backups have never been restored.**
+   Supabase takes its own backups on this plan; nobody has proved one can be restored. An
+   untested backup is a belief, not a backup.
+
+7. **The expected launch load has never been simulated.**
+   The harness forbids load-testing production and there is no staging environment to test
+   against, so capacity is reasoned about rather than measured. Reads are cached 20-30s and the
+   two heaviest pages are static, which is why this is S2 rather than S1.
+
+## S3 — later
+8. The `notifications` table returns 404 from the API while `/notifications` exists as a page.
+   Worth confirming the feature is backed by what you think it is.
