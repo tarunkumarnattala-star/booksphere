@@ -9,7 +9,7 @@ import { BookCover } from "@/components/book-cover";
 import { FeedComposer } from "@/components/feed-composer";
 import { SearchPreviewActions } from "@/components/search-preview-actions";
 import { featuredKnowledgeConcepts } from "@/lib/concepts";
-import { books, discussions, genres, knowledgePosts, readingPaths } from "@/lib/data";
+import { discussions, genres, knowledgePosts, readingPaths, stockedBooks } from "@/lib/data";
 import { searchKnowledge } from "@/lib/search";
 import { KnowledgeBookResult, KnowledgeConceptResult, KnowledgeDiscussionResult, KnowledgePostResult, KnowledgeReadingPathResult, KnowledgeSearchResult } from "@/lib/search";
 import { DiscussionPost, KnowledgePost } from "@/lib/types";
@@ -41,12 +41,21 @@ export function SearchClient({
   const cleanQuery = query.trim();
   const hasQuery = cleanQuery.length > 0;
   const results = useMemo(() => {
+    // A perspective is only useful if the book it is about has something to read. Gating the
+    // books alone was not enough: searching "money" still surfaced a perspective on Your Money
+    // or Your Life as the best match, and following it arrived at an empty book.
+    const stockedIds = new Set(stockedBooks.map((book) => book.id));
     const mergedDiscussions = (isSupabaseConfigured ? persistedDiscussions : [...persistedDiscussions, ...discussions])
-      .filter((post, index, all) => all.findIndex((item) => item.id === post.id) === index);
+      .filter((post, index, all) => all.findIndex((item) => item.id === post.id) === index)
+      .filter((post) => stockedIds.has(post.bookId));
     const mergedKnowledgePosts = (isSupabaseConfigured ? persistedKnowledgePosts : [...persistedKnowledgePosts, ...knowledgePosts])
       .filter((post, index, all) => all.findIndex((item) => item.id === post.id) === index);
     return searchKnowledge(query, {
-      books,
+      // Searching "money" returned ten books and every one of them was empty; "startup"
+      // returned seven, all empty. Looking up a book you already know is the most likely
+      // thing a visitor does here, and it was the surest route to a dead page in the whole
+      // product. Search offers the shelf, not the catalogue behind it.
+      books: stockedBooks,
       genres,
       discussions: mergedDiscussions,
       knowledgePosts: mergedKnowledgePosts,

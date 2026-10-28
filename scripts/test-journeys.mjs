@@ -163,6 +163,42 @@ await journey("a book page shows the writing it is stocked on", async (page) => 
   assert.ok(tried > 0, "no way to report trying an idea from the book page");
 });
 
+await journey("nothing anywhere offers a book with nothing to read", async (page) => {
+  // The empty-room problem has come back three times in different surfaces: genres, then
+  // reading paths (seventeen dead ends), then search ("money" returned ten books and every
+  // one was empty). Each was fixed where it was found. This walks the surfaces together, so
+  // the next one cannot be discovered by a reader instead of by the gate.
+  const surfaces = ["/explore", "/search", "/genres", "/search?q=money", "/search?q=habits", "/search?q=startup"];
+  const seen = new Set();
+  for (const surface of surfaces) {
+    await page.goto(`${BASE}${surface}`, { waitUntil: "domcontentloaded" });
+    await page.waitForTimeout(1200);
+    await settle(page);
+    for (const slug of await page.evaluate(() =>
+      [...new Set([...document.querySelectorAll('a[href^="/book/"]')].map((a) => a.getAttribute("href").split("/")[2]))]
+    )) seen.add(slug);
+
+    for (const path of await page.evaluate(() =>
+      [...new Set([...document.querySelectorAll('a[href^="/path/"]')].map((a) => a.getAttribute("href")))]
+    )) {
+      await page.goto(`${BASE}${path}`, { waitUntil: "domcontentloaded" });
+      await settle(page);
+      for (const slug of await page.evaluate(() =>
+        [...new Set([...document.querySelectorAll('a[href^="/book/"]')].map((a) => a.getAttribute("href").split("/")[2]))]
+      )) seen.add(slug);
+    }
+  }
+
+  assert.ok(seen.size > 5, `expected books to be offered somewhere, found ${seen.size}`);
+  const empty = [];
+  for (const slug of seen) {
+    const response = await page.goto(`${BASE}/book/${slug}`, { waitUntil: "domcontentloaded" });
+    const text = response.status() === 200 ? await page.evaluate(() => document.body.textContent || "") : "";
+    if (!text.includes("What it argues")) empty.push(slug);
+  }
+  assert.equal(empty.length, 0, `${empty.length} of ${seen.size} offered books have nothing to read: ${empty.slice(0, 4).join(", ")}`);
+});
+
 await journey("sign-in offers both routes, once each", async (page) => {
   await page.goto(`${BASE}/login`, { waitUntil: "domcontentloaded" });
   await page.waitForTimeout(2500); // Google's script injects its button

@@ -1108,8 +1108,12 @@ const allReadingPaths: ReadingPath[] = [
 // remaining ones look arbitrary. Narrowing the shelf leaves Startups 101 intact; the
 // others belong to themes this catalog no longer covers and should be rewritten for
 // the current focus rather than shown with holes in them.
+// The existing check only asked whether each book was in the catalogue, which every book was -
+// so all five paths survived the narrowing and four of them led almost entirely to books with
+// nothing on them. Seventeen dead ends, inside the one surface whose whole promise is "read
+// these in this order". A path is only offered when every book in it has something to read.
 export const readingPaths: ReadingPath[] = allReadingPaths.filter((path) =>
-  path.bookIds.every((bookId) => allBooks.some((book) => book.id === bookId))
+  path.bookIds.every((bookId) => stockedIds.has(bookId))
 );
 
 const ideaThemesByGenre: Record<string, Array<{ title: string; explanation: string; why: string; example: string; reference: string }>> = {
