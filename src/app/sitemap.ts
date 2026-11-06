@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { books, genres, readingPaths } from "@/lib/data";
+import { genres, readingPaths, stockedBooks } from "@/lib/data";
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://booksphere-iota.vercel.app";
 
@@ -10,7 +10,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: path === "" ? 1 : 0.7
   }));
 
-  const bookRoutes: MetadataRoute.Sitemap = books.map((book) => ({
+  // Genres and reading paths were already the gated lists; books was not, so this invited
+  // Google to crawl 394 pages when 26 have anything on them. Thin pages dilute the good ones,
+  // and worse, someone arriving from a search result lands on an empty page - the one door
+  // into the empty-room problem still open after it was closed everywhere inside the product.
+  const bookRoutes: MetadataRoute.Sitemap = stockedBooks.map((book) => ({
     url: `${baseUrl}/book/${book.id}`,
     changeFrequency: "weekly",
     priority: 0.6
