@@ -57,10 +57,19 @@ costs nothing, and matters more than usual because Google is your main signup ro
    - **Terms of service link:** `https://booksphere-iota.vercel.app/terms`
 5. **Save**, then press **Publish app** so it leaves "Testing" and goes to "In production".
 
-**How to know it worked:** open your login page in a browser where you are not signed in,
-tap Continue with Google, and look at the top of Google's screen. It should show your logo
-and name rather than only an address. The address may remain until Google verifies the brand,
-which needs a domain you own - that is Step 8, and it is not urgent.
+**How to know it worked:** open your login page in a browser where you are not signed in and
+tap Continue with Google. The screen should say **Sign in to booksphere-iota.vercel.app** -
+your own address, not a long random one ending in supabase.co.
+
+**Do not expect the name and logo to appear yet, and do not redo this step when they don't.**
+For this sign-in flow Google shows the site's address until the client passes brand
+verification, and verification means proving you own the domain in Search Console. vercel.app
+belongs to Vercel, so it cannot be verified. Filling this in is a prerequisite that switches
+on the moment you own a domain (Step 8) - it is not broken and it is not worth chasing now.
+
+Showing your real address is good enough to launch on. The thing this step was protecting
+against - a stranger being asked to sign in to `dhsophbjhaamucatumqr.supabase.co` - is already
+solved.
 
 ---
 
