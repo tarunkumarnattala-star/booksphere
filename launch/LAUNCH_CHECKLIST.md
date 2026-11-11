@@ -38,17 +38,24 @@ Right now Google shows a long random address instead of your name. This fixes mo
 costs nothing, and matters more than usual because Google is your main signup route.
 
 1. Go to **https://console.cloud.google.com/apis/credentials/consent**
-2. Pick the project that holds your BookSphere sign-in (the one you made when you set up
-   Google sign-in).
-3. Fill in:
+2. Pick the **BookSphere** project - not DineVerified. The right one holds an OAuth client
+   whose id starts `39438573113-`; that number before the dash is the project number, so you
+   can find it in the project picker's Number column. Settings made in the wrong project do
+   nothing and you will not get an error telling you so.
+3. In the left menu choose **Branding**. The app name, logo and links live there, not on the
+   Clients page - the Clients page holds the origins and redirect URIs, which are already
+   correct and should be left alone.
+4. Fill in:
    - **App name:** `BookSphere`
    - **User support email:** `booksphere.support@gmail.com`
-   - **App logo:** upload `launch/assets/booksphere-logo-512.png` from this project folder.
+   - **App logo:** upload this file - the full path, because a relative one resolves against
+     the wrong folder and the preview fails:
+     `/Users/mrtee/booksphere/launch/assets/booksphere-logo-512.png`
      Google rejects SVG files, which is why this one is a PNG.
    - **Application home page:** `https://booksphere-iota.vercel.app`
    - **Privacy policy link:** `https://booksphere-iota.vercel.app/privacy`
    - **Terms of service link:** `https://booksphere-iota.vercel.app/terms`
-4. **Save**, then press **Publish app** so it leaves "Testing" and goes to "In production".
+5. **Save**, then press **Publish app** so it leaves "Testing" and goes to "In production".
 
 **How to know it worked:** open your login page in a browser where you are not signed in,
 tap Continue with Google, and look at the top of Google's screen. It should show your logo
