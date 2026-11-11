@@ -183,21 +183,30 @@ export function LoginForm({ next }: { next?: string }) {
           ? "No password either way. Google signs you in straight away; email sends you a link instead."
           : "No password needed. If this is your first time, your email creates your account."}
       </p>
+      {/* Most people arriving from a link posted on Reddit or LinkedIn are inside that app's
+          own browser, where Google sign-in cannot complete. This used to be a grey note under
+          the heading while email was promoted as the way in - steering people to the one route
+          that depends on a sending domain, instead of to the one that is free and works the
+          moment they leave the in-app shell. Getting out of it is now the main action. */}
       {googleAuthEnabled && inApp && (
-        <div className="mt-6 rounded-[16px] bg-black/[0.045] p-4">
-          <p className="text-sm font-semibold text-[color:var(--color-text-primary)]">Open this in your browser first</p>
-          <p className="body-copy mt-1 text-[14px] leading-6">
-            Google will not complete sign-in inside an app&apos;s built-in browser. Tap the menu in the
-            corner of this window and choose &ldquo;Open in browser&rdquo;, or copy the link and paste
-            it into Safari or Chrome.
+        <div className="mt-6 rounded-[20px] bg-[#f7f2e8] p-5">
+          <p className="text-[15px] font-semibold text-[color:var(--color-text-primary)]">
+            One step first: open this in Safari or Chrome
+          </p>
+          <p className="body-copy mt-1.5 text-[14px] leading-6">
+            You are inside an app&apos;s built-in browser, and Google cannot finish signing you in
+            here. Copy the link, paste it into Safari or Chrome, and it takes one tap.
           </p>
           <button
             type="button"
             onClick={copyLink}
-            className="mt-3 inline-flex min-h-11 items-center rounded-full border border-black/10 bg-white px-4 text-sm font-semibold"
+            className="mt-3.5 inline-flex min-h-12 w-full items-center justify-center rounded-full bg-[color:var(--color-text-primary)] px-4 text-sm font-semibold !text-white transition hover:opacity-85"
           >
-            {copied ? "Link copied" : "Copy the link"}
+            {copied ? "Link copied - now paste it in your browser" : "Copy the link"}
           </button>
+          <p className="mt-2.5 text-[13px] leading-5 text-[color:var(--color-text-muted)]">
+            Or use the menu in the corner of this window and choose &ldquo;Open in browser&rdquo;.
+          </p>
         </div>
       )}
       {/* The ID-token flow keeps the reader on this site, so Google's screen names BookSphere
