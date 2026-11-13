@@ -11,6 +11,27 @@ type Totals = { accounts: number | null; posts: number | null; comments: number 
 
 const WINDOW_DAYS = 30;
 const EVENT_WINDOW_LIMIT = 5000;
+// Supabase's API returns at most 1000 rows per request whatever .limit() asks for, so a
+// single request for 5000 came back with 1000 and the "newest N only" notice below - which
+// waits for 5000 - never appeared. Launch-day numbers would have stopped growing at 1000
+// events with nothing on the page saying so. Read it in pages instead.
+const EVENT_PAGE = 1000;
+
+async function loadWindowEvents() {
+  const rows: EventRow[] = [];
+  for (let from = 0; from < EVENT_WINDOW_LIMIT; from += EVENT_PAGE) {
+    const { data, error } = await supabase!
+      .from("analytics_events")
+      .select("event_name,user_id,created_at")
+      .gte("created_at", since(WINDOW_DAYS))
+      .order("created_at", { ascending: false })
+      .range(from, from + EVENT_PAGE - 1);
+    if (error) return { data: null, error };
+    rows.push(...((data || []) as EventRow[]));
+    if (!data || data.length < EVENT_PAGE) break;
+  }
+  return { data: rows, error: null };
+}
 
 // The onboarding tour is the one flow with enough instrumentation to read as a funnel,
 // and it is the flow most likely to be quietly losing new readers.
@@ -44,7 +65,7 @@ export default function AdminAnalyticsPage() {
       if (!me?.is_moderator) { setState("not-moderator"); return; }
 
       const [eventsResult, accounts, posts, comments, knowledge] = await Promise.all([
-        supabase.from("analytics_events").select("event_name,user_id,created_at").gte("created_at", since(WINDOW_DAYS)).order("created_at", { ascending: false }).limit(EVENT_WINDOW_LIMIT),
+        loadWindowEvents(),
         supabase.from("profiles").select("id", { count: "exact", head: true }),
         supabase.from("discussion_posts").select("id", { count: "exact", head: true }),
         supabase.from("discussion_comments").select("id", { count: "exact", head: true }),
