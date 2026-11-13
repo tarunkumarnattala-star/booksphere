@@ -1,6 +1,7 @@
 import { unstable_cache } from "next/cache";
 import { supabase } from "./supabase";
 import type { KnowledgePost } from "./types";
+import { isRateLimited, RATE_LIMITED_MESSAGE } from "./utils";
 
 type DbKnowledgePost = {
   id: string;
@@ -225,7 +226,7 @@ export async function createSupabaseKnowledgePost(input: {
     })
     .select(knowledgePostSelect)
     .single();
-  if (error || !data) return { post: null, error: "We could not publish this thought. Please try again." };
+  if (error || !data) return { post: null, error: isRateLimited(error) ? RATE_LIMITED_MESSAGE : "We could not publish this thought. Please try again." };
   const [post] = await hydrateKnowledgePosts([data as DbKnowledgePost]);
   return { post: post || null, error: null };
 }

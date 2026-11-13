@@ -114,7 +114,13 @@ export default function SettingsPage() {
       .maybeSingle();
     setSaving(false);
     if (error) {
-      setMessage(error.code === "23505" ? "That username is already taken." : "Your changes could not be saved. Please try again.");
+      // P0001 "reserved" comes from reserve_house_identity: the house names cannot be taken by
+      // a reader, or anyone could post as "BookSphere Team".
+      setMessage(error.code === "23505"
+        ? "That username is already taken."
+        : error.code === "P0001" && error.message?.includes("reserved")
+          ? "That name is kept for BookSphere's own accounts. Please choose another."
+          : "Your changes could not be saved. Please try again.");
       return;
     }
     if (!data) {

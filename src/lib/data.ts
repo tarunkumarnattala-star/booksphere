@@ -1415,12 +1415,23 @@ export function getProfileById(id: string) {
 // to a stranger as something "a reader" did - that is the one claim this product cannot make
 // falsely and survive. The scroll uses this to keep the house out of the reader stream rather
 // than relabelling it, because a reader slot filled by the house is still a false impression.
-export const HOUSE_PROFILE_ID = "team";
-export const HOUSE_PROFILE_NAME = "BookSphere Team";
+//
+// Known by id, never by display name. Matching on the name meant anyone could type
+// "BookSphere Team" into Settings: their posts would then carry the house name, and the scroll
+// would drop them as house writing. All three accounts seeded in supabase/seed.sql are the
+// house - Community Starter and Reader Ops are BookSphere writing under another name, not
+// readers - so each counts by both its local id and its database uuid.
+const HOUSE_PROFILE_IDS = new Set([
+  "team",
+  "starter",
+  "reader-ops",
+  "11111111-1111-1111-1111-111111111111",
+  "22222222-2222-2222-2222-222222222222",
+  "33333333-3333-3333-3333-333333333333"
+]);
 
-export function isHouseAuthored(post: { userId: string; authorName?: string }) {
-  const profile = authorProfileFor(post);
-  return profile.id === HOUSE_PROFILE_ID || profile.name === HOUSE_PROFILE_NAME;
+export function isHouseAuthored(post: { userId: string }) {
+  return HOUSE_PROFILE_IDS.has(post.userId);
 }
 
 export function authorProfileFor(post: {

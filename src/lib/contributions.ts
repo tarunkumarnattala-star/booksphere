@@ -1,7 +1,7 @@
 import { unstable_cache } from "next/cache";
 import { supabase } from "./supabase";
 import { books, getBook } from "./data";
-import { slugify } from "./utils";
+import { isRateLimited, RATE_LIMITED_MESSAGE, slugify } from "./utils";
 import type { AwardType, Book, DiscussionPost, PostType, UsefulnessReaction, UsefulnessReactionType } from "./types";
 
 export type DbContribution = {
@@ -332,7 +332,7 @@ export async function createSupabaseContribution(input: {
   if (error || !data) {
     return {
       post: null,
-      error: "We could not publish your perspective. Your draft has been preserved.",
+      error: isRateLimited(error) ? RATE_LIMITED_MESSAGE : "We could not publish your perspective. Your draft has been preserved.",
       cause: error ? { code: error.code || null, message: error.message?.slice(0, 200) || null } : { code: "no_row", message: null }
     };
   }
@@ -588,7 +588,7 @@ export async function createSupabaseComment(profileId: string, postId: string, b
     .insert({ user_id: profileId, ...target, parent_comment_id: parentId || null, body })
     .select("id,user_id,parent_comment_id,body,created_at,updated_at,profiles(name)")
     .single();
-  if (error || !data) return { comment: null, error: "We could not post your comment. Your text is still here." };
+  if (error || !data) return { comment: null, error: isRateLimited(error) ? RATE_LIMITED_MESSAGE : "We could not post your comment. Your text is still here." };
   const profile = Array.isArray(data.profiles) ? data.profiles[0] : data.profiles;
   return {
     comment: {

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ShieldCheck, Trash2 } from "lucide-react";
+import { Ban, ShieldCheck, Trash2 } from "lucide-react";
 import { requireProfile } from "@/lib/auth-client";
 import { supabase } from "@/lib/supabase";
 
@@ -90,6 +90,31 @@ export default function AdminReportsPage() {
     }
   }
 
+  // Dismiss only cleared the report and left the post up, so taking spam down meant opening
+  // the Supabase table editor mid-launch. The RPC checks is_moderator on the server, hides a
+  // perspective the way its author's own delete does, deletes a feed post or comment, and
+  // clears every report filed against that target.
+  async function removeTarget(report: ReportRow) {
+    if (!supabase) return;
+    if (!window.confirm(`Take this ${targetLabels[report.target_type].toLowerCase()} down? Readers will no longer see it.`)) return;
+    setError("");
+    const { data, error: removeError } = await supabase.rpc("moderate_remove_content", {
+      p_target_type: report.target_type,
+      p_target_id: report.target_id
+    });
+    if (removeError) {
+      setError(removeError.code === "PGRST202"
+        ? "Removing content needs the 20261113 moderation migration applied in Supabase."
+        : "That could not be taken down. Please try again.");
+      return;
+    }
+    if (data !== true) {
+      setError("Nothing was taken down. It may already be gone, or your account may not have moderator permission.");
+      return;
+    }
+    setReports((current) => current.filter((item) => !(item.target_type === report.target_type && item.target_id === report.target_id)));
+  }
+
   return (
     <div className="container-page py-10 md:py-14">
       <p className="caption">Moderation</p>
@@ -141,6 +166,15 @@ export default function AdminReportsPage() {
                           <Link href={href} className="inline-flex min-h-10 items-center rounded-full bg-black/[0.04] px-4 text-sm font-medium transition hover:bg-black/[0.07]">
                             View target
                           </Link>
+                        )}
+                        {report.target_type !== "profile" && (
+                          <button
+                            type="button"
+                            onClick={() => removeTarget(report)}
+                            className="inline-flex min-h-10 items-center gap-2 rounded-full bg-[color:var(--color-rose)]/10 px-4 text-sm font-medium text-[color:var(--color-rose)] transition hover:bg-[color:var(--color-rose)]/15"
+                          >
+                            <Ban size={15} /> Take down
+                          </button>
                         )}
                         <button
                           type="button"

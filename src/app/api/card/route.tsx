@@ -27,6 +27,10 @@ const GREEN_ON_DARK = "#9acfb1";
 const GREEN_ON_LIGHT = "#1d5c45";
 
 export async function GET(request: NextRequest) {
+  // A content tool, run against localhost by scripts/content-plan.mjs. In production it was a
+  // public endpoint that put any text anyone typed into a URL under the BookSphere mark, with
+  // no length limit and no cache - a free way to make an official-looking image of anything.
+  if (process.env.VERCEL_ENV === "production") return new Response("Not found", { status: 404 });
   const q = request.nextUrl.searchParams;
   const kind = q.get("kind") || "idea";
   const eyebrow = q.get("eyebrow") || "";

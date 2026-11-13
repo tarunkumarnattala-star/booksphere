@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Heart, MessageCircle, Pencil, Share2, Trash2 } from "lucide-react";
+import { Flag, Heart, MessageCircle, Pencil, Share2, Trash2 } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 import { requireProfile } from "@/lib/auth-client";
 import { canUseLocalCommunityFallback, COMMUNITY_UNAVAILABLE_MESSAGE } from "@/lib/community-runtime";
 import {
@@ -44,6 +45,10 @@ export function KnowledgePostActions({ post, onUpdated, onDeleted }: {
   const [copied, setCopied] = useState(false);
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
+  const [reportOpen, setReportOpen] = useState(false);
+  const [reportReason, setReportReason] = useState("Spam or manipulation");
+  const [reporting, setReporting] = useState(false);
+  const [reported, setReported] = useState(false);
   const [draft, setDraft] = useState({ body: post.body, topic: post.topic, referenceTitle: post.referenceTitle || "" });
 
   useEffect(() => {
@@ -191,6 +196,36 @@ export function KnowledgePostActions({ post, onUpdated, onDeleted }: {
     }
   }
 
+  // Feed posts could not be reported at all - only book perspectives had the button - so
+  // the one surface open to writing that is not about a book had no way to flag spam.
+  // Same insert-not-upsert rule as post-actions.tsx: 23505 means already reported.
+  async function submitReport() {
+    if (reporting) return;
+    const auth = await requireProfile();
+    if (!auth.ok) {
+      setNotice(auth.message);
+      return;
+    }
+    if (!supabase) {
+      setError(COMMUNITY_UNAVAILABLE_MESSAGE);
+      return;
+    }
+    setReporting(true);
+    setError("");
+    const { error: reportError } = await supabase.from("reports").insert(
+      { reporter_id: auth.profileId, target_type: "knowledge_post", target_id: post.id, reason: reportReason }
+    );
+    setReporting(false);
+    if (reportError && reportError.code !== "23505") {
+      trackEvent("write_failed", { op: "report_knowledge_post", targetId: post.id, code: reportError.code || null, message: reportError.message?.slice(0, 200) || null });
+      setError("Your report could not be submitted. Please try again.");
+      return;
+    }
+    setReported(true);
+    setReportOpen(false);
+    trackEvent("post_reported", { targetId: post.id, targetType: "knowledge_post" });
+  }
+
   function openComments() {
     document.getElementById("comments")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
@@ -211,6 +246,17 @@ export function KnowledgePostActions({ post, onUpdated, onDeleted }: {
         <button type="button" onClick={sharePost} className="inline-flex min-h-10 items-center gap-2 rounded-full bg-black/[0.035] px-3 transition hover:bg-black/[0.06]">
           <Share2 size={16} /> {copied ? "Copied" : "Share"}
         </button>
+        {!isOwner && (
+          <button
+            type="button"
+            onClick={() => { if (!reported) setReportOpen((value) => !value); }}
+            disabled={reported || reporting}
+            className="ml-auto inline-flex min-h-10 items-center gap-2 rounded-full px-3 transition hover:bg-black/[0.05] disabled:opacity-60"
+            aria-expanded={reportOpen}
+          >
+            <Flag size={16} /> {reported ? "Reported" : "Report"}
+          </button>
+        )}
         {isOwner && (
           <div className="ml-auto flex gap-1">
             <button type="button" onClick={() => setEditing((value) => !value)} className="grid size-10 place-items-center rounded-full transition hover:bg-black/[0.05]" aria-label="Edit your post"><Pencil size={16} /></button>
@@ -218,6 +264,25 @@ export function KnowledgePostActions({ post, onUpdated, onDeleted }: {
           </div>
         )}
       </div>
+
+      {reportOpen && !reported && (
+        <div className="mt-3 rounded-[20px] bg-black/[0.025] p-4" role="group" aria-label="Report this post">
+          <label className="grid gap-2 text-sm font-medium">
+            Why should this be reviewed?
+            <select value={reportReason} onChange={(event) => setReportReason(event.target.value)} className="min-h-11 rounded-[16px] bg-white px-4 py-3 outline-none ring-1 ring-black/[0.05] focus:ring-black/20">
+              <option>Spam or manipulation</option>
+              <option>Harassment or hateful content</option>
+              <option>Copyright concern</option>
+              <option>Dangerous or misleading claim</option>
+              <option>Other community concern</option>
+            </select>
+          </label>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <button type="button" disabled={reporting} onClick={submitReport} className="min-h-11 rounded-full bg-[color:var(--color-text-primary)] px-5 py-2 text-sm font-medium !text-white disabled:opacity-50">{reporting ? "Submitting..." : "Submit report"}</button>
+            <button type="button" disabled={reporting} onClick={() => setReportOpen(false)} className="min-h-11 rounded-full bg-white px-5 py-2 text-sm font-medium ring-1 ring-black/[0.05]">Cancel</button>
+          </div>
+        </div>
+      )}
 
       {editing && (
         <div className="mt-4 grid gap-3 rounded-[20px] bg-black/[0.025] p-4">

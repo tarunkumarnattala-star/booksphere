@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ArrowUpRight, BookOpen, Heart, MessageCircle } from "lucide-react";
 import { KnowledgePost } from "@/lib/types";
-import { authorProfileFor, getBook } from "@/lib/data";
+import { authorProfileFor, getBook, isHouseAuthored } from "@/lib/data";
 import { rememberFeedPosition } from "@/lib/feed-return";
 import { FollowButton } from "./follow-button";
 
@@ -46,7 +46,9 @@ export function KnowledgeNoteCard({ post, featured = false }: { post: KnowledgeP
               </Link>
             </div>
             <p className="mt-1 text-xs font-medium text-[color:var(--color-text-secondary)]">
-              {createdDate} · {profile.badges[0] || "Thoughtful Reader"}
+              {/* The house's own posts said "Thoughtful Reader" here, under a heading that reads
+                  "What readers are sharing" - BookSphere passing its writing off as a reader's. */}
+              {createdDate} · {isHouseAuthored(post) ? "Written by BookSphere" : profile.badges[0] || "Thoughtful Reader"}
             </p>
           </div>
         </div>
